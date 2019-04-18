@@ -19,6 +19,16 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        '/ajax-empresa',
+        '/ajax-empresa-add',
+        '/ajax-empresa-update',
+        '/ajax-empresa-delete',
+        '/ajax-usuario',
+        '/ajax-usuario-add',
+        '/ajax-usuario-update',
+        '/ajax-usuario-delete',
+        '/ajax-cliente',
+        '/ajax-cliente-update',
+        '/ajax-cliente-active'
     ];
 }

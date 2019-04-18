@@ -24,7 +24,15 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-window.axios.defaults.baseURL = document.head.querySelector('meta[name="api-base-url"]').content;
+let baseAxiosUrl = document.head.querySelector('meta[name="csrf-token"]');
+
+if(baseAxiosUrl){
+    window.axios.defaults.baseURL = document.head.querySelector('meta[name="api-base-url"]').content;
+
+}else{
+    console.error('No se agrego el base URL Axios');
+}
+
 
 
 /**

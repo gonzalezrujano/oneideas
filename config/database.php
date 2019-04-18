@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'mongodb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,6 +83,18 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+        ],
+
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('DB_HOST_MONGO', 'localhost'),
+            'port'     => env('DB_PORT_MONGO', 27017),
+            'database' => env('DB_DATABASE_MONGO', 'forge'),
+            'username' => env('DB_USERNAME_MONGO', ''),
+            'password' => env('DB_PASSWORD_MONGO', ''),
+            'options'  => [
+                'database' => env('DB_DATABASE_AUTHENTICATION_MONGO', 'admin') // sets the authentication database required by mongo 3
+            ]
         ],
 
     ],

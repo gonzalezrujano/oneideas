@@ -24,37 +24,7 @@
 
             <div class="page-wrapper">
 
-
-                <div id="login-hidden" class="container" style="display: none;">
-                    <div class="absolute-center">
-
-                        <form class="form-login form">
-
-                            <!-- logo-->
-                            <div class="text-center mb-4">
-                                <img src="{{ asset('images/logo-oneshow.png') }}" class="img-fluid logo-login" alt="Responsive image" />
-                            </div>
-
-                            <div class="form-group">
-                                <input type="text" class="form-control input-lg" id="email" placeholder="Ingresa tu correo">
-                            </div>
-
-                            <div class="form-group">
-                                <input type="password" class="form-control input-lg" id="password" placeholder="Ingresa tu contraseña">
-                            </div>
-
-                            <a href="{{ route('dashboard') }}"><button type="button" class="btn btn-block btn-red-one">Ingresar</button></a>
-
-                            <ul class="login-bottom-links">
-                                <li><a href="#">¿Olvidaste tu contraseña?</a></li>
-                            </ul>
-
-
-                        </form>
-
-                    </div>
-                </div>
-
+                @yield('content')
 
             </div>
 

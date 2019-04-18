@@ -13,10 +13,10 @@ class IndexController extends Controller
         return view('login');
     }
 
-    //metodo que crea la vista dashboard
-    public function dashboard(){
+    //metodo que crea la vista welcome
+    public function welcome(){
         //devuelve la vista asociada
-        return view('dashboard');
+        return view('welcome');
     }
 
 }

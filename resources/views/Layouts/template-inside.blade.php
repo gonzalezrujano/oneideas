@@ -42,13 +42,9 @@
 
                     </header>
 
-                    <div class="container-fluid">
+                    <div id="sweet" class="container-fluid">
 
-                        <div class="row">
-
-                            @yield('content')
-
-                        </div>
+                        @yield('content')
 
                         @include('Layouts.footer')
 
@@ -62,6 +58,8 @@
 
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/vendor.js') }}"></script>
+
+        @yield('javascript')
 
     </body>
 </html>

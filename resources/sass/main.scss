@@ -54,11 +54,19 @@
     max-width: 250px;
 }
 
+.login-display{
+    display: none;
+}
+
 .form-login{
     width: 100%;
     max-width: 370px;
     padding: 15px;
     margin: auto;
+}
+
+.form-change-password{
+    padding: 15px;
 }
 
 .absolute-center{
@@ -111,4 +119,131 @@
 .btn-red-one:hover {
     color: white;
     text-decoration: none;
+}
+
+.btn-red-one.focus, .btn-red-one:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem $rojoOne;
+}
+
+
+.dt-buttons {
+    margin-bottom: -40px;
+    font-weight: bold;
+}
+
+.card {
+    background-color: black;
+}
+
+
+.modal-size-600 {
+    max-width: 600px;
+}
+
+.modal-size-700 {
+    max-width: 700px;
+}
+
+.modal-size-800 {
+    max-width: 800px;
+}
+
+.modal-size-950 {
+    max-width: 950px;
+}
+
+.modal-size-1000 {
+    max-width: 1000px;
+}
+
+.form-modal{
+    margin-top: 30px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #2f3233;
+}
+
+.nav-item a {
+    color: #cccccc;
+}
+
+.nav-link {
+    display: block;
+    padding: .3rem 1rem;
+}
+
+.line-gray{
+    border: 0;
+    border-top: 1px solid #888;
+}
+
+.dataTable > thead > tr > th[class*="sort"]:after{
+    content: "" !important;
+}
+
+.btn-add-dt{
+    position: relative;
+    margin-bottom: -45px;
+    z-index: 1000;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    cursor: inherit;
+    display: block;
+}
+
+.area-cropper{
+    position: relative;
+    width: 500px;
+    height: 236px;
+    margin: 0 auto;
+}
+
+.img-example {
+    width: 200px;
+    border: 4px #cccccc solid;
+    padding: 2px;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+}
+
+.pagination > li > a {
+    background: #3f4649;
+    border-color: #282c2e;
+    color: white;
+}
+
+.pagination > li.disabled > a:hover, .pagination > li.disabled > a:focus {
+    background: #3f4649;
+    border-color: #282c2e;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    color: white;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #3f4649;
+    border-color: #282c2e;
 }

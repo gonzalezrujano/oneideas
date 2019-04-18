@@ -3,7 +3,7 @@
 return [
 
     //titulo que aparece en la pestaña
-    'title' => 'ONE Show',
+    'title' => 'ONE Show Console',
 
     //texto que aparece en el footer
     'footer' => '©' .date('Y').' ONE Show. Todos los derechos reservados.',

@@ -4,7 +4,7 @@
     <ul class="sidebar-nav mt-3">
 
         <li class="sidebar-nav-link active">
-            <a href="index.html">
+            <a href="{{ route('welcome') }}">
                 <i class="fas fa-tachometer-alt sidebar-nav-link-logo"></i> Dashboard
             </a>
         </li>
@@ -18,41 +18,45 @@
 
             <ul class="sidebar-nav">
 
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-user-tie sidebar-nav-link-logo"></i> Clientes
-                    </a>
-                </li>
+                @if(Auth::user()->hasPermission('biblioteca', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="#">
+                            <i class="fas fa-book sidebar-nav-link-logo"></i> Biblioteca
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-user-cog sidebar-nav-link-logo"></i> Usuarios
-                    </a>
-                </li>
+                @if(Auth::user()->hasPermission('cliente', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('configuracion.cliente') }}">
+                            <i class="fas fa-user-tie sidebar-nav-link-logo"></i> Clientes
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-desktop sidebar-nav-link-logo"></i> Monitor
-                    </a>
-                </li>
+                @if(Auth::user()->hasPermission('empresa', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('configuracion.empresa') }}">
+                            <i class="fas fa-industry sidebar-nav-link-logo"></i> Empresas
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-industry sidebar-nav-link-logo"></i> Empresas
-                    </a>
-                </li>
+                @if(Auth::user()->hasPermission('monitor', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="#">
+                            <i class="fas fa-desktop sidebar-nav-link-logo"></i> Monitor
+                        </a>
+                    </li>
+                @endif
 
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-calendar-week sidebar-nav-link-logo"></i> Eventos
-                    </a>
-                </li>
-
-                <li class="sidebar-nav-link">
-                    <a href="#">
-                        <i class="fas fa-book sidebar-nav-link-logo"></i> Biblioteca
-                    </a>
-                </li>
+                @if(Auth::user()->hasPermission('usuario', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('configuracion.usuario') }}">
+                            <i class="fas fa-user-cog sidebar-nav-link-logo"></i> Usuarios
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </li>

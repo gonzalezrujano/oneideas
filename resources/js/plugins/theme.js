@@ -1,10 +1,11 @@
 $(document).ready(function()
 {
-    $('[data-icheck]').iCheck({
+    /*$('[data-icheck]').iCheck({
         checkboxClass: 'icheckbox_flat-red',
         radioClass: 'iradio_flat-red',
         // increaseArea: '20%' // optional
-    });
+    });*/
+
     var $contentWrapper = $('.content-wrapper');
     var $sidebars = $('.left-sidebar');
     var $window = $(window);
@@ -16,6 +17,7 @@ $(document).ready(function()
         $contentWrapper.css({minHeight: calculatedMinHeight + 'px'});
         $sidebars.css({minHeight: calculatedSidebarMinHeight + 'px'});
     };
+
     onWindowResize();
 
     $('.faqs-question-text').click(function()
@@ -55,25 +57,6 @@ $(document).ready(function()
         }
     });
 
-    $('#trigger-demo-notify').click(function()
-    {
-        $('.top-right').notify({
-            message: { html: 'Great looking notification at the top right of the page!<br><br>These can be configured to display at any corner...' },
-            type: 'success'
-          }).show(); 
-        $('.top-right').notify({
-            message: { html: 'Great looking notification at the top right of the page!<br><br>These can be configured to display at any corner...' },
-            type: 'info'
-          }).show(); 
-        $('.top-right').notify({
-            message: { html: 'Great looking notification at the top right of the page!<br><br>These can be configured to display at any corner...' },
-            type: 'warning'
-          }).show(); 
-        $('.top-right').notify({
-            message: { html: 'Great looking notification at the top right of the page!<br><br>These can be configured to display at any corner...' },
-            type: 'danger'
-          }).show(); 
-    });
 
     $('.fixed-skinner-toggle').click(function()
     {

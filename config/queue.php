@@ -29,15 +29,14 @@ return [
     */
 
     'connections' => [
-
         'sync' => [
-            'driver' => 'sync',
+            'driver' => 'database',
         ],
 
         'database' => [
-            'driver' => 'database',
-            'table' => 'jobs',
-            'queue' => 'default',
+            'driver' => 'mongodb',
+            'table' => 'JobsBackOffice',
+            'queue' => 'backoffice',
             'retry_after' => 90,
         ],
 
@@ -80,8 +79,8 @@ return [
     */
 
     'failed' => [
-        'database' => env('DB_CONNECTION', 'mysql'),
-        'table' => 'failed_jobs',
+        'database' => env('DB_CONNECTION', 'mongodb'),
+        'table' => 'JobsBackOfficeFailed',
     ],
 
 ];

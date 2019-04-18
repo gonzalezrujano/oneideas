@@ -166,12 +166,19 @@ return [
          * Package Service Providers...
          */
 
+        //libreria para hacer uso de mongo en laravel
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
+        Jenssegers\Mongodb\MongodbQueueServiceProvider::class,
+        //libreria para trabajar con las imagenes
+        Intervention\Image\ImageServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
