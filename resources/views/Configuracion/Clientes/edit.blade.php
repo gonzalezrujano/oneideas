@@ -54,7 +54,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Fecha de Nacimiento</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{$cliente->Edad ? $cliente->Edad : '-' }}" id="cliente-fn" name="cliente-fn" placeholder="-">
+                                        <input type="text" class="form-control form-control-sm" value="{{$cliente->FechaNacimiento ? $cliente->FechaNacimiento : '-' }}" id="cliente-fn" name="cliente-fn" placeholder="-">
                                     </div>
                                 </div>
 

@@ -136,7 +136,7 @@ class ClienteController extends Controller
             $registro->Telefono            = $data['telefono'];
             $registro->Pais_id             = $data['pais'];
             $registro->Sexo                = $data['sexo'];
-            $registro->Edad                = $data['fn'];
+            $registro->FechaNacimiento     = $data['fn'];
             $registro->Equipo              = $data['equipo'];
 
             //verifico si fue exitoso el insert en la bd
