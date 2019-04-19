@@ -50,13 +50,15 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::post('/ajax-empresa-delete', 'EmpresaController@ajaxDelete');
 
         //ruta de eventos
-        Route::get('/evento/{id}', 'EventoController@index')->name('configuracion.evento');
-        Route::post('/ajax/sucursal', 'SucursalController@ajaxDatatables');
-        Route::post('/ajax/sucursal/add', 'SucursalController@ajaxAdd');
-        Route::post('/ajax/sucursal/update', 'SucursalController@ajaxUpdate');
-        Route::post('/ajax/sucursal/delete', 'SucursalController@ajaxDelete');
-        Route::post('/ajax/sucursal/get', 'SucursalController@ajaxGet');
-        Route::post('/ajax/sucursal/active', 'SucursalController@ajaxChangeActive');
+        Route::get('/evento/{id}/', 'EventoController@index')->name('configuracion.evento');
+        Route::post('/ajax-evento', 'EventoController@ajaxDatatables');
+        Route::get('/evento-add/{id}/', 'EventoController@viewAdd')->name('evento-add');
+        Route::get('/evento-show/{id}/', 'EventoController@viewShow');
+        Route::get('/evento-edit/{id}/', 'EventoController@viewEdit');
+        Route::post('/ajax-evento-add', 'EventoController@ajaxAdd');
+        Route::post('/ajax-evento-update', 'EventoController@ajaxUpdate');
+        Route::post('/ajax-evento-delete', 'EventoController@ajaxDelete');
+        Route::post('/ajax-evento-active', 'EventoController@ajaxChangeActive');
 
         //ruta de usuarios
         Route::get('/usuario', 'UsuarioController@index')->name('configuracion.usuario');

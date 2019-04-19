@@ -77,7 +77,7 @@
                 "processing": false,
                 "serverSide": true,
                 "ordering": false,
-                "paging": false,
+                "paging": true,
                 "deferRender": true,
                 "ajax": {
                     "url": "./ajax-empresa",
@@ -113,8 +113,7 @@
 
                             let linkShow   = './empresa-show/' + row._id;
                             let linkEdit   = './empresa-edit/' + row._id;
-                            //let linkEvento = './evento/' + row._id;
-                            let linkEvento = '#';
+                            let linkEvento = './evento/' + row._id;
 
                             var ver      = showAction ? '<a href=" ' +linkShow+ ' "><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Ver" class="fas fa-eye"></i></a>&nbsp;&nbsp;&nbsp;' : '';
                             var editar   = editAction ? '<a href=" ' +linkEdit+ ' "><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Editar" class="fas fa-edit" ></i></a>&nbsp;&nbsp;&nbsp;' : '';

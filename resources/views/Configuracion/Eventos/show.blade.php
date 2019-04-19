@@ -1,7 +1,7 @@
 @extends('Layouts.template-inside')
 
 @section('heading')
-    <h1 class="page-header-heading"><i class="fas fa-industry page-header-heading-icon"></i>Ver Empresa</h1>
+    <h1 class="page-header-heading"><i class="fas fa-calendar-week page-header-heading-icon"></i>&nbsp;<a href="{{ route('configuracion.empresa') }}">Empresa</a>  / Ver Evento</h1>
 @endsection
 
 @section('content')
@@ -26,46 +26,73 @@
 
                     <hr class="line-gray"/>
 
-                    <form id="form-add-empresa" class="form-change-password form" enctype="multipart/form-data">
+                    <form id="form-add-evento" class="form-change-password form" enctype="multipart/form-data">
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
 
+                                <input type="hidden" id="id-emp" value="{{ $empresa->_id }}">
+                                <input type="hidden" id="id-evento" value="{{ $evento->_id }}">
+
+
+
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Identificación</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">ID Evento</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{ $empresa->Cuit_rut }}" id="identificacion" name="identificacion" placeholder="Ingrese el numero de identificacion fiscal" disabled  />
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->IDEvento}}" id="idevento" name="idevento"  />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Nombre Evento</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Nombre}}" id="nombre" name="nombre" placeholder="Ingrese el nombre del evento"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Nombre</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{$empresa->Nombre}}" id="nombre" name="nombre" placeholder="Ingrese el nombre de la empresa" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Fecha}}" id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Correo</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Hora</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{$empresa->Correo}}" id="correo" name="correo"  placeholder="Ingrese el correo de la empresa" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Hora}}" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Licencias</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control form-control-sm" value="{{$empresa->Telefono}}" id="telefono" name="telefono"  placeholder="Ingrese el teléfono de la empresa" disabled />
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Licencias}}" id="licencias" name="licencias"  placeholder="Ingrese la cantidad de licencias del evento"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">País</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Latitud</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control form-control-sm" id="pais" name="pais" disabled>
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Latitud}}" id="latitud" name="latitud"  placeholder="Ingrese la latitud"  />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Longitud</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control form-control-sm" value="{{$evento->Longitud}}" id="longitud" name="longitud"  placeholder="Ingrese la longitud"  />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">App</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control form-control-sm" id="app" name="app" >
                                             <option value="">Seleccione</option>
-                                            @foreach($paises as $pais)
-                                                <option value="{{ $pais->_id }}"  @if((string)$empresa->Pais_id == $pais->_id) selected='selected' @endif >{{ $pais->Nombre }}</option>
+                                            @foreach($estados as $estado)
+                                                <option value="{{ $estado->Valor == true ? 1 : 0 }}" @if($evento->App == $estado->Valor) selected='selected' @endif>{{ $estado->Nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -74,10 +101,10 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Estado</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control form-control-sm" id="estatus" name="estatus" disabled>
+                                        <select class="form-control form-control-sm" id="estatus" name="estatus" >
                                             <option value="">Seleccione</option>
                                             @foreach($estados as $estado)
-                                                <option value="{{ $estado->Valor == true ? 1 : 0 }}" @if($empresa->Activo == $estado->Valor) selected='selected' @endif>{{ $estado->Nombre }}</option>
+                                                <option value="{{ $estado->Valor == true ? 1 : 0 }}" @if($evento->Activo == $estado->Valor) selected='selected' @endif>{{ $estado->Nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -89,7 +116,7 @@
                             <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="pills-logo-tab">
 
                                 <div class="text-center">
-                                    <img id="preview-emp-logo-show" src="{{ $empresa->Logo }}" class="rounded img-example preview-add" alt="">
+                                    <img id="preview-emp-logo-show" src="{{ $evento->Logo }}" class="rounded img-example preview-add" alt="">
                                 </div>
 
                             </div>
@@ -98,7 +125,8 @@
 
                         <div class="form-group row">
                             <div class="col-sm-4">
-                                <a href="{{ route('configuracion.empresa') }}"><button type="button" class="btn btn-sm btn-dark">Volver</button></a>
+
+                                <a href="{{ route('configuracion.evento', ['id' => $empresa->_id]) }}"><button type="button" class="btn btn-sm btn-dark">Volver</button></a>
                             </div>
                         </div>
 
@@ -107,7 +135,7 @@
                 @else
 
                     <div class="alert alert-danger mb-4" role="alert">
-                        <i class="fas fa-info-circle"></i>&nbsp;No existe empresa.
+                        <i class="fas fa-info-circle"></i>&nbsp;No existe evento.
                     </div>
 
                 @endif

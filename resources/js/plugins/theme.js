@@ -43,8 +43,6 @@ $(document).ready(function()
         $(this).parent().toggleClass('open');
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
-
     $('[data-close-widget]').click(function()
     {
         $widget = $(this).parents('.widget');

@@ -242,7 +242,6 @@
                             });
 
                         }else if(json.code === 500){
-                            $('#modal-edit-empresa').modal('hide');
                             sweetalert('Error al editar la empresa. Consulte al Administrador.', 'error', 'sweet');
                         }
                     },
@@ -251,7 +250,7 @@
                         $('button#update-empresa').find('i.fa').remove();
 
                         if(json.status === 422){
-                            var errors = json.responseJSON;
+                            let errors = json.responseJSON;
                             sweetalert(errors, 'error', 'sweet');
                         }
                     }

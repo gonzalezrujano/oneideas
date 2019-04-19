@@ -77,7 +77,7 @@
                 "processing": false,
                 "serverSide": true,
                 "ordering": false,
-                "paging": false,
+                "paging": true,
                 "deferRender": true,
                 "ajax": {
                     "url": "./ajax-usuario",

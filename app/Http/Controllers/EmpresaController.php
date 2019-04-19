@@ -213,7 +213,7 @@ class EmpresaController extends Controller
                 //creo un nombre temporal
                 $name = time().'.'.$type;
                 //ruta imagen temporal
-                $pathImgTemporal = public_path('img/'.$name);
+                $pathImgTemporal = public_path('images/'.$name);
                 //proceso la imagen a 200x200
                 $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
                 //obtengo la data de la imagen

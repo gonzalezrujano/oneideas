@@ -29,6 +29,11 @@ class VerifyCsrfToken extends Middleware
         '/ajax-usuario-delete',
         '/ajax-cliente',
         '/ajax-cliente-update',
-        '/ajax-cliente-active'
+        '/ajax-cliente-active',
+        '/ajax-evento',
+        '/ajax-evento-add',
+        '/ajax-evento-update',
+        '/ajax-evento-delete',
+        '/ajax-evento-active'
     ];
 }

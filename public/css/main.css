@@ -254,3 +254,7 @@
   border-color: #282c2e;
 }
 
+.bootstrap-datetimepicker-widget.dropdown-menu {
+  background-color: white !important;
+}
+
