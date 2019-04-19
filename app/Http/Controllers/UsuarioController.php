@@ -32,8 +32,10 @@ class UsuarioController extends Controller
     //metodo para llamar la vista de agregar
     public function viewAdd(){
 
+        $emp = Empresa::borrado(false)->activo(true)->get();
+
         $select['paises'] = Pais::borrado(false)->get();
-        $select['empresas'] = Empresa::borrado(false)->activo(true)->get();
+        $select['empresas'] = $emp;
         $select['tipodocumentos'] = TipoDocumento::borrado(false)->activo(true)->orderBy('TipoDocumento', 'ASC')->get();
         $select['roles'] = Rol::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
         $select['estados'] = Estado::borrado(false)->get();
@@ -81,6 +83,7 @@ class UsuarioController extends Controller
             $data['estados'] = Estado::borrado(false)->get();
             $data['empresas'] = Empresa::borrado(false)->activo(true)->get();
             $data['usuario'] = $registro;
+            $data['eventos'] = Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($registro->Empresa_id))->orderBy('Nombre', 'asc')->get();
 
         }
 

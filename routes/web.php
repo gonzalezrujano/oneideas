@@ -80,6 +80,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
 
         //ruta master
         Route::get('/ajax/equipos/{pais}', 'MasterController@ajaxEquiposByPais');
+        Route::get('/ajax/eventos/{empresa}', 'MasterController@ajaxEventosByEmpresa');
 
         //ruta monitor
         Route::get('/monitor', 'MonitorController@index')->name('configuracion.monitor');

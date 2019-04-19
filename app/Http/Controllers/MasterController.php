@@ -22,6 +22,15 @@ class MasterController extends Controller
         return json_encode($resultado);
     }
 
+    //metodo para mostrar los eventos por empresa
+    public function ajaxEventosByEmpresa($empresa){
+        //cargo los eventos
+        $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
+
+        //devulevo un json con la data
+        return json_encode($resultado);
+    }
+
     //metodo para mostrar los departamentos por una provincia determinada
     public function ajaxDepartamentos($provincia){
         //cargo los departamentos en base a la provincia

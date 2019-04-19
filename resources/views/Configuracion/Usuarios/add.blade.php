@@ -235,6 +235,37 @@
             });
 
 
+            $('#empresa').on('change', function(){
+
+                var emp = $(this).val();
+
+                if(emp){
+
+                    $.ajax({
+                        url: '../ajax/eventos/'+emp,
+                        type: "GET",
+                        dataType: "json",
+                        success:function(data){
+
+                            $('#evento').empty();
+
+                            var select = '<option value="">Seleccione</option>';
+
+                            $.each(data, function(key ,value){
+                                select +='<option value="'+value._id+'">'+value.Nombre+'</option>';
+                            });
+
+                            $("#evento").html(select);
+
+                        }
+                    });
+
+                }else{
+                    $('#evento').empty();
+                }
+
+            });
+
 
         });
 

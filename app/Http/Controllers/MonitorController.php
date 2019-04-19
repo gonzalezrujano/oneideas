@@ -95,8 +95,6 @@ class MonitorController extends Controller
         $Echo = 'sudo netstat -nlp | grep laravel-echo | grep tcp | awk \'NR==1{ print "{\"Servicio\":\"Laravel Echo\",\"Protocolo\":\"" $1 "\", \"Puerto\":\""$4"\", \"PID\":\""($7+"")"\", \"Tipo\":\"Socket\", \"Estado\":\"OK\", \"fecha\":\"';
         $Mqtt = 'sudo netstat -nlp | grep mosquitto | grep tcp | awk \'NR==1{ print "{\"Servicio\":\"MQTT\",\"Protocolo\":\"" $1 "\", \"Puerto\":\""$4"\", \"PID\":\""($7+"")"\", \"Tipo\":\"Socket\", \"Estado\":\"OK\", \"fecha\":\"';
 
-
-
         //Procesamos
         $exMongo = json_decode(shell_exec($Mongo . $date . $sdat));
         $exEcho  = json_decode(shell_exec($Echo . $date . $sdat));
