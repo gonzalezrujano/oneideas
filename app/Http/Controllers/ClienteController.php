@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\ValidateCliente;
 use App\Models\MongoDB\Cliente;
+use App\Models\MongoDB\Club;
 use App\Models\MongoDB\Color;
 use App\Models\MongoDB\Estado;
 use App\Models\MongoDB\Log;
@@ -34,6 +35,7 @@ class ClienteController extends Controller
             $data['existe'] = true;
             $data['paises'] = Pais::borrado(false)->get();
             $data['cliente'] = $registro;
+            $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
 
         }
 
@@ -53,6 +55,7 @@ class ClienteController extends Controller
             $data['existe'] = true;
             $data['paises'] = Pais::borrado(false)->get();
             $data['cliente'] = $registro;
+            $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
 
         }
 
@@ -119,7 +122,10 @@ class ClienteController extends Controller
                 'apellido'            => ($input['cliente-apellido']),
                 'correo'              => strtolower($input['cliente-correo']),
                 'telefono'            => ($input['cliente-telefono']),
-                'pais'                => $input['cliente-pais'] == null ? '' : new ObjectID($input['cliente-pais'])
+                'pais'                => $input['cliente-pais'] == null ? '' : new ObjectID($input['cliente-pais']),
+                'fn'                  => $input['cliente-fn'],
+                'sexo'                => $input['cliente-sexo'],
+                'equipo'              => $input['cliente-equipo'],
             ];
 
             //procedo a guardarlos en la bd
@@ -129,6 +135,9 @@ class ClienteController extends Controller
             $registro->Correo              = $data['correo'];
             $registro->Telefono            = $data['telefono'];
             $registro->Pais_id             = $data['pais'];
+            $registro->Sexo                = $data['sexo'];
+            $registro->Edad                = $data['fn'];
+            $registro->Equipo              = $data['equipo'];
 
             //verifico si fue exitoso el insert en la bd
             if($registro->update()){

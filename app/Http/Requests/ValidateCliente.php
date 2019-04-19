@@ -46,7 +46,9 @@ class ValidateCliente extends FormRequest
         $rules = [
             'cliente-nombre'               => ['required'],
             'cliente-apellido'             =>  $apellido,
-            'cliente-correo'               =>  $correo
+            'cliente-correo'               =>  $correo,
+            'cliente-sexo'                 => 'required',
+            'cliente-equipo'               => 'required'
         ];
 
         return $rules;
@@ -60,9 +62,11 @@ class ValidateCliente extends FormRequest
             'cliente-correo.required' => 'El correo es requerido',
             'cliente-correo.email' => 'El formato del correo es invalido',
             'cliente-correo.unique' => 'El correo ya esta registrado, intente otro',
+            'cliente-sexo.required' => 'El sexo del cliente es requerido',
             'cliente-telefono.required' => 'El teléfono es requerido',
             'cliente-pais.required' => 'El país es requerido',
             'cliente-estatus.required' => 'El estado es requerido',
+            'cliente-equipo.required' => 'El equipo de futbol es requerido'
         ];
     }
 

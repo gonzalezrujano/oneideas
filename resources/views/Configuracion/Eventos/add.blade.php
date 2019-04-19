@@ -154,7 +154,8 @@
 
 
             $('#fecha').datetimepicker({
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY',
+                minDate: new Date()
             });
 
             $('#hora').datetimepicker({

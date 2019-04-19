@@ -78,6 +78,14 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::post('/ajax-cliente-update', 'ClienteController@ajaxUpdate');
         Route::post('/ajax-cliente-active', 'ClienteController@ajaxActive');
 
+        //ruta master
+        Route::get('/ajax/equipos/{pais}', 'MasterController@ajaxEquiposByPais');
+
+        //ruta monitor
+        Route::get('/monitor', 'MonitorController@index')->name('configuracion.monitor');
+        Route::get('/ajax-monitor', 'MonitorController@ajaxMonitor');
+        Route::post('/ajax-monitor-action', 'MonitorController@ajaxMonitorAction');
+
     });
 
 

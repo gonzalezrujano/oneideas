@@ -52,6 +52,29 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Fecha de Nacimiento</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control form-control-sm" value="{{$cliente->Edad ? $cliente->Edad : '-' }}" id="cliente-fn" name="cliente-fn" placeholder="-">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Sexo</label>
+                                    <div class="col-sm-4">
+
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" value="m" id="customRadioInline1" name="cliente-sexo"  {{ ($cliente->Sexo=='m')? "checked" : "" }} class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadioInline1">Masculino</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio"  value="f" id="customRadioInline2" name="cliente-sexo"  {{ ($cliente->Sexo=='f')? "checked" : "" }} class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadioInline2">Femenino</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$cliente->Telefono == '' ? '-' : $cliente->Telefono }}" id="cliente-telefono" name="cliente-telefono" placeholder="-">
@@ -63,7 +86,18 @@
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="cliente-pais" name="cliente-pais" >
                                             @foreach($paises as $pais)
-                                                <option value="{{ $pais->_id }}">{{ $pais->Nombre }}</option>
+                                                <option value="{{ $pais->_id }}" @if((string)$cliente->Pais_id == $pais->_id) selected='selected' @endif>{{ $pais->Nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Equipo</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control form-control-sm" id="cliente-equipo" name="cliente-equipo" >
+                                            @foreach($equipos as $equipo)
+                                                <option value="{{ $equipo->id }}" @if($cliente->Equipo == $equipo->id) selected='selected' @endif>{{ $equipo->Nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -115,6 +149,10 @@
 
             var linkReturn = "{{ route('configuracion.cliente') }}";
 
+            $('#cliente-fn').datetimepicker({
+                format: 'DD/MM/YYYY'
+            });
+
             $("#update-cliente").on("click",function(){
 
                 let formData = new FormData();
@@ -123,9 +161,12 @@
                 formData.append("cliente-nombre", $('#form-edit-cliente input[name=cliente-nombre]').val());
                 formData.append("cliente-apellido", $('#form-edit-cliente input[name=cliente-apellido]').val());
                 formData.append("cliente-correo", $('#form-edit-cliente input[name=cliente-correo]').val());
+                formData.append("cliente-fn", $('#form-edit-cliente input[name=cliente-fn]').val());
+                formData.append("cliente-sexo", $('input[name=cliente-sexo]:checked', '#form-edit-cliente').val());
                 formData.append("cliente-telefono", $('#form-edit-cliente input[name=cliente-telefono]').val());
                 formData.append("cliente-cuenta", $('#form-edit-cliente input[name=cliente-cuenta]').val());
                 formData.append("cliente-pais", $('#form-edit-cliente select[name=cliente-pais]').val());
+                formData.append("cliente-equipo", $('#form-edit-cliente select[name=cliente-equipo]').val());
 
                 $.ajax({
                     type: 'POST',
@@ -175,6 +216,37 @@
                 });
             });
 
+
+            $('#cliente-pais').on('change', function(){
+
+                var pais = $(this).val();
+
+                if(pais){
+
+                    $.ajax({
+                        url: '../ajax/equipos/'+pais,
+                        type: "GET",
+                        dataType: "json",
+                        success:function(data){
+
+                            $('#cliente-equipo').empty();
+
+                            var select = '<option value="">Seleccione</option>';
+
+                            $.each(data, function(key ,value){
+                                select +='<option value="'+value.id+'">'+value.Nombre+'</option>';
+                            });
+
+                            $("#cliente-equipo").html(select);
+
+                        }
+                    });
+
+                }else{
+                    $('#cliente-equipo').empty();
+                }
+
+            });
 
 
         });

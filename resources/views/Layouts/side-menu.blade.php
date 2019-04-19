@@ -44,7 +44,7 @@
 
                 @if(Auth::user()->hasPermission('monitor', 'show'))
                     <li class="sidebar-nav-link">
-                        <a href="#">
+                        <a href="{{ route('configuracion.monitor') }}">
                             <i class="fas fa-desktop sidebar-nav-link-logo"></i> Monitor
                         </a>
                     </li>

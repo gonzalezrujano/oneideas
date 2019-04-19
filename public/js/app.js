@@ -46630,6 +46630,8 @@ __webpack_require__(/*! ./components/ResetPassword */ "./resources/js/components
 
 __webpack_require__(/*! ./components/ChangePassword */ "./resources/js/components/ChangePassword.js");
 
+__webpack_require__(/*! ./components/Monitor/Monitor */ "./resources/js/components/Monitor/Monitor.jsx");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -47110,6 +47112,320 @@ if (document.getElementById('login')) {
   var element = document.getElementById('login');
   var props = Object.assign({}, element.dataset);
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Login, props), element);
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/Monitor/Monitor.jsx":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/Monitor/Monitor.jsx ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Monitor; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var Monitor =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Monitor, _Component);
+
+  function Monitor(props) {
+    var _this;
+
+    _classCallCheck(this, Monitor);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Monitor).call(this, props));
+    _this.state = {
+      data: {
+        general: {},
+        interfaces: [],
+        services: {},
+        tasks: []
+      }
+    };
+    _this.getData = _this.getData.bind(_assertThisInitialized(_this));
+    _this.actionService = _this.actionService.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Monitor, [{
+    key: "getData",
+    value: function getData() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/ajax-monitor').then(function (res) {
+        var data = res.data.data;
+
+        _this2.setState({
+          data: {
+            general: data.general,
+            interfaces: data.interfaces,
+            services: data.services,
+            tasks: data.tasks
+          }
+        });
+
+        setTimeout(_this2.getData, 2000);
+      });
+    }
+  }, {
+    key: "actionService",
+    value: function actionService(service, action) {
+      var data = {
+        servicio: service,
+        accion: action
+      };
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-monitor-action', data).then(function (response) {
+        var code = response.data.code;
+        var datos = response.data.data.peticion;
+        var msj = response.data.msj;
+        var act = datos.accion;
+        var textAction = {
+          'start': 'iniciado',
+          'stop': 'detenido',
+          'restart': 'reiniciado'
+        };
+
+        if (code == 200) {
+          if (datos.status == true) {
+            sweetalert('Servicio ' + textAction[act] + ' exitosamente', 'success', 'sweet');
+          } else {
+            if (datos.service == 'Laravel Echo') {
+              sweetalert('Servicio ' + textAction[act] + ' exitosamente', 'success', 'sweet');
+            } else {
+              sweetalert('Proceso fallido', 'error', 'sweet');
+            }
+          }
+        } else if (code == 600) {
+          sweetalert(msj, 'error', 'sweet');
+        }
+      })["catch"](function (error) {
+        sweetalert('Error al procesar peticion. Consulte al administrador.', 'error', 'sweet');
+      });
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getData();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var general, hdd, memory, services, interfaces, tasks;
+
+      if (this.state.data.general.length) {
+        general = this.state.data.general[0];
+        hdd = general.hdd;
+        memory = [general.memory];
+      }
+
+      if (this.state.data.services.length) services = this.state.data.services;
+      if (this.state.data.interfaces.length) interfaces = [this.state.data.interfaces];
+      if (this.state.data.tasks.length) tasks = this.state.data.tasks;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-lg-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget widget-default"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "nav nav-pills mb-3",
+        id: "pills-tab",
+        role: "tablist"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "nav-item"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-link active",
+        id: "pills-servidor-tab",
+        "data-toggle": "pill",
+        href: "#pills-servidor",
+        role: "tab",
+        "aria-controls": "pills-servidor",
+        "aria-selected": "true"
+      }, "Servidor")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "nav-item"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-link",
+        id: "pills-servicios-tab",
+        "data-toggle": "pill",
+        href: "#pills-servicios",
+        role: "tab",
+        "aria-controls": "pills-servicios",
+        "aria-selected": "false"
+      }, "Servicios")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        className: "nav-item"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-link",
+        id: "pills-interfaces-tab",
+        "data-toggle": "pill",
+        href: "#pills-interfaces",
+        role: "tab",
+        "aria-controls": "pills-interfaces",
+        "aria-selected": "false"
+      }, "Interfaces"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        className: "line-gray"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-content",
+        id: "pills-tabContent"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade show active",
+        id: "pills-servidor",
+        role: "tabpanel",
+        "aria-labelledby": "pills-servidor-tab"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "mt-4 mb-3 "
+      }, " Disco Duro "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        className: "table table-dark-theme table-bordered table-sm table-hover"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", {
+        className: "bg-dark text-white text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Sistema Archivos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Tama\xF1o"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Usado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Disponible"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+        className: "text-center"
+      }, hdd ? hdd.map(function (item) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Filesystem), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Size), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Used), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Avail));
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        colSpan: "4"
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "mt-4 mb-3"
+      }, "Memoria Ram"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        className: "table table-dark-theme table-bordered table-sm table-hover"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", {
+        className: "bg-dark text-white text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Tama\xF1o Memoria"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Memoria Usada"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Memoria Libre"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+        className: "text-center"
+      }, memory ? memory.map(function (item) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Size), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Used), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Free));
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        colSpan: "3"
+      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade",
+        id: "pills-servicios",
+        role: "tabpanel",
+        "aria-labelledby": "pills-servicios-tab"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "mt-4 mb-3"
+      }, "Servicios"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        className: "table table-sm table-dark-theme table-bordered"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", {
+        className: "bg-dark text-white text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Tipo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Servicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Puerto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Estado "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "\xDAltima Actualizaci\xF3n"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Acciones "))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+        className: "text-center"
+      }, services ? services.map(function (item) {
+        var _this3 = this;
+
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Servicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Puerto), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.Estado == 'OK' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          style: {
+            color: '#449d44'
+          },
+          className: "fa fa-check fa-lg",
+          "aria-hidden": "true"
+        }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          style: {
+            color: '#d9534f'
+          },
+          className: "fa fa-times fa-lg",
+          "aria-hidden": "true"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item.fecha), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          onClick: function onClick() {
+            return _this3.actionService(item.Servicio, 'restart');
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa-lg fa-sync fas",
+          style: styles.cursor,
+          "aria-hidden": "true"
+        }))));
+      }, this) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        colSpan: "6"
+      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade",
+        id: "pills-interfaces",
+        role: "tabpanel",
+        "aria-labelledby": "pills-interfaces-tab"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        className: "table mt-5 table-sm table-dark-theme table-bordered table-hover"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", {
+        className: "bg-dark text-white text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "Interfaz"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+        scope: "col"
+      }, "IPV4"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+        className: "text-center"
+      }, interfaces ? interfaces.map(function (item, key) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item[key]["Interfaz"]), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, item[key]["IPV4"]));
+      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+        colSpan: "2"
+      })))))))));
+    }
+  }]);
+
+  return Monitor;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+var styles = {
+  cursor: {
+    cursor: 'pointer'
+  }
+};
+
+if (document.getElementById('component-monitor')) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Monitor, null), document.getElementById('component-monitor'));
 }
 
 /***/ }),

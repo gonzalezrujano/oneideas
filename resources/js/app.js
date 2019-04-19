@@ -18,4 +18,5 @@ require('./components/RecuperarPassword');
 require('./components/ResetPassword');
 require('./components/ChangePassword');
 
+require('./components/Monitor/Monitor');
 

@@ -51,6 +51,29 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Fecha de Nacimiento</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control form-control-sm" value="{{$cliente->Edad ? $cliente->Edad  : '-' }}" id="cliente-telefono" name="cliente-telefono" placeholder="-" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Sexo</label>
+                                    <div class="col-sm-4">
+
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" value="m" name="cliente-sexo" {{ ($cliente->Sexo=='m')? "checked" : "" }} class="custom-control-input" disabled>
+                                            <label class="custom-control-label" for="customRadioInline1">Masculino</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio"  value="f" name="cliente-sexo" {{ ($cliente->Sexo=='f')? "checked" : "" }} class="custom-control-input" disabled>
+                                            <label class="custom-control-label" for="customRadioInline2">Femenino</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$cliente->Telefono == '' ? '-' : $cliente->Telefono }}" id="cliente-telefono" name="cliente-telefono" placeholder="-" disabled>
@@ -62,7 +85,18 @@
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="cliente-pais" name="cliente-pais" disabled>
                                             @foreach($paises as $pais)
-                                                <option value="{{ $pais->_id }}">{{ $pais->Nombre }}</option>
+                                                <option value="{{ $pais->_id }}" @if((string)$cliente->Pais_id == $pais->_id) selected='selected' @endif>{{ $pais->Nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Equipo</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control form-control-sm" id="cliente-equipo" name="cliente-equipo" disabled>
+                                            @foreach($equipos as $equipo)
+                                                <option value="{{ $equipo->id }}" @if($cliente->Equipo == $equipo->id) selected='selected' @endif>{{ $equipo->Nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
