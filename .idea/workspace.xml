@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ccabe686-08c0-48bb-a0e9-5e9ee2222f20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/MongoDB/Biblioteca.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/add.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/show.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Multimedia/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ChangePasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ChangePasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ClienteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ClienteController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EventoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EventoController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ValidateEvento.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ValidateEvento.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/MongoDB/TipoComercio.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/MongoDB/EstadoCivil.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/ChangePassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/ChangePassword.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Clientes/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Clientes/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/add.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Eventos/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Layouts/side-menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Layouts/side-menu.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-    </list>
+    <list default="true" id="ccabe686-08c0-48bb-a0e9-5e9ee2222f20" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,20 +12,7 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClienteController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-276">
-              <caret line="141" column="37" selection-start-line="141" selection-start-column="37" selection-end-line="141" selection-end-column="37" />
-              <folding>
-                <element signature="e#39#77#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -125,9 +89,9 @@
         <option value="$PROJECT_DIR$/resources/views/Layouts/side-menu.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php" />
         <option value="$PROJECT_DIR$/app/Models/MongoDB/EstadoCivil.php" />
-        <option value="$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Clientes/edit.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ClienteController.php" />
+        <option value="$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php" />
       </list>
     </option>
   </component>
@@ -242,37 +206,6 @@
               <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="Configuracion" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="Configuracion" type="462c0819:PsiDirectoryNode" />
-              <item name="Clientes" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -333,16 +266,15 @@
       <workItem from="1555467766319" duration="43521000" />
       <workItem from="1555564993315" duration="57832000" />
       <workItem from="1555652651399" duration="2736000" />
-      <workItem from="1555659197843" duration="12561000" />
+      <workItem from="1555659197843" duration="12889000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="158531000" />
+    <option name="totallyTimeSpent" value="158859000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23130342" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -815,13 +747,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="22" column="29" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="22" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/edit.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1012">
@@ -829,10 +754,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="89" column="61" selection-start-line="89" selection-start-column="61" selection-end-line="89" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClienteController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-276">
-          <caret line="141" column="37" selection-start-line="141" selection-start-column="37" selection-end-line="141" selection-end-column="37" />
+        <state relative-caret-position="275">
+          <caret line="128" column="70" selection-start-line="128" selection-start-column="70" selection-end-line="128" selection-end-column="70" />
           <folding>
             <element signature="e#39#77#0#PHP" expanded="true" />
           </folding>

@@ -46777,6 +46777,7 @@ function (_Component) {
       self.setState({
         isLoading: true
       });
+      var urlLogout = this.state.url + '/logout';
       var passwordold = this.state.passwordold;
       var passwordnew = this.state.passwordnew;
       var passwordrepeat = this.state.passwordrepeat;
@@ -46816,6 +46817,26 @@ function (_Component) {
             confirmButtonColor: '#343a40',
             confirmButtonText: 'Ok',
             target: document.getElementById('cp')
+          });
+        } else if (r.code === 300) {
+          self.setState({
+            passwordnew: '',
+            passwordold: '',
+            passwordrepeat: '',
+            changePassword: false,
+            isLoading: false
+          });
+          sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
+            title: '<i class="fa fa-check-circle"></i>',
+            text: r.msj,
+            showCancelButton: false,
+            confirmButtonColor: '#343a40',
+            confirmButtonText: 'Ok',
+            target: document.getElementById('cp')
+          }).then(function (result) {
+            if (result.value) {
+              window.location.href = urlLogout;
+            }
           });
         }
       })["catch"](function (error) {
