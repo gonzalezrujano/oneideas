@@ -34,6 +34,10 @@ class VerifyCsrfToken extends Middleware
         '/ajax-evento-add',
         '/ajax-evento-update',
         '/ajax-evento-delete',
-        '/ajax-evento-active'
+        '/ajax-evento-active',
+        '/ajax-biblioteca',
+        '/ajax-biblioteca-files',
+        '/ajax-biblioteca-delete-files',
+        '/ajax-biblioteca-add-files',
     ];
 }

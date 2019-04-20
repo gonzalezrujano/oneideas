@@ -87,6 +87,22 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Ubicación</label>
+                                    <div class="col-sm-4">
+
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" value="g" id="customRadioInline1" name="ubicacion" class="custom-control-input" {{ ($evento->Ubicacion=='GPS')? "checked" : "" }}  disabled>
+                                            <label class="custom-control-label" for="customRadioInline1">GPS</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio"  value="m" id="customRadioInline2" name="ubicacion" class="custom-control-input" {{ ($evento->Ubicacion=='MANUAL')? "checked" : "" }} disabled>
+                                            <label class="custom-control-label" for="customRadioInline2">Manual</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">App</label>
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="app" name="app" >

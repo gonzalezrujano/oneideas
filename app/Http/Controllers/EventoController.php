@@ -164,6 +164,13 @@ class EventoController extends Controller
             //elimino imagen temporal
             File::delete($pathImgTemporal);
 
+            $ubi = $input['ubicacion'];
+            $ubicacion = 'MANUAL';
+
+            if($ubi == 'g'){
+                $ubicacion = 'GPS';
+            }
+
 
             //capturo los datos y los acomodo en un arreglo
             $data = [
@@ -176,6 +183,7 @@ class EventoController extends Controller
                 'licencias'        => $input['licencias'],
                 'latitud'          => $input['latitud'],
                 'longitud'         => $input['longitud'],
+                'ubicacion'        => $ubicacion,
                 'logo'             => $base64,
                 'idevento'         => $this->generateRandomIDEvento(),
                 'borrado'          => false
@@ -193,6 +201,7 @@ class EventoController extends Controller
             $registro->Licencias                 = $data['licencias'];
             $registro->Latitud                   = $data['latitud'];
             $registro->Longitud                  = $data['longitud'];
+            $registro->Ubicacion                 = $data['ubicacion'];
             $registro->Logo                      = $data['logo'];
             $registro->IDEvento                  = $data['idevento'];
             $registro->Borrado                   = $data['borrado'];
@@ -249,6 +258,13 @@ class EventoController extends Controller
 
             }
 
+            $ubi = $input['ubicacion'];
+            $ubicacion = 'MANUAL';
+
+            if($ubi == 'g'){
+                $ubicacion = 'GPS';
+            }
+
             $data = [
                 'id'               => $input['id-evento'],
                 'nombre'           => $input['nombre'],
@@ -258,6 +274,7 @@ class EventoController extends Controller
                 'licencias'        => $input['licencias'],
                 'latitud'          => $input['latitud'],
                 'longitud'         => $input['longitud'],
+                'ubicacion'        => $ubicacion,
                 'logo'             => $base64
             ];
 
@@ -270,6 +287,7 @@ class EventoController extends Controller
             $registro->Licencias                 = $data['licencias'];
             $registro->Latitud                   = $data['latitud'];
             $registro->Longitud                  = $data['longitud'];
+            $registro->Ubicacion                 = $data['ubicacion'];
             $registro->Logo                      = $data['logo'];
 
             //verifico si fue exitoso el insert en la bd

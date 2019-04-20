@@ -18,6 +18,9 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="pills-datos-tab" data-toggle="pill" href="#pills-datos" role="tab" aria-controls="pills-datos" aria-selected="true">Datos</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-logo-tab" data-toggle="pill" href="#pills-logo" role="tab" aria-controls="pills-logo" aria-selected="false">Foto</a>
+                        </li>
 
                     </ul>
 
@@ -82,6 +85,18 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Estado Civil</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control form-control-sm" id="cliente-civil" name="cliente-civil">
+                                            <option value="">Seleccione</option>
+                                            @foreach($civiles as $ci)
+                                                <option value="{{ $ci->_id }}" @if((string)$cliente->EstadoCivil_id == $ci->_id) selected='selected' @endif>{{ $ci->Nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">País</label>
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="cliente-pais" name="cliente-pais" >
@@ -109,6 +124,27 @@
                                         <input type="text" class="form-control form-control-sm" value="{{$cliente->TipoCuenta}}" id="cliente-cuenta" name="cliente-cuenta" placeholder="Ingrese el tipo de cuenta" disabled>
                                     </div>
                                 </div>
+
+
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-logo" role="tabpanel" aria-labelledby="pills-logo-tab">
+
+
+                                @if($cliente->Foto)
+
+                                    <div class="text-center">
+                                        <img id="preview-emp-logo-show" src="{{ $cliente->Foto }}" class="rounded img-example preview-add" alt="">
+                                    </div>
+
+                                @else
+
+                                    <div class="alert alert-primary mb-4" role="alert">
+                                        <i class="fas fa-info-circle"></i>&nbsp;
+                                        El cliente no tiene foto agregada
+                                    </div>
+
+                                @endif
 
 
                             </div>
@@ -164,6 +200,7 @@
                 formData.append("cliente-fn", $('#form-edit-cliente input[name=cliente-fn]').val());
                 formData.append("cliente-sexo", $('input[name=cliente-sexo]:checked', '#form-edit-cliente').val());
                 formData.append("cliente-telefono", $('#form-edit-cliente input[name=cliente-telefono]').val());
+                formData.append("cliente-civil", $('#form-edit-cliente select[name=cliente-civil]').val());
                 formData.append("cliente-cuenta", $('#form-edit-cliente input[name=cliente-cuenta]').val());
                 formData.append("cliente-pais", $('#form-edit-cliente select[name=cliente-pais]').val());
                 formData.append("cliente-equipo", $('#form-edit-cliente select[name=cliente-equipo]').val());

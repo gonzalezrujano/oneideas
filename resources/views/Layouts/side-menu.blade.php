@@ -9,6 +9,14 @@
             </a>
         </li>
 
+        @if(Auth::user()->hasPermission('multimedia', 'show'))
+            <li class="sidebar-nav-link">
+                <a href="{{ route('multimedia') }}">
+                    <i class="fas fa-compact-disc sidebar-nav-link-logo"></i> Multimedia
+                </a>
+            </li>
+        @endif
+
         <li class="sidebar-nav-link sidebar-nav-link-group">
             <a data-subnav-toggle>
                 <i class="fas fa-tools sidebar-nav-link-logo"></i> Configuración
@@ -20,7 +28,7 @@
 
                 @if(Auth::user()->hasPermission('biblioteca', 'show'))
                     <li class="sidebar-nav-link">
-                        <a href="#">
+                        <a href="{{ route('configuracion.biblioteca') }}">
                             <i class="fas fa-book sidebar-nav-link-logo"></i> Biblioteca
                         </a>
                     </li>

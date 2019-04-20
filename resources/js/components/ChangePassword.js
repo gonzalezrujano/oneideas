@@ -36,6 +36,8 @@ export default class ChangePassword extends Component {
             isLoading: true
         });
 
+        let urlLogout = this.state.url+'/logout';
+
         let passwordold    = this.state.passwordold;
         let passwordnew    = this.state.passwordnew;
         let passwordrepeat = this.state.passwordrepeat;
@@ -85,6 +87,32 @@ export default class ChangePassword extends Component {
                         target: document.getElementById('cp')
 
                     });
+
+                }else if(r.code === 300){
+
+                    self.setState({
+                        passwordnew: '',
+                        passwordold: '',
+                        passwordrepeat: '',
+                        changePassword: false,
+                        isLoading: false
+                    });
+
+                    swal.fire({
+                        title: '<i class="fa fa-check-circle"></i>',
+                        text: r.msj,
+                        showCancelButton: false,
+                        confirmButtonColor: '#343a40',
+                        confirmButtonText: 'Ok',
+                        target: document.getElementById('cp')
+                    }).then((result) => {
+                        if (result.value) {
+
+                            window.location.href = urlLogout;
+
+                        }
+                    });
+
 
                 }
 

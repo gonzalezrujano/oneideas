@@ -35,6 +35,8 @@ class ChangePasswordController extends Controller
         //verifico que conicida con el ingresado, sino mando un error
         if(Hash::check($oldPassword, $user->Password)){
 
+            $firstChangePass = $user->CambioPassword;
+
             //guardo el nuevo password en la bd
             $user->Password = Hash::make($newPassword);
             //cambio la bandera de cambio de contraseña a false
@@ -43,7 +45,11 @@ class ChangePasswordController extends Controller
             //verifico que fue guardado
             if($user->save()){
 
-                return response()->json(['code' => 200, 'msj' => 'Contraseña cambiada exitosamente' ]);
+                if($firstChangePass){
+                    return response()->json(['code' => 300, 'msj' => 'Contraseña cambiada exitosamente']);
+                }else{
+                    return response()->json(['code' => 200, 'msj' => 'Contraseña cambiada exitosamente']);
+                }
 
             }else{
 

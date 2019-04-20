@@ -87,6 +87,20 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/ajax-monitor', 'MonitorController@ajaxMonitor');
         Route::post('/ajax-monitor-action', 'MonitorController@ajaxMonitorAction');
 
+        //rutas de biblioteca
+        Route::get('/biblioteca', 'BibliotecaController@index')->name('configuracion.biblioteca');
+        Route::post('/ajax-biblioteca', 'BibliotecaController@ajaxDatatables');
+        Route::post('/ajax-biblioteca-files', 'BibliotecaController@ajaxDatatablesFiles');
+        Route::get('/biblioteca-show/{id}/', 'BibliotecaController@viewShow')->name('biblioteca-show-files');
+        Route::get('/biblioteca-add/{id}/', 'BibliotecaController@viewAdd')->name('biblioteca-add');
+        Route::post('/ajax-biblioteca-add-files', 'BibliotecaController@ajaxAdd');
+        Route::post('/ajax-biblioteca-delete-files', 'BibliotecaController@ajaxDelete');
+
+
+        //rutas de multimedia
+        Route::get('/multimedia', 'MultimediaController@index')->name('multimedia');
+
+
     });
 
 

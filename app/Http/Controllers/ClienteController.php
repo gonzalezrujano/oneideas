@@ -6,6 +6,7 @@ use App\Models\MongoDB\Cliente;
 use App\Models\MongoDB\Club;
 use App\Models\MongoDB\Color;
 use App\Models\MongoDB\Estado;
+use App\Models\MongoDB\EstadoCivil;
 use App\Models\MongoDB\Log;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Pais;
@@ -34,6 +35,7 @@ class ClienteController extends Controller
 
             $data['existe'] = true;
             $data['paises'] = Pais::borrado(false)->get();
+            $data['civiles'] = EstadoCivil::borrado(false)->orderBy('Nombre', 'asc')->get();
             $data['cliente'] = $registro;
             $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
 
@@ -54,6 +56,7 @@ class ClienteController extends Controller
 
             $data['existe'] = true;
             $data['paises'] = Pais::borrado(false)->get();
+            $data['civiles'] = EstadoCivil::borrado(false)->orderBy('Nombre', 'asc')->get();
             $data['cliente'] = $registro;
             $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
 
@@ -123,6 +126,7 @@ class ClienteController extends Controller
                 'correo'              => strtolower($input['cliente-correo']),
                 'telefono'            => ($input['cliente-telefono']),
                 'pais'                => $input['cliente-pais'] == null ? '' : new ObjectID($input['cliente-pais']),
+                'civil'               => $input['cliente-civil'] == '' ? '' : new ObjectID($input['cliente-civil']),
                 'fn'                  => $input['cliente-fn'],
                 'sexo'                => $input['cliente-sexo'],
                 'equipo'              => $input['cliente-equipo'],
@@ -135,6 +139,7 @@ class ClienteController extends Controller
             $registro->Correo              = $data['correo'];
             $registro->Telefono            = $data['telefono'];
             $registro->Pais_id             = $data['pais'];
+            $registro->EstadoCivil_id      = $data['civil'];
             $registro->Sexo                = $data['sexo'];
             $registro->FechaNacimiento     = $data['fn'];
             $registro->Equipo              = $data['equipo'];

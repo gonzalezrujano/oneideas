@@ -78,6 +78,22 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Ubicación</label>
+                                    <div class="col-sm-4">
+
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" value="g" id="customRadioInline1" name="ubicacion" class="custom-control-input" {{ ($evento->Ubicacion=='GPS')? "checked" : "" }} >
+                                            <label class="custom-control-label" for="customRadioInline1">GPS</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio"  value="m" id="customRadioInline2" name="ubicacion" class="custom-control-input" {{ ($evento->Ubicacion=='MANUAL')? "checked" : "" }} >
+                                            <label class="custom-control-label" for="customRadioInline2">Manual</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Estado</label>
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="estatus" name="estatus" >
@@ -210,6 +226,8 @@
 
                 let formData = new FormData();
 
+                let ubicacion = $('input[name=ubicacion]:checked', '#form-add-evento').val();
+
                 formData.append("id-emp", $('#id-emp').val());
                 formData.append("id-evento", $('#id-evento').val());
                 formData.append("nombre", $('#form-add-evento input[name=nombre]').val());
@@ -218,6 +236,7 @@
                 formData.append("licencias", $('#form-add-evento input[name=licencias]').val());
                 formData.append("latitud", $('#form-add-evento input[name=latitud]').val());
                 formData.append("longitud", $('#form-add-evento input[name=longitud]').val());
+                formData.append("ubicacion",  ubicacion === undefined ? '' : ubicacion);
                 formData.append("estatus", $('#form-add-evento select[name=estatus]').val());
                 formData.append("logo", $('#form-add-evento input[name=logo]')[0].files[0] );
                 formData.append("x", $('#add-x').val());
