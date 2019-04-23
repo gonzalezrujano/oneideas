@@ -34,18 +34,19 @@
                     </li>
                 @endif
 
-                @if(Auth::user()->hasPermission('cliente', 'show'))
-                    <li class="sidebar-nav-link">
-                        <a href="{{ route('configuracion.cliente') }}">
-                            <i class="fas fa-user-tie sidebar-nav-link-logo"></i> Clientes
-                        </a>
-                    </li>
-                @endif
 
                 @if(Auth::user()->hasPermission('empresa', 'show'))
                     <li class="sidebar-nav-link">
                         <a href="{{ route('configuracion.empresa') }}">
                             <i class="fas fa-industry sidebar-nav-link-logo"></i> Empresas
+                        </a>
+                    </li>
+                @endif
+
+                @if(Auth::user()->hasPermission('cliente', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('configuracion.cliente') }}">
+                            <i class="fas fa-user-tie sidebar-nav-link-logo"></i> Invitados
                         </a>
                     </li>
                 @endif

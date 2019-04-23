@@ -1,7 +1,7 @@
 @extends('Layouts.template-inside')
 
 @section('heading')
-    <h1 class="page-header-heading"><i class="fas fa-user-tie page-header-heading-icon"></i>Editar Cliente</h1>
+    <h1 class="page-header-heading"><i class="fas fa-user-tie page-header-heading-icon"></i>Editar Invitado</h1>
 @endsection
 
 @section('content')
