@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 //controlador encargado de la biblioteca
 
+use App\Http\Requests\ValidateArchivo;
 use App\Models\MongoDB\Biblioteca;
 use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\Estado;
 use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\Sucursal;
-use Auth, DataTables;
+use Auth, DataTables, File, Storage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
 
@@ -119,6 +121,8 @@ class BibliotecaController extends Controller
 
             foreach ($ev as $e) {
 
+                $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($e->_id))->get();
+
                 //armo la data que se muestra en la tabla de inicio de la pagina de eventos
                 $eventos[] = [
                     '_id'       => $e->_id,
@@ -127,7 +131,7 @@ class BibliotecaController extends Controller
                     'IDEvento'  => $e->IDEvento,
                     'Fecha'     => $e->Fecha. ' '.$e->Hora,
                     'App'       => $e->App,
-                    'Archivos'  => 0
+                    'Archivos'  => count($files)
                 ];
             }
 
@@ -155,8 +159,8 @@ class BibliotecaController extends Controller
                 //armo la data que se muestra en la tabla
                 $archivos[] = [
                     '_id'       => $f->_id,
-                    'Nombre'    => $f->Nombre,
-                    'Tipo'      => $f->Tipo,
+                    'Nombre'    => $f->NombreCompleto,
+                    //'Tipo'      => $f->Tipo,
                     'Size'      => $f->Size,
                     'Activo'    => $f->Activo
                 ];
@@ -168,4 +172,115 @@ class BibliotecaController extends Controller
     }
 
 
+    //metodo para agregar archivo
+    public function ajaxAdd(ValidateArchivo $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            $input = $request->all();
+
+            $evento  = (string)$input['id-evento'];
+            $empresa = (string)Evento::find($evento)->Empresa_id;
+            $pathSave = $empresa.'/'.$evento.'/';
+
+            $archivo = $input['archivo'];
+
+            $fileData = [
+                'extension' => $archivo->getClientOriginalExtension(),
+                'size'      => humanFileSize($archivo->getSize()),
+                'mime'      => $archivo->getMimeType()
+            ];
+
+            //dd($fileData);
+            //creo el nombre del archivo
+            $name = $input['name'].'.'.$fileData['extension'];
+
+
+            Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
+
+
+            /*$tipo = $input['tipo'];
+            $type = '';
+
+            if($tipo == 'i'){
+                $type = 'IMAGEN';
+            }else if($tipo == 'v'){
+                $type = 'VIDEO';
+            }else if($tipo == 'a'){
+                $type = 'AUDIO';
+            }*/
+
+
+            //capturo los datos y los acomodo en un arreglo
+            $data = [
+                'id-evento'        => new ObjectID($input['id-evento']),
+                'nombre'           => $input['name'],
+                'nombrec'          => $name,
+                //'tipo'             => $type,
+                'path'             => $pathSave.$name,
+                'size'             => $fileData['size'],
+                'activo'           => true,
+                'borrado'          => false
+            ];
+
+
+            //procedo a guardarlos en la bd
+            $registro = new Biblioteca;
+            $registro->Evento_id                 = $data['id-evento'];
+            //$registro->Tipo                      = $data['tipo'];
+            $registro->Nombre                    = $data['nombre'];
+            $registro->NombreCompleto            = $data['nombrec'];
+            $registro->Path                      = $data['path'];
+            $registro->Size                      = $data['size'];
+            $registro->Fecha                     = Carbon::now();
+            $registro->Activo                    = $data['activo'];
+            $registro->Borrado                   = $data['borrado'];
+
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->save()){
+
+                return response()->json(['code' => 200]);
+
+            }else{
+                return response()->json(['code' => 500]);
+            }
+        }
+
+    }
+
+    //metodo para borrar
+    public function ajaxDelete(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+            $id = $input['id'];
+
+            //valido que venga el id sino mando un error
+            if($id){
+
+                //ubico el id en la bd
+                $registro = Biblioteca::find($id);
+
+                //valido que de verdad sea borrado en caso de que no arrojo un error
+                if($registro->delete()){
+
+                    Storage::disk('public_oneshow')->delete($registro->Path);
+
+                    return json_encode(['code' => 200]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
 }

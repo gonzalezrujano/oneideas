@@ -28,22 +28,29 @@
 
                             <input type="hidden" id="id-evento" value="{{ $evento }}">
 
-                            <div class="form-group row">
+                            <!--<div class="form-group row">
                                 <label class="col-sm-2 col-form-label col-form-label-sm">Tipo de Archivo</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-5">
                                     <select class="form-control form-control-sm" id="tipo" name="tipo" >
                                         <option value="">Seleccione</option>
                                         <option value="i" >Imagén</option>
-                                        <option value="m" >Audio</option>
+                                        <option value="a" >Audio</option>
                                         <option value="v" >Video</option>
                                     </select>
+                                </div>
+                            </div>-->
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Archivo</label>
+                                <div class="col-sm-5">
+                                    <input type="file" class="form-control-file" id="archivo" name="archivo" >
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Archivo</label>
-                                <div class="col-sm-4">
-                                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Nombre del Archivo</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre del archivo (Max. 10 caracteres sin espacio)">
                                 </div>
                             </div>
 
@@ -75,6 +82,10 @@
     <script type="text/javascript">
 
         $(function(){
+
+            var linkReturn = "{{ route('biblioteca-show-files', ['evento' => $evento] ) }}";
+
+            $('#name').inputmask({"mask": "&&&&&&&&&&", greedy: false, "placeholder": ""});
 
 
             $('#div-add-emp-img').hide();
@@ -118,48 +129,37 @@
 
             $("#save-file").on("click",function(){
 
-                sweetalert('Accion en construccion.', 'error', 'sweet');
-
-                /*
                 let formData = new FormData();
 
-                let ubicacion = $('input[name=ubicacion]:checked', '#form-add-evento').val();
+                formData.append("id-evento", $('#id-evento').val());
+                //formData.append("tipo", $('#form-add select[name=tipo]').val());
+                formData.append("name", $('#form-add input[name=name]').val());
+                formData.append("archivo", $('#form-add input[name=archivo]')[0].files[0] === undefined ? '' : $('#form-add input[name=archivo]')[0].files[0] );
 
-                formData.append("id-emp", $('#id-emp').val());
-                formData.append("nombre", $('#form-add-evento input[name=nombre]').val());
-                formData.append("fecha", $('#form-add-evento input[name=fecha]').val());
-                formData.append("hora", $('#form-add-evento input[name=hora]').val());
-                formData.append("licencias", $('#form-add-evento input[name=licencias]').val());
-                formData.append("latitud", $('#form-add-evento input[name=latitud]').val());
-                formData.append("longitud", $('#form-add-evento input[name=longitud]').val());
-                formData.append("ubicacion",  ubicacion === undefined ? '' : ubicacion);
-                formData.append("app", $('#form-add-evento select[name=app]').val());
-                formData.append("estatus", $('#form-add-evento select[name=estatus]').val());
-                formData.append("logo", $('#form-add-evento input[name=logo]')[0].files[0] === undefined ? '' : $('#form-add-evento input[name=logo]')[0].files[0] );
-                formData.append("x", $('#add-x').val());
+                /*formData.append("x", $('#add-x').val());
                 formData.append("y", $('#add-y').val());
                 formData.append("w", $('#add-w').val());
-                formData.append("h", $('#add-h').val());
+                formData.append("h", $('#add-h').val());*/
 
                 $.ajax({
                     type: 'POST',
-                    url: '../ajax-evento-add',
+                    url: '../ajax-biblioteca-add-files',
                     data: formData,
                     //dataType: 'json',
                     contentType: false,
                     cache: false,
                     processData:false,
                     beforeSend: function(){
-                        $('button#save-evento').prepend('<i class="fa fa-spinner fa-spin"></i> ');
+                        $('button#save-file').prepend('<i class="fa fa-spinner fa-spin"></i> ');
                     },
                     success: function(json){
 
-                        $('button#save-evento').find('i.fa').remove();
+                        $('button#save-file').find('i.fa').remove();
 
                         if(json.code === 200) {
 
                             Swal.fire({
-                                text: "Evento agregado exitosamente",
+                                text: "Archivo agregado exitosamente",
                                 type: "success",
                                 showCancelButton: false,
                                 confirmButtonColor: "#343a40",
@@ -174,12 +174,12 @@
                             });
 
                         }else if(json.code === 500){
-                            sweetalert('Error al agregar evento. Consulte al Administrador.', 'error', 'sweet');
+                            sweetalert('Error al agregar archivo. Consulte al Administrador.', 'error', 'sweet');
                         }
                     },
                     error: function(json){
 
-                        $('button#save-evento').find('i.fa').remove();
+                        $('button#save-file').find('i.fa').remove();
 
                         if(json.status === 422){
                             let errors = json.responseJSON;
@@ -188,7 +188,7 @@
                     }
                 });
 
-                 */
+
             });
 
 

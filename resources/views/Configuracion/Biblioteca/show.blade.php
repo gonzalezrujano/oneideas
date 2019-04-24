@@ -20,7 +20,7 @@
                         <thead>
                         <tr>
                             <th>NOMBRE</th>
-                            <th>TIPO</th>
+                            <!--<th>TIPO</th>-->
                             <th>TAMAÑO</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
@@ -94,7 +94,7 @@
                 },
                 "columns":[
                     {"width": "14%", data: 'Nombre', "searchable": true, "bSortable": false},
-                    {"width": "10%", data: 'Tipo', "searchable": true, "bSortable": false},
+                    //{"width": "10%", data: 'Tipo', "searchable": true, "bSortable": false},
                     {"width": "10%", data: 'Size', "searchable": true, "bSortable": false},
                     {
                         "width": "9%",
