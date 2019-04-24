@@ -103,11 +103,11 @@ class BibliotecaController extends Controller
 
         }else if($rol == 'EMPRESA'){
 
-            $eve = Evento::borrado(false)->where('Empresa_id', new ObjectId(Auth::user()->Empresa_id) )->get();
+            $eve = Evento::borrado(false)->where('Empresa_id', new ObjectId(Auth::user()->Empresa_id) );
 
         }else if($rol == 'EVENTO'){
 
-            $eve = Evento::borrado(false)->where('_id', Auth::user()->Evento_id )->get();
+            $eve = Evento::borrado(false)->where('_id', Auth::user()->Evento_id );
 
         }
 

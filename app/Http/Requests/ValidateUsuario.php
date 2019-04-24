@@ -52,6 +52,14 @@ class ValidateUsuario extends FormRequest
             $documento = ['required'];
         }
 
+        $evento = 'nullable';
+
+        if($this->input('rol') == '5cb6a35b5602db4c9374c68b'){
+            $evento = 'required';
+        }else{
+            $evento = 'nullable';
+        }
+
         $rules = [
             'tipo-documento'       => 'required',
             'documento'            => $documento,
@@ -62,6 +70,7 @@ class ValidateUsuario extends FormRequest
             'pais'                 => 'required',
             'rol'                  => 'required',
             'empresa'              => 'required',
+            'evento'               => $evento,
             'estatus'              => 'required'
         ];
 
@@ -82,6 +91,7 @@ class ValidateUsuario extends FormRequest
             'pais.required' => 'El país es requerido',
             'rol.required' => 'El rol es requerido',
             'empresa.required' => 'La empresa es requerida',
+            'evento.required' => 'El evento es requerido',
             'estatus.required' => 'El estado es requerido',
         ];
     }

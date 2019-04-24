@@ -60,7 +60,7 @@
                                 window.location.href = linkAdd;
 
                             }else{
-                                sweetalert('Accion prohibida', 'error');
+                                sweetalert('Accion prohibida', 'error', 'sweet');
                             }
 
 
