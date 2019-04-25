@@ -24,4 +24,9 @@ class Evento extends Eloquent
         return $query->where('Activo', $flag);
     }
 
+    //scope para buscar por App
+    public function scopeApp($query, $flag) {
+        return $query->where('App', $flag);
+    }
+
 }

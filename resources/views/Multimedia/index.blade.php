@@ -6,16 +6,6 @@
 
 @section('content')
 
-    <div class="col-lg-12">
-
-        <div class="widget widget-default">
-
-            <div class="widget-body">
-
-
-            </div>
-        </div>
-
-    </div>
+    <div id="multimedia" data-url="{{ url('/') }}" data-eventos="{{ json_encode($eventos) }}"></div>
 
 @endsection

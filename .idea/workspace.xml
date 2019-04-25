@@ -2,13 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ccabe686-08c0-48bb-a0e9-5e9ee2222f20" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/js/components/Multimedia/EmptyMultimedia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/js/components/Multimedia/Multimedia.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ValidateUsuario.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ValidateUsuario.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/OneShow/5cb841bba1dc000bd11b6ec4/5cbab558a1dc0051ea53bbf2/GGGG.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/OneShow/5cb841bba1dc000bd11b6ec4/5cbab558a1dc0051ea53bbf2/HHHH.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/OneShow/5cb841bba1dc000bd11b6ec4/5cbab558a1dc0051ea53bbf2/S.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/MongoDB/Evento.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/MongoDB/Evento.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/sass/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/main.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/Multimedia/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Multimedia/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,22 +28,52 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="105" column="103" selection-start-line="105" selection-start-column="103" selection-end-line="105" selection-end-column="103" />
-              <folding>
-                <element signature="e#82#120#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="579">
+              <caret line="101" column="41" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/Multimedia/Multimedia.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
-              <caret line="62" column="78" selection-start-line="62" selection-start-column="78" selection-end-line="62" selection-end-column="78" />
+            <state relative-caret-position="399">
+              <caret line="267" column="53" selection-start-line="267" selection-start-column="53" selection-end-line="267" selection-end-column="53" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="318">
+              <caret line="45" column="66" selection-start-line="45" selection-start-column="66" selection-end-line="45" selection-end-column="66" />
+              <folding>
+                <element signature="e#82#116#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Models/MongoDB/Biblioteca.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/index.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="15" column="80" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="80" />
               <folding>
                 <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
                 <element signature="e#138#144#0" expanded="true" />
@@ -48,74 +84,19 @@
                 <element signature="e#149#155#0" expanded="true" />
                 <element signature="e#155#161#0" expanded="true" />
                 <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-                <element signature="e#165#171#0" expanded="true" />
-                <element signature="e#171#177#0" expanded="true" />
-                <element signature="e#177#183#0" expanded="true" />
-                <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-                <element signature="e#151#157#0" expanded="true" />
-                <element signature="e#157#163#0" expanded="true" />
-                <element signature="e#163#169#0" expanded="true" />
+                <element signature="e#173#179#0" expanded="true" />
+                <element signature="e#179#185#0" expanded="true" />
+                <element signature="e#185#191#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateUsuario.php">
+        <entry file="file://$PROJECT_DIR$/resources/sass/main.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="513">
-              <caret line="83" column="59" selection-start-line="83" selection-start-column="59" selection-end-line="83" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UsuarioController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1927">
-              <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
-              <folding>
-                <element signature="e#39#77#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/show.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1824">
-              <caret line="96" column="22" selection-start-line="96" selection-start-column="22" selection-end-line="96" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateArchivo.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
-              <folding>
-                <element signature="e#37#80#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/add.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2546">
-              <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/web.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1501">
-              <caret line="88" selection-start-line="88" selection-end-line="88" />
+            <state relative-caret-position="778">
+              <caret line="286" column="23" selection-start-line="286" selection-start-column="23" selection-end-line="286" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -141,6 +122,7 @@
       <find>form-add-empresa</find>
       <find>suc-</find>
       <find>foto</find>
+      <find>table</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -149,22 +131,16 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/Configuracion/Empresas/add.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/Configuracion/Empresas/show.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/welcome.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/MongoDB/Evento.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Usuarios/show.blade.php" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Usuarios/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/EmpresaController.php" />
         <option value="$PROJECT_DIR$/resources/js/plugins/theme.js" />
         <option value="$PROJECT_DIR$/webpack.mix.js" />
-        <option value="$PROJECT_DIR$/resources/sass/main.scss" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Empresas/edit.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Eventos/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/MongoDB/Club.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/ValidateCliente.php" />
-        <option value="$PROJECT_DIR$/resources/js/app.js" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Monitor/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/js/components/Monitor/Monitor.jsx" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/MonitorController.php" />
@@ -179,8 +155,6 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/EventoController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ChangePasswordController.php" />
         <option value="$PROJECT_DIR$/resources/js/components/ChangePassword.js" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php" />
-        <option value="$PROJECT_DIR$/resources/views/Multimedia/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Layouts/header.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" />
@@ -191,7 +165,6 @@
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Clientes/show.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Clientes/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/ValidateQuestionEvent.php" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/config/filesystems.php" />
         <option value="$PROJECT_DIR$/app/Models/MongoDB/Biblioteca.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/add.blade.php" />
@@ -200,6 +173,15 @@
         <option value="$PROJECT_DIR$/app/Http/Requests/ValidateUsuario.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php" />
         <option value="$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Multimedia/Index.js" />
+        <option value="$PROJECT_DIR$/app/Models/MongoDB/Evento.php" />
+        <option value="$PROJECT_DIR$/resources/views/Multimedia/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/js/app.js" />
+        <option value="$PROJECT_DIR$/resources/sass/main.scss" />
+        <option value="$PROJECT_DIR$/resources/js/components/Multimedia/EmptyMultimedia.js" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Multimedia/Multimedia.js" />
       </list>
     </option>
   </component>
@@ -307,6 +289,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -318,12 +301,6 @@
               <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Helpers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
@@ -341,37 +318,56 @@
             <path>
               <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="OneShow" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ONEShow-BackOffice" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ONEShow-BackOffice" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="Configuracion" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/js/components/Multimedia" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/js/components/Multimedia" />
       <recent name="$PROJECT_DIR$/app/Http/Requests" />
       <recent name="$PROJECT_DIR$/app/Models/MongoDB" />
       <recent name="$PROJECT_DIR$/resources/views/Configuracion/Biblioteca" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers" />
-      <recent name="$PROJECT_DIR$/resources/views/Multimedia" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -418,17 +414,19 @@
       <workItem from="1556074203778" duration="1273000" />
       <workItem from="1556078032784" duration="12522000" />
       <workItem from="1556107329883" duration="637000" />
-      <workItem from="1556125128880" duration="1124000" />
+      <workItem from="1556125128880" duration="2949000" />
+      <workItem from="1556181360073" duration="23461000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182537000" />
+    <option name="totallyTimeSpent" value="207823000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25641027" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20245726" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -476,99 +474,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateCliente.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateEvento.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="77" column="22" selection-start-line="77" selection-start-column="22" selection-end-line="77" selection-end-column="22" />
-          <folding>
-            <element signature="e#37#80#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Eventos/edit.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="83" column="103" lean-forward="true" selection-start-line="83" selection-start-column="103" selection-end-line="83" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ChangePasswordController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="52" column="16" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Multimedia/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="13" column="16" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Layouts/header.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="50" lean-forward="true" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Eventos/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="152" column="8" selection-start-line="152" selection-start-column="8" selection-end-line="188" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#138#144#0" expanded="true" />
-            <element signature="e#144#150#0" expanded="true" />
-            <element signature="e#150#156#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#143#149#0" expanded="true" />
-            <element signature="e#149#155#0" expanded="true" />
-            <element signature="e#155#161#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#165#171#0" expanded="true" />
-            <element signature="e#171#177#0" expanded="true" />
-            <element signature="e#177#183#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#185#191#0" expanded="true" />
-            <element signature="e#191#197#0" expanded="true" />
-            <element signature="e#197#203#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Eventos/show.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="112" column="49" lean-forward="true" selection-start-line="107" selection-start-column="40" selection-end-line="112" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/edit.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="262">
@@ -635,27 +540,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="101" selection-start-line="3" selection-start-column="101" selection-end-line="3" selection-end-column="101" />
-          <folding>
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#138#144#0" expanded="true" />
-            <element signature="e#144#150#0" expanded="true" />
-            <element signature="e#150#156#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#143#149#0" expanded="true" />
-            <element signature="e#149#155#0" expanded="true" />
-            <element signature="e#155#161#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#173#179#0" expanded="true" />
-            <element signature="e#179#185#0" expanded="true" />
-            <element signature="e#185#191#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Middleware/CheckChangePassword.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -713,16 +597,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="17" column="54" lean-forward="true" selection-start-line="17" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Empresas/EmpresaAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3197">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -797,13 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/MongoDB/Biblioteca.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers/helpers.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3990">
@@ -829,16 +696,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/ChangePassword.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1444">
-          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1824">
@@ -848,7 +705,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateArchivo.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
+        <state relative-caret-position="494">
           <caret line="29" column="68" selection-start-line="29" selection-start-column="68" selection-end-line="29" selection-end-column="68" />
           <folding>
             <element signature="e#37#80#0#PHP" expanded="true" />
@@ -856,24 +713,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/add.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2546">
-          <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1501">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/UsuarioController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1927">
-          <caret line="21" column="6" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+        <state relative-caret-position="391">
+          <caret line="107" column="34" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
           <folding>
             <element signature="e#39#77#0#PHP" expanded="true" />
           </folding>
@@ -887,20 +730,84 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="62" column="78" selection-start-line="62" selection-start-column="78" selection-end-line="62" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Biblioteca/add.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="826">
+          <caret line="134" column="18" selection-start-line="134" selection-start-column="18" selection-end-line="134" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/css/theme.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/change-password.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/BibliotecaController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="105" column="103" selection-start-line="105" selection-start-column="103" selection-end-line="105" selection-end-column="103" />
+        <state relative-caret-position="524">
+          <caret line="41" column="9" selection-start-line="23" selection-start-column="8" selection-end-line="41" selection-end-column="9" />
           <folding>
             <element signature="e#82#120#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/MongoDB/Evento.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="62" column="78" selection-start-line="62" selection-start-column="78" selection-end-line="62" selection-end-column="78" />
+        <state relative-caret-position="532">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Empresas/EmpresaTable.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2133">
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Empresas/EmpresaAdd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="207" column="49" lean-forward="true" selection-start-line="202" selection-start-column="48" selection-end-line="207" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Multimedia/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Clientes/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="80" selection-start-line="15" selection-start-column="64" selection-end-line="15" selection-end-column="80" />
           <folding>
             <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
             <element signature="e#138#144#0" expanded="true" />
@@ -911,13 +818,67 @@
             <element signature="e#149#155#0" expanded="true" />
             <element signature="e#155#161#0" expanded="true" />
             <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#165#171#0" expanded="true" />
-            <element signature="e#171#177#0" expanded="true" />
-            <element signature="e#177#183#0" expanded="true" />
-            <element signature="n#style#0;n#i#0;n#a#0;n#!!top" expanded="true" />
-            <element signature="e#151#157#0" expanded="true" />
-            <element signature="e#157#163#0" expanded="true" />
-            <element signature="e#163#169#0" expanded="true" />
+            <element signature="e#173#179#0" expanded="true" />
+            <element signature="e#179#185#0" expanded="true" />
+            <element signature="e#185#191#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Multimedia/EmptyMultimedia.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/sass/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="778">
+          <caret line="286" column="23" selection-start-line="286" selection-start-column="23" selection-end-line="286" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/ChangePassword.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="20" column="57" lean-forward="true" selection-start-line="20" selection-start-column="57" selection-end-line="20" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="579">
+          <caret line="101" column="41" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/MongoDB/Biblioteca.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/MultimediaController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="45" column="66" selection-start-line="45" selection-start-column="66" selection-end-line="45" selection-end-column="66" />
+          <folding>
+            <element signature="e#82#116#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Multimedia/Multimedia.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="267" column="53" selection-start-line="267" selection-start-column="53" selection-end-line="267" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>

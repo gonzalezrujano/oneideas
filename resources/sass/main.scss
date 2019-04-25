@@ -94,6 +94,12 @@
     background-color: #4b5357;
 }
 
+.table-dark-theme-console {
+    color: #fff;
+    background-color: #4b5357;
+    border: 4px solid #888888;
+}
+
 .table-hover tbody tr:hover {
     color: white;
     background-color: rgba(0,0,0,.075);
@@ -251,4 +257,32 @@
 .bootstrap-datetimepicker-widget.dropdown-menu {
     background-color: white !important;
 
+}
+
+.form-select-event{
+    width: 18rem;
+}
+
+.form-select-event-tools{
+    width: 85%;
+    display: initial;
+}
+
+.section-herramientas{
+    border: 4px solid #888888;
+}
+
+.section-parametros{
+    border-top: 4px solid #888888;
+    border-right: 4px solid #888888;
+    border-bottom: 4px solid #888888;
+}
+
+.icon-console{
+    cursor: pointer;
+}
+
+.container-tools{
+    padding-left: 10px;
+    padding-right: 10px;
 }

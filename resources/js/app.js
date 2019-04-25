@@ -20,3 +20,4 @@ require('./components/ChangePassword');
 
 require('./components/Monitor/Monitor');
 
+require('./components/Multimedia/Multimedia');
