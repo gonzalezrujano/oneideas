@@ -71,15 +71,13 @@ export default class Multimedia extends Component {
 
         if(e.target.name == 'evento'){
 
-            if(e.target.value == ''){
-
-                this.setState({
-                    herramientas: [],
-                    herramienta: '',
-                    multimedia: '',
-                    multimedias: []
-                });
-            }
+            this.setState({
+                herramientas: [],
+                herramienta: '',
+                multimedia: '',
+                multimedias: [],
+                evento: e.target.value
+            });
 
         }
 
