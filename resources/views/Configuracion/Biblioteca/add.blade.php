@@ -54,6 +54,18 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Categoria</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control form-control-sm" id="categoria" name="categoria">
+                                        <option value="">Seleccione</option>
+                                        @foreach($categorias as $c)
+                                            <option value="{{ $c->_id }}">{{ $c->Nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
 
 
@@ -134,6 +146,7 @@
                 formData.append("id-evento", $('#id-evento').val());
                 //formData.append("tipo", $('#form-add select[name=tipo]').val());
                 formData.append("name", $('#form-add input[name=name]').val());
+                formData.append("categoria", $('#form-add select[name=categoria]').val());
                 formData.append("archivo", $('#form-add input[name=archivo]')[0].files[0] === undefined ? '' : $('#form-add input[name=archivo]')[0].files[0] );
 
                 /*formData.append("x", $('#add-x').val());

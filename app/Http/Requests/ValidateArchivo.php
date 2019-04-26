@@ -35,7 +35,8 @@ class ValidateArchivo extends FormRequest
             'id-evento'            => 'required',
             //'tipo'                 => 'required',
             'archivo'              => $archivo,
-            'name'                 => 'required|unique:Bibliotecas,Nombre'
+            'name'                 => 'required|unique:Bibliotecas,Nombre',
+            'categoria'            => 'required',
         ];
 
         return $rules;
@@ -50,7 +51,8 @@ class ValidateArchivo extends FormRequest
             'name.unique' => 'El nombre de archivo ya esta en uso. Intente otro',
             'archivo.required' => 'El archivo es requerido',
             'archivo.mimes' => 'El archivo debe tener uno de los siguientes formato: jpg, jpeg, png, mp4, mov, qt, mp3',
-            'archivo.max' => 'El archivo debe tener un tamaño no mayor a 10MB'
+            'archivo.max' => 'El archivo debe tener un tamaño no mayor a 10MB',
+            'categoria.required' => 'La categoria es requerida'
         ];
     }
 

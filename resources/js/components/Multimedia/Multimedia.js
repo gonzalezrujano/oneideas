@@ -182,29 +182,31 @@ export default class Multimedia extends Component {
 
                                 <div className="d-flex">
 
-                                    <div>
+                                    <div className="my-2">
                                         <h1 className="page-header-heading"><i className="fas fa-compact-disc page-header-heading-icon"></i>Multimedia
                                             <i className="fas fa-clock mr-2 ml-4"></i> <Clock format={'HH:mm:ss A'} ticking={true} />
-                                            <button type="button" className="btn btn-sm btn-dark ml-4" onClick={this.goFull}><i className="fas fa-arrows-alt"></i>&nbsp;Fullscreen</button>
                                         </h1>
 
 
                                     </div>
 
+                                    <form className="form-inline ml-5">
+                                        <i className="fas fa-calendar-week fa-lg mr-3"></i>
+                                        <select className="form-control form-control-sm form-select-event" name="evento" value={evento} onChange={this.handleChange}>
+                                            <option value="">Seleccione evento</option>
+                                            {
+                                                eventos.map( (p, index) => {
+                                                    return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                })
+                                            }
+                                        </select>
+                                    </form>
+
+
 
                                     <div className="ml-auto">
 
-                                        <form className="form-inline">
-                                            <i className="fas fa-calendar-week fa-lg mr-3"></i>
-                                            <select className="form-control form-control-sm form-select-event" name="evento" value={evento} onChange={this.handleChange}>
-                                                <option value="">Seleccione evento</option>
-                                                {
-                                                    eventos.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </form>
+                                        <button type="button" className="btn btn-sm btn-dark ml-4" onClick={this.goFull}><i className="fas fa-arrows-alt"></i>&nbsp;Fullscreen</button>
 
                                     </div>
                                 </div>

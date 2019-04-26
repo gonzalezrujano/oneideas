@@ -67508,7 +67508,9 @@ function (_Component) {
         className: "col-sm-12 col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "d-flex"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "my-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "page-header-heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-compact-disc page-header-heading-icon"
@@ -67517,16 +67519,8 @@ function (_Component) {
       }), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_live_clock__WEBPACK_IMPORTED_MODULE_9___default.a, {
         format: 'HH:mm:ss A',
         ticking: true
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        type: "button",
-        className: "btn btn-sm btn-dark ml-4",
-        onClick: this.goFull
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrows-alt"
-      }), "\xA0Fullscreen"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "ml-auto"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "form-inline"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "form-inline ml-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-calendar-week fa-lg mr-3"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -67541,7 +67535,15 @@ function (_Component) {
           key: index,
           value: p._id
         }, p.Nombre);
-      }))))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "ml-auto"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-sm btn-dark ml-4",
+        onClick: this.goFull
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-arrows-alt"
+      }), "\xA0Fullscreen"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "sweet",
         className: "container-fluid"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

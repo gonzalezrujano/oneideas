@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidateArchivo;
 use App\Models\MongoDB\Biblioteca;
+use App\Models\MongoDB\CategoriaBiblioteca;
 use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\Estado;
 use App\Models\MongoDB\Evento;
@@ -49,6 +50,7 @@ class BibliotecaController extends Controller
     public function viewAdd($id){
 
         $data['estados'] = Estado::borrado(false)->get();
+        $data['categorias'] = CategoriaBiblioteca::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
         $data['evento'] = $id;
 
         //devuleve la vista
@@ -162,6 +164,7 @@ class BibliotecaController extends Controller
                     'Nombre'    => $f->NombreCompleto,
                     //'Tipo'      => $f->Tipo,
                     'Size'      => $f->Size,
+                    'Categoria' => CategoriaBiblioteca::find($f->CategoriaBiblioteca_id)->Nombre,
                     'Activo'    => $f->Activo
                 ];
             }
@@ -196,21 +199,7 @@ class BibliotecaController extends Controller
             //creo el nombre del archivo
             $name = $input['name'].'.'.$fileData['extension'];
 
-
             Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
-
-
-            /*$tipo = $input['tipo'];
-            $type = '';
-
-            if($tipo == 'i'){
-                $type = 'IMAGEN';
-            }else if($tipo == 'v'){
-                $type = 'VIDEO';
-            }else if($tipo == 'a'){
-                $type = 'AUDIO';
-            }*/
-
 
             //capturo los datos y los acomodo en un arreglo
             $data = [
@@ -220,6 +209,7 @@ class BibliotecaController extends Controller
                 //'tipo'             => $type,
                 'path'             => $pathSave.$name,
                 'size'             => $fileData['size'],
+                'categoria'        => new ObjectId($input['categoria']),
                 'activo'           => true,
                 'borrado'          => false
             ];
@@ -234,6 +224,7 @@ class BibliotecaController extends Controller
             $registro->Path                      = $data['path'];
             $registro->Extension                 = $fileData['extension'];
             $registro->Size                      = $data['size'];
+            $registro->CategoriaBiblioteca_id    = $data['categoria'];
             $registro->Fecha                     = Carbon::now();
             $registro->Activo                    = $data['activo'];
             $registro->Borrado                   = $data['borrado'];

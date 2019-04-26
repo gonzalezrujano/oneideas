@@ -22,6 +22,7 @@
                             <th>NOMBRE</th>
                             <!--<th>TIPO</th>-->
                             <th>TAMAÑO</th>
+                            <th>CATEGORIA</th>
                             <th class="text-center">ACCIONES</th>
                         </tr>
                         </thead>
@@ -93,9 +94,10 @@
                     }
                 },
                 "columns":[
-                    {"width": "14%", data: 'Nombre', "searchable": true, "bSortable": false},
+                    {"width": "15%", data: 'Nombre', "searchable": true, "bSortable": false},
                     //{"width": "10%", data: 'Tipo', "searchable": true, "bSortable": false},
                     {"width": "10%", data: 'Size', "searchable": true, "bSortable": false},
+                    {"width": "10%", data: 'Categoria', "searchable": true, "bSortable": false},
                     {
                         "width": "9%",
                         data: 'opciones',
