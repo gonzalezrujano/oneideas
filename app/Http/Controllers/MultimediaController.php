@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\MongoDB\Biblioteca;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\Herramienta;
+use App\Models\MongoDB\Sector;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
@@ -38,6 +40,10 @@ class MultimediaController extends Controller
 
         }
 
+        $data['sectores'] = Sector::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+        $data['footer']   = config('oneshow.footer');
+
+
         //devuelve la vista asociada
         return view('Multimedia.index', $data);
     }
@@ -65,6 +71,50 @@ class MultimediaController extends Controller
         }else{
 
             return response()->json(['code' => 500, 'msj' => 'Ocurrio un problema al cargar los archivos multimedia']);
+        }
+
+    }
+
+    //metodo para activar la accion de las herramientas
+    public function ajaxActionTool(Request $request){
+
+        $input = $request->all();
+
+        $evento = $input['evento'];
+        $tool   = trim(ucwords($input['herramienta']));
+
+        $herra = Herramienta::borrado(false)->activo(true)->where('Nombre', $tool)->first();
+
+        if($herra){
+
+            if($tool == 'Video'){
+
+                $biblioteca = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp4'])->get();
+
+                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca]);
+
+
+            }else if($tool == 'Audio'){
+
+                $biblioteca = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp3'])->get();
+                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca]);
+
+
+            }else if($tool == 'Imagen') {
+
+                $biblioteca = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento))->whereIn('Extension', ['jpg', 'png', 'jpeg'])->get();
+                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca]);
+
+
+            }else{
+
+                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada']);
+
+            }
+
+        }else{
+            return response()->json(['code' => 700, 'tool' => $tool, 'msj' => 'Herramienta no habilitada']);
+
         }
 
     }

@@ -232,6 +232,7 @@ class BibliotecaController extends Controller
             $registro->Nombre                    = $data['nombre'];
             $registro->NombreCompleto            = $data['nombrec'];
             $registro->Path                      = $data['path'];
+            $registro->Extension                 = $fileData['extension'];
             $registro->Size                      = $data['size'];
             $registro->Fecha                     = Carbon::now();
             $registro->Activo                    = $data['activo'];

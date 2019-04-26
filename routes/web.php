@@ -99,6 +99,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
 
         //rutas de multimedia
         Route::get('/multimedia', 'MultimediaController@index')->name('multimedia');
+        Route::post('/ajax-action-tool', 'MultimediaController@ajaxActionTool');
         Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 
 

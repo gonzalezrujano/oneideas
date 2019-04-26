@@ -1938,6 +1938,79 @@ module.exports = warning;
 
 /***/ }),
 
+/***/ "./node_modules/fscreen/lib/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/fscreen/lib/index.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var key = {
+  fullscreenEnabled: 0,
+  fullscreenElement: 1,
+  requestFullscreen: 2,
+  exitFullscreen: 3,
+  fullscreenchange: 4,
+  fullscreenerror: 5
+};
+
+var webkit = ['webkitFullscreenEnabled', 'webkitFullscreenElement', 'webkitRequestFullscreen', 'webkitExitFullscreen', 'webkitfullscreenchange', 'webkitfullscreenerror'];
+
+var moz = ['mozFullScreenEnabled', 'mozFullScreenElement', 'mozRequestFullScreen', 'mozCancelFullScreen', 'mozfullscreenchange', 'mozfullscreenerror'];
+
+var ms = ['msFullscreenEnabled', 'msFullscreenElement', 'msRequestFullscreen', 'msExitFullscreen', 'MSFullscreenChange', 'MSFullscreenError'];
+
+// so it doesn't throw if no window or document
+var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
+
+var vendor = 'fullscreenEnabled' in document && Object.keys(key) || webkit[0] in document && webkit || moz[0] in document && moz || ms[0] in document && ms || [];
+
+exports.default = {
+  requestFullscreen: function requestFullscreen(element) {
+    return element[vendor[key.requestFullscreen]]();
+  },
+  requestFullscreenFunction: function requestFullscreenFunction(element) {
+    return element[vendor[key.requestFullscreen]];
+  },
+  get exitFullscreen() {
+    return document[vendor[key.exitFullscreen]].bind(document);
+  },
+  addEventListener: function addEventListener(type, handler, options) {
+    return document.addEventListener(vendor[key[type]], handler, options);
+  },
+  removeEventListener: function removeEventListener(type, handler, options) {
+    return document.removeEventListener(vendor[key[type]], handler, options);
+  },
+  get fullscreenEnabled() {
+    return Boolean(document[vendor[key.fullscreenEnabled]]);
+  },
+  set fullscreenEnabled(val) {},
+  get fullscreenElement() {
+    return document[vendor[key.fullscreenElement]];
+  },
+  set fullscreenElement(val) {},
+  get onfullscreenchange() {
+    return document[('on' + vendor[key.fullscreenchange]).toLowerCase()];
+  },
+  set onfullscreenchange(handler) {
+    return document[('on' + vendor[key.fullscreenchange]).toLowerCase()] = handler;
+  },
+  get onfullscreenerror() {
+    return document[('on' + vendor[key.fullscreenerror]).toLowerCase()];
+  },
+  set onfullscreenerror(handler) {
+    return document[('on' + vendor[key.fullscreenerror]).toLowerCase()] = handler;
+  }
+};
+
+/***/ }),
+
 /***/ "./node_modules/is-buffer/index.js":
 /*!*****************************************!*\
   !*** ./node_modules/is-buffer/index.js ***!
@@ -19488,6 +19561,635 @@ checkPropTypes.resetWarningCache = function() {
 }
 
 module.exports = checkPropTypes;
+
+
+/***/ }),
+
+/***/ "./node_modules/prop-types/factoryWithTypeCheckers.js":
+/*!************************************************************!*\
+  !*** ./node_modules/prop-types/factoryWithTypeCheckers.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+var assign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
+
+var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "./node_modules/prop-types/lib/ReactPropTypesSecret.js");
+var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "./node_modules/prop-types/checkPropTypes.js");
+
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
+var printWarning = function() {};
+
+if (true) {
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
+
+module.exports = function(isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+  var ANONYMOUS = '<<anonymous>>';
+
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker,
+  };
+
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+  /*eslint-disable no-self-compare*/
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  }
+  // Make `instanceof Error` still work for returned errors.
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if (true) {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          var err = new Error(
+            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+            'Use `PropTypes.checkPropTypes()` to call them. ' +
+            'Read more at http://fb.me/use-check-prop-types'
+          );
+          err.name = 'Invariant Violation';
+          throw err;
+        } else if ( true && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+          if (
+            !manualPropTypeCallCache[cacheKey] &&
+            // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3
+          ) {
+            printWarning(
+              'You are manually calling a React.PropTypes validation ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'and will throw in the standalone `prop-types` package. ' +
+              'You may be seeing this warning due to a third-party PropTypes ' +
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
+            );
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+      var propValue = props[propName];
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!ReactIs.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      if (true) {
+        if (arguments.length > 1) {
+          printWarning(
+            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+          );
+        } else {
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
+      return emptyFunctionThatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+        if (type === 'symbol') {
+          return String(value);
+        }
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+      for (var key in propValue) {
+        if (has(propValue, key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+       true ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
+      return emptyFunctionThatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+      if (typeof checker !== 'function') {
+        printWarning(
+          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
+        );
+        return emptyFunctionThatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          continue;
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = assign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+          );
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+      case 'boolean':
+        return !propValue;
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    }
+
+    // falsy value can't be a Symbol
+    if (!propValue) {
+      return false;
+    }
+
+    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    }
+
+    // Fallback for non-spec compliant Symbols which are polyfilled.
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Equivalent of `typeof` but with special handling for array and regexp.
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+    return propType;
+  }
+
+  // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+    var propType = getPropType(propValue);
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+    return propType;
+  }
+
+  // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+      default:
+        return type;
+    }
+  }
+
+  // Returns class name of the object, if any.
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/prop-types/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/prop-types/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (true) {
+  var ReactIs = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "./node_modules/prop-types/factoryWithTypeCheckers.js")(ReactIs.isElement, throwOnDirectAccess);
+} else {}
 
 
 /***/ }),
@@ -40846,6 +41548,395 @@ function checkDCE() {
 
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-dom.development.js */ "./node_modules/react-dom/cjs/react-dom.development.js");
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-full-screen/dist/index.js":
+/*!******************************************************!*\
+  !*** ./node_modules/react-full-screen/dist/index.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _fscreen = __webpack_require__(/*! fscreen */ "./node_modules/fscreen/lib/index.js");
+
+var _fscreen2 = _interopRequireDefault(_fscreen);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FullScreen = function (_Component) {
+  _inherits(FullScreen, _Component);
+
+  function FullScreen(props) {
+    _classCallCheck(this, FullScreen);
+
+    var _this = _possibleConstructorReturn(this, (FullScreen.__proto__ || Object.getPrototypeOf(FullScreen)).call(this, props));
+
+    _this.detectFullScreen = _this.detectFullScreen.bind(_this);
+    return _this;
+  }
+
+  _createClass(FullScreen, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      _fscreen2.default.addEventListener("fullscreenchange", this.detectFullScreen);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      _fscreen2.default.removeEventListener("fullscreenchange", this.detectFullScreen);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.handleProps(this.props);
+    }
+  }, {
+    key: "handleProps",
+    value: function handleProps(props) {
+      var enabled = _fscreen2.default.fullscreenElement === this.node;
+      if (enabled && !props.enabled) {
+        this.leaveFullScreen();
+      } else if (!enabled && props.enabled) {
+        this.enterFullScreen();
+      }
+    }
+  }, {
+    key: "detectFullScreen",
+    value: function detectFullScreen() {
+      if (this.props.onChange) {
+        this.props.onChange(_fscreen2.default.fullscreenElement === this.node);
+      }
+    }
+  }, {
+    key: "enterFullScreen",
+    value: function enterFullScreen() {
+      if (_fscreen2.default.fullscreenEnabled) {
+        _fscreen2.default.requestFullscreen(this.node);
+      }
+    }
+  }, {
+    key: "leaveFullScreen",
+    value: function leaveFullScreen() {
+      if (_fscreen2.default.fullscreenEnabled) {
+        _fscreen2.default.exitFullscreen();
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var className = ["fullscreen"];
+      if (this.props.enabled) {
+        className.push("fullscreen-enabled");
+      }
+
+      return _react2.default.createElement(
+        "div",
+        {
+          className: className.join(" "),
+          ref: function ref(node) {
+            return _this2.node = node;
+          },
+          style: this.props.enabled ? { height: "100%", width: "100%" } : undefined
+        },
+        this.props.children
+      );
+    }
+  }]);
+
+  return FullScreen;
+}(_react.Component);
+
+FullScreen.propTypes = {
+  children: _propTypes2.default.node.isRequired,
+  enabled: _propTypes2.default.bool.isRequired,
+  onChange: _propTypes2.default.func
+};
+FullScreen.defaultProps = {
+  enabled: false
+};
+exports.default = FullScreen;
+
+/***/ }),
+
+/***/ "./node_modules/react-is/cjs/react-is.development.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v16.8.6
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' ||
+  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+}
+
+/**
+ * Forked from fbjs/warning:
+ * https://github.com/facebook/fbjs/blob/e66ba20ad5be433eb54423f2b097d829324d9de6/packages/fbjs/src/__forks__/warning.js
+ *
+ * Only change is we use console.warn instead of console.error,
+ * and do nothing when 'console' is not supported.
+ * This really simplifies the code.
+ * ---
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var lowPriorityWarning = function () {};
+
+{
+  var printWarning = function (format) {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+    if (typeof console !== 'undefined') {
+      console.warn(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  lowPriorityWarning = function (condition, format) {
+    if (format === undefined) {
+      throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+    if (!condition) {
+      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+        args[_key2 - 2] = arguments[_key2];
+      }
+
+      printWarning.apply(undefined, [format].concat(args));
+    }
+  };
+}
+
+var lowPriorityWarning$1 = lowPriorityWarning;
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+              default:
+                return $$typeof;
+            }
+        }
+      case REACT_LAZY_TYPE:
+      case REACT_MEMO_TYPE:
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+}
+
+// AsyncMode is deprecated along with isAsyncMode
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+
+// AsyncMode should be deprecated
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true;
+      lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.typeOf = typeOf;
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isValidElementType = isValidElementType;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-is/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/react-is/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
 }
 
 
@@ -64931,6 +66022,116 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./public/images/icons/console/Audio.png":
+/*!***********************************************!*\
+  !*** ./public/images/icons/console/Audio.png ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Audio.png?c570da84b843494a97722ae94da479ee";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Audiorritmico.png":
+/*!*******************************************************!*\
+  !*** ./public/images/icons/console/Audiorritmico.png ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Audiorritmico.png?9eb3865cd6e89e19d0fc527b505bbc43";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Colores.png":
+/*!*************************************************!*\
+  !*** ./public/images/icons/console/Colores.png ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Colores.png?907760b8928e71e44b55ca5a18e9d88d";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/CuentaRegresiva.png":
+/*!*********************************************************!*\
+  !*** ./public/images/icons/console/CuentaRegresiva.png ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/CuentaRegresiva.png?3e0539e26e8576fbc72050dc1d879710";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Flash.png":
+/*!***********************************************!*\
+  !*** ./public/images/icons/console/Flash.png ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Flash.png?4efe2cedaa49448e5619f8ca2970b5f5";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Imagen.png":
+/*!************************************************!*\
+  !*** ./public/images/icons/console/Imagen.png ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Imagen.png?9def1ea7fcea02733dfdb8d3c9dbbb3d";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/OlaHumana.png":
+/*!***************************************************!*\
+  !*** ./public/images/icons/console/OlaHumana.png ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/OlaHumana.png?456690f185ea66df9f8375a475f76261";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Pixels.png":
+/*!************************************************!*\
+  !*** ./public/images/icons/console/Pixels.png ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Pixels.png?979a050aadead398a7a7f1b3841f6bbf";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Sirena.png":
+/*!************************************************!*\
+  !*** ./public/images/icons/console/Sirena.png ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Sirena.png?5917400ce0b434ae1a744c3de365e06e";
+
+/***/ }),
+
+/***/ "./public/images/icons/console/Video.png":
+/*!***********************************************!*\
+  !*** ./public/images/icons/console/Video.png ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/Video.png?b75c8c9f74d16c0b0a318bb6c198eb11";
+
+/***/ }),
+
 /***/ "./public/images/logo-oneshow.png":
 /*!****************************************!*\
   !*** ./public/images/logo-oneshow.png ***!
@@ -65793,6 +66994,78 @@ if (document.getElementById('component-monitor')) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Multimedia/Cola.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Multimedia/Cola.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Cola = function Cola(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+    className: "table table-dark-theme-console"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Led"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:40:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-ban fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-up fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-down fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ola humana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:10:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 10ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-ban fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-up fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-down fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Pantalla"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Todos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ninguno"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-ban fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-up fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-arrow-down fa-lg icon-console mr-2"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
+  }))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Cola);
+
+/***/ }),
+
+/***/ "./resources/js/components/Multimedia/Ejecucion.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/Multimedia/Ejecucion.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Ejecucion = function Ejecucion(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+    className: "table table-dark-theme-console"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Flash"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-ban fa-lg icon-console"
+  }))))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Ejecucion);
+
+/***/ }),
+
 /***/ "./resources/js/components/Multimedia/EmptyMultimedia.js":
 /*!***************************************************************!*\
   !*** ./resources/js/components/Multimedia/EmptyMultimedia.js ***!
@@ -65822,6 +67095,191 @@ var EmptyMultimedia = function EmptyMultimedia(props) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Multimedia/Herramientas.js":
+/*!************************************************************!*\
+  !*** ./resources/js/components/Multimedia/Herramientas.js ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _public_images_icons_console_Audio_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../public/images/icons/console/Audio.png */ "./public/images/icons/console/Audio.png");
+/* harmony import */ var _public_images_icons_console_Audio_png__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Audio_png__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _public_images_icons_console_Audiorritmico_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../public/images/icons/console/Audiorritmico.png */ "./public/images/icons/console/Audiorritmico.png");
+/* harmony import */ var _public_images_icons_console_Audiorritmico_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Audiorritmico_png__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _public_images_icons_console_Colores_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../public/images/icons/console/Colores.png */ "./public/images/icons/console/Colores.png");
+/* harmony import */ var _public_images_icons_console_Colores_png__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Colores_png__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _public_images_icons_console_CuentaRegresiva_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../public/images/icons/console/CuentaRegresiva.png */ "./public/images/icons/console/CuentaRegresiva.png");
+/* harmony import */ var _public_images_icons_console_CuentaRegresiva_png__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_CuentaRegresiva_png__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _public_images_icons_console_Flash_png__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../public/images/icons/console/Flash.png */ "./public/images/icons/console/Flash.png");
+/* harmony import */ var _public_images_icons_console_Flash_png__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Flash_png__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _public_images_icons_console_Imagen_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../public/images/icons/console/Imagen.png */ "./public/images/icons/console/Imagen.png");
+/* harmony import */ var _public_images_icons_console_Imagen_png__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Imagen_png__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _public_images_icons_console_OlaHumana_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../public/images/icons/console/OlaHumana.png */ "./public/images/icons/console/OlaHumana.png");
+/* harmony import */ var _public_images_icons_console_OlaHumana_png__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_OlaHumana_png__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _public_images_icons_console_Pixels_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../../public/images/icons/console/Pixels.png */ "./public/images/icons/console/Pixels.png");
+/* harmony import */ var _public_images_icons_console_Pixels_png__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Pixels_png__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _public_images_icons_console_Sirena_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../../public/images/icons/console/Sirena.png */ "./public/images/icons/console/Sirena.png");
+/* harmony import */ var _public_images_icons_console_Sirena_png__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Sirena_png__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _public_images_icons_console_Video_png__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../../public/images/icons/console/Video.png */ "./public/images/icons/console/Video.png");
+/* harmony import */ var _public_images_icons_console_Video_png__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_public_images_icons_console_Video_png__WEBPACK_IMPORTED_MODULE_10__);
+
+
+
+
+
+
+
+
+
+
+
+
+var Herramientas = function Herramientas(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 section-herramientas"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-center mb-4 mt-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+    className: "font-weight-bold"
+  }, "Herramientas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+    className: "hr-tools"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row text-center mb-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('audio');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Audio_png__WEBPACK_IMPORTED_MODULE_1___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Audio"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('audioritmico');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Audiorritmico_png__WEBPACK_IMPORTED_MODULE_2___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Audioritmico"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('colores');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Colores_png__WEBPACK_IMPORTED_MODULE_3___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Colores"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('cuenta regresiva');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_CuentaRegresiva_png__WEBPACK_IMPORTED_MODULE_4___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Cuenta Regresiva"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('flash');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Flash_png__WEBPACK_IMPORTED_MODULE_5___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Flash"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('imagen');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Imagen_png__WEBPACK_IMPORTED_MODULE_6___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Imagen"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('ola humana');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_OlaHumana_png__WEBPACK_IMPORTED_MODULE_7___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Ola Humana"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('pixeles');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Pixels_png__WEBPACK_IMPORTED_MODULE_8___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Pixeles"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('sirena');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Sirena_png__WEBPACK_IMPORTED_MODULE_9___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Sirena"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    onClick: function onClick(e) {
+      return props.action('video');
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    src: _public_images_icons_console_Video_png__WEBPACK_IMPORTED_MODULE_10___default.a,
+    className: "icon-img-console",
+    "data-toggle": "tooltip",
+    "data-placement": "top",
+    title: "Video"
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-3"
+  })));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Herramientas);
+
+/***/ }),
+
 /***/ "./resources/js/components/Multimedia/Multimedia.js":
 /*!**********************************************************!*\
   !*** ./resources/js/components/Multimedia/Multimedia.js ***!
@@ -65840,9 +67298,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-live-clock */ "./node_modules/react-live-clock/lib/index.js");
-/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_live_clock__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./EmptyMultimedia */ "./resources/js/components/Multimedia/EmptyMultimedia.js");
+/* harmony import */ var _EmptyMultimedia__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./EmptyMultimedia */ "./resources/js/components/Multimedia/EmptyMultimedia.js");
+/* harmony import */ var _Herramientas__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Herramientas */ "./resources/js/components/Multimedia/Herramientas.js");
+/* harmony import */ var _Parametros__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Parametros */ "./resources/js/components/Multimedia/Parametros.js");
+/* harmony import */ var _Ejecucion__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Ejecucion */ "./resources/js/components/Multimedia/Ejecucion.js");
+/* harmony import */ var _Cola__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Cola */ "./resources/js/components/Multimedia/Cola.js");
+/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-live-clock */ "./node_modules/react-live-clock/lib/index.js");
+/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_live_clock__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var react_full_screen__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-full-screen */ "./node_modules/react-full-screen/dist/index.js");
+/* harmony import */ var react_full_screen__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react_full_screen__WEBPACK_IMPORTED_MODULE_10__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -65870,6 +67334,11 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+
+
+
 var Multimedia =
 /*#__PURE__*/
 function (_Component) {
@@ -65883,23 +67352,90 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Multimedia).call(this, props));
     _this.state = {
       url: props.url,
+      footer: props.footer,
       eventos: JSON.parse(props.eventos),
+      sectores: JSON.parse(props.sectores),
+      bibliotecas: [],
       evento: '',
-      herramientas: [],
-      herramienta: '',
       multimedia: '',
       multimedias: [],
+      titleTool: '',
+      istool: false,
+      isFull: false,
       isLoading: false
     };
+    _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
+    _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Multimedia, [{
+    key: "goFull",
+    value: function goFull() {
+      this.setState({
+        isFull: !this.state.isFull
+      });
+    }
+  }, {
+    key: "actionTool",
+    value: function actionTool(herramienta) {
+      var _this2 = this;
+
+      var evento = this.state.evento;
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-action-tool', {
+        evento: evento,
+        herramienta: herramienta
+      }).then(function (res) {
+        if (res) {
+          var r = res.data;
+
+          if (r.code === 200) {
+            if (r.tool == 'Video' || r.tool == 'Imagen' || r.tool == 'Audio') {
+              _this2.setState({
+                istool: true,
+                titleTool: herramienta,
+                bibliotecas: r.biblioteca
+              });
+            } else {
+              _this2.setState({
+                istool: true,
+                titleTool: herramienta
+              });
+            }
+          } else if (r.code === 500) {
+            _this2.setState({
+              istool: false,
+              titleTool: ''
+            });
+          } else if (r.code === 700) {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
+              title: '<i class="fas fa-exclamation-circle"></i>',
+              text: r.msj,
+              confirmButtonColor: '#343a40',
+              confirmButtonText: 'Ok',
+              target: document.getElementById('sweet')
+            });
+
+            _this2.setState({
+              istool: false,
+              titleTool: ''
+            });
+          }
+        }
+      })["catch"](function (error) {
+        console.log(error);
+        this.setState({
+          istool: false,
+          titleTool: ''
+        });
+      });
+    }
+  }, {
     key: "getMultimedia",
     value: function getMultimedia() {
-      var _this2 = this;
+      var _this3 = this;
 
       var evento = this.state.evento;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-get-multimedia', {
@@ -65909,13 +67445,13 @@ function (_Component) {
           var r = res.data;
 
           if (r.code === 200) {
-            _this2.setState({
+            _this3.setState({
               multimedias: r.multimedia
             });
           } else if (r.code === 500) {
             console.log(r.msj);
 
-            _this2.setState({
+            _this3.setState({
               multimedias: []
             });
           }
@@ -65925,19 +67461,14 @@ function (_Component) {
   }, {
     key: "handleChange",
     value: function handleChange(e) {
-      if (e.target.name == 'herramienta') {
-        if (e.target.value == 'm') {
-          this.getMultimedia();
-        }
-      }
-
       if (e.target.name == 'evento') {
         this.setState({
-          herramientas: [],
-          herramienta: '',
           multimedia: '',
           multimedias: [],
-          evento: e.target.value
+          bibliotecas: [],
+          evento: e.target.value,
+          istool: false,
+          titleTool: ''
         });
       }
 
@@ -65946,30 +67477,53 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       var _this$state = this.state,
           eventos = _this$state.eventos,
           evento = _this$state.evento,
-          herramienta = _this$state.herramienta,
+          istool = _this$state.istool,
           multimedia = _this$state.multimedia,
-          multimedias = _this$state.multimedias;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-lg-12"
+          multimedias = _this$state.multimedias,
+          titleTool = _this$state.titleTool,
+          sectores = _this$state.sectores,
+          bibliotecas = _this$state.bibliotecas,
+          footer = _this$state.footer;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        enabled: this.state.isFull,
+        onChange: function onChange(isFull) {
+          return _this4.setState({
+            isFull: isFull
+          });
+        }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "widget widget-default"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "widget-body"
+        className: "content-wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-        className: "widget-header"
+        className: "page-header"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-12 col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "d-flex"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "my-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+        className: "page-header-heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-clock fa-lg mr-2"
-      }), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_live_clock__WEBPACK_IMPORTED_MODULE_4___default.a, {
+        className: "fas fa-compact-disc page-header-heading-icon"
+      }), "Multimedia", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-clock mr-2 ml-4"
+      }), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_live_clock__WEBPACK_IMPORTED_MODULE_9___default.a, {
         format: 'HH:mm:ss A',
         ticking: true
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-sm btn-dark ml-4",
+        onClick: this.goFull
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-arrows-alt"
+      }), "\xA0Fullscreen"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-auto"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         className: "form-inline"
@@ -65987,106 +67541,29 @@ function (_Component) {
           key: index,
           value: p._id
         }, p.Nombre);
-      })))))), evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-        className: "table table-dark-theme-console"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Flash"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-ban fa-lg icon-console"
-      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-        className: "table table-dark-theme-console"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Led"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:40:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-ban fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-up fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-down fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ola humana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:10:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 10ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-ban fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-up fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-down fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Pantalla"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Todos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ninguno"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-ban fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-up fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-arrow-down fa-lg icon-console mr-2"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-      }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "sweet",
+        className: "container-fluid"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-lg-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget widget-default"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget-body"
+      }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid container-tools"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-3 section-herramientas"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center mb-4 mt-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-        className: "font-weight-bold"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-tools fa-lg mr-2"
-      }), "Herramientas")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-        className: "form-control form-control-sm form-select-event-tools",
-        name: "herramienta",
-        value: herramienta,
-        onChange: this.handleChange
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: ""
-      }, "Seleccione herramienta"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "a"
-      }, "Audioritmicas"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "m"
-      }, "Multimedia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "p"
-      }, "Pantalla Humana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "o"
-      }, "Ola Humana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: "c"
-      }, "Cuenta Regresiva")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-9 section-parametros"
-      }, herramienta == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "section-empty mt-5 mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-ban fa-2x"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Seleccione una herramienta para configurar"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, herramienta == 'm' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center mb-4 mt-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-        className: "font-weight-bold"
-      }, "Multimedia")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center mb-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-        className: "form-control form-control-sm form-select-event-tools",
-        name: "multimedia",
-        value: multimedia,
-        onChange: this.handleChange
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: ""
-      }, "Seleccione"), multimedias.map(function (p, index) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-          key: index,
-          value: p._id
-        }, p.NombreCompleto);
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center mb-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-sm btn-dark mr-2"
-      }, "Inmediata"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-sm btn-dark mr-2"
-      }, "Proxima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-sm btn-dark mr-2"
-      }, "En cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-sm btn-dark mr-2"
-      }, "Agregar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-sm btn-dark mr-2"
-      }, "Cancelar"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null)))))))));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Herramientas__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        action: this.actionTool
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Parametros__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        istool: istool,
+        title: titleTool,
+        sectores: sectores,
+        bibliotecas: bibliotecas
+      }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+        className: "content-wrapper-footer"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, footer)))));
     }
   }]);
 
@@ -66100,6 +67577,215 @@ if (document.getElementById('multimedia')) {
   var props = Object.assign({}, element.dataset);
   react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Multimedia, props), element);
 }
+
+/***/ }),
+
+/***/ "./resources/js/components/Multimedia/Parametros.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Multimedia/Parametros.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var Parametros = function Parametros(props) {
+  var istool = props.istool;
+  var title = props.title;
+  var bibliotecas = props.bibliotecas;
+  var sectores = props.sectores;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-9 section-parametros"
+  }, istool == false ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "d-flex align-items-center justify-content-center h-100"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-center"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-ban fa-2x"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Seleccione una herramienta para configurar"))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-center mb-4 mt-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+    className: "font-weight-bold text-capitalize"
+  }, title)), title == 'video' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), bibliotecas.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.NombreCompleto);
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora inicio"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora fin"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "30"
+  }, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "40"
+  }, "Intermitencia 40ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "50"
+  }, "Intermitencia 50ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "60"
+  }, "Intermitencia 60ms")))))) : '', title == 'audio' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), bibliotecas.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.NombreCompleto);
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora inicio"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora fin"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "30"
+  }, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "40"
+  }, "Intermitencia 40ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "50"
+  }, "Intermitencia 50ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "60"
+  }, "Intermitencia 60ms")))))) : '', title == 'imagen' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), bibliotecas.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.NombreCompleto);
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora inicio"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    placeholder: "Hora fin"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "30"
+  }, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "40"
+  }, "Intermitencia 40ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "50"
+  }, "Intermitencia 50ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: "60"
+  }, "Intermitencia 60ms")))))) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "text-center mb-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-sm btn-dark mr-2"
+  }, "Inmediata"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-sm btn-dark mr-2"
+  }, "Proxima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-sm btn-dark mr-2"
+  }, "En cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-sm btn-dark mr-2"
+  }, "Cancelar")))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Parametros);
 
 /***/ }),
 
