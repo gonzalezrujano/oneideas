@@ -11,7 +11,7 @@ export default class ResetPassword extends Component {
         this.state = {
             url: props.url,
             token: props.token,
-            tokenValido: props.tokenValido,
+            tokenvalido: props.tokenvalido,
             correo: '',
             password: '',
             passwordConfirmacion: '',
@@ -114,7 +114,7 @@ export default class ResetPassword extends Component {
         let password    = this.state.password;
         let passwordConfirmacion = this.state.passwordConfirmacion;
         let url         = this.state.url;
-        let tokenValido = this.state.tokenValido;
+        let tokenValido = this.state.tokenvalido;
 
         let urlLogin    = url + '/';
 

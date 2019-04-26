@@ -30,7 +30,7 @@ class MailRecoveryPassword extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('soporte@oneshow.app', 'ONE Show')
+        return $this->from('soporte@one-food.app', 'ONE Show')
                     ->subject('Recuperación de Contraseña')
                     ->markdown('Mail.recovery-password')
                     ->with(['token' => $this->token]);

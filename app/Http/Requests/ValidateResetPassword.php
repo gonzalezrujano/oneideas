@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ValidateResetPassword extends FormRequest
 {
@@ -26,7 +28,7 @@ class ValidateResetPassword extends FormRequest
         return [
             'correo'               => 'required|email',
             'password'             => 'required|min:4',
-            'passwordConfirmacion' => 'required|same:new-password',
+            'passwordConfirmacion' => 'required|same:password',
         ];
     }
 
@@ -40,5 +42,10 @@ class ValidateResetPassword extends FormRequest
             'passwordConfirmacion.required'  => 'La confirmación de la contraseña es requerida',
             'passwordConfirmacion.same'      => 'Las contraseñas no coinciden',
         ];
+    }
+
+    public function failedValidation(Validator $validator) {
+
+        throw new HttpResponseException(response()->json($validator->errors()->first(), 422));
     }
 }

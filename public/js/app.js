@@ -66349,7 +66349,7 @@ function (_Component) {
     _this.state = {
       url: props.url,
       token: props.token,
-      tokenValido: props.tokenValido,
+      tokenvalido: props.tokenvalido,
       correo: '',
       password: '',
       passwordConfirmacion: '',
@@ -66436,7 +66436,7 @@ function (_Component) {
       var password = this.state.password;
       var passwordConfirmacion = this.state.passwordConfirmacion;
       var url = this.state.url;
-      var tokenValido = this.state.tokenValido;
+      var tokenValido = this.state.tokenvalido;
       var urlLogin = url + '/';
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"

@@ -69,12 +69,13 @@ class RecoveryPasswordController extends Controller
     }
 
     //metodo para validar que el token del usuario es valido y no ha expirado
-    public function formResetPassword($token){
+    public function formResetPassword($tok){
 
         $tokenValido = false;
 
         //caputro y verifico el token en la bd
-        $token = ResetClaveUsuarios::where('Token', $token)->first();
+        $token = ResetClaveUsuarios::where('Token', $tok)->first();
+
 
         //si el token existe y es valido, mando al usuario a cambiar su contraseña por la de su preferencia, en caso de que no le indico que el token es invalido o ha expirado
         if ($token){
