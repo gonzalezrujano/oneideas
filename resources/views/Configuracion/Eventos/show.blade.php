@@ -73,6 +73,18 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">País</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control form-control-sm" id="pais" name="pais" disabled>
+                                            <option value="">Seleccione</option>
+                                            @foreach($paises as $pais)
+                                                <option value="{{ $pais->_id }}"  @if((string)$evento->Pais_id == $pais->_id) selected='selected' @endif >{{ $pais->Nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Latitud</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control form-control-sm" value="{{$evento->Latitud}}" id="latitud" name="latitud"  placeholder="Ingrese la latitud"  />

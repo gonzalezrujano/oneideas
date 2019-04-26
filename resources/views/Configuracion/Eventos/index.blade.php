@@ -19,6 +19,7 @@
                         <th>NOMBRE</th>
                         <th>ID EVENTO</th>
                         <th>FECHA</th>
+                        <th>PAÍS</th>
                         <th>APP</th>
                         <th>ESTADO</th>
                         <th class="text-center">ACCIONES</th>
@@ -91,9 +92,10 @@
                     }
                 },
                 "columns":[
-                    {"width": "12%", data: 'Nombre', "searchable": true, "bSortable": false},
-                    {"width": "10%", data: 'IDEvento', "searchable": true, "bSortable": false},
+                    {"width": "14%", data: 'Nombre', "searchable": true, "bSortable": false},
+                    {"width": "5%", data: 'IDEvento', "searchable": true, "bSortable": false},
                     {"width": "7%", data: 'Fecha', "searchable": true, "bSortable": false},
+                    {"width": "6%", data: 'Pais', "searchable": true, "bSortable": false},
                     {
                         "width": "5%",
                         data: 'App',

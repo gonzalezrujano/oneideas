@@ -60,6 +60,18 @@
                             </div>
 
                             <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">País</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control form-control-sm" id="pais" name="pais">
+                                        <option value="">Seleccione</option>
+                                        @foreach($paises as $pais)
+                                            <option value="{{ $pais->_id }}">{{ $pais->Nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-sm-2 col-form-label col-form-label-sm">Latitud</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control form-control-sm" id="latitud" name="latitud"  placeholder="Ingrese la latitud"  />
@@ -229,6 +241,7 @@
                 formData.append("fecha", $('#form-add-evento input[name=fecha]').val());
                 formData.append("hora", $('#form-add-evento input[name=hora]').val());
                 formData.append("licencias", $('#form-add-evento input[name=licencias]').val());
+                formData.append("pais", $('#form-add-evento select[name=pais]').val());
                 formData.append("latitud", $('#form-add-evento input[name=latitud]').val());
                 formData.append("longitud", $('#form-add-evento input[name=longitud]').val());
                 formData.append("ubicacion",  ubicacion === undefined ? '' : ubicacion);

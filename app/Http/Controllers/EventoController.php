@@ -31,6 +31,8 @@ class EventoController extends Controller
         $data['empresa'] = $empresa;
         //cargo lista de estados
         $data['estados'] = Estado::where('Borrado', false)->get();
+        //cargo el pais
+        $select['paises'] = Pais::borrado(false)->get();
 
         //devuleve la vista
         return view('Configuracion.Eventos.index', $data);
@@ -127,6 +129,7 @@ class EventoController extends Controller
                     'Nombre'    => $e->Nombre,
                     'IDEvento'  => $e->IDEvento,
                     'Fecha'     => $e->Fecha. ' '.$e->Hora,
+                    'Pais'      => Pais::find($e->Pais_id)->Nombre,
                     'App'       => $e->App,
                     'Activo'    => $e->Activo
                 ];
@@ -181,6 +184,7 @@ class EventoController extends Controller
                 'estatus'          => $input['estatus'],
                 'app'              => $input['app'],
                 'licencias'        => $input['licencias'],
+                'pais'             => new ObjectID($input['pais']),
                 'latitud'          => $input['latitud'],
                 'longitud'         => $input['longitud'],
                 'ubicacion'        => $ubicacion,
@@ -199,6 +203,7 @@ class EventoController extends Controller
             $registro->Activo                    = (boolean) $data['estatus'];
             $registro->App                       = (boolean) $data['app'];
             $registro->Licencias                 = $data['licencias'];
+            $registro->Pais_id                   = $data['pais'];
             $registro->Latitud                   = $data['latitud'];
             $registro->Longitud                  = $data['longitud'];
             $registro->Ubicacion                 = $data['ubicacion'];
@@ -272,6 +277,7 @@ class EventoController extends Controller
                 'hora'             => $input['hora'],
                 'estatus'          => $input['estatus'],
                 'licencias'        => $input['licencias'],
+                'pais'             => new ObjectID($input['pais']),
                 'latitud'          => $input['latitud'],
                 'longitud'         => $input['longitud'],
                 'ubicacion'        => $ubicacion,
@@ -285,6 +291,7 @@ class EventoController extends Controller
             $registro->Hora                      = $data['hora'];
             $registro->Activo                    = (boolean) $data['estatus'];
             $registro->Licencias                 = $data['licencias'];
+            $registro->Pais_id                   = $data['pais'];
             $registro->Latitud                   = $data['latitud'];
             $registro->Longitud                  = $data['longitud'];
             $registro->Ubicacion                 = $data['ubicacion'];
