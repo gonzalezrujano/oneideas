@@ -19,6 +19,52 @@
 
         <li class="sidebar-nav-link sidebar-nav-link-group">
             <a data-subnav-toggle>
+                <i class="fas fa-user-friends sidebar-nav-link-logo"></i> Invitados
+                <span class="fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"></span>
+                <span class="fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"></span>
+            </a>
+
+            <ul class="sidebar-nav">
+
+                @if(true)
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('invitados.invitacion') }}">
+                            <i class="fas fa-envelope-open-text sidebar-nav-link-logo"></i> Invitación
+                        </a>
+                    </li>
+                @endif
+
+
+                @if(true)
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('invitados.invitado') }}">
+                            <i class="fas fa-user-friends sidebar-nav-link-logo"></i> Invitados
+                        </a>
+                    </li>
+                @endif
+
+                @if(true)
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('invitados.asiento') }}">
+                            <i class="fas fa-chair sidebar-nav-link-logo"></i> Asientos
+                        </a>
+                    </li>
+                @endif
+
+                @if(true)
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('invitados.regalo') }}">
+                            <i class="fas fa-gift sidebar-nav-link-logo"></i> Regalos
+                        </a>
+                    </li>
+                @endif
+
+
+            </ul>
+        </li>
+
+        <li class="sidebar-nav-link sidebar-nav-link-group">
+            <a data-subnav-toggle>
                 <i class="fas fa-tools sidebar-nav-link-logo"></i> Configuración
                 <span class="fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"></span>
                 <span class="fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"></span>

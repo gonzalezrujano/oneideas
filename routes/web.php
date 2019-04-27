@@ -102,6 +102,18 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::post('/ajax-action-tool', 'MultimediaController@ajaxActionTool');
         Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 
+        //rutas de invitacion
+        Route::get('/invitacion', 'InvitacionController@index')->name('invitados.invitacion');
+
+        //rutas de invitados
+        Route::get('/invitados', 'InvitadoController@index')->name('invitados.invitado');
+
+        //rutas de invitados
+        Route::get('/asientos', 'AsientoController@index')->name('invitados.asiento');
+
+        //rutas de invitados
+        Route::get('/regalos', 'RegaloController@index')->name('invitados.regalo');
+
 
     });
 
