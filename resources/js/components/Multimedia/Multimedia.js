@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import swal from "sweetalert2";
+import moment from 'moment';
 import EmptyMultimedia from "./EmptyMultimedia";
 import Herramientas from "./Herramientas";
 import Parametros from "./Parametros";
@@ -24,6 +25,10 @@ export default class Multimedia extends Component {
             multimedia: '',
             multimedias: [],
             titleTool: '',
+            sector: '',
+            fechainicio: moment().format("hh:mm:ss"),
+            fechafin: moment().format("hh:mm:ss"),
+            archivo: '',
             istool: false,
             isFull: false,
             isLoading: false
@@ -163,7 +168,7 @@ export default class Multimedia extends Component {
 
     render() {
 
-        let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer} = this.state;
+        let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer, sector, fechainicio, fechafin, archivo} = this.state;
 
         return (
 
@@ -244,7 +249,7 @@ export default class Multimedia extends Component {
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas}/>
+                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange}/>
 
                                             </div>
 

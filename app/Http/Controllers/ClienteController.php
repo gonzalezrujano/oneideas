@@ -37,7 +37,12 @@ class ClienteController extends Controller
             $data['paises'] = Pais::borrado(false)->get();
             $data['civiles'] = EstadoCivil::borrado(false)->orderBy('Nombre', 'asc')->get();
             $data['cliente'] = $registro;
-            $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
+
+            if($registro->Pais_id){
+                $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
+            }else{
+                $data['equipos'] = null;
+            }
 
         }
 
@@ -58,8 +63,13 @@ class ClienteController extends Controller
             $data['paises'] = Pais::borrado(false)->get();
             $data['civiles'] = EstadoCivil::borrado(false)->orderBy('Nombre', 'asc')->get();
             $data['cliente'] = $registro;
-            $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
 
+            if($registro->Pais_id){
+                $data['equipos'] = Club::where('Pais', new ObjectID($registro->Pais_id))->orderBy('Nombre', 'asc')->get();
+            }else{
+                $data['equipos'] = null;
+
+            }
         }
 
         //devuleve la vista

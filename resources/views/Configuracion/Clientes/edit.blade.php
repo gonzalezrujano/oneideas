@@ -100,6 +100,7 @@
                                     <label class="col-sm-2 col-form-label col-form-label-sm">País</label>
                                     <div class="col-sm-4">
                                         <select class="form-control form-control-sm" id="cliente-pais" name="cliente-pais" >
+                                            <option value="">Seleccione</option>
                                             @foreach($paises as $pais)
                                                 <option value="{{ $pais->_id }}" @if((string)$cliente->Pais_id == $pais->_id) selected='selected' @endif>{{ $pais->Nombre }}</option>
                                             @endforeach
@@ -107,16 +108,29 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Equipo</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-control form-control-sm" id="cliente-equipo" name="cliente-equipo" >
-                                            @foreach($equipos as $equipo)
-                                                <option value="{{ $equipo->id }}" @if($cliente->Equipo == $equipo->id) selected='selected' @endif>{{ $equipo->Nombre }}</option>
-                                            @endforeach
-                                        </select>
+
+                                @if($equipos)
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label col-form-label-sm">Equipo</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" id="cliente-equipo" name="cliente-equipo">
+                                                @foreach($equipos as $equipo)
+                                                    <option value="{{ $equipo->id }}" @if($cliente->Equipo == $equipo->id) selected='selected' @endif>{{ $equipo->Nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label col-form-label-sm">Equipo</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control form-control-sm" id="cliente-equipo" name="cliente-equipo">
+                                                <option value="">Seleccione</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label col-form-label-sm">Cuenta</label>

@@ -6,6 +6,10 @@ const Parametros = (props) => {
     let title = props.title;
     let bibliotecas = props.bibliotecas;
     let sectores = props.sectores;
+    let sector = props.sector;
+    let fechainicio = props.fechainicio;
+    let fechafin = props.fechafin;
+    let archivo = props.archivo;
 
     return (
 
@@ -28,7 +32,7 @@ const Parametros = (props) => {
 
                     <div>
 
-                        <div className="text-center mb-4 mt-4"><h5 className="font-weight-bold text-capitalize">{title}</h5></div>
+                        <div className="text-left mb-4 mt-4"><h5 className="font-weight-bold text-capitalize">{title}</h5></div>
 
                         {title == 'video' ?
 
@@ -40,7 +44,7 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Archivo</label>
-                                            <select className="form-control form-control-sm">
+                                            <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change }>
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
@@ -52,18 +56,18 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora inicio" />
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora fin" />
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
                                         </div>
 
 
                                         <div className="col-md-3 mb-3">
                                             <label>Sector</label>
-                                            <select className="form-control form-control-sm">
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
                                                 <option value="">Seleccione</option>
                                                 {
                                                     sectores.map( (p, index) => {
