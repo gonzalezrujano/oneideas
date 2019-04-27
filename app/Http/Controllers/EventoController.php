@@ -7,6 +7,7 @@ use App\Mail\MailNotificacionAprobacion;
 use App\Models\MongoDB\Categoria;
 use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\MenuAppInvitado;
 use App\Models\MongoDB\Pais;
 use App\Models\MongoDB\Estado;
 use Carbon\Carbon;
@@ -42,6 +43,7 @@ class EventoController extends Controller
     public function viewAdd($id){
 
         $data['paises'] = Pais::borrado(false)->get();
+        $data['menusapp'] = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
         $data['estados'] = Estado::borrado(false)->get();
         $data['empresa'] = Empresa::find($id);
 
@@ -63,6 +65,8 @@ class EventoController extends Controller
             $data['estados'] = Estado::borrado(false)->get();
             $data['empresa'] = Empresa::find($registro->Empresa_id);
             $data['evento'] = $registro;
+            $data['menusapp'] = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
+            $data['menuapp'] = $this->processGetMenuApp($registro->MenuApp);
 
         }
 
@@ -84,6 +88,8 @@ class EventoController extends Controller
             $data['estados'] = Estado::borrado(false)->get();
             $data['empresa'] = Empresa::find($registro->Empresa_id);
             $data['evento'] = $registro;
+            $data['menusapp'] = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
+            $data['menuapp'] = $this->processGetMenuApp($registro->MenuApp);
 
         }
 
@@ -174,6 +180,14 @@ class EventoController extends Controller
                 $ubicacion = 'GPS';
             }
 
+            $menusapp = [];
+
+            if($input['menuapp']){
+
+                //proceso los menus
+                $menusapp = $this->processMenuApp($input['menuapp']);
+            }
+
 
             //capturo los datos y los acomodo en un arreglo
             $data = [
@@ -209,6 +223,7 @@ class EventoController extends Controller
             $registro->Ubicacion                 = $data['ubicacion'];
             $registro->Logo                      = $data['logo'];
             $registro->IDEvento                  = $data['idevento'];
+            $registro->MenuApp                   = $menusapp;
             $registro->Borrado                   = $data['borrado'];
 
 
@@ -270,6 +285,14 @@ class EventoController extends Controller
                 $ubicacion = 'GPS';
             }
 
+            $menusapp = [];
+
+            if($input['menuapp']){
+
+                //proceso los menus
+                $menusapp = $this->processMenuApp($input['menuapp']);
+            }
+
             $data = [
                 'id'               => $input['id-evento'],
                 'nombre'           => $input['nombre'],
@@ -295,6 +318,7 @@ class EventoController extends Controller
             $registro->Latitud                   = $data['latitud'];
             $registro->Longitud                  = $data['longitud'];
             $registro->Ubicacion                 = $data['ubicacion'];
+            $registro->MenuApp                   = $menusapp;
             $registro->Logo                      = $data['logo'];
 
             //verifico si fue exitoso el insert en la bd
@@ -393,5 +417,37 @@ class EventoController extends Controller
         return strtoupper($id);
     }
 
+    //metodo que procesa los menus app
+    public function processMenuApp($data){
+
+        //separo los id
+        $separacion = explode(",", $data);
+
+        $result = [];
+
+        //renombro la llave
+        foreach ($separacion as $value ){
+
+            $result[] = new ObjectId($value);
+        }
+
+        //devuelvo el resultado en formato json
+        return $result;
+    }
+
+    //metodo que arma los menus app
+    public function processGetMenuApp($data){
+
+        $result = [];
+
+        //renombro la llave
+        foreach ($data as $value ){
+
+            $result[] = (string)$value;
+        }
+
+        //devuelvo el resultado en formato json
+        return $result;
+    }
 
 }

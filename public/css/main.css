@@ -305,3 +305,41 @@
   margin-left: 0px;
 }
 
+.ms-drop ul > li label {
+  font-weight: normal;
+  display: inline-block !important;
+  white-space: nowrap;
+  color: #495057;
+}
+
+.ms-choice {
+  display: block;
+  width: 0px !important;
+  height: 0px !important;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0px solid #aaa;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 26px;
+  color: #444;
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #495057;
+}
+
+.ms-choice > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  padding-left: 8px;
+  color: white;
+}
+

@@ -25,6 +25,7 @@ mix.styles([
     'node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css',
     'node_modules/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css',
     'node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+    'node_modules/multiple-select/multiple-select.css',
     'node_modules/cropperjs/dist/cropper.min.css',
     'node_modules/animate.css/animate.min.css',
     'resources/css/theme.css',
@@ -46,6 +47,7 @@ mix.babel([
     'node_modules/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     'node_modules/inputmask/dist/min/jquery.inputmask.bundle.min.js',
     'node_modules/autonumeric/dist/autoNumeric.min.js',
+    'node_modules/multiple-select/multiple-select.js',
     'node_modules/cropperjs/dist/cropper.min.js',
     'node_modules/jquery-cropper/dist/jquery-cropper.min.js',
     'resources/js/main.js'

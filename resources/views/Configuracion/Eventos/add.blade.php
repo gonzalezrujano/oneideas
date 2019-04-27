@@ -19,6 +19,9 @@
                     <li class="nav-item">
                         <a class="nav-link" id="pills-logo-tab" data-toggle="pill" href="#pills-logo" role="tab" aria-controls="pills-logo" aria-selected="false">Logo</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-invitados-tab" data-toggle="pill" href="#pills-invitados" role="tab" aria-controls="pills-invitados" aria-selected="false">APP Invitados</a>
+                    </li>
 
                 </ul>
 
@@ -150,6 +153,27 @@
 
                         </div>
 
+                        <div class="tab-pane fade" id="pills-invitados" role="tabpanel" aria-labelledby="pills-invitados-tab">
+
+                            <div class="alert alert-primary mb-4" role="alert">
+                                <i class="fas fa-info-circle"></i>&nbsp;
+                                Seleccione los menús que estaran habilitado en la App para el evento.
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Menús</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control form-control-sm" id="menuapp" name="menuapp" multiple="multiple">
+                                        @foreach($menusapp as $ma)
+                                            <option value="{{ $ma->_id }}">{{ $ma->Nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+
                     </div>
 
                     <div class="form-group row">
@@ -175,6 +199,15 @@
     <script type="text/javascript">
 
         $(function(){
+
+            var optionSelectMultiple = {
+                placeholder: 'Seleccione',
+                selectAllText: 'Todos',
+                allSelected: 'Todos',
+                countSelected: '# de % opciones'
+            };
+
+            $('#menuapp').multipleSelect(optionSelectMultiple);
 
             var linkReturn = "{{ route('configuracion.evento', ['id' => $empresa->_id]) }}";
 
@@ -252,6 +285,11 @@
                 formData.append("y", $('#add-y').val());
                 formData.append("w", $('#add-w').val());
                 formData.append("h", $('#add-h').val());
+
+                var menu = $('#menuapp').multipleSelect('getSelects');
+
+                formData.append("menuapp", menu);
+
 
                 $.ajax({
                     type: 'POST',
