@@ -84980,10 +84980,44 @@ function (_Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
+
+    _this.iniciarMQTT();
+
     return _this;
   }
 
   _createClass(Multimedia, [{
+    key: "iniciarMQTT",
+    value: function iniciarMQTT() {
+      var mqtt;
+      var reconnectTimeout = 2000;
+      var host = "mqtt.oneshow.com.ar"; //change this
+
+      var port = 11344;
+
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("Connected "); //mqtt.subscribe("sensor1");
+
+        message = new Paho.MQTT.Message("Hello World");
+        message.destinationName = "sensor1";
+        mqtt.send(message);
+      }
+
+      function MQTTconnect() {
+        console.log("connecting to " + host + " " + port);
+        mqtt = new Paho.MQTT.Client(host, port, "clientjs"); //document.write("connecting to "+ host);
+
+        var options = {
+          timeout: 3,
+          onSuccess: onConnect
+        };
+        mqtt.connect(options); //connect
+      }
+
+      MQTTconnect();
+    }
+  }, {
     key: "goFull",
     value: function goFull() {
       this.setState({
@@ -85858,8 +85892,8 @@ if (document.getElementById('reset-password')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/sass/main.scss */"./resources/sass/main.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\sass\main.scss */"./resources/sass/main.scss");
 
 
 /***/ })
