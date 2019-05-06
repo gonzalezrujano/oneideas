@@ -38,6 +38,37 @@ export default class Multimedia extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.actionTool = this.actionTool.bind(this);
         this.getMultimedia = this.getMultimedia.bind(this);
+        this.iniciarMQTT();
+    }
+    iniciarMQTT(){
+        var mqtt;
+        var reconnectTimeout = 2000;
+        var host="mqtt.oneshow.com.ar"; //change this
+        var port=11344;
+        
+        function onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+    
+        console.log("Connected ");
+        //mqtt.subscribe("sensor1");
+        message = new Paho.MQTT.Message("Hello World");
+        message.destinationName = "sensor1";
+        mqtt.send(message);
+      }
+      function MQTTconnect() {
+        console.log("connecting to "+ host +" "+ port);
+        mqtt = new Paho.MQTT.Client(host,port,"clientjs");
+        //document.write("connecting to "+ host);
+        var options = {
+            timeout: 3,
+            onSuccess: onConnect,
+          
+         };
+         
+        mqtt.connect(options); //connect
+        }
+     
+MQTTconnect();
 
     }
 
