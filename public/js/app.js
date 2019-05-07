@@ -84989,7 +84989,7 @@ function (_Component) {
   _createClass(Multimedia, [{
     key: "iniciarMQTT",
     value: function iniciarMQTT() {
-      var mqtt;
+      window.mqttCliente = {};
       var reconnectTimeout = 2000;
       var host = "mqtt.oneshow.com.ar"; //change this
 
@@ -85001,21 +85001,29 @@ function (_Component) {
 
         message = new Paho.MQTT.Message("Hello World");
         message.destinationName = "sensor1";
-        mqtt.send(message);
+        window.mqttCliente.send(message);
       }
 
       function MQTTconnect() {
         console.log("connecting to " + host + " " + port);
-        mqtt = new Paho.MQTT.Client(host, port, "clientjs"); //document.write("connecting to "+ host);
+        window.mqttCliente = new Paho.MQTT.Client(host, port, "clientjs"); //document.write("connecting to "+ host);
 
         var options = {
           timeout: 3,
-          onSuccess: onConnect
+          onSuccess: onConnect,
+          useSll: true
         };
-        mqtt.connect(options); //connect
+        window.mqttCliente.connect(options); //connect
       }
 
       MQTTconnect();
+    }
+  }, {
+    key: "enviarComando",
+    value: function enviarComando() {
+      message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+      message.destinationName = "/empresa/evento/Multimedia";
+      window.mqttCliente.send(message);
     }
   }, {
     key: "goFull",
@@ -85217,7 +85225,8 @@ function (_Component) {
         fechainicio: fechainicio,
         fechafin: fechafin,
         archivo: archivo,
-        change: this.handleChange
+        change: this.handleChange,
+        enviar: this.enviarComando
       }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
         className: "content-wrapper-footer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, footer)))));
@@ -85448,9 +85457,15 @@ var Parametros = function Parametros(props) {
   }, "Intermitencia 60ms")))))) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "text-center mb-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-sm btn-dark mr-2"
+    className: "btn btn-sm btn-dark mr-2",
+    onClick: function onClick(e) {
+      return props.enviar(fechainicio, fechafin);
+    }
   }, "Inmediata"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-sm btn-dark mr-2"
+    className: "btn btn-sm btn-dark mr-2",
+    onClick: function onClick(e) {
+      return props.enviar('audio');
+    }
   }, "Proxima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-sm btn-dark mr-2"
   }, "En cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
