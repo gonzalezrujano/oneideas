@@ -85013,7 +85013,7 @@ function (_Component) {
         var options = {
           timeout: 3,
           onSuccess: onConnect,
-          useSll: true
+          useSSL: true
         };
         window.mqttCliente.connect(options); //connect
       }
