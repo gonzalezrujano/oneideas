@@ -85022,7 +85022,7 @@ function (_Component) {
     }
   }, {
     key: "enviarComando",
-    value: function enviarComando() {
+    value: function enviarComando(fechainicio, fechafin) {
       var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
       message.destinationName = "/empresa/evento/Multimedia";
       window.mqttCliente.send(message);
