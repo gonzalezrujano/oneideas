@@ -41,7 +41,6 @@ export default class Multimedia extends Component {
         this.iniciarMQTT();
     }
     iniciarMQTT(){
-        var mqtt;
         var reconnectTimeout = 2000;
         var host="mqtt.oneshow.com.ar"; //change this
         var port=11344;
@@ -51,25 +50,30 @@ export default class Multimedia extends Component {
     
         console.log("Connected ");
         //mqtt.subscribe("sensor1");
-        message = new Paho.MQTT.Message("Hello World");
+        var message = new Paho.MQTT.Message("Hello World");
         message.destinationName = "sensor1";
-        mqtt.send(message);
+        window.mqttCliente.send(message);
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);
-        mqtt = new Paho.MQTT.Client(host,port,"clientjs");
+        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
         //document.write("connecting to "+ host);
         var options = {
             timeout: 3,
             onSuccess: onConnect,
-          
+            useSSL:true
          };
          
-        mqtt.connect(options); //connect
+        window.mqttCliente.connect(options); //connect
         }
      
 MQTTconnect();
 
+    }
+    enviarComando(fechainicio,fechafin){
+        var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        message.destinationName = "/empresa/evento/Multimedia";
+        window.mqttCliente.send(message);
     }
 
     goFull() {
@@ -280,7 +284,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange}/>
+                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando}/>
 
                                             </div>
 

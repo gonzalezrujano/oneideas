@@ -83846,6 +83846,9 @@ if (token) {
 //     encrypted: true
 // });
 
+
+window.mqttCliente = {};
+
 /***/ }),
 
 /***/ "./resources/js/components/ChangePassword.js":
@@ -84991,7 +84994,6 @@ function (_Component) {
   _createClass(Multimedia, [{
     key: "iniciarMQTT",
     value: function iniciarMQTT() {
-      window.mqttCliente = {};
       var reconnectTimeout = 2000;
       var host = "mqtt.oneshow.com.ar"; //change this
 
