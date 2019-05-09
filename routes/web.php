@@ -114,6 +114,14 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         //rutas de invitados
         Route::get('/regalos', 'RegaloController@index')->name('invitados.regalo');
 
+        // Routes for Agenda
+        Route::get('/agenda', 'AgendaController@index')->name('configuracion.agenda');
+        Route::get('/agenda-add', 'AgendaController@viewAdd')->name('agenda-add');
+        Route::post('/ajax-agenda', 'AgendaController@ajaxDatatables');
+        Route::get('/agenda-show/{id}/', 'AgendaController@viewShow');
+        Route::get('/agenda-edit/{id}/', 'AgendaController@viewEdit');
+        Route::post('/ajax-agenda-update', 'AgendaController@ajaxUpdate');
+        Route::post('/ajax-agenda-delete', 'AgendaController@ajaxDelete');
 
     });
 

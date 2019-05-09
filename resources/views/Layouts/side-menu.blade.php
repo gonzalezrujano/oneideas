@@ -112,7 +112,14 @@
                         </a>
                     </li>
                 @endif
-
+                @if(Auth::user()->hasPermission('agenda', 'show'))
+                    <li class="sidebar-nav-link">
+                        <a href="{{ route('configuracion.agenda') }}">
+                            <i class="fas fa-address-book sidebar-nav-link-logo"></i> Agendas
+                        </a>
+                    </li>
+                @endif
+                    
             </ul>
         </li>
 
