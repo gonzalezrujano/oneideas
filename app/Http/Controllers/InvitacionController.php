@@ -120,18 +120,23 @@ class InvitacionController extends Controller
 
             foreach ($ev as $e) {
 
-                $invitaciones = Invitacion::borrado(false)->activo(true)->where('Evento_id', new ObjectId($e->_id))->get();
+                if(in_array(new ObjectId('5cc47b4af39c6a0a4f6a4de4'), $e->MenuApp)){
 
-                //armo la data que se muestra en la tabla de inicio de la pagina de eventos
-                $eventos[] = [
-                    '_id'       => $e->_id,
-                    'Empresa'   => Empresa::find($e->Empresa_id)->Nombre,
-                    'Evento'    => strtoupper($e->Nombre),
-                    'IDEvento'  => $e->IDEvento,
-                    'Fecha'     => $e->Fecha. ' '.$e->Hora,
-                    'App'       => $e->App,
-                    'Archivos'  => count($invitaciones)
-                ];
+                    $invitaciones = Invitacion::borrado(false)->activo(true)->where('Evento_id', new ObjectId($e->_id))->get();
+
+                    //armo la data que se muestra en la tabla de inicio de la pagina de eventos
+                    $eventos[] = [
+                        '_id'       => $e->_id,
+                        'Empresa'   => Empresa::find($e->Empresa_id)->Nombre,
+                        'Evento'    => strtoupper($e->Nombre),
+                        'IDEvento'  => $e->IDEvento,
+                        'Fecha'     => $e->Fecha. ' '.$e->Hora,
+                        'App'       => $e->App,
+                        'Archivos'  => count($invitaciones)
+                    ];
+
+                }
+
             }
 
         }
@@ -217,7 +222,7 @@ class InvitacionController extends Controller
 
                 $namePdf = '';
             }
-            
+
             Storage::disk('public_oneshow')->put($pathSave.$nameImg, File::get($archivoimg));
 
             //capturo los datos y los acomodo en un arreglo
