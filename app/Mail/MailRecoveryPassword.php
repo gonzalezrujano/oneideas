@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MailRecoveryPassword extends Mailable implements ShouldQueue
+class MailRecoveryPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,9 +30,9 @@ class MailRecoveryPassword extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from('soporte@one-food.app', 'ONE Show')
+        return $this->from('soporte@onemenu.cl', 'ONE Show')
                     ->subject('Recuperación de Contraseña')
-                    ->markdown('Mail.recovery-password')
+                    ->view('Mail.recovery-password')
                     ->with(['token' => $this->token]);
     }
 }

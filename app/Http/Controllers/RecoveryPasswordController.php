@@ -51,7 +51,7 @@ class RecoveryPasswordController extends Controller
                 $token = $reset->Token;
 
                 //le envio un correo al usuario con las intrucciones para recuperar la contraseña
-                Mail::to($usuario->Correo)->send(new MailRecoveryPassword($token));
+                Mail::to(strtolower($usuario->Correo))->send(new MailRecoveryPassword($token));
 
                 return response()->json(['code' => 200, 'msj' => 'Le ha sido enviado un correo con un enlace para restablecer su contraseña' ]);
 

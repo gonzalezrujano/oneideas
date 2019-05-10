@@ -87319,8 +87319,8 @@ Paho.MQTT = function (u) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\sass\main.scss */"./resources/sass/main.scss");
+__webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/sass/main.scss */"./resources/sass/main.scss");
 
 
 /***/ })
