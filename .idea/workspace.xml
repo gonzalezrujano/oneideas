@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ccabe686-08c0-48bb-a0e9-5e9ee2222f20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Models/MongoDB/Invitacion.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Rules/ModoInvitacion.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Invitados/Invitacion/add.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/Invitados/Invitacion/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/Invitados/Invitacion/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/Invitados/Invitacion/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Rules/ModoInvitacion.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Rules/ModoInvitacion.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,30 +27,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/views/Invitados/Invitacion/add.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="625">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/add.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="91" column="34" lean-forward="true" selection-start-line="88" selection-start-column="27" selection-end-line="91" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="174" column="44" lean-forward="true" selection-start-line="174" selection-start-column="44" selection-end-line="174" selection-end-column="44" />
+            <state relative-caret-position="225">
+              <caret line="219" column="12" selection-start-line="219" selection-start-column="12" selection-end-line="219" selection-end-column="12" />
               <folding>
                 <element signature="e#39#87#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="106">
+              <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
+              <folding>
+                <element signature="e#37#66#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Rules/ModoInvitacion.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1100">
+              <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+              <folding>
+                <element signature="e#29#59#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -143,10 +142,10 @@
         <option value="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" />
         <option value="$PROJECT_DIR$/resources/views/Invitados/Invitacion/show.blade.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php" />
-        <option value="$PROJECT_DIR$/app/Rules/ModoInvitacion.php" />
         <option value="$PROJECT_DIR$/resources/views/Invitados/Invitacion/add.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php" />
+        <option value="$PROJECT_DIR$/app/Rules/ModoInvitacion.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php" />
       </list>
     </option>
   </component>
@@ -366,12 +365,12 @@
       <workItem from="1556181360073" duration="24150000" />
       <workItem from="1556234144622" duration="31877000" />
       <workItem from="1556359793998" duration="15768000" />
-      <workItem from="1557376107449" duration="25423000" />
+      <workItem from="1557376107449" duration="27192000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="281580000" />
+    <option name="totallyTimeSpent" value="283349000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
@@ -686,13 +685,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="109" column="55" selection-start-line="109" selection-start-column="55" selection-end-line="109" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateEmpresa.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -725,16 +717,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Rules/ModoInvitacion.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-          <folding>
-            <element signature="e#29#59#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/Invitados/Invitacion/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-70">
@@ -745,10 +727,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/add.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="91" column="34" selection-start-line="88" selection-start-column="27" selection-end-line="91" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/Invitados/Invitacion/add.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="33" column="133" selection-start-line="33" selection-start-column="133" selection-end-line="33" selection-end-column="133" />
+          <folding>
+            <element signature="e#1646#1652#0#HTML" expanded="true" />
+            <element signature="e#1656#1662#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="497">
+          <caret line="109" column="55" selection-start-line="109" selection-start-column="55" selection-end-line="109" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Rules/ModoInvitacion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1100">
+          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+          <folding>
+            <element signature="e#29#59#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/ValidateArchivoInvitacion.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        <state relative-caret-position="106">
+          <caret line="31" column="32" selection-start-line="31" selection-start-column="32" selection-end-line="31" selection-end-column="32" />
           <folding>
             <element signature="e#37#66#0#PHP" expanded="true" />
           </folding>
@@ -757,25 +774,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/InvitacionController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="174" column="44" lean-forward="true" selection-start-line="174" selection-start-column="44" selection-end-line="174" selection-end-column="44" />
+        <state relative-caret-position="225">
+          <caret line="219" column="12" selection-start-line="219" selection-start-column="12" selection-end-line="219" selection-end-column="12" />
           <folding>
             <element signature="e#39#87#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Configuracion/Empresas/add.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="91" column="34" lean-forward="true" selection-start-line="88" selection-start-column="27" selection-end-line="91" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/Invitados/Invitacion/add.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="625">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>

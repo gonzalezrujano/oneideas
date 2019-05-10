@@ -160,7 +160,7 @@ class InvitacionController extends Controller
                     '_id'         => $f->_id,
                     'Tipo'        => $f->Modo,
                     'SizeImagen'  => $f->SizeImg,
-                    'SizePdf'     => $f->SizePdf,
+                    'SizePdf'     => $f->SizePdf == '' ? '-' : $f->SizePdf,
                     'Activo'      => $f->Activo
                 ];
             }
@@ -191,20 +191,34 @@ class InvitacionController extends Controller
                 'mime'      => $archivoimg->getMimeType()
             ];
 
+            $nameImg = 'invitacion-img.'.$fileDataImg['extension'];
+
             $archivopdf = $input['archivopdf'];
 
-            $fileDataPdf = [
-                'extension' => $archivopdf->getClientOriginalExtension(),
-                'size'      => humanFileSize($archivopdf->getSize()),
-                'mime'      => $archivopdf->getMimeType()
-            ];
+            if($archivopdf){
 
-            //creo el nombre del archivo
-            $nameImg = 'invitacion-img.'.$fileDataImg['extension'];
-            $namePdf = 'invitacion-pdf.'.$fileDataPdf['extension'];
+                $fileDataPdf = [
+                    'extension' => $archivopdf->getClientOriginalExtension(),
+                    'size'      => humanFileSize($archivopdf->getSize()),
+                    'mime'      => $archivopdf->getMimeType()
+                ];
 
+                $namePdf = 'invitacion-pdf.'.$fileDataPdf['extension'];
+
+                Storage::disk('public_oneshow')->put($pathSave.$namePdf, File::get($archivopdf));
+
+            }else{
+
+                $fileDataPdf = [
+                    'extension' => '',
+                    'size'      => '',
+                    'mime'      => ''
+                ];
+
+                $namePdf = '';
+            }
+            
             Storage::disk('public_oneshow')->put($pathSave.$nameImg, File::get($archivoimg));
-            Storage::disk('public_oneshow')->put($pathSave.$namePdf, File::get($archivopdf));
 
             //capturo los datos y los acomodo en un arreglo
             $data = [
@@ -212,7 +226,7 @@ class InvitacionController extends Controller
                 'modo'                  => $input['tipo'] == 'v' ? 'VERTICAL' : 'HORIZONTAL',
                 'pathimg'               => $pathSave.$nameImg,
                 'sizeimg'               => $fileDataImg['size'],
-                'pathpdf'               => $pathSave.$namePdf,
+                'pathpdf'               => $archivopdf  ? $pathSave.$namePdf : '',
                 'sizepdf'               => $fileDataPdf['size'],
                 'activo'           => true,
                 'borrado'          => false

@@ -48,14 +48,13 @@ class ModoInvitacion implements Rule
                 }else{
                     return true;
                 }
-
             }
 
         }else{
             return true;
         }
 
-
+        return true;
     }
 
     /**

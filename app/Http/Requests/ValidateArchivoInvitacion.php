@@ -29,7 +29,7 @@ class ValidateArchivoInvitacion extends FormRequest
     {
 
         $archivoimg = 'required|mimes:png,jpg,jpeg|max:10240';
-        $archivopdf = 'required|mimes:pdf|max:10240';
+        $archivopdf = 'nullable|mimes:pdf|max:10240';
 
         //$archivo = 'required';
 
@@ -51,7 +51,7 @@ class ValidateArchivoInvitacion extends FormRequest
             'archivoimg.required' => 'La invitación en imagen es requerida',
             'archivoimg.mimes' => 'La invitación en imagen debe tener uno de los siguientes formato: jpg, jpeg, png',
             'archivoimg.max' => 'La invitación en imagen debe tener un tamaño no mayor a 10MB',
-            'archivopdf.required' => 'La invitación en pdf es requerida',
+            //'archivopdf.required' => 'La invitación en pdf es requerida',
             'archivopdf.mimes' => 'La invitación en pdf debe tener el formato .pdf',
             'archivopdf.max' => 'La invitación en pdf debe tener un tamaño no mayor a 10MB',
         ];
