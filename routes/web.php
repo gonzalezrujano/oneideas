@@ -104,6 +104,13 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
 
         //rutas de invitacion
         Route::get('/invitacion', 'InvitacionController@index')->name('invitados.invitacion');
+        Route::post('/ajax-invitacion', 'InvitacionController@ajaxDatatables');
+        Route::get('/invitacion-show/{id}/', 'InvitacionController@viewShow')->name('invitacion-show');
+        Route::post('/ajax-invitacion-files', 'InvitacionController@ajaxDatatablesFiles');
+        Route::get('/invitacion-add/{id}/', 'InvitacionController@viewAdd')->name('invitacion-add');
+        Route::post('/ajax-invitacion-add-files', 'InvitacionController@ajaxAdd');
+        Route::post('/ajax-invitacion-delete-files', 'InvitacionController@ajaxDelete');
+
 
         //rutas de invitados
         Route::get('/invitados', 'InvitadoController@index')->name('invitados.invitado');

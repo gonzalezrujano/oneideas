@@ -39,5 +39,9 @@ class VerifyCsrfToken extends Middleware
         '/ajax-biblioteca-files',
         '/ajax-biblioteca-delete-files',
         '/ajax-biblioteca-add-files',
+        '/ajax-invitacion',
+        '/ajax-invitacion-files',
+        '/ajax-invitacion-delete-files',
+        '/ajax-invitacion-add-files',
     ];
 }
