@@ -122,6 +122,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/agenda-edit/{id}/', 'AgendaController@viewEdit');
         Route::post('/ajax-agenda-update', 'AgendaController@ajaxUpdate');
         Route::post('/ajax-agenda-delete', 'AgendaController@ajaxDelete');
+        Route::get('/ajax-get-events/{id}', 'AgendaController@get_events');
+        Route::get('/ajax-dt-get-agendas/{id}', 'AgendaController@datatable_get_agendas');
 
     });
 

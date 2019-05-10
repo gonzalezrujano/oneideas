@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\MongoDB\Agenda;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\MenuAppInvitado;
 use App\Http\Requests\ValidateEmpresa;
 use App\Models\MongoDB\Departamento;
 use App\Models\MongoDB\Localidad;
@@ -36,16 +37,20 @@ class AgendaController extends Controller
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+            $select['show_select_evento'] = false;            
 
         }else if($rol == 'EMPRESA'){
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
+            $select['eventos'] = Evento::where('Empresa_id',Auth::user()->Empresa_id)->get();
+            $select['show_select_evento'] = true;
 
         }else if($rol == 'EVENTO'){
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
+            $select['show_select_evento'] = false;
         }
         return view('Configuracion.Agendas.index', $select);
     }
@@ -339,6 +344,64 @@ class AgendaController extends Controller
                 return response()->json(['code' => 500]);
             }
         }
+
+    }
+
+    // Custom functions 
+    public function get_events ( $id_empresa ) {
+        $events = Evento::where('Empresa_id', new ObjectID($id_empresa))->get();
+        if ($events) {
+            // We get Id of agenda App
+            $agenda =  MenuAppInvitado::where('Nombre', 'Agenda')->get();
+            $agenda_id = $agenda ? $agenda[0]->_id : null;
+            $data_events = [];
+            foreach ($events as $event) {
+                if (count($event['MenuApp'])) {      
+                    if (in_array($agenda_id, $event['MenuApp'])) {
+                        $data_events[] = $event;
+                    }                    
+                }
+            }
+            if ($data_events) {
+                return response()->json(['code' => 200, 'data' => $data_events]);
+            } else {
+                return response()->json(['code' => 404, 'message' => 'Empresa no posee eventos con Agenda']);
+            }       
+            
+        } else {
+             return response()->json(['code' => 404, 'message' => 'Empresa no posee eventos']);
+        }
+    }
+
+    public function datatable_get_agendas( $id_evento ) {
+
+        if ($id_evento == 0) {
+            return DataTables::collection( [] )->make(true);
+        } else {
+            $agendas = Agenda::where('Evento_id', new ObjectID($id_evento))->get();
+            $data_agendas = [];
+
+            //verifico que exista data sino lo devulevo vacio
+            if($agendas){
+
+                foreach ($agendas as $agenda) {
+
+                    //armo la data que se muestra en la tabla de inicio de la pagina de agendas
+                    $evento = Evento::where('_id',$agenda->Evento_id)->get()[0];
+                    $data_agendas[] = [
+                        '_id'    => $agenda->_id,
+                        'Titulo' => strtoupper($agenda->Titulo),
+                        'Descripcion' => $agenda->Descripcion,
+                        'Evento' => $evento->Nombre,
+                        'Hora'  => $agenda->Hora,
+                        'Fecha' => $evento->Fecha
+                    ];
+                }
+
+            }
+
+            return DataTables::collection( $data_agendas )->make(true);
+        }       
 
     }
 
