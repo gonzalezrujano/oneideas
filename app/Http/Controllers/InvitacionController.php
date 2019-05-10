@@ -229,9 +229,9 @@ class InvitacionController extends Controller
             $data = [
                 'id-evento'             => new ObjectID($input['id-evento']),
                 'modo'                  => $input['tipo'] == 'v' ? 'VERTICAL' : 'HORIZONTAL',
-                'pathimg'               => $pathSave.$nameImg,
+                'pathimg'               => url('/').'/OneShow/'.$pathSave.$nameImg,
                 'sizeimg'               => $fileDataImg['size'],
-                'pathpdf'               => $archivopdf  ? $pathSave.$namePdf : '',
+                'pathpdf'               => $archivopdf  ? url('/').'/OneShow/'.$pathSave.$namePdf : '',
                 'sizepdf'               => $fileDataPdf['size'],
                 'activo'           => true,
                 'borrado'          => false
