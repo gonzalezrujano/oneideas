@@ -20,6 +20,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/ajax-agenda',
+        '/ajax-agenda-add',
+        '/ajax-agenda-update',
+        'ajax-agenda-delete',
         '/ajax-get-events/{id}',
         '/ajax-dt-get-agendas/{id}',
         '/ajax-empresa',

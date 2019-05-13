@@ -147,9 +147,8 @@
                             var ver      = showAction ? '<a href=" ' +linkShow+ ' "><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Ver" class="fas fa-eye"></i></a>&nbsp;&nbsp;&nbsp;' : '';
                             var editar   = editAction ? '<a href=" ' +linkEdit+ ' "><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Editar" class="fas fa-edit" ></i></a>&nbsp;&nbsp;&nbsp;' : '';
                             var borrar   = deleteAction ? '<a onclick="modalDelete(\''+row._id+'\')"><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Borrar" class="fas fa-trash-alt"></i></a>&nbsp;&nbsp;&nbsp;' : '';
-                            var evento = eventoAction ? '<a href=" '+ linkEvento + ' "><i style="color: #ffffff; cursor: pointer" data-toggle="tooltip" data-placement="top" title="Evento" class="fas fa-calendar-week"></i></a>&nbsp;&nbsp;&nbsp;' : '';
 
-                            var acciones = '<div class="text-center">' + ver + editar + borrar + evento + '</div>';
+                            var acciones = '<div class="text-center">' + ver + editar + borrar + '</div>';
 
                             return acciones;
                         }
@@ -217,6 +216,43 @@
             div_show_table.addClass('hide');
         }
 
+        function modalDelete(id){
+
+            Swal.fire({
+                text: "¿Está seguro que desea borrar la actividad de la agenda?.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#343a40",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                target: document.getElementById('sweet')
+            }).then((result) => {
+
+                if (result.value) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: './ajax-agenda-delete',
+                        data: {'id': id},
+                        dataType: 'json',
+                        beforeSend: function() {
+                        },
+                        success: function(rs) {
+
+                            if(rs.code === 200) {
+                                sweetalert("Item eliminado correctamente", "success", "sweet");
+                                $('#dt_agendas').DataTable().ajax.reload();
+                            }else if(rs.code === 600){
+                                sweetalert("Error en el Proceso de Eliminacion. Consulte al Administrador", "error", "sweet");
+                            }else if(rs.code == 500){
+                                sweetalert("Error al Eliminar. Consulte al Administrador", "error", "sweet");
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
     </script>
 
 @endsection

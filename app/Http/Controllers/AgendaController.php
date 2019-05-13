@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use App\Pdf\Empresa\QRPDF;
 use Carbon\Carbon;
 use MongoDB\BSON\ObjectID;
-use DB, DataTables, Image, Storage, File, Auth;
+use DB, DataTables, Image, Storage, File, Auth, Session;
 
 //controlador encargado de la seccion empresa
 class AgendaController extends Controller
@@ -57,12 +57,11 @@ class AgendaController extends Controller
 
     //metodo para llamar la vista de agregar empresa
     public function viewAdd(){
-
-        $select['paises'] = Pais::borrado(false)->get();
-        $select['estados'] = Estado::borrado(false)->get();
-
-        //devuleve la vista
-        return view('Configuracion.Empresas.add', $select);
+        $evento = Evento::where('_id', Session::get('last_event'))->get()[0];
+        $select = ['evento' => $evento];
+        //return view
+        return view('Configuracion.Agendas.add', $select);
+        //return response()->json(['code' => Session::get('last_event') ]);
     }
 
     //metodo para llamar la vista de ver empresa
@@ -73,10 +72,8 @@ class AgendaController extends Controller
         $registro = Agenda::find($id);
 
         if($registro){
-
             $data['existe'] = true;
-            $data['paises'] = Pais::borrado(false)->get();
-            $data['estados'] = Estado::borrado(false)->get();
+            $data['evento'] = Evento::where('_id', $registro->Evento_id)->get()[0];
             $data['agenda'] = $registro;
 
         }
@@ -95,10 +92,8 @@ class AgendaController extends Controller
         if($registro){
 
             $data['existe'] = true;
-            $data['paises'] = Pais::borrado(false)->get();
-            $data['estados'] = Estado::borrado(false)->get();
             $data['agenda'] = $registro;
-
+            $data['evento'] = Evento::where('_id', $registro->Evento_id)->get()[0];
         }
 
         //devuleve la vista
@@ -149,60 +144,21 @@ class AgendaController extends Controller
     }
 
     //metodo para agregar las empresas
-    public function ajaxAdd(ValidateEmpresa $request){
+    public function ajaxAdd(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
 
-            $input = $request->all();
-
-            //guardo la imagen en una variable
-            $image = $input['logo'];
-            //ubico la ruta de la imagen
-            $path = $image->getRealPath();
-            //obtengo la extension
-            $type = $image->getClientOriginalExtension();
-            //creo un nombre temporal
-            $name = time().'.'.$type;
-            //ruta imagen temporal
-            $pathImgTemporal = public_path('images/'.$name);
-            //proceso la imagen a 200x200
-            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
-            //obtengo la data de la imagen
-            $data = file_get_contents($pathImgTemporal);
-            //convierto a base64
-            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-            //elimino imagen temporal
-            File::delete($pathImgTemporal);
-
-
-            //capturo los datos y los acomodo en un arreglo
-            $data = [
-                'identificacion'   => strtoupper($input['identificacion']),
-                'nombre'           => $input['nombre'],
-                'correo'           => $input['correo'],
-                'telefono'         => $input['telefono'],
-                'pais'             => new ObjectID($input['pais']),
-                'estatus'          => (boolean) $input['estatus'],
-                'logo'             => $base64,
-                'borrado'          => false
-            ];
-
-            //procedo a guardarlos en la bd
-            $registro                            = new Empresa;
-            $registro->Cuit_rut                  = $data['identificacion'];
-            $registro->Nombre                    = $data['nombre'];
-            $registro->Correo                    = $data['correo'];
-            $registro->Telefono                  = $data['telefono'];
-            $registro->Pais_id                   = $data['pais'];
-            $registro->Activo                    = $data['estatus'];
-            $registro->Logo                      = $data['logo'];
-            $registro->Borrado                   = $data['borrado'];
-
-            //verifico si fue exitoso el insert en la bd
-            if($registro->save()){
-                return response()->json(['code' => 200]);
-            }else{
+            $data = $request->all();
+            $registro =  new Agenda;
+            $registro->Hora = $data['hora'];
+            $registro->Titulo = $data['titulo'];
+            $registro->Descripcion = $data['descripcion'];
+            $registro->Evento_id = new ObjectID($data['evento_id']); //Session::get('last_event');
+            $saved = $registro->save();
+            if ($saved) {
+                return response()->json(['code' => 200, 'last_id' => $registro->id]);
+            } else {
                 return response()->json(['code' => 500]);
             }
         }
@@ -210,67 +166,19 @@ class AgendaController extends Controller
     }
 
     //metodo para actualizar las empresas
-    public function ajaxUpdate(ValidateEmpresa $request){
+    public function ajaxUpdate(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
-
             //obtengo todos los datos del formulario
-            $input = $request->all();
-
-            //instancio los datos de la empresa a editar
-            $registro = Empresa::find($input['emp-id']);
-
-            //guardo la imagen en una variable
-            $image = $input['logo'];
-
-            //valido que la imagen este o no vacio, si esta vacia vuelvo a guardar la imagen actual sino la actualizo
-            if($image == 'undefined'){
-                $base64 = $registro->Logo;
-            }else{
-
-                //ubico la ruta de la imagen
-                $path = $image->getRealPath();
-                //obtengo la extension
-                $type = $image->getClientOriginalExtension();
-                //creo un nombre temporal
-                $name = time().'.'.$type;
-                //ruta imagen temporal
-                $pathImgTemporal = public_path('images/'.$name);
-                //proceso la imagen a 200x200
-                $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
-                //obtengo la data de la imagen
-                $data = file_get_contents($pathImgTemporal);
-                //convierto a base64
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                //elimino imagen temporal
-                File::delete($pathImgTemporal);
-
-            }
-
-            //capturo los datos y los acomodo en un arreglo
-            $data = [
-                'identificacion'   => strtoupper($input['identificacion']),
-                'nombre'           => $input['nombre'],
-                'correo'           => $input['correo'],
-                'telefono'         => $input['telefono'],
-                'pais'             => new ObjectID($input['pais']),
-                'estatus'          => $input['estatus'] == 0 ? false : true,
-                'logo'             => $base64
-            ];
-
-            //procedo a guardarlos en la bd
-            $registro->Cuit_rut                  = $data['identificacion'];
-            $registro->Nombre                    = $data['nombre'];
-            $registro->Correo                    = $data['correo'];
-            $registro->Telefono                  = $data['telefono'];
-            $registro->Pais_id                   = $data['pais'];
-            $registro->Activo                    = (boolean) $data['estatus'];
-            $registro->Logo                      = $data['logo'];
-
-            //verifico si fue exitoso el insert en la bd
-            if($registro->save()){
-                return response()->json(['code' => 200]);
+            $data = $request->all();
+            $agenda = Agenda::find($data['agenda_id']);
+            $agenda->Titulo = $data['titulo'];
+            $agenda->Hora = $data['hora'];
+            $agenda->Descripcion = $data['descripcion'];
+            
+            if($agenda->save()){
+                return response()->json(['code' => 200, 'data' => $data]);
             }else{
                 return response()->json(['code' => 500]);
             }
@@ -292,14 +200,12 @@ class AgendaController extends Controller
             if($id){
 
                 //ubico el id en la bd
-                $registro = Empresa::find($id);
-                $registro->Borrado = true;
+                $registro = Agenda::find($id);
 
                 //DB::table('Sucursales')->where('Empresa_id', new ObjectId($id))->update(['Borrado' => true]);
 
                 //valido que de verdad sea borrado en caso de que no arrojo un error
-                if($registro->save()){
-
+                if($registro->delete()){
                     return json_encode(['code' => 200]);
                 }else{
                     return json_encode(['code' => 500]);
@@ -378,6 +284,12 @@ class AgendaController extends Controller
         if ($id_evento == 0) {
             return DataTables::collection( [] )->make(true);
         } else {
+            // Setting id_evento on session
+            $last_event = Session::get('last_event');
+            if ($last_event)
+                Session::put('last_event', $id_evento);
+            else
+                Session::push('last_event', $id_evento);
             $agendas = Agenda::where('Evento_id', new ObjectID($id_evento))->get();
             $data_agendas = [];
 
