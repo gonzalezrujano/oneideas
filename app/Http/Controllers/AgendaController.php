@@ -4,20 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\MongoDB\Agenda;
 use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\MenuAppInvitado;
-use App\Http\Requests\ValidateEmpresa;
-use App\Models\MongoDB\Departamento;
-use App\Models\MongoDB\Localidad;
-use App\Models\MongoDB\MedioPago;
-use App\Models\MongoDB\Pais;
 use App\Models\MongoDB\Empresa;
-use App\Models\MongoDB\Provincia;
-use App\Models\MongoDB\Estado;
-use App\Models\MongoDB\Cobranza;
-use App\Models\MongoDB\Sucursal;
-use App\Models\MongoDB\TipoDocumento;
-use App\Models\MongoDB\TipoRubro;
+
 use Illuminate\Http\Request;
-use App\Pdf\Empresa\QRPDF;
+
 use Carbon\Carbon;
 use MongoDB\BSON\ObjectID;
 use DB, DataTables, Image, Storage, File, Auth, Session;
@@ -214,40 +204,6 @@ class AgendaController extends Controller
             }else{
 
                 return json_encode(['code' => 600]);
-            }
-        }
-
-    }
-
-    //metodo para obtener la data de la empresa
-    public function ajaxGet(Request $request){
-
-        //verifico que la respuesta venga por ajax
-        if($request->ajax()){
-
-            //capturo el id de la empresa
-            $input = $request->all();
-            $id = $input['id'];
-
-            //verifico que el id no venga vacio, si es asi mando un error
-            if($id){
-
-                //busco la empresa en la bd con el id correspondiente
-                $empresa = Empresa::find($id);
-                $pais = Pais::borrado(false)->get();
-                $estatus = Estado::borrado(false)->get();
-
-                //devuelvo un json con la data
-                return response()->json([
-                    'code' => 200,
-                    'empresa' => $empresa,
-                    'estatus' => $estatus,
-                    'pais'    => $pais
-                ]);
-
-            }else{
-                //devuelvo un json en caso de que no exista el id de la empresa venga vacio
-                return response()->json(['code' => 500]);
             }
         }
 

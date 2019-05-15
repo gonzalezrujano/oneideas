@@ -126,6 +126,25 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/ajax-get-events/{id}', 'AgendaController@get_events');
         Route::get('/ajax-dt-get-agendas/{id}', 'AgendaController@datatable_get_agendas');
 
+        // Routes for Menu Gastronimico Etapas
+        Route::get('/menu_etapas', 'MenugEtapasController@index')->name('configuracion.menug_etapas');
+        Route::get('/menu-etapas-add', 'MenugEtapasController@viewAdd')->name('menuge-add');
+        Route::post('/ajax-menu-etapas', 'MenugEtapasController@ajaxDatatables');
+        Route::post('/ajax-menu-etapas-add', 'MenugEtapasController@ajaxAdd');
+        Route::get('/menu-etapas-show/{id}/', 'MenugEtapasController@viewShow');
+        Route::get('/menu-etapas-edit/{id}/', 'MenugEtapasController@viewEdit');
+        Route::post('/ajax-menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
+        Route::post('/ajax-menu-etapas-delete', 'MenugEtapasController@ajaxDelete');
+
+        // Routes for Menu Gastronimico Etapas
+        Route::get('/menu_platos', 'MenugPlatosController@index')->name('configuracion.menug_platos');
+        Route::get('/menu-platos-add', 'MenugPlatosController@viewAdd')->name('menugp-add');
+        Route::post('/ajax-menu-platos', 'MenugPlatosController@ajaxDatatables');
+        Route::post('/ajax-menu-platos-add', 'MenugPlatosController@ajaxAdd');
+        Route::get('/menu-platos-show/{id}/', 'MenugPlatosController@viewShow');
+        Route::get('/menu-platos-edit/{id}/', 'MenugPlatosController@viewEdit');
+        Route::post('/ajax-menu-platos-update', 'MenugPlatosController@ajaxUpdate');
+        Route::post('/ajax-menu-platos-delete', 'MenugPlatosController@ajaxDelete');
     });
 
 
