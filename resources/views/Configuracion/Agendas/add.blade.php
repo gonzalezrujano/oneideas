@@ -94,6 +94,9 @@
                         type:'POST',
                         url: './ajax-agenda-add/',
                         data: form.serialize(),
+                        contentType: false,
+                        cache: false,
+                        processData:false,
                         beforeSend: function(){
                             $('button#save_agenda').prepend('<i class="fa fa-spinner fa-spin"></i> ');
                          },
