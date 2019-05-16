@@ -83,17 +83,23 @@
             $('button#save_agenda').click(add_agenda)
 
             function add_agenda() {
+
                 var form = $('form#form-add-agenda');
+                let formData = new FormData();
                 var titulo = $('input#titulo').val();
                 var hora = $('input#hora').val();
                 var descripcion = $('textarea#descripcion').val();
                 if (titulo.trim() == '' || hora.trim() == '' || descripcion.trim() == '') {
                     sweetalert('Por favor introduzca todos los campos', 'warning', 'sweet');
                 } else {
+                    formData.append("hora", hora);
+                    formData.append("titulo", titulo);
+                    formData.append("descripcion", descripcion);
+                    formData.append("evento_id",  $('input#evento_id').val());
                     $.ajax({
                         type:'POST',
                         url: './ajax-agenda-add/',
-                        data: form.serialize(),
+                        data: formData,
                         contentType: false,
                         cache: false,
                         processData:false,
