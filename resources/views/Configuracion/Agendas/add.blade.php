@@ -91,8 +91,8 @@
                     sweetalert('Por favor introduzca todos los campos', 'warning', 'sweet');
                 } else {
                     $.ajax({
-                        url: './ajax-agenda-add/',
                         type:'POST',
+                        url: './ajax-agenda-add/',
                         data: form.serialize(),
                         beforeSend: function(){
                             $('button#save_agenda').prepend('<i class="fa fa-spinner fa-spin"></i> ');
