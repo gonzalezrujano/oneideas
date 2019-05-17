@@ -82,7 +82,7 @@
                 "paging": true,
                 "deferRender": true,
                 "ajax": {
-                    "url": "./ajax-menu-platos/",
+                    "url": "./ajax-menu-platos",
                     "type": "POST"
                 },
                 "columns":[

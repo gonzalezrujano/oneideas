@@ -118,7 +118,7 @@
                     sweetalert('Por favor introduzca todos los campos', 'warning', 'sweet');
                 } else {
                     $.ajax({
-                        url: '../ajax-menu-platos-update/',
+                        url: '../ajax-menu-platos-update',
                         type:'POST',
                         data: form.serialize(),
                         beforeSend: function(){

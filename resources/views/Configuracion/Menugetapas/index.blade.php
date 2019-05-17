@@ -81,7 +81,7 @@
                 "paging": true,
                 "deferRender": true,
                 "ajax": {
-                    "url": "./ajax-menu-etapas/",
+                    "url": "./ajax-menu-etapas",
                     "type": "POST"
                 },
                 "columns":[

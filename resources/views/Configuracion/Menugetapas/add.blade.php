@@ -93,7 +93,7 @@
                     sweetalert('Por favor introduzca todos los campos', 'warning', 'sweet');
                 } else {
                     $.ajax({
-                        url: './ajax-menu-etapas-add/',
+                        url: './ajax-menu-etapas-add',
                         type:'POST',
                         data: form.serialize(),
                         beforeSend: function(){
