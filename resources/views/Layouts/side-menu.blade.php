@@ -119,13 +119,13 @@
                         </a>
                     </li>
                 @endif
-                @if(Auth::user()->hasPermission('etapas', 'show'))
+                <!-- @if(Auth::user()->hasPermission('etapas', 'show'))
                     <li class="sidebar-nav-link">
                         <a href="{{ route('configuracion.menug_platos') }}">
                             <i class="fas fa-coffee sidebar-nav-link-logo"></i> Menú Gastronómico
                         </a>
                     </li>
-                @endif
+                @endif -->
                 @if(Auth::user()->hasPermission('etapas', 'show'))
                     <li class="sidebar-nav-link">
                         <a href="{{ route('configuracion.menug_etapas') }}">

@@ -126,8 +126,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/agenda-add', 'AgendaController@viewAdd')->name('agenda-add');
         Route::post('/ajax-agenda', 'AgendaController@ajaxDatatables');
         Route::post('/ajax-agenda-add', 'AgendaController@ajaxAdd');
-        Route::get('/agenda-show/{id}/', 'AgendaController@viewShow');
-        Route::get('/agenda-edit/{id}/', 'AgendaController@viewEdit');
+        Route::get('/agenda-show/{id}', 'AgendaController@viewShow');
+        Route::get('/agenda-edit/{id}', 'AgendaController@viewEdit');
         Route::post('/ajax-agenda-update', 'AgendaController@ajaxUpdate');
         Route::post('/ajax-agenda-delete', 'AgendaController@ajaxDelete');
         Route::post('/ajax-get-events/', 'AgendaController@get_events');
@@ -138,8 +138,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/menu-etapas-add', 'MenugEtapasController@viewAdd')->name('menuge-add');
         Route::post('/ajax-menu-etapas', 'MenugEtapasController@ajaxDatatables');
         Route::post('/ajax-menu-etapas-add', 'MenugEtapasController@ajaxAdd');
-        Route::get('/menu-etapas-show/{id}/', 'MenugEtapasController@viewShow');
-        Route::get('/menu-etapas-edit/{id}/', 'MenugEtapasController@viewEdit');
+        Route::get('/menu-etapas-show/{id}', 'MenugEtapasController@viewShow');
+        Route::get('/menu-etapas-edit/{id}', 'MenugEtapasController@viewEdit');
         Route::post('/ajax-menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
         Route::post('/ajax-menu-etapas-delete', 'MenugEtapasController@ajaxDelete');
 
@@ -148,8 +148,8 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/menu-platos-add', 'MenugPlatosController@viewAdd')->name('menugp-add');
         Route::post('/ajax-menu-platos', 'MenugPlatosController@ajaxDatatables');
         Route::post('/ajax-menu-platos-add', 'MenugPlatosController@ajaxAdd');
-        Route::get('/menu-platos-show/{id}/', 'MenugPlatosController@viewShow');
-        Route::get('/menu-platos-edit/{id}/', 'MenugPlatosController@viewEdit');
+        Route::get('/menu-platos-show/{id}', 'MenugPlatosController@viewShow');
+        Route::get('/menu-platos-edit/{id}', 'MenugPlatosController@viewEdit');
         Route::post('/ajax-menu-platos-update', 'MenugPlatosController@ajaxUpdate');
         Route::post('/ajax-menu-platos-delete', 'MenugPlatosController@ajaxDelete');
     });

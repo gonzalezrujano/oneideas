@@ -244,11 +244,12 @@ class AgendaController extends Controller
             return DataTables::collection( [] )->make(true);
         } else {
             // Setting id_evento on session
+            Session::put('last_event', $id_evento);
             $last_event = Session::get('last_event');
-            if ($last_event)
-                Session::put('last_event', $id_evento);
-            else
-                Session::push('last_event', $id_evento);
+            // if ($last_event)
+            //     Session::put('last_event', $id_evento);
+            // else
+            //     Session::push('last_event', $id_evento);
             $agendas = Agenda::where('Evento_id', new ObjectID($id_evento))->get();
             $data_agendas = [];
 
