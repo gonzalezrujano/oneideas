@@ -109,7 +109,7 @@
                     formData.append("agenda_id",  $('input#agenda_id').val());
                     $.ajax({
                         type:'POST',
-                        url: '../ajax-agenda-update/',
+                        url: '../ajax-agenda-update',
                         data: formData,
                         contentType: false,
                         cache: false,
