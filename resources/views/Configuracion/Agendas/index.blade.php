@@ -181,7 +181,7 @@
                 var select_event = $('select#pro-find-evento');
                 select_event.html('');
                 $.ajax({
-                    url: './ajax-get-events/',
+                    url: './ajax-get-events',
                     type:'POST',
                     data: {'id_empresa': id_empresa},
                     dataType: 'json',
