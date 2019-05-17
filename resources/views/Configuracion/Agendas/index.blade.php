@@ -184,6 +184,7 @@
                     url: './ajax-get-events/',
                     type:'POST',
                     data: {'id_empresa': id_empresa},
+                    dataType: 'json',
                     success:function(result){
                         if (result.code == 200) {
                             var events = result.data;
