@@ -22,3 +22,15 @@
     </div>
 
 @endsection
+
+@section('javascript')
+
+    <script type="text/javascript">
+
+        $(function(){
+            localStorage.setItem("auto_load_agenda", "0");        });
+
+
+    </script>
+
+@endsection

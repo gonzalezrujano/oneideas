@@ -131,7 +131,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::post('/ajax-agenda-update', 'AgendaController@ajaxUpdate');
         Route::post('/ajax-agenda-delete', 'AgendaController@ajaxDelete');
         Route::post('/ajax-get-events/', 'AgendaController@get_events');
-        Route::post('/ajax-dt-get-agendas/{id}', 'AgendaController@datatable_get_agendas');
+        Route::post('/ajax-dt-get-agendas/{id}/{fecha}', 'AgendaController@datatable_get_agendas');
 
         // Routes for Menu Gastronimico Etapas
         Route::get('/menu_etapas', 'MenugEtapasController@index')->name('configuracion.menug_etapas');

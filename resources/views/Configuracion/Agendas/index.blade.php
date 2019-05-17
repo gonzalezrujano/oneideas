@@ -13,11 +13,11 @@
 
             <div class="widget-body">
                 <div class="row">
-                    <div class="form-inline mb-6 col-md-5">
+                    <div class="form-inline mb-4 col-md-4">
                         <label class="my-1 mr-2 form-control-sm"><strong>Empresa</strong></label>
                         <select class="form-control form-control-sm my-1 mr-sm-4 col-6" id="pro-find-empresa" name="pro-find-empresa" {{ strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR'  ? '' : 'disabled' }} >
                             @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR')
-                                <option value="">Todas</option>
+                                <option value="">Seleccione</option>
                             @endif
 
                             @foreach($empresas as $emp)
@@ -27,16 +27,20 @@
                         </select>
                         @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR')
                             <button id="p-limpiar" class="btn btn-dark btn-sm mr-1" data-toggle="tooltip" data-placement="top" title="Limpiar Busqueda"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        @endif
-                        
-
+                        @endif                     
                     </div>
-                    <div class="form-inline mb-6 col-md-5">
+                    @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR' || strtoupper(Auth::user()->nameRol()) == 'EMPRESA')
+                        <div class="form-inline mb-4 col-md-4">
+                            <label class="my-1 mr-2 form-control-sm"><strong>Fecha</strong></label>
+                            <input {{ $active_fecha ? '' : 'disabled' }} type="date" class="form-control form-control-sm my-1 mr-sm-4 col-8" name="fecha" value="" id="fecha">
+                        </div>
+                    @endif
+                    <div class="form-inline mb-4 col-md-4">
                         <label class="my-1 mr-2 form-control-sm"><strong>Evento</strong></label>
                         <select {{ $show_select_evento ? '' : 'disabled' }} class="form-control form-control-sm my-1 mr-sm-4 col-6" id="pro-find-evento" name="pro-find-evento">                            
                             @if(isset($eventos) && count($eventos))
                                 @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR' || strtoupper(Auth::user()->nameRol()) == 'EMPRESA')
-                                    <option value="">Seleccione</option>
+                                    <option value="0">Seleccione</option>
                                 @endif
                                  @foreach($eventos as $evento)
                                     <option value="{{ $evento->_id }}">{{ $evento->Nombre }}</option>
@@ -45,9 +49,7 @@
                         </select>
                         @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR' || strtoupper(Auth::user()->nameRol()) == 'EMPRESA')
                             <button id="evento-limpiar" class="btn btn-dark btn-sm mr-1" data-toggle="tooltip" data-placement="top" title="Limpiar Busqueda"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        @endif
-                        
-
+                        @endif                   
                     </div>
                 </div>
                 <hr>
@@ -77,7 +79,12 @@
     <script type="text/javascript">
 
         // Set variables helpers //
+        window.data_store = {!! json_encode([
+            'empresas' => $empresas ? $empresas : null,
+            'eventos'   => $eventos ? $eventos : null
+        ]) !!};
         var rol = "{{ strtoupper(Auth::user()->nameRol())  }}";
+        var fecha_filter = $("input#fecha").val() ? $("input#fecha").val() : 'all';
         var id_empresa = 0;
         var id_evento = "{{ strtoupper(Auth::user()->nameRol()) != 'EVENTO' ? 0 : $eventos[0]->_id }}";
         var div_show_table = $('div#show_table');
@@ -86,6 +93,17 @@
         $('#evento-limpiar').click(clear_evento);
         $('select#pro-find-empresa').change(search_empresas);
         $('select#pro-find-evento').change(search_agendas);
+        $('input#fecha').change(function() {
+            var date = $("input#fecha").val();
+            if(date){
+                var date_array = date.split('-');
+                fecha_filter = date_array[2] + '-' + date_array[1] + '-' + date_array[0];
+            } else {
+                fecha_filter = "all";
+            }
+            datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento + '/' + fecha_filter).load();    
+            setTimeout(function(){ div_show_table.removeClass('hide') }, 750);    
+        });
         // ===================================
         let linkAdd        =  "{{ route('agenda-add')  }}";
         var addAction      = "{{ Auth::user()->hasPermission('agenda', 'add')  }}";
@@ -127,7 +145,7 @@
                 "paging": true,
                 "deferRender": true,
                 "ajax": {
-                    "url": "./ajax-dt-get-agendas/" + id_evento,
+                    "url": "./ajax-dt-get-agendas/" + id_evento + '/' + fecha_filter,
                     "type": "POST"
                 },
                 "columns":[
@@ -159,7 +177,7 @@
                 ]
             });
                
-
+        autoload_agenda();
         // Custom function of View
 
         function clear_empresa() {
@@ -169,21 +187,67 @@
             datatable_agenda.DataTable().clear().draw();
             id_evento = 0;
             id_empresa = 0;
-            datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento ).load();
+            datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento + '/' + fecha_filter).load();
             div_show_table.addClass('hide');
         }
 
         function search_empresas() {
+            $('select#pro-find-evento').html('');
+            div_show_table.addClass('hide');
             id_empresa = $('#pro-find-empresa').val();
             if (id_empresa == 0 || id_empresa == '') {
                 sweetalert("Por favor seleccione una empresa válida", "warning", "sweet");
+                 $("input#fecha").attr('disabled', true);
             } else {
+                $("input#fecha").removeAttr('disabled');
+                localStorage.setItem("empresa_id", id_empresa);
                 var select_event = $('select#pro-find-evento');
                 select_event.html('');
+                get_event_cache(id_empresa);                
+            }
+        }
+
+        function search_agendas() {
+            id_evento = $('#pro-find-evento').val();
+            if (id_evento == '' || id_evento == 0) {
+                sweetalert("Por favor seleccione un evento válido", "warning", "sweet");
+            } else {
+                localStorage.setItem("evento_id", id_evento);
+                datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento + '/' + fecha_filter).load();
+                setTimeout(function(){ div_show_table.removeClass('hide') }, 750);
+            }
+        }
+
+        function clear_evento() {
+            $('select#pro-find-evento').prop('selectedIndex',0);
+            datatable_agenda.DataTable().clear().draw();
+            id_evento = 0;
+            datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento + '/' + fecha_filter).load();
+            div_show_table.addClass('hide');
+        }
+
+        function get_event_cache( empresa_id ) {
+            var select_event = $('select#pro-find-evento');
+            if (window.data_store) {
+                var data_length = data_store.eventos.length;
+                if (data_length) {
+                    select_event.append('<option value="0">Seleccione</option>');
+                    for (var i = 0; i < data_length; i++) {
+                        if (data_store.eventos[i].Empresa_id == empresa_id) {
+                            //console.log('evento', data_store.eventos[i].Nombre)
+                            select_event.append('<option value="'+data_store.eventos[i]._id+'">'+data_store.eventos[i].Nombre+'</option>');
+                        }
+                    }
+                    select_event.removeAttr('disabled');
+                } else {
+                    sweetalert('La empresa no posee eventos', 'warning', 'sweet');
+                }               
+                
+            } else {
                 $.ajax({
                     url: './ajax-get-events',
                     type:'POST',
-                    data: {'id_empresa': id_empresa},
+                    data: {'id_empresa': empresa_id},
                     dataType: 'json',
                     success:function(result){
                         if (result.code == 200) {
@@ -200,24 +264,6 @@
                     }
                 })
             }
-        }
-
-        function search_agendas() {
-            id_evento = $('#pro-find-evento').val();
-            if (id_evento == '' || id_evento == 0) {
-                sweetalert("Por favor seleccione un evento válido", "warning", "sweet");
-            } else {
-                datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento ).load();
-                div_show_table.removeClass('hide');
-            }
-        }
-
-        function clear_evento() {
-            $('select#pro-find-evento').prop('selectedIndex',0);
-            datatable_agenda.DataTable().clear().draw();
-            id_evento = 0;
-            datatable_agenda.DataTable().ajax.url( "./ajax-dt-get-agendas/" + id_evento ).load();
-            div_show_table.addClass('hide');
         }
 
         function modalDelete(id){
@@ -255,6 +301,18 @@
                     });
                 }
             });
+
+        }
+
+        function autoload_agenda() {
+            if(localStorage.getItem("empresa_id") != null) {
+                if (localStorage.getItem("auto_load_agenda") == 1) {
+                    $('#pro-find-empresa').val(localStorage.getItem("empresa_id"));
+                    $('select#pro-find-evento').val(localStorage.getItem("evento_id"));
+                    $('select#pro-find-evento').removeAttr('disabled');
+                    search_agendas();
+                }
+            }
 
         }
     </script>

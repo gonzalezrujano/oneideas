@@ -27,14 +27,17 @@ class AgendaController extends Controller
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
-            $select['show_select_evento'] = false;            
+            $select['eventos'] = Evento::where('Empresa_id',Auth::user()->Empresa_id)->get();
+            $select['show_select_evento'] = false;
+            $select['active_fecha'] = false; 
 
         }else if($rol == 'EMPRESA'){
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
-            $select['eventos'] = Evento::where('Empresa_id',Auth::user()->Empresa_id)->get();
+            $select['eventos'] = Evento::borrado(false)->activo(true)->get();
             $select['show_select_evento'] = true;
+            $select['active_fecha'] = true; 
 
         }else if($rol == 'EVENTO'){
 
@@ -42,6 +45,7 @@ class AgendaController extends Controller
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
             $select['eventos'] = Evento::where('_id',Auth::user()->Evento_id)->get();
             $select['show_select_evento'] = false;
+            $select['active_fecha'] = false; 
         }
         return view('Configuracion.Agendas.index', $select);
     }
@@ -238,39 +242,43 @@ class AgendaController extends Controller
         }
     }
 
-    public function datatable_get_agendas( $id_evento ) {
-
-        if ($id_evento == 0) {
-            return DataTables::collection( [] )->make(true);
-        } else {
-            // Setting id_evento on session
-            Session::put('last_event', $id_evento);
-            $last_event = Session::get('last_event');
+    public function datatable_get_agendas( $id_evento, $fecha ) {
+        // Setting id_evento on session
+        $rol = strtoupper(Auth::user()->nameRol());
+        Session::put('last_event', $id_evento);
+        $last_event = Session::get('last_event');
+        $empresa = Empresa::where('_id', Auth::user()->Empresa_id )->get();
+        if ($fecha == 'all' && $id_evento != 0) {
             $agendas = Agenda::where('Evento_id', new ObjectID($id_evento))->get();
-            $data_agendas = [];
+        } elseif ($fecha != 'all' && $id_evento != 0) {
+            $agendas = Agenda::where('Evento_id', new ObjectID($id_evento))->get();
+        } else {
+            $fecha_filter = str_replace('-', '/', $fecha);
+            $agendas = Agenda::where('Fecha',$fecha_filter)->get();
+        }
+        
+        $data_agendas = [];
 
-            //verifico que exista data sino lo devulevo vacio
-            if($agendas){
+        //verifico que exista data sino lo devulevo vacio
+        if($agendas){
 
-                foreach ($agendas as $agenda) {
+            foreach ($agendas as $agenda) {
 
-                    //armo la data que se muestra en la tabla de inicio de la pagina de agendas
-                    $evento = Evento::where('_id',$agenda->Evento_id)->get()[0];
-                    $data_agendas[] = [
-                        '_id'    => $agenda->_id,
-                        'Titulo' => strtoupper($agenda->Titulo),
-                        'Descripcion' => $agenda->Descripcion,
-                        'Evento' => $evento->Nombre,
-                        'Hora'  => $agenda->Hora,
-                        'Fecha' => $evento->Fecha
-                    ];
-                }
-
+                //armo la data que se muestra en la tabla de inicio de la pagina de agendas
+                $evento = Evento::where('_id',$agenda->Evento_id)->get()[0];
+                $data_agendas[] = [
+                    '_id'    => $agenda->_id,
+                    'Titulo' => strtoupper($agenda->Titulo),
+                    'Descripcion' => $agenda->Descripcion,
+                    'Evento' => $evento->Nombre,
+                    'Hora'  => $agenda->Hora,
+                    'Fecha' => $agenda->Fecha
+                ];
             }
 
-            return DataTables::collection( $data_agendas )->make(true);
-        }       
+        }
 
+        return DataTables::collection( $data_agendas )->make(true);
     }
 
 }

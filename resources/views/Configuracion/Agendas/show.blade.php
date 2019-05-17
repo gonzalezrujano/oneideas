@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label col-form-label-sm">Título</label>
+                                    <label class="col-sm-2 col-form-label col-form-label-sm">Descripción</label>
                                     <div class="col-sm-4">
                                         <textarea class="form-control form-control-sm" disabled>{{$agenda->Descripcion}}
                                         </textarea>
@@ -89,7 +89,8 @@
     <script type="text/javascript">
 
         $(function(){
-
+            localStorage.setItem("auto_load_agenda", "1");
+            localStorage.setItem("evento_id", "{{$evento->_id}}");
         });
 
 

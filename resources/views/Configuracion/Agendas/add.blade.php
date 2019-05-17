@@ -78,7 +78,7 @@
     <script type="text/javascript">
 
         $(function(){
-
+            localStorage.setItem("auto_load_agenda", "1");
             var linkReturn = "{{ route('configuracion.agenda') }}";
             $('button#save_agenda').click(add_agenda)
 
