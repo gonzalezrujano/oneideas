@@ -33,9 +33,11 @@
                     </div>
                     <div class="form-inline mb-6 col-md-5">
                         <label class="my-1 mr-2 form-control-sm"><strong>Evento</strong></label>
-                        <select {{ $show_select_evento ? '' : 'disabled' }} class="form-control form-control-sm my-1 mr-sm-4 col-6" id="pro-find-evento" name="pro-find-evento">
+                        <select {{ $show_select_evento ? '' : 'disabled' }} class="form-control form-control-sm my-1 mr-sm-4 col-6" id="pro-find-evento" name="pro-find-evento">                            
                             @if(isset($eventos) && count($eventos))
-                                <option value="">Seleccione</option>
+                                @if(strtoupper(Auth::user()->nameRol()) == 'ADMINISTRADOR' || strtoupper(Auth::user()->nameRol()) == 'EMPRESA')
+                                    <option value="">Seleccione</option>
+                                @endif
                                  @foreach($eventos as $evento)
                                     <option value="{{ $evento->_id }}">{{ $evento->Nombre }}</option>
                                 @endforeach
@@ -49,7 +51,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="show_table" class="hide">
+                <div id="show_table" class="{{ strtoupper(Auth::user()->nameRol()) != 'EVENTO' ? 'hide' : '' }}">
                         <table class="table table-hover table-condensed table-dark-theme table-responsive-sm" id="dt_agendas">
                         <thead>
                         <tr>
@@ -77,7 +79,7 @@
         // Set variables helpers //
         var rol = "{{ strtoupper(Auth::user()->nameRol())  }}";
         var id_empresa = 0;
-        var id_evento = 0;
+        var id_evento = "{{ strtoupper(Auth::user()->nameRol()) != 'EVENTO' ? 0 : $eventos[0]->_id }}";
         var div_show_table = $('div#show_table');
         // Events Reactions //
         $("#p-limpiar").click(clear_empresa);
@@ -113,7 +115,7 @@
                     }
                 ],
                 "language": {
-                    "url": "{{ asset('js/Spanish.json') }}"
+                    "url": "{{ asset('js/Spanish.json') }}",
                 },
                 "bLengthChange": false,
                 "bFilter": true,
@@ -125,7 +127,8 @@
                 "paging": true,
                 "deferRender": true,
                 "ajax": {
-                    "url": "./ajax-dt-get-agendas/" + id_evento
+                    "url": "./ajax-dt-get-agendas/" + id_evento,
+                    "type": "POST"
                 },
                 "columns":[
                     {"width": "10%", data: 'Fecha', "searchable": true, "bSortable": false},
@@ -178,9 +181,9 @@
                 var select_event = $('select#pro-find-evento');
                 select_event.html('');
                 $.ajax({
-                    url: './ajax-get-events/' + id_empresa,
-                    type:'GET',
-                    data: null,
+                    url: './ajax-get-events/',
+                    type:'POST',
+                    data: {'id_empresa': id_empresa},
                     success:function(result){
                         if (result.code == 200) {
                             var events = result.data;

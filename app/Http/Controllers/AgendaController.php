@@ -40,6 +40,7 @@ class AgendaController extends Controller
 
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
+            $select['eventos'] = Evento::where('_id',Auth::user()->Evento_id)->get();
             $select['show_select_evento'] = false;
         }
         return view('Configuracion.Agendas.index', $select);
@@ -210,7 +211,9 @@ class AgendaController extends Controller
     }
 
     // Custom functions 
-    public function get_events ( $id_empresa ) {
+    public function get_events (Request $request) {
+        $data = $request->all();
+        $id_empresa = $data['id_empresa'];
         $events = Evento::where('Empresa_id', new ObjectID($id_empresa))->get();
         if ($events) {
             // We get Id of agenda App
