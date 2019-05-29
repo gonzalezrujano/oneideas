@@ -85032,10 +85032,16 @@ function (_Component) {
 
       function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
-        console.log("Connected ");
-        var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
-        message.destinationName = "/empresa/evento/Multimedia";
+        console.log("Connected "); // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        //message.destinationName = "/empresa/evento/Multimedia";
+        // window.mqttCliente.send(message);
+
+        var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1," + fechainicio + "," + fechafin);
+        message.destinationName = "sampletopic";
         window.mqttCliente.send(message);
+        var message2 = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeea388f7c4c5e5910d3/XD1.jpg..1," + fechainicio + "," + fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
       }
 
       function MQTTconnect() {
