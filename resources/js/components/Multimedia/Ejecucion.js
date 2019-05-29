@@ -18,14 +18,7 @@ const Ejecucion = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Luces Flash</td>
-                    <td>15:30:55</td>
-                    <td>15:50:00</td>
-                    <td>Grada, Campo</td>
-                    <td>Intermitencia 30ms</td>
-                    <td><i className="fas fa-ban fa-lg icon-console"></i></td>
-                </tr>
+               
                 </tbody>
             </table>
 
@@ -36,3 +29,16 @@ const Ejecucion = (props) => {
 };
 
 export default Ejecucion;
+
+
+/*
+ <tr>
+                    <td>Luces Flash</td>
+                    <td>15:30:55</td>
+                    <td>15:50:00</td>
+                    <td>Grada, Campo</td>
+                    <td>Intermitencia 30ms</td>
+                    <td><i className="fas fa-ban fa-lg icon-console"></i></td>
+                </tr>
+
+*/

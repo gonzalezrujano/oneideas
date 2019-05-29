@@ -26,18 +26,21 @@ export default class Multimedia extends Component {
             multimedias: [],
             titleTool: '',
             sector: '',
-            fechainicio: moment().format("hh:mm:ss"),
-            fechafin: moment().format("hh:mm:ss"),
+            fechainicio: '',
+            fechafin: '',
             archivo: '',
             istool: false,
             isFull: false,
-            isLoading: false
+            isLoading: false,
+            flash:0,
+            color:''
         };
 
         this.goFull = this.goFull.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.actionTool = this.actionTool.bind(this);
         this.getMultimedia = this.getMultimedia.bind(this);
+        this.enviarComando = this.enviarComando.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -75,20 +78,42 @@ MQTTconnect();
          var reconnectTimeout = 2000;
         var host="mqtt.oneshow.com.ar"; //change this
         var port=11344;
-        
+        var self=this;
         function onConnect() {
       // Once a connection has been made, make a subscription and send a message.
     
         console.log("Connected ");
+        var titleTool=self.state.titleTool;
         // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
         //message.destinationName = "/empresa/evento/Multimedia";
        // window.mqttCliente.send(message);
-        var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
-        message.destinationName = "sampletopic";
-        window.mqttCliente.send(message);
-        var message2 = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeea388f7c4c5e5910d3/XD1.jpg..1,"+fechainicio+","+fechafin);
+       // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
+        //message.destinationName = "sampletopic";
+        //window.mqttCliente.send(message);
+        if(fechainicio==""){
+            fechainicio=moment().format("hh:mm:ss");
+        }
+        if(fechafin==""){
+            fechafin="99:99:99";
+        }
+        if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
+        
+        var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+self.state.evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
+        }
+        if(titleTool=='flash'){
+        
+        var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash+","+fechainicio+","+fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
+        }
+        if(titleTool=='colores'){
+        
+        var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
+        }
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);
@@ -113,7 +138,7 @@ MQTTconnect();
     actionTool(herramienta){
 
         let {evento} = this.state;
-
+        evento=evento.split("_")[0];
         axios.post('/ajax-action-tool', {evento, herramienta} )
             .then(res => {
                 if(res){
@@ -181,7 +206,7 @@ MQTTconnect();
     getMultimedia(){
 
         let {evento} = this.state;
-
+        evento=evento.split("_")[0];
         axios.post('/ajax-get-multimedia', {evento} )
             .then(res => {
                 if(res){
@@ -218,7 +243,8 @@ MQTTconnect();
                 multimedia: '',
                 multimedias: [],
                 bibliotecas: [],
-                evento: e.target.value,
+                evento: e.target.value.split("_")[0],
+                empresa:e.target.value.split("_")[1],
                 istool: false,
                 titleTool: ''
             });
@@ -266,7 +292,7 @@ MQTTconnect();
                                             <option value="">Seleccione evento</option>
                                             {
                                                 eventos.map( (p, index) => {
-                                                    return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    return <option key={index} value={p._id+'_'+p.Empresa_id} >{p.Nombre}</option>
                                                 })
                                             }
                                         </select>
@@ -314,7 +340,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando}/>
+                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} />
 
                                             </div>
 

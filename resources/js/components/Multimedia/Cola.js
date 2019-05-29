@@ -18,6 +18,32 @@ const Cola = (props) => {
                 </tr>
                 </thead>
                 <tbody>
+                
+               
+                
+                </tbody>
+            </table>
+
+        </div>
+
+    );
+
+};
+
+export default Cola;
+/*
+ <table className="table table-dark-theme-console">
+                <thead>
+                <tr>
+                    <th>Cola</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Sectores</th>
+                    <th>Parametros</th>
+                    <th>Accion</th>
+                </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td>Luces Led</td>
                     <td>16:30:55</td>
@@ -59,11 +85,4 @@ const Cola = (props) => {
                 </tr>
                 </tbody>
             </table>
-
-        </div>
-
-    );
-
-};
-
-export default Cola;
+*/

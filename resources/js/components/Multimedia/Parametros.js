@@ -10,6 +10,8 @@ const Parametros = (props) => {
     let fechainicio = props.fechainicio;
     let fechafin = props.fechafin;
     let archivo = props.archivo;
+    let flash=0;
+    let color='';
 
     return (
 
@@ -44,7 +46,7 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Archivo</label>
-                                            <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change }>
+                                            <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change}>
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
@@ -80,20 +82,7 @@ const Parametros = (props) => {
 
                                     </div>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-3">
-                                            <label>Parametro</label>
-                                            <select className="form-control form-control-sm">
-                                                <option value="">Seleccione</option>
-                                                <option value="30">Intermitencia 30ms</option>
-                                                <option value="40">Intermitencia 40ms</option>
-                                                <option value="50">Intermitencia 50ms</option>
-                                                <option value="60">Intermitencia 60ms</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
+                                 
 
                                 </form>
 
@@ -150,20 +139,7 @@ const Parametros = (props) => {
 
                                     </div>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-3">
-                                            <label>Parametro</label>
-                                            <select className="form-control form-control-sm">
-                                                <option value="">Seleccione</option>
-                                                <option value="30">Intermitencia 30ms</option>
-                                                <option value="40">Intermitencia 40ms</option>
-                                                <option value="50">Intermitencia 50ms</option>
-                                                <option value="60">Intermitencia 60ms</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
+                                   
 
                                 </form>
 
@@ -184,11 +160,11 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Archivo</label>
-                                            <select className="form-control form-control-sm">
+                                            <select className="form-control form-control-sm"  name="archivo"  value={archivo} onChange={props.change} >
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.NombreCompleto}</option>
+                                                        return <option key={index} value={p.NombreCompleto} >{p.NombreCompleto}</option>
                                                     })
                                                 }
                                             </select>
@@ -196,12 +172,12 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora inicio" />
+                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora inicio" onChange={props.change}/>
                                         </div>
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora fin" />
+                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora fin" onChange={props.change}/>
                                         </div>
 
 
@@ -220,17 +196,115 @@ const Parametros = (props) => {
 
                                     </div>
 
+                                   
+
+                                </form>
+
+
+                            </div>
+
+                            : ''
+                        }
+
+
+
+                        {title == 'flash' ?
+
+                            <div>
+
+                                <form>
+
+                                    <div className="form-row">
+
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio</label>
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
+                                        </div>
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Hora Fin</label>
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
+                                        </div>
+
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Sector</label>
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+
                                     <div className="form-row">
 
                                         <div className="col-md-3 mb-3">
                                             <label>Parametro</label>
-                                            <select className="form-control form-control-sm">
+                                            <select className="form-control form-control-sm" name="flash" value={flash} onChange={props.change }>
                                                 <option value="">Seleccione</option>
-                                                <option value="30">Intermitencia 30ms</option>
-                                                <option value="40">Intermitencia 40ms</option>
-                                                <option value="50">Intermitencia 50ms</option>
-                                                <option value="60">Intermitencia 60ms</option>
+                                                <option value="0">Apagar</option>
+                                                <option value="1">Encender</option>
                                             </select>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+
+                            </div>
+
+                            : ''
+                        }
+
+
+                        {title == 'colores' ?
+
+                            <div>
+
+                                <form>
+
+                                    <div className="form-row">
+
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio</label>
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
+                                        </div>
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Hora Fin</label>
+                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
+                                        </div>
+
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Sector</label>
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div className="form-row">
+
+                                        <div className="col-md-3 mb-3">
+                                            <label>Parametro</label>
+                                            <input type="color"  name="color" value={color} onChange={props.change } />
                                         </div>
 
                                     </div>

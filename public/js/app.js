@@ -85020,7 +85020,8 @@ function (_Component) {
       istool: false,
       isFull: false,
       isLoading: false,
-      flash: 0
+      flash: 0,
+      color: ''
     };
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
@@ -85104,7 +85105,7 @@ function (_Component) {
         }
 
         if (titleTool == 'colores') {
-          var message2 = new Paho.MQTT.Message("COL," + self.state.empresa + "/" + self.state.evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
+          var message2 = new Paho.MQTT.Message("COL," + self.state.color + "+10," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
@@ -85371,6 +85372,7 @@ var Parametros = function Parametros(props) {
   var fechafin = props.fechafin;
   var archivo = props.archivo;
   var flash = 0;
+  var color = '';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-9 section-parametros"
   }, istool == false ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85565,7 +85567,52 @@ var Parametros = function Parametros(props) {
     value: "0"
   }, "Apagar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
     value: "1"
-  }, "Encender")))))) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, "Encender")))))) : '', title == 'colores' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    name: "fechainicio",
+    value: fechainicio,
+    onChange: props.change,
+    placeholder: "Hora inicio"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "time",
+    step: "1",
+    className: "form-control form-control-sm",
+    name: "fechafin",
+    value: fechafin,
+    onChange: props.change,
+    placeholder: "Hora fin"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm",
+    name: "sector",
+    value: sector,
+    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "color",
+    name: "color",
+    value: color,
+    onChange: props.change
+  }))))) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "text-center mb-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-sm btn-dark mr-2",
