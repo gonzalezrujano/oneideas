@@ -85460,14 +85460,16 @@ var Parametros = function Parametros(props) {
     type: "time",
     step: "1",
     className: "form-control form-control-sm",
-    placeholder: "Hora inicio"
+    placeholder: "Hora inicio",
+    onChange: props.change
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "time",
     step: "1",
     className: "form-control form-control-sm",
-    placeholder: "Hora fin"
+    placeholder: "Hora fin",
+    onChange: props.change
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
