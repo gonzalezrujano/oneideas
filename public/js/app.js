@@ -85030,6 +85030,7 @@ function (_Component) {
       var host = "mqtt.oneshow.com.ar"; //change this
 
       var port = 11344;
+      var self = this;
 
       function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
@@ -85040,7 +85041,7 @@ function (_Component) {
         var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1," + fechainicio + "," + fechafin);
         message.destinationName = "sampletopic";
         window.mqttCliente.send(message);
-        var message2 = new Paho.MQTT.Message("MUL," + this.state.empresa + "/" + this.state.evento + "/" + this.state.archivo + "..1," + fechainicio + "," + fechafin);
+        var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + self.state.evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
       }
