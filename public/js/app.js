@@ -84985,6 +84985,7 @@ function (_Component) {
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
+    _this.enviarComando = _this.enviarComando.bind(_assertThisInitialized(_this));
 
     _this.iniciarMQTT();
 
@@ -85039,7 +85040,7 @@ function (_Component) {
         var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1," + fechainicio + "," + fechafin);
         message.destinationName = "sampletopic";
         window.mqttCliente.send(message);
-        var message2 = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeea388f7c4c5e5910d3/XD1.jpg..1," + fechainicio + "," + fechafin);
+        var message2 = new Paho.MQTT.Message("MUL," + this.state.empresa + "/" + this.state.evento + "/" + this.state.archivo + "..1," + fechainicio + "," + fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
       }
@@ -85153,7 +85154,8 @@ function (_Component) {
           multimedia: '',
           multimedias: [],
           bibliotecas: [],
-          evento: e.target.value,
+          evento: e.target.value.split("_")[0],
+          empresa: e.target.value.split("_")[1],
           istool: false,
           titleTool: ''
         });
@@ -85224,7 +85226,7 @@ function (_Component) {
       }, "Seleccione evento"), eventos.map(function (p, index) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
           key: index,
-          value: p._id
+          value: p._id + '_' + p.Empresa_id
         }, p.Nombre);
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-auto"
@@ -85259,7 +85261,7 @@ function (_Component) {
         fechafin: fechafin,
         archivo: archivo,
         change: this.handleChange,
-        enviar: this.enviarComando
+        enviar: this.enviarComando.bind(this)
       }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
         className: "content-wrapper-footer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, footer)))));
@@ -85438,13 +85440,16 @@ var Parametros = function Parametros(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm"
+    className: "form-control form-control-sm",
+    name: "archivo",
+    value: archivo,
+    onChange: props.change
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
     value: ""
   }, "Seleccione"), bibliotecas.map(function (p, index) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
       key: index,
-      value: p._id
+      value: p.NombreCompleto
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
@@ -87325,8 +87330,8 @@ Paho.MQTT = function (u) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/ONEShow-BackOffice/resources/sass/main.scss */"./resources/sass/main.scss");
+__webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ONEShow-BackOffice\resources\sass\main.scss */"./resources/sass/main.scss");
 
 
 /***/ })
