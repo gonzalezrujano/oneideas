@@ -85045,6 +85045,10 @@ function (_Component) {
           fechainicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
         }
 
+        if (fechafin == "") {
+          fechafin = "99:99:99";
+        }
+
         var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + self.state.evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
