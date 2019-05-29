@@ -84620,34 +84620,65 @@ __webpack_require__.r(__webpack_exports__);
 var Cola = function Cola(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
     className: "table table-dark-theme-console"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Led"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:40:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-ban fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-up fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-down fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ola humana"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "17:10:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 10ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-ban fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-up fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-down fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Pantalla"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:00:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "18:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Todos"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Ninguno"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-ban fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-up fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-arrow-down fa-lg icon-console mr-2"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-pencil-alt fa-lg icon-console mr-2"
-  }))))));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null)));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Cola);
+/*
+ <table className="table table-dark-theme-console">
+                <thead>
+                <tr>
+                    <th>Cola</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Sectores</th>
+                    <th>Parametros</th>
+                    <th>Accion</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Luces Led</td>
+                    <td>16:30:55</td>
+                    <td>16:40:00</td>
+                    <td>Grada, Campo</td>
+                    <td>Intermitencia 30ms</td>
+                    <td>
+                        <i className="fas fa-ban fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-up fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-down fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-pencil-alt fa-lg icon-console mr-2"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ola humana</td>
+                    <td>17:00:00</td>
+                    <td>17:10:00</td>
+                    <td>Grada</td>
+                    <td>Intermitencia 10ms</td>
+                    <td>
+                        <i className="fas fa-ban fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-up fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-down fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-pencil-alt fa-lg icon-console mr-2"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pantalla</td>
+                    <td>18:00:00</td>
+                    <td>18:50:00</td>
+                    <td>Todos</td>
+                    <td>Ninguno</td>
+                    <td>
+                        <i className="fas fa-ban fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-up fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-down fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-pencil-alt fa-lg icon-console mr-2"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+*/
 
 /***/ }),
 
@@ -84667,12 +84698,21 @@ __webpack_require__.r(__webpack_exports__);
 var Ejecucion = function Ejecucion(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
     className: "table table-dark-theme-console"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Luces Flash"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fas fa-ban fa-lg icon-console"
-  }))))));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null)));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Ejecucion);
+/*
+ <tr>
+                    <td>Luces Flash</td>
+                    <td>15:30:55</td>
+                    <td>15:50:00</td>
+                    <td>Grada, Campo</td>
+                    <td>Intermitencia 30ms</td>
+                    <td><i className="fas fa-ban fa-lg icon-console"></i></td>
+                </tr>
+
+*/
 
 /***/ }),
 
@@ -85035,7 +85075,8 @@ function (_Component) {
 
       function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
-        console.log("Connected "); // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        console.log("Connected ");
+        var titleTool = self.state.titleTool; // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
         //message.destinationName = "/empresa/evento/Multimedia";
         // window.mqttCliente.send(message);
         // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
