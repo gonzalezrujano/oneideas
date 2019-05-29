@@ -97,8 +97,8 @@ MQTTconnect();
             fechafin="99:99:99";
         }
         if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-        
-        var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+self.state.evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
+        var evento=self.state.evento.split("_")[0];
+        var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }

@@ -85093,7 +85093,8 @@ function (_Component) {
         }
 
         if (titleTool == 'imagen' || titleTool == 'video' || titleTool == 'audio') {
-          var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + self.state.evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
+          var evento = self.state.evento.split("_")[0];
+          var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
@@ -85556,7 +85557,7 @@ var Parametros = function Parametros(props) {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro flash "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
     name: "flash",
     value: flash,
@@ -85607,7 +85608,7 @@ var Parametros = function Parametros(props) {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro color "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "color",
     name: "color",
     value: color,

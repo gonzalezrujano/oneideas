@@ -246,7 +246,7 @@ const Parametros = (props) => {
                                     <div className="form-row">
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Parametro</label>
+                                            <label>Parametro flash </label>
                                             <select className="form-control form-control-sm" name="flash" value={flash} onChange={props.change }>
                                                 <option value="">Seleccione</option>
                                                 <option value="0">Apagar</option>
@@ -303,7 +303,7 @@ const Parametros = (props) => {
                                     <div className="form-row">
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Parametro</label>
+                                            <label>Parametro color </label>
                                             <input type="color"  name="color" value={color} onChange={props.change } />
                                         </div>
 
