@@ -19,6 +19,20 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
+        '/ajax-menu-platos-delete',
+        '/ajax-menu-platos-add',
+        '/ajax-menu-platos-update',
+        '/ajax-menu-platos',
+        '/ajax-menu-etapas-delete',
+        '/ajax-menu-etapas-add',
+        '/ajax-menu-etapas',
+        '/ajax-menu-etapas-update',
+        '/ajax-agenda',
+        '/ajax-get-events',
+        '/ajax-dt-get-agendas/*',
+        '/ajax-agenda-add',
+        '/ajax-agenda-update',
+        'ajax-agenda-delete',
         '/ajax-empresa',
         '/ajax-empresa-add',
         '/ajax-empresa-update',
@@ -39,5 +53,9 @@ class VerifyCsrfToken extends Middleware
         '/ajax-biblioteca-files',
         '/ajax-biblioteca-delete-files',
         '/ajax-biblioteca-add-files',
+        '/ajax-invitacion',
+        '/ajax-invitacion-files',
+        '/ajax-invitacion-delete-files',
+        '/ajax-invitacion-add-files',
     ];
 }
