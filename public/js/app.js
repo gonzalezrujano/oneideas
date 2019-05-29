@@ -85072,6 +85072,7 @@ function (_Component) {
       var _this2 = this;
 
       var evento = this.state.evento;
+      evento = evento.split("_")[0];
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-action-tool', {
         evento: evento,
         herramienta: herramienta
@@ -85126,6 +85127,7 @@ function (_Component) {
       var _this3 = this;
 
       var evento = this.state.evento;
+      evento = evento.split("_")[0];
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-get-multimedia', {
         evento: evento
       }).then(function (res) {
