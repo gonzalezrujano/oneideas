@@ -84716,7 +84716,7 @@ var Ejecucion = function Ejecucion(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
     className: "table table-dark-theme-console"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.envios.map(function (e, index) {
-    if (e.Estado == 'cola') {
+    if (e.Estado != 'ejecucion') {
       return false;
     }
 
@@ -85142,7 +85142,7 @@ function (_Component) {
           window.mqttCliente.send(message2);
         }
 
-        this.ponerCola('ejecucion');
+        self.ponerCola('ejecucion');
       }
 
       function MQTTconnect() {

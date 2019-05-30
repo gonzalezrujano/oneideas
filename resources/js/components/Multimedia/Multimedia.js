@@ -45,6 +45,7 @@ export default class Multimedia extends Component {
         this.getMultimedia = this.getMultimedia.bind(this);
         this.enviarComando = this.enviarComando.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
+        this.getEnvios = this.getEnvios.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -118,6 +119,7 @@ MQTTconnect();
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }
+        self.ponerCola('ejecucion');
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);
@@ -267,11 +269,15 @@ MQTTconnect();
             }).catch(function (error) {});
 
     }
-    ponerCola(){
+    ponerCola(newestado){
         let {evento} = this.state;
         evento=evento.split("_")[0];
         var title=this.state.titleTool;
+
         var estado='cola';
+        if(newestado!=undefined){
+            estado=newestado;
+        }
         axios.post('/ajax-set-envios', {evento,title,estado} )
             .then(res => {
                 if(res){
@@ -313,6 +319,7 @@ MQTTconnect();
                 titleTool: ''
             });
             this.getEnvios();
+
         }
 
         this.setState({
@@ -324,7 +331,7 @@ MQTTconnect();
     render() {
 
         let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer, sector, fechainicio, fechafin, archivo} = this.state;
-
+         this.getEnvios();
         return (
 
             <Fullscreen
@@ -394,7 +401,7 @@ MQTTconnect();
 
                                     <div>
 
-                                        <Ejecucion/>
+                                        <Ejecucion envios={this.state.envios} />
 
                                         <Cola envios={this.state.envios} />
 
