@@ -84715,7 +84715,17 @@ __webpack_require__.r(__webpack_exports__);
 var Ejecucion = function Ejecucion(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
     className: "table table-dark-theme-console"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null)));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.envios.map(function (e, index) {
+    if (e.Estado == 'cola') {
+      return false;
+    }
+
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
+      key: index
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fas fa-ban fa-lg icon-console"
+    })));
+  }))));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Ejecucion);
@@ -85048,6 +85058,7 @@ function (_Component) {
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
     _this.enviarComando = _this.enviarComando.bind(_assertThisInitialized(_this));
     _this.ponerCola = _this.ponerCola.bind(_assertThisInitialized(_this));
+    _this.getEnvios = _this.getEnvios.bind(_assertThisInitialized(_this));
 
     _this.iniciarMQTT();
 
@@ -85130,6 +85141,8 @@ function (_Component) {
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
+
+        this.ponerCola('ejecucion');
       }
 
       function MQTTconnect() {
@@ -85264,13 +85277,18 @@ function (_Component) {
     }
   }, {
     key: "ponerCola",
-    value: function ponerCola() {
+    value: function ponerCola(newestado) {
       var _this5 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
       var title = this.state.titleTool;
       var estado = 'cola';
+
+      if (newestado != undefined) {
+        estado = newestado;
+      }
+
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-set-envios', {
         evento: evento,
         title: title,
@@ -85330,6 +85348,7 @@ function (_Component) {
           fechainicio = _this$state2.fechainicio,
           fechafin = _this$state2.fechafin,
           archivo = _this$state2.archivo;
+      this.getEnvios();
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
