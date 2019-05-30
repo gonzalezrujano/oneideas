@@ -269,7 +269,7 @@ MQTTconnect();
     ponerCola(){
         let {evento} = this.state;
         evento=evento.split("_")[0];
-        var titleTool=this.state.titleTool;
+        var title=this.state.titleTool;
         var estado='cola';
         axios.post('/ajax-set-envios', {evento,title,estado} )
             .then(res => {

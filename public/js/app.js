@@ -85252,7 +85252,7 @@ function (_Component) {
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
-      var titleTool = this.state.titleTool;
+      var title = this.state.titleTool;
       var estado = 'cola';
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-set-envios', {
         evento: evento,
