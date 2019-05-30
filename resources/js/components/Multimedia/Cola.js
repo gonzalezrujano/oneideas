@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Cola = (props) => {
-console.log(props);
+console.log(props.envios);
     return (
 
         <div>
@@ -19,7 +19,23 @@ console.log(props);
                 </thead>
                 <tbody>
                 
-               
+               {
+                                                props.envios.map( (e, index) => {
+                                                    return <tr key={index}>
+                    <td>{e.Tipo}</td>
+                    <td>16:30:55</td>
+                    <td>16:40:00</td>
+                    <td>Grada, Campo</td>
+                    <td>Intermitencia 30ms</td>
+                    <td>
+                        <i className="fas fa-ban fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-up fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-arrow-down fa-lg icon-console mr-2"></i>
+                        <i className="fas fa-pencil-alt fa-lg icon-console mr-2"></i>
+                    </td>
+                </tr>
+                                                })
+                                            }
                 
                 </tbody>
             </table>
