@@ -35,7 +35,8 @@ export default class Multimedia extends Component {
             isLoading: false,
             flash:'',
             flash2:'',
-            color:''
+            color:'',
+            envios:[]
         };
 
         this.goFull = this.goFull.bind(this);
@@ -395,7 +396,7 @@ MQTTconnect();
 
                                         <Ejecucion/>
 
-                                        <Cola/>
+                                        <Cola envios={this.envios} />
 
                                         <div className="container-fluid container-tools">
 

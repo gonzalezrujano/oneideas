@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Cola = (props) => {
-
+console.log(props);
     return (
 
         <div>

@@ -84618,6 +84618,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Cola = function Cola(props) {
+  console.log(props);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
     className: "table table-dark-theme-console"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null)));
@@ -85003,7 +85004,7 @@ function (_Component) {
     _classCallCheck(this, Multimedia);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Multimedia).call(this, props));
-    _this.state = {
+    _this.state = _defineProperty({
       url: props.url,
       footer: props.footer,
       eventos: JSON.parse(props.eventos),
@@ -85024,7 +85025,7 @@ function (_Component) {
       flash: '',
       flash2: '',
       color: ''
-    };
+    }, "envios", []);
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
@@ -85299,20 +85300,20 @@ function (_Component) {
     value: function render() {
       var _this6 = this;
 
-      var _this$state = this.state,
-          eventos = _this$state.eventos,
-          evento = _this$state.evento,
-          istool = _this$state.istool,
-          multimedia = _this$state.multimedia,
-          multimedias = _this$state.multimedias,
-          titleTool = _this$state.titleTool,
-          sectores = _this$state.sectores,
-          bibliotecas = _this$state.bibliotecas,
-          footer = _this$state.footer,
-          sector = _this$state.sector,
-          fechainicio = _this$state.fechainicio,
-          fechafin = _this$state.fechafin,
-          archivo = _this$state.archivo;
+      var _this$state2 = this.state,
+          eventos = _this$state2.eventos,
+          evento = _this$state2.evento,
+          istool = _this$state2.istool,
+          multimedia = _this$state2.multimedia,
+          multimedias = _this$state2.multimedias,
+          titleTool = _this$state2.titleTool,
+          sectores = _this$state2.sectores,
+          bibliotecas = _this$state2.bibliotecas,
+          footer = _this$state2.footer,
+          sector = _this$state2.sector,
+          fechainicio = _this$state2.fechainicio,
+          fechafin = _this$state2.fechafin,
+          archivo = _this$state2.archivo;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
@@ -85376,7 +85377,9 @@ function (_Component) {
         className: "widget widget-default"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "widget-body"
-      }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        envios: this.envios
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid container-tools"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
