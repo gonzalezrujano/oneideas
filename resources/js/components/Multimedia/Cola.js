@@ -24,7 +24,8 @@ console.log(props.envios);
                                                     if(e.Estado!='cola'){
                                                         return false;
                                                     }
-                                                    if(e.Evento!=props.evento){
+                                                    var evento=props.evento.split("_")[0];
+                                                    if(e.Evento!=evento){
                                                         return false;
                                                     }
                                                     return <tr key={index}>

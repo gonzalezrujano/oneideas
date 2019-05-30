@@ -84626,7 +84626,9 @@ var Cola = function Cola(props) {
       return false;
     }
 
-    if (e.Evento != props.evento) {
+    var evento = props.evento.split("_")[0];
+
+    if (e.Evento != evento) {
       return false;
     }
 
@@ -84724,7 +84726,9 @@ var Ejecucion = function Ejecucion(props) {
       return false;
     }
 
-    if (e.Evento != props.evento) {
+    var evento = props.evento.split("_")[0];
+
+    if (e.Evento != evento) {
       return false;
     }
 
