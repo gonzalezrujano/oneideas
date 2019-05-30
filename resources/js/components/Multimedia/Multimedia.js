@@ -43,6 +43,7 @@ export default class Multimedia extends Component {
         this.actionTool = this.actionTool.bind(this);
         this.getMultimedia = this.getMultimedia.bind(this);
         this.enviarComando = this.enviarComando.bind(this);
+        this.ponerCola = this.ponerCola.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -402,7 +403,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola} />
+                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
 
                                             </div>
 

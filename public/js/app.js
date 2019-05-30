@@ -85030,6 +85030,7 @@ function (_Component) {
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
     _this.enviarComando = _this.enviarComando.bind(_assertThisInitialized(_this));
+    _this.ponerCola = _this.ponerCola.bind(_assertThisInitialized(_this));
 
     _this.iniciarMQTT();
 
@@ -85392,7 +85393,7 @@ function (_Component) {
         archivo: archivo,
         change: this.handleChange,
         enviar: this.enviarComando.bind(this),
-        cola: this.ponerCola
+        cola: this.ponerCola.bind(this)
       }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
         className: "content-wrapper-footer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, footer)))));
