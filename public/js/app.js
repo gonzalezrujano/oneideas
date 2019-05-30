@@ -85378,7 +85378,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "widget-body"
       }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        envios: this.envios
+        envios: this.state.envios
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid container-tools"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
