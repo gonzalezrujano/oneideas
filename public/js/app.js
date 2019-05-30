@@ -85101,7 +85101,7 @@ function (_Component) {
         }
 
         if (titleTool == 'flash') {
-          var message2 = new Paho.MQTT.Message("FLH," + self.state.flash + "," + fechainicio + "," + fechafin);
+          var message2 = new Paho.MQTT.Message("FLH," + self.state.flash2 + "," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
@@ -85571,22 +85571,7 @@ var Parametros = function Parametros(props) {
       key: index,
       value: p._id
     }, p.Nombre);
-  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "form-row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Parametro flash "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm",
-    name: "flash",
-    value: flash,
-    onChange: props.change
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: ""
-  }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: "0"
-  }, "Apagar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: "1"
-  }, "Encender")))))) : '', title == 'colores' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })))))) : '', title == 'colores' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
