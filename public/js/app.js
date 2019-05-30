@@ -85297,7 +85297,7 @@ function (_Component) {
       var title = this.state.titleTool;
       var estado = 'cola';
 
-      if (newestado != undefined) {
+      if (newestado != undefined && newestado != null) {
         estado = newestado;
       }
 
