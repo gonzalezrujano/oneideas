@@ -21,6 +21,9 @@ console.log(props.envios);
                 
                {
                                                 props.envios.map( (e, index) => {
+                                                    if(e.Estado=='cola'){
+                                                        return false;
+                                                    }
                                                     return <tr key={index}>
                     <td>{e.Tipo}</td>
                     <td>16:30:55</td>
