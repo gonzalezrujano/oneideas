@@ -85245,6 +85245,37 @@ function (_Component) {
       })["catch"](function (error) {});
     }
   }, {
+    key: "ponerCola",
+    value: function ponerCola() {
+      var _this5 = this;
+
+      var evento = this.state.evento;
+      evento = evento.split("_")[0];
+      var titleTool = this.state.titleTool;
+      var estado = 'cola';
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-set-envios', {
+        evento: evento,
+        title: title,
+        estado: estado
+      }).then(function (res) {
+        if (res) {
+          var r = res.data;
+
+          if (r.code === 200) {
+            _this5.setState({
+              envios: r.envios
+            });
+          } else if (r.code === 500) {
+            console.log(r.msj);
+
+            _this5.setState({
+              multimedias: []
+            });
+          }
+        }
+      })["catch"](function (error) {});
+    }
+  }, {
     key: "handleChange",
     value: function handleChange(e) {
       if (e.target.name == 'evento') {
@@ -85257,6 +85288,7 @@ function (_Component) {
           istool: false,
           titleTool: ''
         });
+        this.getEnvios();
       }
 
       this.setState(_defineProperty({}, e.target.name, e.target.value));
@@ -85264,7 +85296,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var _this$state = this.state,
           eventos = _this$state.eventos,
@@ -85283,7 +85315,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
-          return _this5.setState({
+          return _this6.setState({
             isFull: isFull
           });
         }
@@ -85359,7 +85391,8 @@ function (_Component) {
         fechafin: fechafin,
         archivo: archivo,
         change: this.handleChange,
-        enviar: this.enviarComando.bind(this)
+        enviar: this.enviarComando.bind(this),
+        cola: this.ponerCola
       }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
         className: "content-wrapper-footer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, footer)))));
@@ -85657,7 +85690,10 @@ var Parametros = function Parametros(props) {
       return props.enviar('audio');
     }
   }, "Proxima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-sm btn-dark mr-2"
+    className: "btn btn-sm btn-dark mr-2",
+    onClick: function onClick(e) {
+      return props.cola(fechainicio, fechafin);
+    }
   }, "En cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-sm btn-dark mr-2"
   }, "Cancelar")))));
