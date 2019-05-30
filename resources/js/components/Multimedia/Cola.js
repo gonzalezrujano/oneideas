@@ -21,7 +21,7 @@ console.log(props.envios);
                 
                {
                                                 props.envios.map( (e, index) => {
-                                                    if(e.Estado=='cola'){
+                                                    if(e.Estado!='cola'){
                                                         return false;
                                                     }
                                                     return <tr key={index}>
