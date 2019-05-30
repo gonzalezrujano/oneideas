@@ -154,7 +154,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::post('/ajax-menu-platos-delete', 'MenugPlatosController@ajaxDelete');
 
         // envios y cola
-        Route::get('/ajax-get-envios', 'EventoController@ajaxEnvios')->name('envios');
+        Route::post('/ajax-get-envios', 'EventoController@ajaxEnvios')->name('envios');
         Route::post('/ajax-set-envios', 'EventoController@ajaxEnviosCola')->name('cola');
     });
 
