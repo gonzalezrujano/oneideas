@@ -85020,7 +85020,7 @@ function (_Component) {
       istool: false,
       isFull: false,
       isLoading: false,
-      flash: 0,
+      flash: '',
       color: ''
     };
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
