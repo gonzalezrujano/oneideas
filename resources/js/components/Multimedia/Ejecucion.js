@@ -23,6 +23,9 @@ const Ejecucion = (props) => {
                                                     if(e.Estado!='ejecucion'){
                                                         return false;
                                                     }
+                                                    if(e.Evento!=props.evento){
+                                                        return false;
+                                                    }
                                                     return <tr key={index}>
                     <td>{e.Tipo}</td>
                      <td>15:30:55</td>

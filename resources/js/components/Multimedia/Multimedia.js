@@ -401,9 +401,9 @@ MQTTconnect();
 
                                     <div>
 
-                                        <Ejecucion envios={this.state.envios} />
+                                        <Ejecucion envios={this.state.envios} evento={this.state.evento}/>
 
-                                        <Cola envios={this.state.envios} />
+                                        <Cola envios={this.state.envios} evento={this.state.evento}/>
 
                                         <div className="container-fluid container-tools">
 

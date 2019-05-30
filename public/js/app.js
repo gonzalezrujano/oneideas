@@ -84626,6 +84626,10 @@ var Cola = function Cola(props) {
       return false;
     }
 
+    if (e.Evento != props.evento) {
+      return false;
+    }
+
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:40:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -84717,6 +84721,10 @@ var Ejecucion = function Ejecucion(props) {
     className: "table table-dark-theme-console"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.envios.map(function (e, index) {
     if (e.Estado != 'ejecucion') {
+      return false;
+    }
+
+    if (e.Evento != props.evento) {
       return false;
     }
 
@@ -85413,9 +85421,11 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "widget-body"
       }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        envios: this.state.envios
+        envios: this.state.envios,
+        evento: this.state.evento
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], {
-        envios: this.state.envios
+        envios: this.state.envios,
+        evento: this.state.evento
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid container-tools"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

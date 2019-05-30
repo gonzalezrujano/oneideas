@@ -24,6 +24,9 @@ console.log(props.envios);
                                                     if(e.Estado!='cola'){
                                                         return false;
                                                     }
+                                                    if(e.Evento!=props.evento){
+                                                        return false;
+                                                    }
                                                     return <tr key={index}>
                     <td>{e.Tipo}</td>
                     <td>16:30:55</td>
