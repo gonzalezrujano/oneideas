@@ -417,7 +417,7 @@ class EventoController extends Controller
                 $evento = Evento::find($evento);
 
                 $envio = new Envio;
-                $envio->Evento = $evento;
+                $envio->Evento = $input['evento'];
                 $envio->Tipo = $title;
                 $envio->Estado = $estado;
 
