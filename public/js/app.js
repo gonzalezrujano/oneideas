@@ -85012,6 +85012,7 @@ function (_Component) {
       evento: '',
       multimedia: '',
       multimedias: [],
+      envios: [],
       titleTool: '',
       sector: '',
       fechainicio: '',
@@ -85217,6 +85218,33 @@ function (_Component) {
       })["catch"](function (error) {});
     }
   }, {
+    key: "getEnvios",
+    value: function getEnvios() {
+      var _this4 = this;
+
+      var evento = this.state.evento;
+      evento = evento.split("_")[0];
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-get-envios', {
+        evento: evento
+      }).then(function (res) {
+        if (res) {
+          var r = res.data;
+
+          if (r.code === 200) {
+            _this4.setState({
+              envios: r.envios
+            });
+          } else if (r.code === 500) {
+            console.log(r.msj);
+
+            _this4.setState({
+              multimedias: []
+            });
+          }
+        }
+      })["catch"](function (error) {});
+    }
+  }, {
     key: "handleChange",
     value: function handleChange(e) {
       if (e.target.name == 'evento') {
@@ -85236,7 +85264,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var _this$state = this.state,
           eventos = _this$state.eventos,
@@ -85255,7 +85283,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
-          return _this4.setState({
+          return _this5.setState({
             isFull: isFull
           });
         }
