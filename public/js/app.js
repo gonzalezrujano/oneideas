@@ -85372,7 +85372,7 @@ var Parametros = function Parametros(props) {
   var fechainicio = props.fechainicio;
   var fechafin = props.fechafin;
   var archivo = props.archivo;
-  var flash = 0;
+  var flash = '';
   var color = '';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-9 section-parametros"
