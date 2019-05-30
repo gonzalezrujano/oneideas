@@ -10,8 +10,9 @@ const Parametros = (props) => {
     let fechainicio = props.fechainicio;
     let fechafin = props.fechafin;
     let archivo = props.archivo;
-    let flash=0;
+    let flash='';
     let color='';
+    let flash2=props.flash2;
 
     return (
 
@@ -216,6 +217,15 @@ const Parametros = (props) => {
 
                                     <div className="form-row">
 
+                                        <div className="col-md-3 mb-3">
+                                            <label>Estado</label>
+                                            <select className="form-control form-control-sm" name="flash2" value={flash2} onChange={props.change}>
+                                                <option key="flas1" value="">Seleccione</option>
+                                                
+                                                <option key="flas2" value="0">Apagar</option>
+                                                <option key="flas3" value="1">Encender</option>
+                                            </select>
+                                        </div>
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Inicio</label>
@@ -243,18 +253,6 @@ const Parametros = (props) => {
 
                                     </div>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-3">
-                                            <label>Parametro flash </label>
-                                            <select className="form-control form-control-sm" name="flash" value={flash} onChange={props.change }>
-                                                <option value="">Seleccione</option>
-                                                <option value="0">Apagar</option>
-                                                <option value="1">Encender</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
 
                                 </form>
 
@@ -323,7 +321,7 @@ const Parametros = (props) => {
                         <div className="text-center mb-4">
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e)=> props.enviar(fechainicio,fechafin)}>Inmediata</button>
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.enviar('audio')}>Proxima</button>
-                            <button className="btn btn-sm btn-dark mr-2">En cola</button>
+                            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.cola(fechainicio,fechafin)}>En cola</button>
                             <button className="btn btn-sm btn-dark mr-2">Cancelar</button>
                         </div>
 

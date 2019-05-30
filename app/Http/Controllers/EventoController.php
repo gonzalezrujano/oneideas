@@ -10,6 +10,7 @@ use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\MenuAppInvitado;
 use App\Models\MongoDB\Pais;
 use App\Models\MongoDB\Estado;
+use App\Models\MongoDB\Envio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB, DataTables, Image, Storage, File, Auth, Mail, QrCode;
@@ -354,6 +355,76 @@ class EventoController extends Controller
                 if($registro->save()){
 
                     return json_encode(['code' => 200]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
+
+    //metodo para cambiar la visualizacion o estado
+    public function ajaxEnvios(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+            $id = $input['evento'];
+
+            //valido que venga el id sino mando un error
+            if($id){
+
+                //ubico el id en la bd
+                $registro = Evento::find($id);
+                $envios = Envio::get();
+
+                if($registro){
+                    return json_encode(['code' => 200,'envios'=>$envios]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
+
+    //metodo para cambiar la visualizacion o estado
+    public function ajaxEnviosCola(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+            $evento = $input['evento'];
+            $title = $input['title'];
+            $estado = $input['estado'];
+
+            //valido que venga el id sino mando un error
+            if($evento){
+
+                //ubico el id en la bd
+                $evento = Evento::find($evento);
+
+                $envio = new Envio;
+                $envio->Evento = $evento;
+                $envio->Tipo = $title;
+                $envio->Estado = $estado;
+
+                $envios = Envio::get();
+
+                if($envio->save()){
+                    return json_encode(['code' => 200,'envios'=>$envios]);
                 }else{
                     return json_encode(['code' => 500]);
                 }

@@ -152,6 +152,10 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         Route::get('/menu-platos-edit/{id}', 'MenugPlatosController@viewEdit');
         Route::post('/ajax-menu-platos-update', 'MenugPlatosController@ajaxUpdate');
         Route::post('/ajax-menu-platos-delete', 'MenugPlatosController@ajaxDelete');
+
+        // envios y cola
+        Route::get('/ajax-get-envios', 'EventoController@ajaxEnvios')->name('envios');
+        Route::get('/ajax-set-envios', 'EventoController@ajaxEnviosCola')->name('cola');
     });
 
 

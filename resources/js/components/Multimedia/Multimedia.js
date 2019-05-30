@@ -24,6 +24,7 @@ export default class Multimedia extends Component {
             evento: '',
             multimedia: '',
             multimedias: [],
+            envios:[],
             titleTool: '',
             sector: '',
             fechainicio: '',
@@ -32,7 +33,8 @@ export default class Multimedia extends Component {
             istool: false,
             isFull: false,
             isLoading: false,
-            flash:0,
+            flash:'',
+            flash2:'',
             color:''
         };
 
@@ -104,7 +106,7 @@ MQTTconnect();
         }
         if(titleTool=='flash'){
         
-        var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash+","+fechainicio+","+fechafin);
+        var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }
@@ -233,6 +235,66 @@ MQTTconnect();
             }).catch(function (error) {});
 
     }
+    getEnvios(){
+
+        let {evento} = this.state;
+        evento=evento.split("_")[0];
+        axios.post('/ajax-get-envios', {evento} )
+            .then(res => {
+                if(res){
+
+                    let r = res.data;
+
+                    if(r.code === 200){
+
+                        this.setState({
+                            envios: r.envios,
+                        });
+
+                    }else if(r.code === 500){
+
+                        console.log(r.msj);
+                        this.setState({
+                            multimedias: [],
+                        });
+
+                    }
+
+                }
+
+            }).catch(function (error) {});
+
+    }
+    ponerCola(){
+        let {evento} = this.state;
+        evento=evento.split("_")[0];
+        var titleTool=this.state.titleTool;
+        var estado='cola';
+        axios.post('/ajax-set-envios', {evento,title,estado} )
+            .then(res => {
+                if(res){
+
+                    let r = res.data;
+
+                    if(r.code === 200){
+
+                        this.setState({
+                            envios: r.envios,
+                        });
+
+                    }else if(r.code === 500){
+
+                        console.log(r.msj);
+                        this.setState({
+                            multimedias: [],
+                        });
+
+                    }
+
+                }
+
+            }).catch(function (error) {});
+    }
 
     handleChange(e) {
 
@@ -248,7 +310,7 @@ MQTTconnect();
                 istool: false,
                 titleTool: ''
             });
-
+            this.getEnvios();
         }
 
         this.setState({
@@ -340,7 +402,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} />
+                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this) cola={this.ponerCola}} />
 
                                             </div>
 
