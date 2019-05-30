@@ -85532,10 +85532,10 @@ var Parametros = function Parametros(props) {
     key: "flas1",
     value: ""
   }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    key: "flas1",
+    key: "flas2",
     value: "0"
   }, "Apagar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    key: "flas1",
+    key: "flas3",
     value: "1"
   }, "Encender"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
