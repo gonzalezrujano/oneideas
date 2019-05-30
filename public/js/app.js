@@ -85021,6 +85021,7 @@ function (_Component) {
       isFull: false,
       isLoading: false,
       flash: '',
+      flash2: '',
       color: ''
     };
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
@@ -85374,6 +85375,7 @@ var Parametros = function Parametros(props) {
   var archivo = props.archivo;
   var flash = '';
   var color = '';
+  var flash2 = props.flash2;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-9 section-parametros"
   }, istool == false ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -85520,6 +85522,22 @@ var Parametros = function Parametros(props) {
   })))))) : '', title == 'flash' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-md-3 mb-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Estado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm",
+    name: "flash2",
+    value: flash2,
+    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    key: "flas1",
+    value: ""
+  }, "Seleccione"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    key: "flas1",
+    value: "0"
+  }, "Apagar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    key: "flas1",
+    value: "1"
+  }, "Encender"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "time",
