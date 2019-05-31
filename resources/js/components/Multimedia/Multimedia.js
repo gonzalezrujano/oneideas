@@ -269,7 +269,7 @@ MQTTconnect();
             }).catch(function (error) {});
 
     }
-    ponerCola(newestado,incio,fin){
+    ponerCola(newestado,inicio,fin){
         let {evento} = this.state;
         evento=evento.split("_")[0];
         var title=this.state.titleTool;

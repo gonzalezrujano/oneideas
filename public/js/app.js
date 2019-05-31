@@ -85283,7 +85283,7 @@ function (_Component) {
     }
   }, {
     key: "ponerCola",
-    value: function ponerCola(newestado, incio, fin) {
+    value: function ponerCola(newestado, inicio, fin) {
       var _this5 = this;
 
       var evento = this.state.evento;
