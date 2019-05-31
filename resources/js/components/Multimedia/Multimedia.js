@@ -180,7 +180,6 @@ MQTTconnect();
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }
-        self.ponerCola('ejecucion',fechainicio,fechafin);
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);
@@ -390,10 +389,10 @@ MQTTconnect();
         if(newestado!=undefined&&newestado!=null&&newestado!=""){
             estado=newestado;
         }
-        if(inicio!=undefined&&inicio!=null&&inicio==""){
+        if(inicio==undefined&&inicio==null&&inicio==""){
             inicio=moment().format("hh:mm:ss");
         }
-        if(fin!=undefined&&fin!=null&&fin==""){
+        if(fin==undefined&&fin==null&&fin==""){
             fin="99:99:99";
         }
         if(title=='imagen'||title=='video'||title=='audio'){

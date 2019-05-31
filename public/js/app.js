@@ -85220,8 +85220,6 @@ function (_Component) {
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
-
-        self.ponerCola('ejecucion', fechainicio, fechafin);
       }
 
       function MQTTconnect() {
@@ -85429,11 +85427,11 @@ function (_Component) {
         estado = newestado;
       }
 
-      if (inicio != undefined && inicio != null && inicio == "") {
+      if (inicio == undefined && inicio == null && inicio == "") {
         inicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
       }
 
-      if (fin != undefined && fin != null && fin == "") {
+      if (fin == undefined && fin == null && fin == "") {
         fin = "99:99:99";
       }
 
