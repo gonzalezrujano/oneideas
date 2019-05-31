@@ -84637,7 +84637,7 @@ var Cola = function Cola(props) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-ban fa-lg icon-console mr-2",
       onClick: function onClick(ev) {
-        return props.sincola(e.Tipo, e.inicio, e.fin, e._id);
+        return props.sincola('cola', e.Tipo, e.inicio, e.fin, e._id);
       }
     })));
   }))));
