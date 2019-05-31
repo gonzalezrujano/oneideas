@@ -275,7 +275,7 @@ MQTTconnect();
         var title=this.state.titleTool;
 
         var estado='cola';
-        if(newestado!=undefined&&newestado!=null){
+        if(newestado!=undefined&&newestado!=null&&newestado!=""){
             estado=newestado;
         }
         axios.post('/ajax-set-envios', {evento,title,estado} )
