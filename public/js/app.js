@@ -85215,6 +85215,7 @@ function (_Component) {
         }
 
         if (titleTool == 'colores') {
+          parametro = '#000';
           var message2 = new Paho.MQTT.Message("COL," + parametro + "+10," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
@@ -85578,7 +85579,8 @@ function (_Component) {
         className: "widget-body"
       }, evento == '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_EmptyMultimedia__WEBPACK_IMPORTED_MODULE_5__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ejecucion__WEBPACK_IMPORTED_MODULE_8__["default"], {
         envios: this.state.envios,
-        evento: this.state.evento
+        evento: this.state.evento,
+        sincola: this.quitarCola.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], {
         envios: this.state.envios,
         evento: this.state.evento,

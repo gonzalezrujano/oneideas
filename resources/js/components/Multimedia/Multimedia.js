@@ -163,6 +163,7 @@ MQTTconnect();
         }
         if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
         var evento=self.state.evento.split("_")[0];
+
         var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+parametro+"..1,"+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
@@ -174,7 +175,7 @@ MQTTconnect();
         window.mqttCliente.send(message2);
         }
         if(titleTool=='colores'){
-        parametro=#000;
+        parametro='#000';
         var message2 = new Paho.MQTT.Message("COL,"+parametro+"+10,"+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
@@ -528,7 +529,7 @@ MQTTconnect();
 
                                     <div>
 
-                                        <Ejecucion envios={this.state.envios} evento={this.state.evento}/>
+                                        <Ejecucion envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)} />
 
                                         <Cola envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)}/>
 
