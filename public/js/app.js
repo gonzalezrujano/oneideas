@@ -84732,7 +84732,10 @@ var Ejecucion = function Ejecucion(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-console"
+      className: "fas fa-ban fa-lg icon-console",
+      onClick: function onClick(ev) {
+        return props.sincola('ejecucion', e.Tipo, e.inicio, e.fin, e._id);
+      }
     })));
   }))));
 };
@@ -85066,6 +85069,7 @@ function (_Component) {
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
     _this.getMultimedia = _this.getMultimedia.bind(_assertThisInitialized(_this));
     _this.enviarComando = _this.enviarComando.bind(_assertThisInitialized(_this));
+    _this.enviarComandoQuitar = _this.enviarComandoQuitar.bind(_assertThisInitialized(_this));
     _this.ponerCola = _this.ponerCola.bind(_assertThisInitialized(_this));
     _this.getEnvios = _this.getEnvios.bind(_assertThisInitialized(_this));
     _this.quitarCola = _this.quitarCola.bind(_assertThisInitialized(_this));
@@ -85148,6 +85152,70 @@ function (_Component) {
 
         if (titleTool == 'colores') {
           var message2 = new Paho.MQTT.Message("COL," + self.state.color + "+10," + fechainicio + "," + fechafin);
+          message2.destinationName = "sampletopic";
+          window.mqttCliente.send(message2);
+        }
+
+        self.ponerCola('ejecucion', fechainicio, fechafin);
+      }
+
+      function MQTTconnect() {
+        console.log("connecting to " + host + " " + port);
+        window.mqttCliente = new Paho.MQTT.Client(host, port, "clientjs"); //document.write("connecting to "+ host);
+
+        var options = {
+          timeout: 3,
+          onSuccess: onConnect,
+          useSSL: true
+        };
+        window.mqttCliente.connect(options); //connect
+      }
+
+      MQTTconnect();
+    }
+  }, {
+    key: "enviarComandoQuitar",
+    value: function enviarComandoQuitar(title, parametro, fechainicio, fechafin) {
+      var reconnectTimeout = 2000;
+      var host = "mqtt.oneshow.com.ar"; //change this
+
+      var port = 11344;
+      var self = this;
+
+      function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("Connected ");
+        var titleTool = title; // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        //message.destinationName = "/empresa/evento/Multimedia";
+        // window.mqttCliente.send(message);
+        // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
+        //message.destinationName = "sampletopic";
+        //window.mqttCliente.send(message);
+
+        if (fechainicio == "") {
+          fechainicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
+        }
+
+        if (fechafin == "") {
+          fechafin = "99:99:99";
+        }
+
+        if (titleTool == 'imagen' || titleTool == 'video' || titleTool == 'audio') {
+          var evento = self.state.evento.split("_")[0];
+          var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + evento + "/" + parametro + "..1," + fechainicio + "," + fechafin);
+          message2.destinationName = "sampletopic";
+          window.mqttCliente.send(message2);
+        }
+
+        if (titleTool == 'flash') {
+          parametro = 0;
+          var message2 = new Paho.MQTT.Message("FLH," + parametro + "," + fechainicio + "," + fechafin);
+          message2.destinationName = "sampletopic";
+          window.mqttCliente.send(message2);
+        }
+
+        if (titleTool == 'colores') {
+          var message2 = new Paho.MQTT.Message("COL," + parametro + "+10," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
         }
@@ -85360,11 +85428,11 @@ function (_Component) {
         estado = newestado;
       }
 
-      if (inicio == "") {
+      if (inicio != undefined && inicio != null && inicio == "") {
         inicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
       }
 
-      if (fin == "") {
+      if (fin != undefined && fin != null && fin == "") {
         fin = "99:99:99";
       }
 
@@ -85380,6 +85448,7 @@ function (_Component) {
         parametro = this.state.color;
       }
 
+      this.enviarComandoQuitar(title, parametro, inicio, fin);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-remove-envios', {
         evento: evento,
         title: title,

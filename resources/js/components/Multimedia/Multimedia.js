@@ -44,6 +44,7 @@ export default class Multimedia extends Component {
         this.actionTool = this.actionTool.bind(this);
         this.getMultimedia = this.getMultimedia.bind(this);
         this.enviarComando = this.enviarComando.bind(this);
+        this.enviarComandoQuitar = this.enviarComandoQuitar.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
@@ -117,6 +118,64 @@ MQTTconnect();
         if(titleTool=='colores'){
         
         var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
+        }
+        self.ponerCola('ejecucion',fechainicio,fechafin);
+      }
+      function MQTTconnect() {
+        console.log("connecting to "+ host +" "+ port);
+        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
+        //document.write("connecting to "+ host);
+        var options = {
+            timeout: 3,
+            onSuccess: onConnect,
+            useSSL:true
+         };
+         
+        window.mqttCliente.connect(options); //connect
+        }
+     
+MQTTconnect();
+    }
+    enviarComandoQuitar(title,parametro,fechainicio,fechafin){
+       
+         var reconnectTimeout = 2000;
+        var host="mqtt.oneshow.com.ar"; //change this
+        var port=11344;
+        var self=this;
+        function onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+    
+        console.log("Connected ");
+        var titleTool=title;
+        // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        //message.destinationName = "/empresa/evento/Multimedia";
+       // window.mqttCliente.send(message);
+       // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
+        //message.destinationName = "sampletopic";
+        //window.mqttCliente.send(message);
+        if(fechainicio==""){
+            fechainicio=moment().format("hh:mm:ss");
+        }
+        if(fechafin==""){
+            fechafin="99:99:99";
+        }
+        if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
+        var evento=self.state.evento.split("_")[0];
+        var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+parametro+"..1,"+fechainicio+","+fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
+        }
+        if(titleTool=='flash'){
+        parametro=0;
+        var message2 = new Paho.MQTT.Message("FLH,"+parametro+","+fechainicio+","+fechafin);
+        message2.destinationName = "sampletopic";
+        window.mqttCliente.send(message2);
+        }
+        if(titleTool=='colores'){
+        parametro=#000;
+        var message2 = new Paho.MQTT.Message("COL,"+parametro+"+10,"+fechainicio+","+fechafin);
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }
@@ -330,10 +389,10 @@ MQTTconnect();
         if(newestado!=undefined&&newestado!=null&&newestado!=""){
             estado=newestado;
         }
-        if(inicio==""){
+        if(inicio!=undefined&&inicio!=null&&inicio==""){
             inicio=moment().format("hh:mm:ss");
         }
-        if(fin==""){
+        if(fin!=undefined&&fin!=null&&fin==""){
             fin="99:99:99";
         }
         if(title=='imagen'||title=='video'||title=='audio'){
@@ -345,6 +404,7 @@ MQTTconnect();
         if(title=='colores'){
         parametro=this.state.color;
         }
+        this.enviarComandoQuitar(title,parametro,inicio,fin);
         axios.post('/ajax-remove-envios', {evento,title,estado,inicio,fin,parametro,id} )
             .then(res => {
                 if(res){

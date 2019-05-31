@@ -33,7 +33,7 @@ const Ejecucion = (props) => {
                     <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
-                    <td><i className="fas fa-ban fa-lg icon-console"></i></td>
+                    <td><i className="fas fa-ban fa-lg icon-console"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
                 </tr>
                                                 })
                                             }
