@@ -85320,7 +85320,7 @@ function (_Component) {
         evento: evento,
         title: title,
         estado: estado,
-        incio: incio,
+        inicio: inicio,
         fin: fin,
         parametro: parametro
       }).then(function (res) {

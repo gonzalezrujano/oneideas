@@ -294,7 +294,7 @@ MQTTconnect();
         if(title=='colores'){
         parametro=this.state.color;
         }
-        axios.post('/ajax-set-envios', {evento,title,estado,incio,fin,parametro} )
+        axios.post('/ajax-set-envios', {evento,title,estado,inicio,fin,parametro} )
             .then(res => {
                 if(res){
 
