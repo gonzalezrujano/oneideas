@@ -321,7 +321,7 @@ const Parametros = (props) => {
                         <div className="text-center mb-4">
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e)=> props.enviar(fechainicio,fechafin)}>Inmediata</button>
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.enviar('audio')}>Proxima</button>
-                            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.cola(fechainicio,fechafin)}>En cola</button>
+                            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.cola('cola',fechainicio,fechafin)}>En cola</button>
                             <button className="btn btn-sm btn-dark mr-2">Cancelar</button>
                         </div>
 

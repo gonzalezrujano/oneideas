@@ -409,6 +409,9 @@ class EventoController extends Controller
             $evento = $input['evento'];
             $title = $input['title'];
             $estado = $input['estado'];
+            $inicio = $input['inicio'];
+            $fin = $input['fin'];
+            $parametro = $input['parametro'];
 
             //valido que venga el id sino mando un error
             if($evento){
@@ -420,6 +423,9 @@ class EventoController extends Controller
                 $envio->Evento = $input['evento'];
                 $envio->Tipo = $title;
                 $envio->Estado = $estado;
+                $envio->Inicio = $inicio;
+                $envio->Fin = $fin;
+                $envio->Parametro = $parametro;
 
                 $envios = Envio::get();
 

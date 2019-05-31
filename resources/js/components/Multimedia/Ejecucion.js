@@ -29,10 +29,10 @@ const Ejecucion = (props) => {
                                                     }
                                                     return <tr key={index}>
                     <td>{e.Tipo}</td>
-                     <td>15:30:55</td>
-                    <td>15:50:00</td>
+                     <td>{e.Inicio}</td>
+                    <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
-                    <td>Intermitencia 30ms</td>
+                    <td>{e.Parametro}</td>
                     <td><i className="fas fa-ban fa-lg icon-console"></i></td>
                 </tr>
                                                 })

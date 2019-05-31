@@ -84634,14 +84634,8 @@ var Cola = function Cola(props) {
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "16:40:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-ban fa-lg icon-console mr-2"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-arrow-up fa-lg icon-console mr-2"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-arrow-down fa-lg icon-console mr-2"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-pencil-alt fa-lg icon-console mr-2"
     })));
   }))));
 };
@@ -84734,7 +84728,7 @@ var Ejecucion = function Ejecucion(props) {
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:30:55"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "15:50:00"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Intermitencia 30ms"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
       className: "fas fa-ban fa-lg icon-console"
     })));
   }))));
@@ -85154,7 +85148,7 @@ function (_Component) {
           window.mqttCliente.send(message2);
         }
 
-        self.ponerCola('ejecucion');
+        self.ponerCola('ejecucion', fechainicio, fechafin);
       }
 
       function MQTTconnect() {
@@ -85289,22 +85283,46 @@ function (_Component) {
     }
   }, {
     key: "ponerCola",
-    value: function ponerCola(newestado) {
+    value: function ponerCola(newestado, incio, fin) {
       var _this5 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
       var title = this.state.titleTool;
+      var parametro = '';
       var estado = 'cola';
 
       if (newestado != undefined && newestado != null && newestado != "") {
         estado = newestado;
       }
 
+      if (inicio == "") {
+        inicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
+      }
+
+      if (fin == "") {
+        fin = "99:99:99";
+      }
+
+      if (title == 'imagen' || title == 'video' || title == 'audio') {
+        parametro = this.state.archivo;
+      }
+
+      if (title == 'flash') {
+        parametro = this.state.flash2;
+      }
+
+      if (title == 'colores') {
+        parametro = this.state.color;
+      }
+
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-set-envios', {
         evento: evento,
         title: title,
-        estado: estado
+        estado: estado,
+        incio: incio,
+        fin: fin,
+        parametro: parametro
       }).then(function (res) {
         if (res) {
           var r = res.data;
@@ -85747,7 +85765,7 @@ var Parametros = function Parametros(props) {
   }, "Proxima"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-sm btn-dark mr-2",
     onClick: function onClick(e) {
-      return props.cola(fechainicio, fechafin);
+      return props.cola('cola', fechainicio, fechafin);
     }
   }, "En cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-sm btn-dark mr-2"

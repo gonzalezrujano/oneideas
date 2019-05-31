@@ -119,7 +119,7 @@ MQTTconnect();
         message2.destinationName = "sampletopic";
         window.mqttCliente.send(message2);
         }
-        self.ponerCola('ejecucion');
+        self.ponerCola('ejecucion',fechainicio,fechafin);
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);
@@ -269,16 +269,32 @@ MQTTconnect();
             }).catch(function (error) {});
 
     }
-    ponerCola(newestado){
+    ponerCola(newestado,incio,fin){
         let {evento} = this.state;
         evento=evento.split("_")[0];
         var title=this.state.titleTool;
+        var parametro='';
 
         var estado='cola';
         if(newestado!=undefined&&newestado!=null&&newestado!=""){
             estado=newestado;
         }
-        axios.post('/ajax-set-envios', {evento,title,estado} )
+        if(inicio==""){
+            inicio=moment().format("hh:mm:ss");
+        }
+        if(fin==""){
+            fin="99:99:99";
+        }
+        if(title=='imagen'||title=='video'||title=='audio'){
+        parametro=this.state.archivo;
+        }
+        if(title=='flash'){
+        parametro=this.state.flash2;
+        }
+        if(title=='colores'){
+        parametro=this.state.color;
+        }
+        axios.post('/ajax-set-envios', {evento,title,estado,incio,fin,parametro} )
             .then(res => {
                 if(res){
 
