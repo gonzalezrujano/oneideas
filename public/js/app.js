@@ -84635,7 +84635,10 @@ var Cola = function Cola(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-console mr-2"
+      className: "fas fa-ban fa-lg icon-console mr-2",
+      onClick: function onClick(e) {
+        return props.sincola(e.Tipo, e.inicio, e.fin, e._id);
+      }
     })));
   }))));
 };
@@ -85065,6 +85068,7 @@ function (_Component) {
     _this.enviarComando = _this.enviarComando.bind(_assertThisInitialized(_this));
     _this.ponerCola = _this.ponerCola.bind(_assertThisInitialized(_this));
     _this.getEnvios = _this.getEnvios.bind(_assertThisInitialized(_this));
+    _this.quitarCola = _this.quitarCola.bind(_assertThisInitialized(_this));
 
     _this.iniciarMQTT();
 
@@ -85342,6 +85346,67 @@ function (_Component) {
       })["catch"](function (error) {});
     }
   }, {
+    key: "quitarCola",
+    value: function quitarCola(newestado, inicio, fin, id) {
+      var _this6 = this;
+
+      var evento = this.state.evento;
+      evento = evento.split("_")[0];
+      var title = this.state.titleTool;
+      var parametro = '';
+      var estado = 'cola';
+
+      if (newestado != undefined && newestado != null && newestado != "") {
+        estado = newestado;
+      }
+
+      if (inicio == "") {
+        inicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
+      }
+
+      if (fin == "") {
+        fin = "99:99:99";
+      }
+
+      if (title == 'imagen' || title == 'video' || title == 'audio') {
+        parametro = this.state.archivo;
+      }
+
+      if (title == 'flash') {
+        parametro = this.state.flash2;
+      }
+
+      if (title == 'colores') {
+        parametro = this.state.color;
+      }
+
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-remove-envios', {
+        evento: evento,
+        title: title,
+        estado: estado,
+        inicio: inicio,
+        fin: fin,
+        parametro: parametro,
+        id: id
+      }).then(function (res) {
+        if (res) {
+          var r = res.data;
+
+          if (r.code === 200) {
+            _this6.setState({
+              envios: r.envios
+            });
+          } else if (r.code === 500) {
+            console.log(r.msj);
+
+            _this6.setState({
+              multimedias: []
+            });
+          }
+        }
+      })["catch"](function (error) {});
+    }
+  }, {
     key: "handleChange",
     value: function handleChange(e) {
       if (e.target.name == 'evento') {
@@ -85362,7 +85427,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var _this$state2 = this.state,
           eventos = _this$state2.eventos,
@@ -85382,7 +85447,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
-          return _this6.setState({
+          return _this7.setState({
             isFull: isFull
           });
         }
@@ -85447,7 +85512,8 @@ function (_Component) {
         evento: this.state.evento
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cola__WEBPACK_IMPORTED_MODULE_9__["default"], {
         envios: this.state.envios,
-        evento: this.state.evento
+        evento: this.state.evento,
+        sincola: this.quitarCola.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid container-tools"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

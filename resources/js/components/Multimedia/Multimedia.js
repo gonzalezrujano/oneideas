@@ -46,6 +46,7 @@ export default class Multimedia extends Component {
         this.enviarComando = this.enviarComando.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
+        this.quitarCola = this.quitarCola.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -319,6 +320,56 @@ MQTTconnect();
 
             }).catch(function (error) {});
     }
+    quitarCola(newestado,inicio,fin,id){
+        let {evento} = this.state;
+        evento=evento.split("_")[0];
+        var title=this.state.titleTool;
+        var parametro='';
+
+        var estado='cola';
+        if(newestado!=undefined&&newestado!=null&&newestado!=""){
+            estado=newestado;
+        }
+        if(inicio==""){
+            inicio=moment().format("hh:mm:ss");
+        }
+        if(fin==""){
+            fin="99:99:99";
+        }
+        if(title=='imagen'||title=='video'||title=='audio'){
+        parametro=this.state.archivo;
+        }
+        if(title=='flash'){
+        parametro=this.state.flash2;
+        }
+        if(title=='colores'){
+        parametro=this.state.color;
+        }
+        axios.post('/ajax-remove-envios', {evento,title,estado,inicio,fin,parametro,id} )
+            .then(res => {
+                if(res){
+
+                    let r = res.data;
+
+                    if(r.code === 200){
+
+                        this.setState({
+                            envios: r.envios,
+                        });
+
+                    }else if(r.code === 500){
+
+                        console.log(r.msj);
+                        this.setState({
+                            multimedias: [],
+                        });
+
+                    }
+
+                }
+
+            }).catch(function (error) {});
+    }
 
     handleChange(e) {
 
@@ -419,7 +470,7 @@ MQTTconnect();
 
                                         <Ejecucion envios={this.state.envios} evento={this.state.evento}/>
 
-                                        <Cola envios={this.state.envios} evento={this.state.evento}/>
+                                        <Cola envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)}/>
 
                                         <div className="container-fluid container-tools">
 

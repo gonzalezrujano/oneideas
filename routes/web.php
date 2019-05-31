@@ -156,6 +156,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
         // envios y cola
         Route::post('/ajax-get-envios', 'EventoController@ajaxEnvios')->name('envios');
         Route::post('/ajax-set-envios', 'EventoController@ajaxEnviosCola')->name('cola');
+        Route::post('/ajax-remove-envios', 'EventoController@ajaxEnviosQuitar')->name('quitarcola');
     });
 
 

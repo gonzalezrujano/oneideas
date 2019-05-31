@@ -427,9 +427,56 @@ class EventoController extends Controller
                 $envio->Fin = $fin;
                 $envio->Parametro = $parametro;
 
-                $envios = Envio::get();
 
-                if($envio->save()){
+                if($envio->save()){                   
+                    $envios = Envio::get();
+                    return json_encode(['code' => 200,'envios'=>$envios]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
+
+    //metodo para cambiar la visualizacion o estado
+    public function ajaxEnviosQuitar(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+            $evento = $input['evento'];
+            $title = $input['title'];
+            $estado = $input['estado'];
+            $inicio = $input['inicio'];
+            $fin = $input['fin'];
+            $parametro = $input['parametro'];
+            $id = $input['id'];
+
+            //valido que venga el id sino mando un error
+            if($evento){
+
+                //ubico el id en la bd
+                //$evento = Evento::find($evento);
+
+               /* $envio = new Envio;
+                $envio->Evento = $input['evento'];
+                $envio->Tipo = $title;
+                $envio->Estado = $estado;
+                $envio->Inicio = $inicio;
+                $envio->Fin = $fin;
+                $envio->Parametro = $parametro;*/
+                $envio = Envio::find($id);
+                
+
+                if($envio->delete();){
+                    $envios = Envio::get();
                     return json_encode(['code' => 200,'envios'=>$envios]);
                 }else{
                     return json_encode(['code' => 500]);
