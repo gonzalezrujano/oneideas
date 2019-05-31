@@ -35,7 +35,7 @@ console.log(props.envios);
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
                     <td>
-                        <i className="fas fa-ban fa-lg icon-console mr-2" onClick={(e) => props.sincola(e.Tipo,e.inicio,e.fin,e._id)}></i>
+                        <i className="fas fa-ban fa-lg icon-console mr-2" onClick={(ev) => props.sincola(e.Tipo,e.inicio,e.fin,e._id)}></i>
                         
                     </td>
                 </tr>
