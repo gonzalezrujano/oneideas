@@ -320,10 +320,10 @@ MQTTconnect();
 
             }).catch(function (error) {});
     }
-    quitarCola(newestado,inicio,fin,id){
+    quitarCola(newestado,tipo,inicio,fin,id){
         let {evento} = this.state;
         evento=evento.split("_")[0];
-        var title=this.state.titleTool;
+        var title=tipo;
         var parametro='';
 
         var estado='cola';

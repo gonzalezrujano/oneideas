@@ -85347,12 +85347,12 @@ function (_Component) {
     }
   }, {
     key: "quitarCola",
-    value: function quitarCola(newestado, inicio, fin, id) {
+    value: function quitarCola(newestado, tipo, inicio, fin, id) {
       var _this6 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
-      var title = this.state.titleTool;
+      var title = tipo;
       var parametro = '';
       var estado = 'cola';
 
