@@ -475,7 +475,7 @@ class EventoController extends Controller
                 $envio = Envio::find($id);
                 
 
-                if($envio->delete();){
+                if($envio->delete()){
                     $envios = Envio::get();
                     return json_encode(['code' => 200,'envios'=>$envios]);
                 }else{
