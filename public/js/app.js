@@ -85402,6 +85402,8 @@ function (_Component) {
             _this5.setState({
               envios: r.envios
             });
+
+            _this5.getEnvios();
           } else if (r.code === 500) {
             console.log(r.msj);
 
@@ -85464,6 +85466,8 @@ function (_Component) {
             _this6.setState({
               envios: r.envios
             });
+
+            _this6.getEnvios();
           } else if (r.code === 500) {
             console.log(r.msj);
 
@@ -85511,7 +85515,6 @@ function (_Component) {
           fechainicio = _this$state2.fechainicio,
           fechafin = _this$state2.fechafin,
           archivo = _this$state2.archivo;
-      this.getEnvios();
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {

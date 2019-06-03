@@ -365,6 +365,7 @@ MQTTconnect();
                         this.setState({
                             envios: r.envios,
                         });
+                        this.getEnvios();
 
                     }else if(r.code === 500){
 
@@ -416,6 +417,7 @@ MQTTconnect();
                         this.setState({
                             envios: r.envios,
                         });
+                        this.getEnvios();
 
                     }else if(r.code === 500){
 
@@ -458,7 +460,7 @@ MQTTconnect();
     render() {
 
         let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer, sector, fechainicio, fechafin, archivo} = this.state;
-         this.getEnvios();
+         
         return (
 
             <Fullscreen
