@@ -86,6 +86,7 @@ MQTTconnect();
         var host="mqtt.oneshow.com.ar"; //change this
         var port=11344;
         var self=this;
+        var envio=false;
         function onConnect() {
       // Once a connection has been made, make a subscription and send a message.
     
@@ -104,24 +105,38 @@ MQTTconnect();
             fechafin="99:99:99";
         }
         if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-        var evento=self.state.evento.split("_")[0];
-        var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
-        window.mqttCliente.send(message2);
+                var evento=self.state.evento.split("_")[0];
+                var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
+                message2.destinationName = "sampletopic";
+                window.mqttCliente.send(message2);
+                envio=true;
         }
         if(titleTool=='flash'){
         
-        var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
-        window.mqttCliente.send(message2);
+                var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
+                message2.destinationName = "sampletopic";
+                window.mqttCliente.send(message2);
+                envio=true;
         }
         if(titleTool=='colores'){
-        
-        var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
-        window.mqttCliente.send(message2);
+            if(self.state.color!=''){
+                var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
+                message2.destinationName = "sampletopic";
+                window.mqttCliente.send(message2);
+                envio=true;
+            }else{
+                swal.fire({
+                            title: '<i class="fas fa-exclamation-circle"></i>',
+                            text: 'Seleccione el color',
+                            confirmButtonColor: '#343a40',
+                            confirmButtonText: 'Ok',
+                            target: document.getElementById('sweet')
+                        });
+            }
         }
-        self.ponerCola('ejecucion',fechainicio,fechafin);
+        if(envio){
+            self.ponerCola('ejecucion',fechainicio,fechafin);
+        }
       }
       function MQTTconnect() {
         console.log("connecting to "+ host +" "+ port);

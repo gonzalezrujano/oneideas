@@ -85118,6 +85118,7 @@ function (_Component) {
 
       var port = 11344;
       var self = this;
+      var envio = false;
 
       function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
@@ -85142,21 +85143,36 @@ function (_Component) {
           var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
+          envio = true;
         }
 
         if (titleTool == 'flash') {
           var message2 = new Paho.MQTT.Message("FLH," + self.state.flash2 + "," + fechainicio + "," + fechafin);
           message2.destinationName = "sampletopic";
           window.mqttCliente.send(message2);
+          envio = true;
         }
 
         if (titleTool == 'colores') {
-          var message2 = new Paho.MQTT.Message("COL," + self.state.color + "+10," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
-          window.mqttCliente.send(message2);
+          if (self.state.color != '') {
+            var message2 = new Paho.MQTT.Message("COL," + self.state.color + "+10," + fechainicio + "," + fechafin);
+            message2.destinationName = "sampletopic";
+            window.mqttCliente.send(message2);
+            envio = true;
+          } else {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
+              title: '<i class="fas fa-exclamation-circle"></i>',
+              text: 'Seleccione el color',
+              confirmButtonColor: '#343a40',
+              confirmButtonText: 'Ok',
+              target: document.getElementById('sweet')
+            });
+          }
         }
 
-        self.ponerCola('ejecucion', fechainicio, fechafin);
+        if (envio) {
+          self.ponerCola('ejecucion', fechainicio, fechafin);
+        }
       }
 
       function MQTTconnect() {
