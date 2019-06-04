@@ -295,7 +295,7 @@ const Parametros = (props) => {
                                             <label>Hora Inicio</label>
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
-                                            onClick={this.handleThemeToggle}>
+                                            onClick={props.handleThemeToggle}>
                                              {props.hora==''?'Ingrese (Opcional)':props.hora.getDate()+'/'+(props.hora.getMonth() + 1) +'/'+props.hora.getFullYear()}
                                         </a>
                                         <Datepicker
@@ -319,7 +319,7 @@ const Parametros = (props) => {
                                             <label>Hora Fin</label>
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
-                                            onClick={this.handleThemeToggle2}>
+                                            onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getDate()+'/'+(props.hora2.getMonth() + 1) +'/'+props.hora2.getFullYear()}
                                         </a>
                                         <Datepicker

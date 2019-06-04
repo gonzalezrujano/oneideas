@@ -97557,8 +97557,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-mobile-datepicker */ "./node_modules/react-mobile-datepicker/dist/react-mobile-datepicker.js");
 /* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2__);
-var _this = undefined;
-
 
 
 
@@ -97801,7 +97799,7 @@ var Parametros = function Parametros(props) {
       'width': '88%',
       'color': '#dadada'
     },
-    onClick: _this.handleThemeToggle
+    onClick: props.handleThemeToggle
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getDate() + '/' + (props.hora.getMonth() + 1) + '/' + props.hora.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
@@ -97836,7 +97834,7 @@ var Parametros = function Parametros(props) {
       'width': '88%',
       'color': '#dadada'
     },
-    onClick: _this.handleThemeToggle2
+    onClick: props.handleThemeToggle2
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getDate() + '/' + (props.hora2.getMonth() + 1) + '/' + props.hora2.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
