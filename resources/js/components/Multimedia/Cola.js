@@ -4,7 +4,7 @@ const Cola = (props) => {
 console.log(props.envios);
     return (
 
-        <div>
+        <div style={{'overflow': 'scroll','height': '30vh'}}>
 
             <table className="table table-dark-theme-console">
                 <thead>
