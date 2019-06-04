@@ -1,5 +1,24 @@
 import React from 'react';
-
+import $ from 'jquery';
+import reactMobileDatePicker from 'react-mobile-datepicker';
+const Datepicker = reactMobileDatePicker;
+const dateConfig = {
+    'hour': {
+        format: 'hh',
+        caption: 'Hora',
+        step: 1,
+    },
+    'minute': {
+        format: 'mm',
+        caption: 'Minuto',
+        step: 1,
+    },
+    'second': {
+        format: 'hh',
+        caption: 'Segundo',
+        step: 1,
+    },
+};
 const Parametros = (props) => {
 
     let istool = props.istool;
@@ -274,11 +293,49 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Inicio</label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={this.handleThemeToggle}>
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getDate()+'/'+(props.hora.getMonth() + 1) +'/'+props.hora.getFullYear()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={props.hora}
+                                        theme="default"
+                                        isOpen={props.isOpenHora}
+                                        onSelect={props.handleSelect}
+                                        onCancel={(e) => props.handleToggle(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={new Date()}
+                                        dateConfig={dateConfig}
+                                        />
                                             <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
                                             <label>Hora Fin</label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={this.handleThemeToggle2}>
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getDate()+'/'+(props.hora2.getMonth() + 1) +'/'+props.hora2.getFullYear()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={props.hora2}
+                                        theme="default"
+                                        isOpen={props.isOpenHora2}
+                                        onSelect={props.handleSelect2}
+                                        onCancel={(e) => props.handleToggle2(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={new Date()}
+                                        dateConfig={dateConfig}
+                                        />
                                             <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
                                         </div>
 

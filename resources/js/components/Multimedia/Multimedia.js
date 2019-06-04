@@ -36,7 +36,9 @@ export default class Multimedia extends Component {
             flash:'',
             flash2:'',
             color:'',
-            envios:[]
+            envios:[],
+            hora:'',
+            isOpenHora:false
         };
 
         this.goFull = this.goFull.bind(this);
@@ -48,6 +50,8 @@ export default class Multimedia extends Component {
         this.ponerCola = this.ponerCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -471,7 +475,24 @@ MQTTconnect();
         });
     }
 
-
+    handleSelect(hora){
+            this.setState({ hora, isOpenHora: false });
+        }
+      handleToggle(isOpen) {
+            this.setState({ isOpenHora });
+        }
+    handleThemeToggle() {
+            this.setState({ isOpenHora: true });
+        }
+    handleSelect2(hora2){
+            this.setState({ hora2, isOpenHora2: false });
+        }
+      handleToggle2(isOpen2) {
+            this.setState({ isOpenHora2 });
+        }
+    handleThemeToggle2() {
+            this.setState({ isOpenHora2: true });
+        }    
     render() {
 
         let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer, sector, fechainicio, fechafin, archivo} = this.state;
@@ -555,7 +576,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool} />
 
-                                                <Parametros istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
+                                                <Parametros handleToggle={this.state.handleToggle} handleSelect={this.state.handleSelect} isOpenHora={this.state.isOpenHora} hora={this.state.hora} handleToggle2={this.state.handleToggle} handleSelect2={this.state.handleSelect} isOpenHora2={this.state.isOpenHora} hora2={this.state.hora} istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
 
                                             </div>
 
