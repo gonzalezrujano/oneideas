@@ -17,7 +17,7 @@ const dateConfig = {
         format: 'hh',
         caption: 'Segundo',
         step: 1,
-    },
+    }
 };
 const Parametros = (props) => {
 

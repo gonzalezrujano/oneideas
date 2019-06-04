@@ -97502,7 +97502,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Herramientas__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        action: this.actionTool
+        action: this.actionTool.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Parametros__WEBPACK_IMPORTED_MODULE_7__["default"], {
         handleToggle: this.state.handleToggle,
         handleSelect: this.state.handleSelect,

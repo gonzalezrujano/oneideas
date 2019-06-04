@@ -574,7 +574,7 @@ MQTTconnect();
 
                                             <div className="row">
 
-                                                <Herramientas action={this.actionTool} />
+                                                <Herramientas action={this.actionTool.bind(this)} />
 
                                                 <Parametros handleToggle={this.state.handleToggle} handleSelect={this.state.handleSelect} isOpenHora={this.state.isOpenHora} hora={this.state.hora} handleToggle2={this.state.handleToggle} handleSelect2={this.state.handleSelect} isOpenHora2={this.state.isOpenHora} hora2={this.state.hora} istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
 
