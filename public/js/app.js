@@ -97502,6 +97502,8 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Herramientas__WEBPACK_IMPORTED_MODULE_6__["default"], {
         action: this.actionTool.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Parametros__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        handleThemeToggle: this.state.handleThemeToggle,
+        handleThemeToggle2: this.state.handleThemeToggle2,
         handleToggle: this.state.handleToggle,
         handleSelect: this.state.handleSelect,
         isOpenHora: this.state.isOpenHora,
