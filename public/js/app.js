@@ -97817,7 +97817,7 @@ var Parametros = function Parametros(props) {
       'color': '#dadada'
     },
     onClick: props.handleThemeToggle
-  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.Seconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
     headerFormat: 'hh:mm:hh',
@@ -97852,7 +97852,7 @@ var Parametros = function Parametros(props) {
       'color': '#dadada'
     },
     onClick: props.handleThemeToggle2
-  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.Seconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
     headerFormat: 'hh:mm:hh',
