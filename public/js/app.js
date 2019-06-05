@@ -97504,12 +97504,12 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Herramientas__WEBPACK_IMPORTED_MODULE_6__["default"], {
         action: this.actionTool.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Parametros__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        handleToggle: this.state.handleToggle,
-        handleSelect: this.state.handleSelect,
+        handleToggle: this.handleToggle,
+        handleSelect: this.handleSelect,
         isOpenHora: this.state.isOpenHora,
         hora: this.state.hora,
-        handleToggle2: this.state.handleToggle,
-        handleSelect2: this.state.handleSelect,
+        handleToggle2: this.handleToggle,
+        handleSelect2: this.handleSelect,
         isOpenHora2: this.state.isOpenHora,
         hora2: this.state.hora,
         istool: istool,
