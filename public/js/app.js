@@ -97504,8 +97504,6 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Herramientas__WEBPACK_IMPORTED_MODULE_6__["default"], {
         action: this.actionTool.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Parametros__WEBPACK_IMPORTED_MODULE_7__["default"], {
-        handleThemeToggle: this.state.handleThemeToggle,
-        handleThemeToggle2: this.state.handleThemeToggle2,
         handleToggle: this.state.handleToggle,
         handleSelect: this.state.handleSelect,
         isOpenHora: this.state.isOpenHora,
@@ -97523,6 +97521,8 @@ function (_Component) {
         fechafin: fechafin,
         archivo: archivo,
         change: this.handleChange,
+        handleThemeToggle: this.handleThemeToggle,
+        handleThemeToggle2: this.handleThemeToggle2,
         enviar: this.enviarComando.bind(this),
         cola: this.ponerCola.bind(this)
       }))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
@@ -97817,7 +97817,7 @@ var Parametros = function Parametros(props) {
       'color': '#dadada'
     },
     onClick: props.handleThemeToggle
-  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getDate() + '/' + (props.hora.getMonth() + 1) + '/' + props.hora.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.Seconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
     headerFormat: 'hh:mm:hh',
@@ -97852,7 +97852,7 @@ var Parametros = function Parametros(props) {
       'color': '#dadada'
     },
     onClick: props.handleThemeToggle2
-  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getDate() + '/' + (props.hora2.getMonth() + 1) + '/' + props.hora2.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.Seconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
     headerFormat: 'hh:mm:hh',
