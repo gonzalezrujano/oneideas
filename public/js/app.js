@@ -96912,7 +96912,7 @@ function (_Component) {
       flash: '',
       flash2: '',
       color: ''
-    }, _defineProperty(_this$state, "envios", []), _defineProperty(_this$state, "hora", ''), _defineProperty(_this$state, "isOpenHora", false), _this$state);
+    }, _defineProperty(_this$state, "envios", []), _defineProperty(_this$state, "hora", moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss")), _defineProperty(_this$state, "hora2", moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss")), _defineProperty(_this$state, "isOpenHora", false), _this$state);
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
