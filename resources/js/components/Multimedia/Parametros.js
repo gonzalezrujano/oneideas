@@ -3,19 +3,19 @@ import $ from 'jquery';
 import reactMobileDatePicker from 'react-mobile-datepicker';
 const Datepicker = reactMobileDatePicker;
 const dateConfig = {
-    'hour': {
-        format: 'hh',
-        caption: 'Hora',
+    'year': {
+        format: 'YYYY',
+        caption: 'Año',
         step: 1,
     },
-    'minute': {
-        format: 'mm',
-        caption: 'Minuto',
+    'month': {
+        format: 'MM',
+        caption: 'Mes',
         step: 1,
     },
-    'second': {
-        format: 'hh',
-        caption: 'Segundo',
+    'date': {
+        format: 'DD',
+        caption: 'Dia',
         step: 1,
     }
 };

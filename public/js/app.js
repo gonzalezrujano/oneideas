@@ -97113,8 +97113,7 @@ function (_Component) {
   }, {
     key: "actionTool",
     value: function actionTool(herramienta) {
-      var _this2 = this;
-
+      var self = this;
       var evento = this.state.evento;
       evento = evento.split("_")[0];
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-action-tool', {
@@ -97126,19 +97125,19 @@ function (_Component) {
 
           if (r.code === 200) {
             if (r.tool == 'Video' || r.tool == 'Imagen' || r.tool == 'Audio') {
-              _this2.setState({
+              self.setState({
                 istool: true,
                 titleTool: herramienta,
                 bibliotecas: r.biblioteca
               });
             } else {
-              _this2.setState({
+              self.setState({
                 istool: true,
                 titleTool: herramienta
               });
             }
           } else if (r.code === 500) {
-            _this2.setState({
+            self.setState({
               istool: false,
               titleTool: ''
             });
@@ -97150,8 +97149,7 @@ function (_Component) {
               confirmButtonText: 'Ok',
               target: document.getElementById('sweet')
             });
-
-            _this2.setState({
+            self.setState({
               istool: false,
               titleTool: ''
             });
@@ -97159,7 +97157,7 @@ function (_Component) {
         }
       })["catch"](function (error) {
         console.log(error);
-        this.setState({
+        self.setState({
           istool: false,
           titleTool: ''
         });
@@ -97168,7 +97166,7 @@ function (_Component) {
   }, {
     key: "getMultimedia",
     value: function getMultimedia() {
-      var _this3 = this;
+      var _this2 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
@@ -97179,13 +97177,13 @@ function (_Component) {
           var r = res.data;
 
           if (r.code === 200) {
-            _this3.setState({
+            _this2.setState({
               multimedias: r.multimedia
             });
           } else if (r.code === 500) {
             console.log(r.msj);
 
-            _this3.setState({
+            _this2.setState({
               multimedias: []
             });
           }
@@ -97195,7 +97193,7 @@ function (_Component) {
   }, {
     key: "getEnvios",
     value: function getEnvios() {
-      var _this4 = this;
+      var _this3 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
@@ -97206,13 +97204,13 @@ function (_Component) {
           var r = res.data;
 
           if (r.code === 200) {
-            _this4.setState({
+            _this3.setState({
               envios: r.envios
             });
           } else if (r.code === 500) {
             console.log(r.msj);
 
-            _this4.setState({
+            _this3.setState({
               multimedias: []
             });
           }
@@ -97222,7 +97220,7 @@ function (_Component) {
   }, {
     key: "ponerCola",
     value: function ponerCola(newestado, inicio, fin) {
-      var _this5 = this;
+      var _this4 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
@@ -97266,15 +97264,15 @@ function (_Component) {
           var r = res.data;
 
           if (r.code === 200) {
-            _this5.setState({
+            _this4.setState({
               envios: r.envios
             });
 
-            _this5.getEnvios();
+            _this4.getEnvios();
           } else if (r.code === 500) {
             console.log(r.msj);
 
-            _this5.setState({
+            _this4.setState({
               multimedias: []
             });
           }
@@ -97284,7 +97282,7 @@ function (_Component) {
   }, {
     key: "quitarCola",
     value: function quitarCola(newestado, tipo, inicio, fin, id) {
-      var _this6 = this;
+      var _this5 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
@@ -97330,15 +97328,15 @@ function (_Component) {
           var r = res.data;
 
           if (r.code === 200) {
-            _this6.setState({
+            _this5.setState({
               envios: r.envios
             });
 
-            _this6.getEnvios();
+            _this5.getEnvios();
           } else if (r.code === 500) {
             console.log(r.msj);
 
-            _this6.setState({
+            _this5.setState({
               multimedias: []
             });
           }
@@ -97410,7 +97408,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this6 = this;
 
       var _this$state2 = this.state,
           eventos = _this$state2.eventos,
@@ -97429,7 +97427,7 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_11___default.a, {
         enabled: this.state.isFull,
         onChange: function onChange(isFull) {
-          return _this7.setState({
+          return _this6.setState({
             isFull: isFull
           });
         }
@@ -97562,19 +97560,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a;
 var dateConfig = {
-  'hour': {
-    format: 'hh',
-    caption: 'Hora',
+  'year': {
+    format: 'YYYY',
+    caption: 'Año',
     step: 1
   },
-  'minute': {
-    format: 'mm',
-    caption: 'Minuto',
+  'month': {
+    format: 'MM',
+    caption: 'Mes',
     step: 1
   },
-  'second': {
-    format: 'hh',
-    caption: 'Segundo',
+  'date': {
+    format: 'DD',
+    caption: 'Dia',
     step: 1
   }
 };

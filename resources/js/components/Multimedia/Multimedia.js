@@ -221,7 +221,7 @@ MQTTconnect();
     }
 
     actionTool(herramienta){
-
+         var self = this;
         let {evento} = this.state;
         evento=evento.split("_")[0];
         axios.post('/ajax-action-tool', {evento, herramienta} )
@@ -234,7 +234,7 @@ MQTTconnect();
 
                         if(r.tool == 'Video' || r.tool == 'Imagen' || r.tool == 'Audio'){
 
-                            this.setState({
+                            self.setState({
                                 istool: true,
                                 titleTool: herramienta,
                                 bibliotecas: r.biblioteca
@@ -242,7 +242,7 @@ MQTTconnect();
 
                         }else{
 
-                            this.setState({
+                            self.setState({
                                 istool: true,
                                 titleTool: herramienta
                             });
@@ -251,7 +251,7 @@ MQTTconnect();
 
                     }else if(r.code === 500){
 
-                        this.setState({
+                        self.setState({
                             istool: false,
                             titleTool: ''
                         });
@@ -266,7 +266,7 @@ MQTTconnect();
                             target: document.getElementById('sweet')
                         });
 
-                        this.setState({
+                        self.setState({
                             istool: false,
                             titleTool: ''
                         });
@@ -278,7 +278,7 @@ MQTTconnect();
 
                 console.log(error);
 
-                this.setState({
+                self.setState({
                     istool: false,
                     titleTool: ''
                 });
