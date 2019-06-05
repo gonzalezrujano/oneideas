@@ -96924,6 +96924,8 @@ function (_Component) {
     _this.quitarCola = _this.quitarCola.bind(_assertThisInitialized(_this));
     _this.handleSelect = _this.handleSelect.bind(_assertThisInitialized(_this));
     _this.handleToggle = _this.handleToggle.bind(_assertThisInitialized(_this));
+    _this.handleThemeToggle = _this.handleThemeToggle.bind(_assertThisInitialized(_this));
+    _this.handleThemeToggle2 = _this.handleThemeToggle2.bind(_assertThisInitialized(_this));
 
     _this.iniciarMQTT();
 
