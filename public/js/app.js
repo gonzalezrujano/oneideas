@@ -97555,14 +97555,17 @@ if (document.getElementById('multimedia')) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-mobile-datepicker */ "./node_modules/react-mobile-datepicker/dist/react-mobile-datepicker.js");
-/* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-mobile-datepicker */ "./node_modules/react-mobile-datepicker/dist/react-mobile-datepicker.js");
+/* harmony import */ var react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3__);
 
 
 
-var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a;
+
+var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3___default.a;
 var dateConfig = {
   'year': {
     format: 'YYYY',
