@@ -97816,7 +97816,7 @@ var Parametros = function Parametros(props) {
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getDate() + '/' + (props.hora.getMonth() + 1) + '/' + props.hora.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
-    headerFormat: 'hh:mm:ss',
+    headerFormat: 'hh:mm:hh',
     value: props.hora,
     theme: "default",
     isOpen: props.isOpenHora,

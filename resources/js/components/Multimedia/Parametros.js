@@ -316,7 +316,7 @@ const Parametros = (props) => {
                                         <Datepicker
                                         showCaption={true}
                                         showHeader={true}
-                                        headerFormat={'hh:mm:ss'}
+                                        headerFormat={'hh:mm:hh'}
                                         value={props.hora}
                                         theme="default"
                                         isOpen={props.isOpenHora}
