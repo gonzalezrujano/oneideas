@@ -97562,17 +97562,32 @@ var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_2___default.a;
 var dateConfig = {
   'year': {
     format: 'YYYY',
-    caption: 'Año',
+    caption: 'Year',
     step: 1
   },
   'month': {
     format: 'MM',
-    caption: 'Mes',
+    caption: 'Mon',
     step: 1
   },
   'date': {
     format: 'DD',
-    caption: 'Dia',
+    caption: 'Day',
+    step: 1
+  },
+  'hour': {
+    format: 'hh',
+    caption: 'Hour',
+    step: 1
+  },
+  'minute': {
+    format: 'mm',
+    caption: 'Min',
+    step: 1
+  },
+  'second': {
+    format: 'hh',
+    caption: 'Sec',
     step: 1
   }
 };
