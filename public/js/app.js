@@ -97574,6 +97574,21 @@ var dateConfig = {
     format: 'DD',
     caption: 'Dia',
     step: 1
+  },
+  'hour': {
+    format: 'hh',
+    caption: 'Hour',
+    step: 1
+  },
+  'minute': {
+    format: 'mm',
+    caption: 'Min',
+    step: 1
+  },
+  'second': {
+    format: 'hh',
+    caption: 'Sec',
+    step: 1
   }
 };
 
@@ -97801,7 +97816,7 @@ var Parametros = function Parametros(props) {
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getDate() + '/' + (props.hora.getMonth() + 1) + '/' + props.hora.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
-    headerFormat: 'DD/MM/YYYY',
+    headerFormat: 'hh:mm:hh',
     value: props.hora,
     theme: "default",
     isOpen: props.isOpenHora,
@@ -97836,7 +97851,7 @@ var Parametros = function Parametros(props) {
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getDate() + '/' + (props.hora2.getMonth() + 1) + '/' + props.hora2.getFullYear()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
-    headerFormat: 'hh:mm:ss',
+    headerFormat: 'hh:mm:hh',
     value: props.hora2,
     theme: "default",
     isOpen: props.isOpenHora2,
