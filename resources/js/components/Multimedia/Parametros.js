@@ -293,7 +293,7 @@ const Parametros = (props) => {
 
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio</label>
+                                            <label>Hora Inicio </label>
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
                                             onClick={props.handleThemeToggle}>
@@ -313,11 +313,10 @@ const Parametros = (props) => {
                                         max={new Date()}
                                         dateConfig={dateConfig}
                                         />
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Fin</label>
+                                            <label>Hora Fin </label>
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
                                             onClick={props.handleThemeToggle2}>
@@ -337,7 +336,7 @@ const Parametros = (props) => {
                                         max={new Date()}
                                         dateConfig={dateConfig}
                                         />
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
+                                            
                                         </div>
 
 
