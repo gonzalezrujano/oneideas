@@ -1,24 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import reactMobileDatePicker from 'react-mobile-datepicker';
 const Datepicker = reactMobileDatePicker;
 const dateConfig = {
-    'year': {
-        format: 'YYYY',
-        caption: 'Year',
-        step: 1,
-    },
-    'month': {
-        format: 'MM',
-        caption: 'Mon',
-        step: 1,
-    },
-    'date': {
-        format: 'DD',
-        caption: 'Day',
-        step: 1,
-    },
-    'hour': {
+     'hour': {
         format: 'hh',
         caption: 'Hour',
         step: 1,
@@ -311,13 +297,13 @@ const Parametros = (props) => {
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
                                             onClick={props.handleThemeToggle}>
-                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getDate()+'/'+(props.hora.getMonth() + 1) +'/'+props.hora.getFullYear()}
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
                                         </a>
                                         <Datepicker
                                         showCaption={true}
                                         showHeader={true}
                                         headerFormat={'hh:mm:hh'}
-                                        value={props.hora}
+                                        value={new Date()}
                                         theme="default"
                                         isOpen={props.isOpenHora}
                                         onSelect={props.handleSelect}
@@ -335,13 +321,13 @@ const Parametros = (props) => {
                                             <a
                                             className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
                                             onClick={props.handleThemeToggle2}>
-                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getDate()+'/'+(props.hora2.getMonth() + 1) +'/'+props.hora2.getFullYear()}
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
                                         </a>
                                         <Datepicker
                                         showCaption={true}
                                         showHeader={true}
-                                        headerFormat={'hh:mm:ss'}
-                                        value={props.hora2}
+                                        headerFormat={'hh:mm:hh'}
+                                        value={new Date()}
                                         theme="default"
                                         isOpen={props.isOpenHora2}
                                         onSelect={props.handleSelect2}

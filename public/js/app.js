@@ -96912,7 +96912,7 @@ function (_Component) {
       flash: '',
       flash2: '',
       color: ''
-    }, _defineProperty(_this$state, "envios", []), _defineProperty(_this$state, "hora", new Date()), _defineProperty(_this$state, "hora2", new Date()), _defineProperty(_this$state, "isOpenHora", false), _this$state);
+    }, _defineProperty(_this$state, "envios", []), _defineProperty(_this$state, "hora", new Date()), _defineProperty(_this$state, "hora2", new Date()), _defineProperty(_this$state, "isOpenHora", false), _defineProperty(_this$state, "isOpenHora2", false), _this$state);
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));
     _this.actionTool = _this.actionTool.bind(_assertThisInitialized(_this));
@@ -97374,7 +97374,7 @@ function (_Component) {
     }
   }, {
     key: "handleToggle",
-    value: function handleToggle(isOpen) {
+    value: function handleToggle(isOpenHora) {
       this.setState({
         isOpenHora: isOpenHora
       });
@@ -97404,12 +97404,12 @@ function (_Component) {
     }
   }, {
     key: "handleToggle2",
-    value: function handleToggle2(isOpen2) {
+    value: function handleToggle2(isOpenHora2) {
       this.setState({
         isOpenHora2: isOpenHora2
       });
 
-      if (isOpen) {
+      if (isOpenHora2) {
         document.querySelector(".wrapper").style.display = "none";
       } else {
         document.querySelector(".wrapper").style.display = "block";

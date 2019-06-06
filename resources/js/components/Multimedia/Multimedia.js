@@ -37,8 +37,10 @@ export default class Multimedia extends Component {
             flash2:'',
             color:'',
             envios:[],
-            hora:'',
-            isOpenHora:false
+            hora:new Date(),
+            hora2:new Date(),
+            isOpenHora:false,
+            isOpenHora2:false
         };
 
         this.goFull = this.goFull.bind(this);
@@ -52,6 +54,8 @@ export default class Multimedia extends Component {
         this.quitarCola = this.quitarCola.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.handleToggle = this.handleToggle.bind(this);
+        this.handleThemeToggle = this.handleThemeToggle.bind(this);
+        this.handleThemeToggle2 = this.handleThemeToggle2.bind(this);
         this.iniciarMQTT();
     }
     iniciarMQTT(){
@@ -477,22 +481,39 @@ MQTTconnect();
 
     handleSelect(hora){
             this.setState({ hora, isOpenHora: false });
+            document.querySelector(".wrapper").style.display="block";
         }
-      handleToggle(isOpen) {
+      handleToggle(isOpenHora) {
             this.setState({ isOpenHora });
+            if(isOpen){
+                document.querySelector(".wrapper").style.display="none";
+            }else{
+                document.querySelector(".wrapper").style.display="block";    
+            }
         }
+
     handleThemeToggle() {
-            this.setState({ isOpenHora: true });
+            this.setState({ isOpenHora: true });            
+            document.querySelector(".wrapper").style.display="none";
         }
+
     handleSelect2(hora2){
             this.setState({ hora2, isOpenHora2: false });
+            document.querySelector(".wrapper").style.display="block";
         }
-      handleToggle2(isOpen2) {
+      handleToggle2(isOpenHora2) {
             this.setState({ isOpenHora2 });
+            if(isOpenHora2){
+                document.querySelector(".wrapper").style.display="none";
+            }else{
+                document.querySelector(".wrapper").style.display="block";    
+            }
         }
     handleThemeToggle2() {
             this.setState({ isOpenHora2: true });
-        }    
+            document.querySelector(".wrapper").style.display="none";
+        }  
+
     render() {
 
         let {eventos, evento, istool, multimedia, multimedias, titleTool, sectores, bibliotecas, footer, sector, fechainicio, fechafin, archivo} = this.state;
@@ -576,7 +597,7 @@ MQTTconnect();
 
                                                 <Herramientas action={this.actionTool.bind(this)} />
 
-                                                <Parametros handleToggle={this.state.handleToggle} handleSelect={this.state.handleSelect} isOpenHora={this.state.isOpenHora} hora={this.state.hora} handleToggle2={this.state.handleToggle} handleSelect2={this.state.handleSelect} isOpenHora2={this.state.isOpenHora} hora2={this.state.hora} istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
+                                                <Parametros handleToggle={this.handleToggle} handleSelect={this.handleSelect} isOpenHora={this.state.isOpenHora} hora={this.state.hora} handleToggle2={this.handleToggle} handleSelect2={this.handleSelect} isOpenHora2={this.state.isOpenHora} hora2={this.state.hora} istool={istool} title={titleTool} sectores={sectores} bibliotecas={bibliotecas} sector={sector} fechainicio={fechainicio} fechafin={fechafin} archivo={archivo} change={this.handleChange}  handleThemeToggle={this.handleThemeToggle} handleThemeToggle2={this.handleThemeToggle2} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
 
                                             </div>
 
