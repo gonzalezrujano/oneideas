@@ -96983,6 +96983,20 @@ function (_Component) {
         //message.destinationName = "sampletopic";
         //window.mqttCliente.send(message);
 
+        if (self.state.hora) {
+          var h = self.state.hora.getHours();
+          var m = self.state.hora.getMinutes();
+          var s = self.state.hora.getSeconds();
+          fechainicio = h + ":" + m + ":" + s;
+        }
+
+        if (self.state.hora2) {
+          var h2 = self.state.hora2.getHours();
+          var m2 = self.state.hora2.getMinutes();
+          var s2 = self.state.hora2.getSeconds();
+          fechafin = h2 + ":" + m2 + ":" + s2;
+        }
+
         if (fechainicio == "") {
           fechainicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
         }
@@ -97836,14 +97850,6 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: new Date(),
     dateConfig: dateConfig
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechainicio",
-    value: fechainicio,
-    onChange: props.change,
-    placeholder: "Hora inicio"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -97871,14 +97877,6 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: new Date(),
     dateConfig: dateConfig
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechafin",
-    value: fechafin,
-    onChange: props.change,
-    placeholder: "Hora fin"
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
