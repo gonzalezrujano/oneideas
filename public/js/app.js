@@ -97379,7 +97379,7 @@ function (_Component) {
         isOpenHora: isOpenHora
       });
 
-      if (isOpen) {
+      if (isOpenHora) {
         document.querySelector(".wrapper").style.display = "none";
       } else {
         document.querySelector(".wrapper").style.display = "block";
