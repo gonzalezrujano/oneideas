@@ -97538,10 +97538,10 @@ function (_Component) {
         handleSelect: this.handleSelect,
         isOpenHora: this.state.isOpenHora,
         hora: this.state.hora,
-        handleToggle2: this.handleToggle,
-        handleSelect2: this.handleSelect,
-        isOpenHora2: this.state.isOpenHora,
-        hora2: this.state.hora,
+        handleToggle2: this.handleToggle2,
+        handleSelect2: this.handleSelect2,
+        isOpenHora2: this.state.isOpenHora2,
+        hora2: this.state.hora2,
         istool: istool,
         title: titleTool,
         sectores: sectores,
@@ -97825,7 +97825,7 @@ var Parametros = function Parametros(props) {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm",
     style: {
       'border': '1px solid #fff',
@@ -97852,7 +97852,7 @@ var Parametros = function Parametros(props) {
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm",
     style: {
       'border': '1px solid #fff',
