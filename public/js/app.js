@@ -97370,6 +97370,7 @@ function (_Component) {
         hora: hora,
         isOpenHora: false
       });
+      document.querySelector(".wrapper").style.display = "block";
     }
   }, {
     key: "handleToggle",
@@ -97377,6 +97378,12 @@ function (_Component) {
       this.setState({
         isOpenHora: isOpenHora
       });
+
+      if (isOpen) {
+        document.querySelector(".wrapper").style.display = "none";
+      } else {
+        document.querySelector(".wrapper").style.display = "block";
+      }
     }
   }, {
     key: "handleThemeToggle",
@@ -97384,6 +97391,7 @@ function (_Component) {
       this.setState({
         isOpenHora: true
       });
+      document.querySelector(".wrapper").style.display = "none";
     }
   }, {
     key: "handleSelect2",
@@ -97392,6 +97400,7 @@ function (_Component) {
         hora2: hora2,
         isOpenHora2: false
       });
+      document.querySelector(".wrapper").style.display = "block";
     }
   }, {
     key: "handleToggle2",
@@ -97399,6 +97408,12 @@ function (_Component) {
       this.setState({
         isOpenHora2: isOpenHora2
       });
+
+      if (isOpen) {
+        document.querySelector(".wrapper").style.display = "none";
+      } else {
+        document.querySelector(".wrapper").style.display = "block";
+      }
     }
   }, {
     key: "handleThemeToggle2",
@@ -97406,6 +97421,7 @@ function (_Component) {
       this.setState({
         isOpenHora2: true
       });
+      document.querySelector(".wrapper").style.display = "none";
     }
   }, {
     key: "render",
@@ -97567,21 +97583,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3___default.a;
 var dateConfig = {
-  'year': {
-    format: 'YYYY',
-    caption: 'Año',
-    step: 1
-  },
-  'month': {
-    format: 'MM',
-    caption: 'Mes',
-    step: 1
-  },
-  'date': {
-    format: 'DD',
-    caption: 'Dia',
-    step: 1
-  },
   'hour': {
     format: 'hh',
     caption: 'Hour',
