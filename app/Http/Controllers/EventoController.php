@@ -381,7 +381,7 @@ class EventoController extends Controller
             if($id){
 
                 //ubico el id en la bd
-                $registro = Evento::find($id);
+                $registro = Evento::find(new ObjectId($id));
                 $envios = Envio::get();
 
                 if($registro){
@@ -454,8 +454,8 @@ class EventoController extends Controller
             $evento = $input['evento'];
             $title = $input['title'];
             $estado = $input['estado'];
-            $inicio = $input['inicio'];
-            $fin = $input['fin'];
+            //$inicio = $input['inicio'];
+            //$fin = $input['fin'];
             $parametro = $input['parametro'];
             $id = $input['id'];
 

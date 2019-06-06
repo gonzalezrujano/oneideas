@@ -6,17 +6,17 @@ const Datepicker = reactMobileDatePicker;
 const dateConfig = {
      'hour': {
         format: 'hh',
-        caption: 'Hour',
+        caption: 'Hora',
         step: 1,
     },
     'minute': {
         format: 'mm',
-        caption: 'Min',
+        caption: 'Minuto',
         step: 1,
     },
     'second': {
-        format: 'hh',
-        caption: 'Sec',
+        format: 'ss',
+        caption: 'Segundo',
         step: 1,
     },
 };
@@ -33,6 +33,8 @@ const Parametros = (props) => {
     let flash='';
     let color='';
     let flash2=props.flash2;
+    var maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 1);
 
     return (
 
@@ -71,20 +73,57 @@ const Parametros = (props) => {
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.NombreCompleto}</option>
+                                                        return <option key={index} value={p.NombreCompleto}  >{p.NombreCompleto}</option>
                                                     })
                                                 }
                                             </select>
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
+                                         <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle}>
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora}
+                                        onSelect={props.handleSelect}
+                                        onCancel={(e) => props.handleToggle(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
+                                            <label>Hora Fin </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle2}>
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora2}
+                                        onSelect={props.handleSelect2}
+                                        onCancel={(e) => props.handleToggle2(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
+                                            
                                         </div>
 
 
@@ -124,24 +163,61 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Archivo</label>
-                                            <select className="form-control form-control-sm">
+                                            <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change}>
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.NombreCompleto}</option>
+                                                        return <option key={index} value={p.NombreCompleto} >{p.NombreCompleto}</option>
                                                     })
                                                 }
                                             </select>
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora inicio" />
+                                         <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle}>
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora}
+                                        onSelect={props.handleSelect}
+                                        onCancel={(e) => props.handleToggle(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora fin" />
+                                            <label>Hora Fin </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle2}>
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora2}
+                                        onSelect={props.handleSelect2}
+                                        onCancel={(e) => props.handleToggle2(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
+                                            
                                         </div>
 
 
@@ -185,20 +261,57 @@ const Parametros = (props) => {
                                                 <option value="">Seleccione</option>
                                                 {
                                                     bibliotecas.map( (p, index) => {
-                                                        return <option key={index} value={p.NombreCompleto} >{p.NombreCompleto}</option>
+                                                        return <option key={index} value={p.NombreCompleto}>{p.NombreCompleto}</option>
                                                     })
                                                 }
                                             </select>
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora inicio" onChange={props.change}/>
+                                         <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle}>
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora}
+                                        onSelect={props.handleSelect}
+                                        onCancel={(e) => props.handleToggle(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm"  placeholder="Hora fin" onChange={props.change}/>
+                                            <label>Hora Fin </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle2}>
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora2}
+                                        onSelect={props.handleSelect2}
+                                        onCancel={(e) => props.handleToggle2(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
+                                            
                                         </div>
 
 
@@ -247,14 +360,51 @@ const Parametros = (props) => {
                                             </select>
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio</label>
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechainicio" value={fechainicio} onChange={props.change }  placeholder="Hora inicio" />
+                                         <div className="col-md-3 mb-3">
+                                            <label>Hora Inicio </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle}>
+                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora}
+                                        onSelect={props.handleSelect}
+                                        onCancel={(e) => props.handleToggle(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
                                         </div>
 
                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Fin</label>
-                                            <input type="time" step="1" className="form-control form-control-sm" name="fechafin" value={fechafin} onChange={props.change } placeholder="Hora fin" />
+                                            <label>Hora Fin </label>
+                                            <a
+                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            onClick={props.handleThemeToggle2}>
+                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
+                                        </a>
+                                        <Datepicker
+                                        showCaption={true}
+                                        showHeader={true}
+                                        headerFormat={'hh:mm:ss'}
+                                        value={new Date()}
+                                        theme="default"
+                                        isOpen={props.isOpenHora2}
+                                        onSelect={props.handleSelect2}
+                                        onCancel={(e) => props.handleToggle2(false)} 
+                                        confirmText="Seleccionar"
+                                        cancelText="Cancelar"
+                                        max={maxDate}
+                                        dateConfig={dateConfig}
+                                        />
+                                            
                                         </div>
 
 
@@ -302,7 +452,7 @@ const Parametros = (props) => {
                                         <Datepicker
                                         showCaption={true}
                                         showHeader={true}
-                                        headerFormat={'hh:mm:hh'}
+                                        headerFormat={'hh:mm:ss'}
                                         value={new Date()}
                                         theme="default"
                                         isOpen={props.isOpenHora}
@@ -310,7 +460,7 @@ const Parametros = (props) => {
                                         onCancel={(e) => props.handleToggle(false)} 
                                         confirmText="Seleccionar"
                                         cancelText="Cancelar"
-                                        max={new Date()}
+                                        max={maxDate}
                                         dateConfig={dateConfig}
                                         />
                                         </div>
@@ -325,7 +475,7 @@ const Parametros = (props) => {
                                         <Datepicker
                                         showCaption={true}
                                         showHeader={true}
-                                        headerFormat={'hh:mm:hh'}
+                                        headerFormat={'hh:mm:ss'}
                                         value={new Date()}
                                         theme="default"
                                         isOpen={props.isOpenHora2}
@@ -333,7 +483,7 @@ const Parametros = (props) => {
                                         onCancel={(e) => props.handleToggle2(false)} 
                                         confirmText="Seleccionar"
                                         cancelText="Cancelar"
-                                        max={new Date()}
+                                        max={maxDate}
                                         dateConfig={dateConfig}
                                         />
                                             

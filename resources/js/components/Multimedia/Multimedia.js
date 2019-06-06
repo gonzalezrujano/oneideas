@@ -120,32 +120,33 @@ MQTTconnect();
           var s2 = self.state.hora2.getSeconds();
           fechafin=h2+":"+m2+":"+s2;
         }
+        var evento=self.state.evento.split("_")[0];
+        var topic="/"+self.state.empresa+"/"+evento;
 
-
-        if(fechainicio==""){
+        if(fechainicio==""||fechainicio==undefined){
             fechainicio=moment().format("hh:mm:ss");
         }
-        if(fechafin==""){
+        if(fechafin==""||fechafin==undefined){
             fechafin="99:99:99";
         }
         if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-                var evento=self.state.evento.split("_")[0];
+                
                 var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
-                message2.destinationName = "sampletopic";
+                message2.destinationName = topic;
                 window.mqttCliente.send(message2);
                 envio=true;
         }
         if(titleTool=='flash'){
         
                 var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
-                message2.destinationName = "sampletopic";
+                message2.destinationName = topic;
                 window.mqttCliente.send(message2);
                 envio=true;
         }
         if(titleTool=='colores'){
             if(self.state.color!=''){
                 var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
-                message2.destinationName = "sampletopic";
+                message2.destinationName = topic;
                 window.mqttCliente.send(message2);
                 envio=true;
             }else{
@@ -194,6 +195,8 @@ MQTTconnect();
        // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
         //message.destinationName = "sampletopic";
         //window.mqttCliente.send(message);
+        var evento=self.state.evento.split("_")[0];
+        var topic="/"+self.state.empresa+"/"+evento;
         if(fechainicio==""){
             fechainicio=moment().format("hh:mm:ss");
         }
@@ -201,22 +204,21 @@ MQTTconnect();
             fechafin="99:99:99";
         }
         if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-        var evento=self.state.evento.split("_")[0];
 
         var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+parametro+"..1,"+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
+        message2.destinationName = topic;
         window.mqttCliente.send(message2);
         }
         if(titleTool=='flash'){
         parametro=0;
         var message2 = new Paho.MQTT.Message("FLH,"+parametro+","+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
+        message2.destinationName = topic;
         window.mqttCliente.send(message2);
         }
         if(titleTool=='colores'){
         parametro='#000';
         var message2 = new Paho.MQTT.Message("COL,"+parametro+"+10,"+fechainicio+","+fechafin);
-        message2.destinationName = "sampletopic";
+        message2.destinationName = topic;
         window.mqttCliente.send(message2);
         }
       }
@@ -373,7 +375,19 @@ MQTTconnect();
         evento=evento.split("_")[0];
         var title=this.state.titleTool;
         var parametro='';
-
+        var self=this;
+        if(self.state.hora){
+          var h = self.state.hora.getHours();
+          var m = self.state.hora.getMinutes();
+          var s = self.state.hora.getSeconds();
+          inicio=h+":"+m+":"+s;
+        }
+        if(self.state.hora2){
+          var h2 = self.state.hora2.getHours();
+          var m2 = self.state.hora2.getMinutes();
+          var s2 = self.state.hora2.getSeconds();
+          fin=h2+":"+m2+":"+s2;
+        }
         var estado='cola';
         if(newestado!=undefined&&newestado!=null&&newestado!=""){
             estado=newestado;

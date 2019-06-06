@@ -96999,25 +96999,27 @@ function (_Component) {
           fechafin = h2 + ":" + m2 + ":" + s2;
         }
 
-        if (fechainicio == "") {
+        var evento = self.state.evento.split("_")[0];
+        var topic = "/" + self.state.empresa + "/" + evento;
+
+        if (fechainicio == "" || fechainicio == undefined) {
           fechainicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
         }
 
-        if (fechafin == "") {
+        if (fechafin == "" || fechafin == undefined) {
           fechafin = "99:99:99";
         }
 
         if (titleTool == 'imagen' || titleTool == 'video' || titleTool == 'audio') {
-          var evento = self.state.evento.split("_")[0];
           var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + evento + "/" + self.state.archivo + "..1," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
+          message2.destinationName = topic;
           window.mqttCliente.send(message2);
           envio = true;
         }
 
         if (titleTool == 'flash') {
           var message2 = new Paho.MQTT.Message("FLH," + self.state.flash2 + "," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
+          message2.destinationName = topic;
           window.mqttCliente.send(message2);
           envio = true;
         }
@@ -97025,7 +97027,7 @@ function (_Component) {
         if (titleTool == 'colores') {
           if (self.state.color != '') {
             var message2 = new Paho.MQTT.Message("COL," + self.state.color + "+10," + fechainicio + "," + fechafin);
-            message2.destinationName = "sampletopic";
+            message2.destinationName = topic;
             window.mqttCliente.send(message2);
             envio = true;
           } else {
@@ -97077,6 +97079,9 @@ function (_Component) {
         //message.destinationName = "sampletopic";
         //window.mqttCliente.send(message);
 
+        var evento = self.state.evento.split("_")[0];
+        var topic = "/" + self.state.empresa + "/" + evento;
+
         if (fechainicio == "") {
           fechainicio = moment__WEBPACK_IMPORTED_MODULE_4___default()().format("hh:mm:ss");
         }
@@ -97086,23 +97091,22 @@ function (_Component) {
         }
 
         if (titleTool == 'imagen' || titleTool == 'video' || titleTool == 'audio') {
-          var evento = self.state.evento.split("_")[0];
           var message2 = new Paho.MQTT.Message("MUL," + self.state.empresa + "/" + evento + "/" + parametro + "..1," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
+          message2.destinationName = topic;
           window.mqttCliente.send(message2);
         }
 
         if (titleTool == 'flash') {
           parametro = 0;
           var message2 = new Paho.MQTT.Message("FLH," + parametro + "," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
+          message2.destinationName = topic;
           window.mqttCliente.send(message2);
         }
 
         if (titleTool == 'colores') {
           parametro = '#000';
           var message2 = new Paho.MQTT.Message("COL," + parametro + "+10," + fechainicio + "," + fechafin);
-          message2.destinationName = "sampletopic";
+          message2.destinationName = topic;
           window.mqttCliente.send(message2);
         }
       }
@@ -97244,6 +97248,22 @@ function (_Component) {
       evento = evento.split("_")[0];
       var title = this.state.titleTool;
       var parametro = '';
+      var self = this;
+
+      if (self.state.hora) {
+        var h = self.state.hora.getHours();
+        var m = self.state.hora.getMinutes();
+        var s = self.state.hora.getSeconds();
+        inicio = h + ":" + m + ":" + s;
+      }
+
+      if (self.state.hora2) {
+        var h2 = self.state.hora2.getHours();
+        var m2 = self.state.hora2.getMinutes();
+        var s2 = self.state.hora2.getSeconds();
+        fin = h2 + ":" + m2 + ":" + s2;
+      }
+
       var estado = 'cola';
 
       if (newestado != undefined && newestado != null && newestado != "") {
@@ -97601,17 +97621,17 @@ var Datepicker = react_mobile_datepicker__WEBPACK_IMPORTED_MODULE_3___default.a;
 var dateConfig = {
   'hour': {
     format: 'hh',
-    caption: 'Hour',
+    caption: 'Hora',
     step: 1
   },
   'minute': {
     format: 'mm',
-    caption: 'Min',
+    caption: 'Minuto',
     step: 1
   },
   'second': {
-    format: 'hh',
-    caption: 'Sec',
+    format: 'ss',
+    caption: 'Segundo',
     step: 1
   }
 };
@@ -97628,6 +97648,8 @@ var Parametros = function Parametros(props) {
   var flash = '';
   var color = '';
   var flash2 = props.flash2;
+  var maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 1);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-9 section-parametros"
   }, istool == false ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -97654,28 +97676,62 @@ var Parametros = function Parametros(props) {
   }, "Seleccione"), bibliotecas.map(function (p, index) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
       key: index,
-      value: p._id
+      value: p.NombreCompleto
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechainicio",
-    value: fechainicio,
-    onChange: props.change,
-    placeholder: "Hora inicio"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora,
+    onSelect: props.handleSelect,
+    onCancel: function onCancel(e) {
+      return props.handleToggle(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechafin",
-    value: fechafin,
-    onChange: props.change,
-    placeholder: "Hora fin"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle2
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora2,
+    onSelect: props.handleSelect2,
+    onCancel: function onCancel(e) {
+      return props.handleToggle2(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -97695,28 +97751,71 @@ var Parametros = function Parametros(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm"
+    className: "form-control form-control-sm",
+    name: "archivo",
+    value: archivo,
+    onChange: props.change
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
     value: ""
   }, "Seleccione"), bibliotecas.map(function (p, index) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
       key: index,
-      value: p._id
+      value: p.NombreCompleto
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    placeholder: "Hora inicio"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora,
+    onSelect: props.handleSelect,
+    onCancel: function onCancel(e) {
+      return props.handleToggle(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    placeholder: "Hora fin"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle2
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora2,
+    onSelect: props.handleSelect2,
+    onCancel: function onCancel(e) {
+      return props.handleToggle2(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -97746,20 +97845,58 @@ var Parametros = function Parametros(props) {
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    placeholder: "Hora inicio",
-    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora,
+    onSelect: props.handleSelect,
+    onCancel: function onCancel(e) {
+      return props.handleToggle(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    placeholder: "Hora fin",
-    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle2
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora2,
+    onSelect: props.handleSelect2,
+    onCancel: function onCancel(e) {
+      return props.handleToggle2(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
@@ -97791,25 +97928,59 @@ var Parametros = function Parametros(props) {
     value: "1"
   }, "Encender"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechainicio",
-    value: fechainicio,
-    onChange: props.change,
-    placeholder: "Hora inicio"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle
+  }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora,
+    onSelect: props.handleSelect,
+    onCancel: function onCancel(e) {
+      return props.handleToggle(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "time",
-    step: "1",
-    className: "form-control form-control-sm",
-    name: "fechafin",
-    value: fechafin,
-    onChange: props.change,
-    placeholder: "Hora fin"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "select-btn sm",
+    style: {
+      'border': '1px solid #fff',
+      'padding-top': '0.5rem',
+      'padding-bottom': '0.5rem',
+      'width': '88%',
+      'color': '#dadada'
+    },
+    onClick: props.handleThemeToggle2
+  }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
+    showCaption: true,
+    showHeader: true,
+    headerFormat: 'hh:mm:ss',
+    value: new Date(),
+    theme: "default",
+    isOpen: props.isOpenHora2,
+    onSelect: props.handleSelect2,
+    onCancel: function onCancel(e) {
+      return props.handleToggle2(false);
+    },
+    confirmText: "Seleccionar",
+    cancelText: "Cancelar",
+    max: maxDate,
+    dateConfig: dateConfig
+  })), ">", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
@@ -97840,7 +98011,7 @@ var Parametros = function Parametros(props) {
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
-    headerFormat: 'hh:mm:hh',
+    headerFormat: 'hh:mm:ss',
     value: new Date(),
     theme: "default",
     isOpen: props.isOpenHora,
@@ -97850,7 +98021,7 @@ var Parametros = function Parametros(props) {
     },
     confirmText: "Seleccionar",
     cancelText: "Cancelar",
-    max: new Date(),
+    max: maxDate,
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
@@ -97867,7 +98038,7 @@ var Parametros = function Parametros(props) {
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
     showCaption: true,
     showHeader: true,
-    headerFormat: 'hh:mm:hh',
+    headerFormat: 'hh:mm:ss',
     value: new Date(),
     theme: "default",
     isOpen: props.isOpenHora2,
@@ -97877,7 +98048,7 @@ var Parametros = function Parametros(props) {
     },
     confirmText: "Seleccionar",
     cancelText: "Cancelar",
-    max: new Date(),
+    max: maxDate,
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
