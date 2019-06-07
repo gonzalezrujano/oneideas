@@ -28,14 +28,14 @@ console.log(props.envios);
                                                     if(e.Evento!=evento){
                                                         return false;
                                                     }
-                                                    return <tr key={index}>
+                                                    return <tr key={index} id={e._id}>
                     <td>{e.Tipo}</td>
                     <td>{e.Inicio}</td>
                     <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
                     <td>
-                        <i className="fas fa-ban fa-lg icon-trash mr-2" onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
+                        <i className="fa fa-trash mr-2" onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
                         
                     </td>
                 </tr>

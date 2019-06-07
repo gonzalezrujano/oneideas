@@ -462,6 +462,7 @@ MQTTconnect();
         parametro=this.state.color;
         }
         this.enviarComandoQuitar(title,parametro,inicio,fin);
+        document.getElementById(id).style.display="none";
         axios.post('/ajax-remove-envios', {evento,title,estado,inicio,fin,parametro,id} )
             .then(res => {
                 if(res){

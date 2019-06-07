@@ -96470,9 +96470,10 @@ var Cola = function Cola(props) {
     }
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
-      key: index
+      key: index,
+      id: e._id
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-trash mr-2",
+      className: "fa fa-trash mr-2",
       onClick: function onClick(ev) {
         return props.sincola('cola', e.Tipo, e.inicio, e.fin, e._id);
       }
@@ -96567,9 +96568,10 @@ var Ejecucion = function Ejecucion(props) {
     }
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
-      key: index
+      key: index,
+      id: e._id
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-trash",
+      className: "fa fa-trash",
       onClick: function onClick(ev) {
         return props.sincola('ejecucion', e.Tipo, e.inicio, e.fin, e._id);
       }
@@ -97348,6 +97350,7 @@ function (_Component) {
       }
 
       this.enviarComandoQuitar(title, parametro, inicio, fin);
+      document.getElementById(id).style.display = "none";
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-remove-envios', {
         evento: evento,
         title: title,

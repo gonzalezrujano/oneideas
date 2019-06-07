@@ -27,13 +27,13 @@ const Ejecucion = (props) => {
                                                     if(e.Evento!=evento){
                                                         return false;
                                                     }
-                                                    return <tr key={index}>
+                                                    return <tr key={index} id={e._id}>
                     <td>{e.Tipo}</td>
                      <td>{e.Inicio}</td>
                     <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
-                    <td><i className="fas fa-ban fa-lg icon-trash"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
+                    <td><i className="fa fa-trash"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
                 </tr>
                                                 })
                                             }
