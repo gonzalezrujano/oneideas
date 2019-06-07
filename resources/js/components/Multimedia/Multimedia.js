@@ -340,10 +340,13 @@ MQTTconnect();
             }).catch(function (error) {});
 
     }
-    getEnvios(){
+    getEnvios(eventonew){
 
         let {evento} = this.state;
         evento=evento.split("_")[0];
+        if(eventonew){
+            evento=eventonew;
+        }
         axios.post('/ajax-get-envios', {evento} )
             .then(res => {
                 if(res){
@@ -500,7 +503,7 @@ MQTTconnect();
                 istool: false,
                 titleTool: ''
             });
-            this.getEnvios();
+            this.getEnvios(e.target.value.split("_")[0]);
 
         }
 

@@ -96458,7 +96458,7 @@ var Cola = function Cola(props) {
   console.log(props.envios);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
-      'overflow': 'scroll',
+      'overflow-y': 'scroll',
       'height': '30vh'
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
@@ -96560,7 +96560,7 @@ __webpack_require__.r(__webpack_exports__);
 var Ejecucion = function Ejecucion(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
-      'overflow': 'scroll',
+      'overflow-y': 'scroll',
       'height': '30vh'
     }
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
@@ -97214,11 +97214,16 @@ function (_Component) {
     }
   }, {
     key: "getEnvios",
-    value: function getEnvios() {
+    value: function getEnvios(eventonew) {
       var _this3 = this;
 
       var evento = this.state.evento;
       evento = evento.split("_")[0];
+
+      if (eventonew) {
+        evento = eventonew;
+      }
+
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/ajax-get-envios', {
         evento: evento
       }).then(function (res) {
@@ -97394,7 +97399,7 @@ function (_Component) {
           istool: false,
           titleTool: ''
         });
-        this.getEnvios();
+        this.getEnvios(e.target.value.split("_")[0]);
       }
 
       this.setState(_defineProperty({}, e.target.name, e.target.value));
@@ -97980,7 +97985,7 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: maxDate,
     dateConfig: dateConfig
-  })), ">", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-3"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
