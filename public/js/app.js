@@ -96456,13 +96456,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var Cola = function Cola(props) {
   console.log(props.envios);
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    style: {
-      'overflow-y': 'scroll',
-      'height': '30vh'
-    }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-    className: "table table-dark-theme-console"
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+    className: "table table-dark-theme-console fixed_header"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cola"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.envios.map(function (e, index) {
     if (e.Estado != 'cola') {
       return false;
@@ -96477,7 +96472,7 @@ var Cola = function Cola(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-console mr-2",
+      className: "fas fa-ban fa-lg icon-trash mr-2",
       onClick: function onClick(ev) {
         return props.sincola('cola', e.Tipo, e.inicio, e.fin, e._id);
       }
@@ -96558,13 +96553,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Ejecucion = function Ejecucion(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    style: {
-      'overflow-y': 'scroll',
-      'height': '30vh'
-    }
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
-    className: "table table-dark-theme-console"
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+    className: "table table-dark-theme-console fixed_header"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Ejecutando"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Inicio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Fin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Sectores"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Parametros"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Accion"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.envios.map(function (e, index) {
     if (e.Estado != 'ejecucion') {
       return false;
@@ -96579,7 +96569,7 @@ var Ejecucion = function Ejecucion(props) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
       key: index
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Tipo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Inicio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Fin), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Grada, Campo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, e.Parametro), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fas fa-ban fa-lg icon-console",
+      className: "fas fa-ban fa-lg icon-trash",
       onClick: function onClick(ev) {
         return props.sincola('ejecucion', e.Tipo, e.inicio, e.fin, e._id);
       }
@@ -96911,7 +96901,7 @@ function (_Component) {
       isLoading: false,
       flash: '',
       flash2: '',
-      color: ''
+      color: '#ffffff'
     }, _defineProperty(_this$state, "envios", []), _defineProperty(_this$state, "hora", new Date()), _defineProperty(_this$state, "hora2", new Date()), _defineProperty(_this$state, "isOpenHora", false), _defineProperty(_this$state, "isOpenHora2", false), _this$state);
     _this.goFull = _this.goFull.bind(_assertThisInitialized(_this));
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_this));

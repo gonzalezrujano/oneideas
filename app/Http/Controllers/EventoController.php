@@ -382,7 +382,7 @@ class EventoController extends Controller
 
                 //ubico el id en la bd
                 $registro = Evento::find(new ObjectId($id));
-                $envios = Envio::get();
+                $envios = Envio::where('Evento',$id)->get();
 
                 if($registro){
                     return json_encode(['code' => 200,'envios'=>$envios]);

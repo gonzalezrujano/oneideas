@@ -4,9 +4,9 @@ const Cola = (props) => {
 console.log(props.envios);
     return (
 
-        <div style={{'overflow-y': 'scroll','height': '30vh'}}>
+        <div>
 
-            <table className="table table-dark-theme-console">
+            <table className="table table-dark-theme-console fixed_header">
                 <thead>
                 <tr>
                     <th>Cola</th>
@@ -35,7 +35,7 @@ console.log(props.envios);
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
                     <td>
-                        <i className="fas fa-ban fa-lg icon-console mr-2" onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
+                        <i className="fas fa-ban fa-lg icon-trash mr-2" onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
                         
                     </td>
                 </tr>

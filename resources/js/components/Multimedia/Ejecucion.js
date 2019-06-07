@@ -4,9 +4,9 @@ const Ejecucion = (props) => {
 
     return (
 
-        <div style={{'overflow-y': 'scroll','height': '30vh'}}>
+        <div>
 
-            <table className="table table-dark-theme-console">
+            <table className="table table-dark-theme-console fixed_header">
                 <thead>
                 <tr>
                     <th>Ejecutando</th>
@@ -33,7 +33,7 @@ const Ejecucion = (props) => {
                     <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
-                    <td><i className="fas fa-ban fa-lg icon-console"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
+                    <td><i className="fas fa-ban fa-lg icon-trash"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
                 </tr>
                                                 })
                                             }

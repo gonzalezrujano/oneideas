@@ -35,7 +35,7 @@ export default class Multimedia extends Component {
             isLoading: false,
             flash:'',
             flash2:'',
-            color:'',
+            color:'#ffffff',
             envios:[],
             hora:new Date(),
             hora2:new Date(),
