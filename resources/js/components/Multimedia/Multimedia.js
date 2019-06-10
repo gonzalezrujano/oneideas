@@ -10,7 +10,6 @@ import Ejecucion from "./Ejecucion";
 import Cola from "./Cola";
 import Clock from 'react-live-clock';
 import Fullscreen from "react-full-screen";
-
 export default class Multimedia extends Component {
 
     constructor(props) {
@@ -36,7 +35,6 @@ export default class Multimedia extends Component {
             flash:'',
             flash2:'',
             color:'#ffffff',
-            envios:[],
             hora:new Date(),
             hora2:new Date(),
             isOpenHora:false,
@@ -58,7 +56,51 @@ export default class Multimedia extends Component {
         this.handleSelect2 = this.handleSelect2.bind(this);
         this.handleToggle2 = this.handleToggle2.bind(this);
         this.handleThemeToggle2 = this.handleThemeToggle2.bind(this);
+        this.statusEnvios = this.statusEnvios.bind(this);
         this.iniciarMQTT();
+    }
+    statusEnvios(){
+        for (var i = this.state.envios.length - 1; i >= 0; i--) {
+            var tiempo =this.state.envios[i].Fin.split(":");
+            var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes(); 
+        var s = today.getSeconds();
+
+            if(tiempo[0]<=h){
+                if(tiempo[1]<=m){
+                    if(tiempo[2]<=s){
+                        var id = this.state.envios[i]._id;
+                        document.getElementById(id).style.display="none";
+                        axios.post('/ajax-remove-envios', {evento:'',title:'',estado:'',inicio:'',fin:'',parametro:'',id} )
+            .then(res => {
+                if(res){
+
+                    let r = res.data;
+
+                    if(r.code === 200){
+
+                        this.setState({
+                            envios: r.envios,
+                        });
+                        this.getEnvios();
+
+                    }else if(r.code === 500){
+
+                        console.log(r.msj);
+                        this.setState({
+                            multimedias: [],
+                        });
+
+                    }
+
+                }
+
+            }).catch(function (error) {});
+                    }
+                }
+            }
+        }   
     }
     iniciarMQTT(){
         var reconnectTimeout = 2000;
@@ -410,6 +452,13 @@ MQTTconnect();
         if(title=='colores'){
         parametro=this.state.color;
         }
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; 
+        var yyyy = today.getFullYear();
+        var momento = new Date(yyyy+'-'+mm+'-'+dd+' '+fin+window.app.gtm);
+
+        setTimeout(self.statusEnvios, momento.getTime()-(new Date()).getTime());
         axios.post('/ajax-set-envios', {evento,title,estado,inicio,fin,parametro} )
             .then(res => {
                 if(res){
@@ -492,29 +541,37 @@ MQTTconnect();
 
     handleChange(e) {
 
+        console.log(e);
+        if(e.target!=undefined){
+            if(e.target.name == 'evento'){
 
-        if(e.target.name == 'evento'){
+                this.setState({
+                    multimedia: '',
+                    multimedias: [],
+                    bibliotecas: [],
+                    evento: e.target.value.split("_")[0],
+                    empresa:e.target.value.split("_")[1],
+                    istool: false,
+                    titleTool: ''
+                });
+                this.getEnvios(e.target.value.split("_")[0]);
+
+            }
 
             this.setState({
-                multimedia: '',
-                multimedias: [],
-                bibliotecas: [],
-                evento: e.target.value.split("_")[0],
-                empresa:e.target.value.split("_")[1],
-                istool: false,
-                titleTool: ''
+                [e.target.name]: e.target.value
             });
-            this.getEnvios(e.target.value.split("_")[0]);
-
+        }else if(e.hex!=undefined){
+            this.setState({
+                color: e.hex
+            });
         }
-
-        this.setState({
-            [e.target.name]: e.target.value
-        });
     }
 
     handleSelect(hora){
-            this.setState({ hora, isOpenHora: false });
+        var hora2 = new Date(hora);
+        hora2.setHours( hora.getHours() + 1 )
+            this.setState({ hora,hora2, isOpenHora: false });
             document.querySelector(".wrapper").style.display="block";
         }
       handleToggle(isOpenHora) {
@@ -532,7 +589,9 @@ MQTTconnect();
         }
 
     handleSelect2(hora2){
-            this.setState({ hora2, isOpenHora2: false });
+        var hora =new Date(hora2);
+        hora.setHours( hora.getHours() - 1 );
+            this.setState({ hora, hora2, isOpenHora2: false });
             document.querySelector(".wrapper").style.display="block";
         }
       handleToggle2(isOpenHora2) {

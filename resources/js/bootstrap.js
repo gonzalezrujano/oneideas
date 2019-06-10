@@ -66,3 +66,7 @@ if (token) {
 //     encrypted: true
 // });
 window.mqttCliente={};
+
+window.app={
+	gtm:'-0300'
+}

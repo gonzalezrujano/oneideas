@@ -33,7 +33,7 @@ const Ejecucion = (props) => {
                     <td>{e.Fin}</td>
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
-                    <td><i className="fa fa-trash"  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
+                    <td><i className="fa fa-trash" style={{'cursor': 'pointer'}}  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
                 </tr>
                                                 })
                                             }

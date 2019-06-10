@@ -451,16 +451,16 @@ class EventoController extends Controller
 
             //capturo el valor del id
             $input = $request->all();
-            $evento = $input['evento'];
-            $title = $input['title'];
-            $estado = $input['estado'];
+           // $evento = $input['evento'];
+          //  $title = $input['title'];
+            //$estado = $input['estado'];
             //$inicio = $input['inicio'];
             //$fin = $input['fin'];
-            $parametro = $input['parametro'];
+           // $parametro = $input['parametro'];
             $id = $input['id'];
 
             //valido que venga el id sino mando un error
-            if($evento){
+            if($id){
 
                 //ubico el id en la bd
                 //$evento = Evento::find($evento);

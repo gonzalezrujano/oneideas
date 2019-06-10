@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import reactMobileDatePicker from 'react-mobile-datepicker';
+import InputColor from 'react-input-color';
 const Datepicker = reactMobileDatePicker;
 const dateConfig = {
      'hour': {
@@ -21,7 +22,7 @@ const dateConfig = {
     },
 };
 const Parametros = (props) => {
-
+ const [color, setColor] = React.useState({});
     let istool = props.istool;
     let title = props.title;
     let bibliotecas = props.bibliotecas;
@@ -31,7 +32,7 @@ const Parametros = (props) => {
     let fechafin = props.fechafin;
     let archivo = props.archivo;
     let flash='';
-    let color='';
+  //  let color='';
     let flash2=props.flash2;
     var maxDate = new Date();
     maxDate.setDate(maxDate.getDate() + 1);
@@ -509,7 +510,13 @@ const Parametros = (props) => {
 
                                         <div className="col-md-3 mb-3">
                                             <label>Parametro color </label>
-                                            <input type="color"  name="color" value={color} onChange={props.change } />
+                                             <InputColor
+                                                            initialHexColor="#5e72e4"
+                                                            name="color" value={color} onChange={props.change }
+                                                            placement="right"
+                                                          />
+                                                         
+
                                         </div>
 
                                     </div>

@@ -35,7 +35,7 @@ console.log(props.envios);
                     <td>Grada, Campo</td>
                     <td>{e.Parametro}</td>
                     <td>
-                        <i className="fa fa-trash mr-2" onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
+                        <i className="fa fa-trash mr-2" style={{'cursor': 'pointer'}} onClick={(ev) => props.sincola('cola',e.Tipo,e.inicio,e.fin,e._id)}></i>
                         
                     </td>
                 </tr>

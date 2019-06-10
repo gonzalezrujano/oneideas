@@ -1483,6 +1483,7 @@ fieldset[disabled] .btn-faded-blue.focus {
 .label {
   line-height: 12px;
   font-weight: 500;
+  padding-right: 0.5rem;
 }
 .label.label-default {
   background-color: #fff;
@@ -4453,4 +4454,9 @@ button.list-group .list-group-item-'danger'.active:focus {
   padding: 5px;
   text-align: left;
   width: 200px;
+}
+
+a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
+    color: black !important;
+    text-decoration: none;
 }
