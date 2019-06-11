@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import swal from "sweetalert2";
-import moment from 'moment';
+//import moment from 'moment';
+import moment from 'moment-timezone';
 import EmptyMultimedia from "./EmptyMultimedia";
 import Herramientas from "./Herramientas";
 import Parametros from "./Parametros";
@@ -38,7 +39,8 @@ export default class Multimedia extends Component {
             hora:new Date(),
             hora2:new Date(),
             isOpenHora:false,
-            isOpenHora2:false
+            isOpenHora2:false,
+            zonaevento:'Etc/GMT+4'
         };
 
         this.goFull = this.goFull.bind(this);
@@ -544,7 +546,22 @@ MQTTconnect();
         console.log(e);
         if(e.target!=undefined){
             if(e.target.name == 'evento'){
-
+                var eventos = this.state.eventos;
+                var gtm = this.state.zonaevento;
+                for (var i = eventos.length - 1; i >= 0; i--) {
+                    if(eventos[i]._id==e.target.value.split("_")[0]){
+                        console.log(eventos[i].Pais);
+                        gtm=eventos[i].Pais.GTM;
+                        var t = parseInt(gtm.substring(2,3));
+                        var signo =gtm.substring(0,1);
+                        if(signo=='+'){
+                            signo='-';
+                        }else{
+                            signo='+';
+                        }
+                        gtm='Etc/GMT'+signo+t;
+                    }
+                }
                 this.setState({
                     multimedia: '',
                     multimedias: [],
@@ -552,7 +569,8 @@ MQTTconnect();
                     evento: e.target.value.split("_")[0],
                     empresa:e.target.value.split("_")[1],
                     istool: false,
-                    titleTool: ''
+                    titleTool: '',
+                    zonaevento:gtm
                 });
                 this.getEnvios(e.target.value.split("_")[0]);
 
@@ -630,7 +648,7 @@ MQTTconnect();
 
                                     <div className="my-2">
                                         <h1 className="page-header-heading"><i className="fas fa-compact-disc page-header-heading-icon"></i>Multimedia
-                                            <i className="fas fa-clock mr-2 ml-4"></i> <Clock format={'HH:mm:ss A'} ticking={true} />
+                                            <i className="fas fa-clock mr-2 ml-4"></i> <Clock format={'HH:mm:ss A'} ticking={true} timezone={this.state.zonaevento} />
                                         </h1>
 
 

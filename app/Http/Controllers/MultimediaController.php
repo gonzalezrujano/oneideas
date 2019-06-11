@@ -8,6 +8,7 @@ use App\Models\MongoDB\Biblioteca;
 use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\Herramienta;
 use App\Models\MongoDB\Sector;
+use App\Models\MongoDB\Pais;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
@@ -39,7 +40,11 @@ class MultimediaController extends Controller
             $data['eventos'] = Evento::borrado(false)->activo(true)->app(true)->where('_id', new ObjectId((string)Auth::user()->Evento_id) )->orderBy('Nombre', 'ASC')->get();
 
         }
-
+        for ($i=0; $i < count($data['eventos']); $i++) { 
+            
+          $pais = Pais::find(new ObjectId($data['eventos'][$i]->Pais_id));
+          $data['eventos'][$i]->Pais=$pais;
+        }
         $data['sectores'] = Sector::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
         $data['footer']   = config('oneshow.footer');
 
