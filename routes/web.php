@@ -15,17 +15,17 @@
 Route::middleware(['guest'])->group(function(){
 
     //ruta del login
-    Route::get('/', 'LoginController@index')->name('login');
-    Route::post('/ajax-post-login', 'LoginController@ajaxPostLogin');
+    Route::get('/', 'IndexController@index');
+    /*Route::post('/ajax-post-login', 'LoginController@ajaxPostLogin');
 
     //rutas del recovery password
     Route::get('/recovery-password', 'RecoveryPasswordController@index')->name('recovery-password');
     Route::post('/ajax-send-token-password', 'RecoveryPasswordController@ajaxSendTokenPassword')->name('ajax-send-token-password');
     Route::get('/form-reset-password/{token}', 'RecoveryPasswordController@formResetPassword')->name('form-reset-password');
-    Route::post('/ajax-reset-password', 'RecoveryPasswordController@ajaxResetPassword')->name('ajax-reset-password');
+    Route::post('/ajax-reset-password', 'RecoveryPasswordController@ajaxResetPassword')->name('ajax-reset-password');*/
 
 });
-
+/*
 Route::middleware(['auth', 'prevent-back-history'])->group(function(){
 
     //ruta de cierre de session
@@ -160,7 +160,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function(){
     });
 
 
-});
+});*/
 
 
 

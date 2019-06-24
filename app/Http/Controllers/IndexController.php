@@ -8,15 +8,11 @@ class IndexController extends Controller
 {
 
     //metodo que crea la vista login
-    public function login(){
+    public function index(){
         //devuelve la vista asociada
-        return view('login');
+        return view('index');
     }
 
-    //metodo que crea la vista welcome
-    public function welcome(){
-        //devuelve la vista asociada
-        return view('welcome');
-    }
+
 
 }

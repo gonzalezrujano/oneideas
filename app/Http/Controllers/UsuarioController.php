@@ -287,4 +287,26 @@ class UsuarioController extends Controller
 
     }
 
+    public function getUsuario($id){
+
+        $data['existe'] = false;
+
+        $registro = Usuario::find($id);
+
+        if($registro){
+
+            $data['existe'] = true;
+            $data['paises'] = Pais::borrado(false)->get();
+            $data['tipodocumentos'] = TipoDocumento::borrado(false)->activo(true)->orderBy('TipoDocumento', 'ASC')->get();
+            $data['roles'] = Rol::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['empresas'] = Empresa::borrado(false)->activo(true)->get();
+            $data['usuario'] = $registro;
+
+        }
+
+
+        return json_encode(['code' => 200, 'data' => $data]);
+    }
+
 }

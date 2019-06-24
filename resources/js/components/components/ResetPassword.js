@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import swal from "sweetalert2";
-import logoOneShow from '../../../public/images/logo-oneshow.png';
+import logoOneShow from '../../../../public/images/logo-oneshow.png';
 
 export default class ResetPassword extends Component {
 

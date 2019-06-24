@@ -27,7 +27,7 @@ class LoginController extends Controller
     }
 
     //metodo para procesar el login por ajax
-    public function ajaxPostLogin(ValidateLogin $request)
+    public function login(ValidateLogin $request)
     {
         $input = $request->all();
 
