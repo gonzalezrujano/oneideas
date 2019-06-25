@@ -6,14 +6,17 @@ import Menu from "../components/Menu";
 import Header from "../components/Header";
 
 export default class Welcome extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        console.log("abajo es el prop lcoation del welcome");
+        console.log(this.props.location.state);
         this.state = {
             url: "",
             correo: "",
             password: "",
             opcion: "Dashboard",
             footer: "Footer",
+            user: this.props.location.state,
             isLoading: false
         };
     }
@@ -26,15 +29,15 @@ export default class Welcome extends Component {
     render() {
         return (
             <div>
-                <Menu />
+                <Menu usuario={this.state.user} />
                 <Header />
-                <div class="content-wrapper">
-                    <header class="page-header">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-sm-12 col-md-12">
-                                    <h1 class="page-header-heading">
-                                        <i class="fas fa-tachometer-alt page-header-heading-icon" />
+                <div className="content-wrapper">
+                    <header className="page-header">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-sm-12 col-md-12">
+                                    <h1 className="page-header-heading">
+                                        <i className="fas fa-tachometer-alt page-header-heading-icon" />
                                         {this.state.opcion}
                                     </h1>
                                 </div>
@@ -42,15 +45,15 @@ export default class Welcome extends Component {
                         </div>
                     </header>
 
-                    <div id="sweet" class="container-fluid">
-                        <div class="col-lg-12">
-                            <div class="widget widget-default">
-                                <div class="widget-body">
+                    <div id="sweet" className="container-fluid">
+                        <div className="col-lg-12">
+                            <div className="widget widget-default">
+                                <div className="widget-body">
                                     <div
-                                        class="alert alert-success"
+                                        className="alert alert-success"
                                         role="alert"
                                     >
-                                        <i class="fas fa-info-circle" />
+                                        <i className="fas fa-info-circle" />
                                         &nbsp;
                                         <strong>Bienvenido</strong> a ONE Show
                                         Console.
@@ -59,7 +62,7 @@ export default class Welcome extends Component {
                             </div>
                         </div>
                         {/**esto de abajo es de php, es el texto que cambia con el menu */}
-                        <footer class="content-wrapper-footer">
+                        <footer className="content-wrapper-footer">
                             <span>{this.state.footer}</span>
                         </footer>
                     </div>

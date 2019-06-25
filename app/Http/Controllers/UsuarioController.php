@@ -309,4 +309,13 @@ class UsuarioController extends Controller
         return json_encode(['code' => 200, 'data' => $data]);
     }
 
+    public function getPermisosUsuario($id){
+        $rol = Rol::find($id);
+        if($rol){
+            return json_encode(['code' => 200, 'data' => $rol]);
+
+        }
+        return json_encode(['code' => 300, 'data' => ""]);
+    }
+
 }

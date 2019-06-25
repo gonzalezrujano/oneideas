@@ -49,6 +49,11 @@ export default class Login extends Component {
                         isLoading: false
                     });
                     console.log("log valido");
+                    console.log(r);
+                    this.props.history.push({
+                        pathname: "/welcome",
+                        state: r.usuario
+                    });
                     //window.location.href = urlInicio;
                 } else if (r.code === 600) {
                     self.setState({

@@ -46,7 +46,7 @@ class LoginController extends Controller
 
                     $exito = Auth::guard('web')->login($user);
 
-                    return response()->json(['code' => 200, 'msj' => 'exito' ]);
+                    return response()->json(['code' => 200, 'msj' => 'exito' , 'usuario' => $user]);
 
                 }else{
 

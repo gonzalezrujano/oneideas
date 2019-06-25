@@ -106141,6 +106141,8 @@ function (_Component) {
   }, {
     key: "handleLogin",
     value: function handleLogin(e) {
+      var _this2 = this;
+
       var self = this;
       self.setState({
         isLoading: true
@@ -106161,7 +106163,14 @@ function (_Component) {
             password: "",
             isLoading: false
           });
-          console.log("log valido"); //window.location.href = urlInicio;
+          console.log("log valido");
+          console.log(r);
+
+          _this2.props.history.push({
+            pathname: "/welcome",
+            state: r.usuario
+          }); //window.location.href = urlInicio;
+
         } else if (r.code === 600) {
           self.setState({
             isLoading: false
@@ -106268,9 +106277,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Menu */ "./resources/js/components/components/Menu.js");
-/* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_components_Menu__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Header */ "./resources/js/components/components/Header.js");
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_components_Header__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -106301,18 +106308,21 @@ var Welcome =
 function (_Component) {
   _inherits(Welcome, _Component);
 
-  function Welcome() {
+  function Welcome(props) {
     var _this;
 
     _classCallCheck(this, Welcome);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Welcome).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Welcome).call(this, props));
+    console.log("abajo es el prop lcoation del welcome");
+    console.log(_this.props.location.state);
     _this.state = {
       url: "",
       correo: "",
       password: "",
       opcion: "Dashboard",
       footer: "Footer",
+      user: _this.props.location.state,
       isLoading: false
     };
     return _this;
@@ -106327,36 +106337,38 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_4___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_5___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "content-wrapper"
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        usuario: this.state.user
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "content-wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-        "class": "page-header"
+        className: "page-header"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "container-fluid"
+        className: "container-fluid"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "row"
+        className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "col-sm-12 col-md-12"
+        className: "col-sm-12 col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        "class": "page-header-heading"
+        className: "page-header-heading"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        "class": "fas fa-tachometer-alt page-header-heading-icon"
+        className: "fas fa-tachometer-alt page-header-heading-icon"
       }), this.state.opcion))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "sweet",
-        "class": "container-fluid"
+        className: "container-fluid"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "col-lg-12"
+        className: "col-lg-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "widget widget-default"
+        className: "widget widget-default"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "widget-body"
+        className: "widget-body"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "alert alert-success",
+        className: "alert alert-success",
         role: "alert"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        "class": "fas fa-info-circle"
+        className: "fas fa-info-circle"
       }), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Bienvenido"), " a ONE Show Console.")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
-        "class": "content-wrapper-footer"
+        className: "content-wrapper-footer"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer)))));
     }
   }]);
@@ -106661,10 +106673,134 @@ if (document.getElementById('change-password')) {
 /*!******************************************************!*\
   !*** ./resources/js/components/components/Header.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\resources\\js\\components\\components\\Header.js: Unexpected token (52:64)\n\n\u001b[0m \u001b[90m 50 | \u001b[39m                \u001b[33m<\u001b[39m\u001b[33mli\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"nav-item dropdown\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 51 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33ma\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"nav-link dropdown-toggle\"\u001b[39m href\u001b[33m=\u001b[39m\u001b[32m\"#\"\u001b[39m id\u001b[33m=\u001b[39m\u001b[32m\"navbarDropdownMenuLink\"\u001b[39m role\u001b[33m=\u001b[39m\u001b[32m\"button\"\u001b[39m data\u001b[33m-\u001b[39mtoggle\u001b[33m=\u001b[39m\u001b[32m\"dropdown\"\u001b[39m aria\u001b[33m-\u001b[39mhaspopup\u001b[33m=\u001b[39m\u001b[32m\"true\"\u001b[39m aria\u001b[33m-\u001b[39mexpanded\u001b[33m=\u001b[39m\u001b[32m\"false\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 | \u001b[39m                        \u001b[33m<\u001b[39m\u001b[33mi\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"fas fa-user\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mi\u001b[39m\u001b[33m>\u001b[39m\u001b[33m&\u001b[39mnbsp\u001b[33m;\u001b[39m{{ \u001b[33mStr\u001b[39m\u001b[33m:\u001b[39m\u001b[33m:\u001b[39mlimit(\u001b[33mAuth\u001b[39m\u001b[33m:\u001b[39m\u001b[33m:\u001b[39muser()\u001b[33m-\u001b[39m\u001b[33m>\u001b[39mnameMail()\u001b[33m,\u001b[39m \u001b[35m15\u001b[39m) }}\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 53 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33ma\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 54 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mdiv\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"dropdown-menu dropdown-menu-right dropdown-menu-sm-right\"\u001b[39m aria\u001b[33m-\u001b[39mlabelledby\u001b[33m=\u001b[39m\u001b[32m\"navbarDropdownMenuLink\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 55 | \u001b[39m                        \u001b[33m<\u001b[39m\u001b[33ma\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"dropdown-item\"\u001b[39m href\u001b[33m=\u001b[39m\u001b[32m\"{{ route('change-password') }}\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33m<\u001b[39m\u001b[33mi\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"fas fa-key\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mi\u001b[39m\u001b[33m>\u001b[39m\u001b[33m&\u001b[39mnbsp\u001b[33m;\u001b[39m\u001b[33mCambiar\u001b[39m \u001b[33mContraseña\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33ma\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n    at Object.raise (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3851:17)\n    at Object.unexpected (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5167:16)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6328:20)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3570:20)\n    at Object.parseExprSubscripts (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5914:23)\n    at Object.parseMaybeUnary (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5894:21)\n    at Object.parseExprOps (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5781:23)\n    at Object.parseMaybeConditional (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5754:23)\n    at Object.parseMaybeAssign (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5701:21)\n    at Object.parseObjectProperty (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6768:101)\n    at Object.parseObjPropValue (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6793:101)\n    at Object.parseObjectMember (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6717:10)\n    at Object.parseObj (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6641:25)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6274:21)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3570:20)\n    at Object.parseExprSubscripts (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5914:23)\n    at Object.parseMaybeUnary (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5894:21)\n    at Object.parseExprOps (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5781:23)\n    at Object.parseMaybeConditional (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5754:23)\n    at Object.parseMaybeAssign (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5701:21)\n    at Object.parseExpression (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5649:23)\n    at Object.jsxParseExpressionContainer (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3426:30)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3516:34)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3558:17)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3565:19)\n    at Object.parseExprSubscripts (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5914:23)\n    at Object.parseMaybeUnary (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5894:21)\n    at Object.parseExprOps (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5781:23)\n    at Object.parseMaybeConditional (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5754:23)\n    at Object.parseMaybeAssign (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5701:21)\n    at Object.parseParenAndDistinguishExpression (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6466:28)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Header; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _public_images_logo_oneshow_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../public/images/logo-oneshow.png */ "./public/images/logo-oneshow.png");
+/* harmony import */ var _public_images_logo_oneshow_png__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_public_images_logo_oneshow_png__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var Header =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Header, _Component);
+
+  function Header(props) {
+    var _this;
+
+    _classCallCheck(this, Header);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Header).call(this, props));
+    _this.state = {
+      url: "",
+      userId: _this.props.userId,
+      isLoading: true
+    };
+    return _this;
+  }
+  /*componentWillMount() {
+      axios.get("api/usuario/" + this.state.userId).then(res => {
+          console.log(res);
+      });
+  }*/
+
+
+  _createClass(Header, [{
+    key: "render",
+    value: function render() {
+      if (this.state.isLoading) {
+        return "";
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+          "class": "top-header"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "#",
+          "class": "top-header-logo"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          "class": "logo-inside",
+          src: _public_images_logo_oneshow_png__WEBPACK_IMPORTED_MODULE_2___default.a
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
+          id: "navbar-principal",
+          "class": "navbar navbar-default"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          "class": "container-fluid"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          "class": "navbar-header"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          "class": "navbar-sidebar-toggle",
+          "data-toggle-sidebar": true
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          "class": "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          "class": "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-sm-closed"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          "class": "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-md-open"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          "class": "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-md-closed"
+        }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          "class": "navbar-nav ml-auto"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          "class": "nav-item dropdown"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          "class": "nav-link dropdown-toggle",
+          href: "#",
+          id: "navbarDropdownMenuLink",
+          role: "button",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          "class": "fas fa-user"
+        }), "\xA0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          "class": "dropdown-menu dropdown-menu-right dropdown-menu-sm-right",
+          "aria-labelledby": "navbarDropdownMenuLink"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          "class": "dropdown-item",
+          href: "{{ route('change-password') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          "class": "fas fa-key"
+        }), "\xA0Cambiar Contrase\xF1a"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          "class": "dropdown-item",
+          href: "{{ route('logout') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          "class": "fas fa-sign-out-alt"
+        }), "\xA0Salir")))))));
+      }
+    }
+  }]);
+
+  return Header;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
 
 /***/ }),
 
@@ -106672,10 +106808,254 @@ throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index
 /*!****************************************************!*\
   !*** ./resources/js/components/components/Menu.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\resources\\js\\components\\components\\Menu.js: Unexpected token, expected \"}\" (46:20)\n\n\u001b[0m \u001b[90m 44 | \u001b[39m                            \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33ma\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 45 | \u001b[39m                        \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mli\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 46 | \u001b[39m                    {\u001b[90m/*@endif*/\u001b[39m}\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 47 | \u001b[39m                \u001b[0m\n\u001b[0m \u001b[90m 48 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mli\u001b[39m \u001b[36mclass\u001b[39m\u001b[33m=\u001b[39m\u001b[32m\"sidebar-nav-link sidebar-nav-link-group\"\u001b[39m\u001b[33m>\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 49 | \u001b[39m                        \u001b[33m<\u001b[39m\u001b[33ma\u001b[39m data\u001b[33m-\u001b[39msubnav\u001b[33m-\u001b[39mtoggle\u001b[33m>\u001b[39m\u001b[0m\n    at Object.raise (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3851:17)\n    at Object.unexpected (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5167:16)\n    at Object.expect (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5153:28)\n    at Object.jsxParseExpressionContainer (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3429:10)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3516:34)\n    at Object.jsxParseElementAt (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3505:32)\n    at Object.jsxParseElement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3558:17)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3565:19)\n    at Object.parseExprSubscripts (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5914:23)\n    at Object.parseMaybeUnary (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5894:21)\n    at Object.parseExprOps (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5781:23)\n    at Object.parseMaybeConditional (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5754:23)\n    at Object.parseMaybeAssign (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5701:21)\n    at Object.parseParenAndDistinguishExpression (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6466:28)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:6260:21)\n    at Object.parseExprAtom (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:3570:20)\n    at Object.parseExprSubscripts (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5914:23)\n    at Object.parseMaybeUnary (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5894:21)\n    at Object.parseExprOps (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5781:23)\n    at Object.parseMaybeConditional (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5754:23)\n    at Object.parseMaybeAssign (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5701:21)\n    at Object.parseExpression (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:5649:23)\n    at Object.parseReturnStatement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7660:28)\n    at Object.parseStatementContent (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7339:21)\n    at Object.parseStatement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7291:17)\n    at Object.parseBlockOrModuleBlockBody (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7868:25)\n    at Object.parseBlockBody (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7855:10)\n    at Object.parseBlock (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7839:10)\n    at Object.parseStatementContent (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7367:21)\n    at Object.parseStatement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7291:17)\n    at Object.parseIfStatement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7646:51)\n    at Object.parseStatementContent (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7336:21)\n    at Object.parseStatement (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7291:17)\n    at Object.parseBlockOrModuleBlockBody (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7868:25)\n    at Object.parseBlockBody (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7855:10)\n    at Object.parseBlock (C:\\Users\\GaboDeveloper\\Desktop\\oneshow\\ONEShow-BackOffice\\node_modules\\@babel\\parser\\lib\\index.js:7839:10)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Menu; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var Menu =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Menu, _Component);
+
+  function Menu(props) {
+    var _this;
+
+    _classCallCheck(this, Menu);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Menu).call(this, props));
+    _this.state = {
+      url: "",
+      usuario: _this.props.usuario,
+      permisosUsuario: {},
+      isLoading: true
+    };
+    return _this;
+  }
+
+  _createClass(Menu, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      var _this2 = this;
+
+      console.log(this.state.usuario);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("api/usuarios/permisos/" + this.state.usuario.Rol_id).then(function (res) {
+        var r = res.data.data;
+        console.log(r);
+
+        _this2.setState({
+          permisosUsuario: {
+            nombre: r.Nombre,
+            permisos: r.Permisos
+          },
+          isLoading: false
+        });
+
+        console.log(_this2.state);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (this.state.isLoading) {
+        return "";
+      } else {
+        var permisos = this.state.permisosUsuario.permisos;
+
+        if (!permisos.multimedia) {
+          permisos.multimedia = [];
+        }
+
+        if (!permisos.biblioteca) {
+          permisos.biblioteca = [];
+        }
+
+        if (!permisos.angenda) {
+          permisos.agenda = [];
+        }
+
+        if (!permisos.empresa) {
+          permisos.empresa = [];
+        }
+
+        if (!permisos.cliente) {
+          permisos.cliente = [];
+        }
+
+        if (!permisos.monitor) {
+          permisos.monitor = [];
+        }
+
+        if (!permisos.usuario) {
+          permisos.usuario = [];
+        }
+
+        if (!permisos.etapas) {
+          permisos.etapas = [];
+        }
+
+        if (!permisos.angenda) {
+          permisos.agenda = [];
+        }
+
+        if (!permisos.platos) {
+          permisos.platos = [];
+        }
+
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
+          className: "left-sidebar"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "sidebar-nav mt-3"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link active"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('welcome') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-tachometer-alt sidebar-nav-link-logo"
+        }), " ", "Dashboard")), permisos.multimedia.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('multimedia') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-compact-disc sidebar-nav-link-logo"
+        }), " ", "Multimedia")) : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link sidebar-nav-link-group"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          "data-subnav-toggle": true
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-user-friends sidebar-nav-link-logo"
+        }), " ", "Invitados", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "sidebar-nav"
+        }, true ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('invitados.invitacion') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-envelope-open-text sidebar-nav-link-logo"
+        }), " ", "Invitaci\xF3n")) : undefined, true ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('invitados.invitado') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-user-friends sidebar-nav-link-logo"
+        }), " ", "Invitados")) : undefined, true ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('invitados.asiento') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-chair sidebar-nav-link-logo"
+        }), " ", "Asientos")) : undefined, true ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('invitados.regalo') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-gift sidebar-nav-link-logo"
+        }), " ", "Regalos")) : undefined)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link sidebar-nav-link-group"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          "data-subnav-toggle": true,
+          className: "btn btn-primary",
+          "data-toggle": "collapse",
+          href: "#collapseExample",
+          role: "button",
+          "aria-expanded": "false",
+          "aria-controls": "collapseExample"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-tools sidebar-nav-link-logo"
+        }), " ", "Configuraci\xF3n", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          className: "fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "sidebar-nav collapse",
+          id: "collapseExample"
+        }, permisos.biblioteca.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.biblioteca') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-book sidebar-nav-link-logo"
+        }), " ", "Biblioteca")) : "", permisos.empresa.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.empresa') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-industry sidebar-nav-link-logo"
+        }), " ", "Empresas")) : "", permisos.cliente.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.cliente') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-user-tie sidebar-nav-link-logo"
+        }), " ", "Invitados")) : "", permisos.monitor.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.monitor') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-desktop sidebar-nav-link-logo"
+        }), " ", "Monitor")) : "", permisos.usuario.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.usuario') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-user-cog sidebar-nav-link-logo"
+        }), " ", "Usuarios")) : "", permisos.agenda.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.agenda') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-address-book sidebar-nav-link-logo"
+        }), " ", "Agendas")) : "", permisos.etapas.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.menug_etapas') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-folder-open sidebar-nav-link-logo"
+        }), " ", "Men\xFA Etapas")) : "", permisos.platos.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "sidebar-nav-link"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "{{ route('configuracion.menug_platos') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-coffee sidebar-nav-link-logo"
+        }), " ", "Men\xFA Platos")) : ""))));
+      }
+    }
+  }]);
+
+  return Menu;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
 
 /***/ }),
 

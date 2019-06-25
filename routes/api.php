@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'usuarios'], function() {
     Route::post('/login', 'LoginController@login');
     Route::get('/{id}', 'UsuarioController@getUsuario');
+    Route::get('/permisos/{id}', 'UsuarioController@getPermisosUsuario');
 });
