@@ -7,46 +7,43 @@ export default class Header extends Component {
         super(props);
         this.state = {
             url: "",
-            userId: this.props.userId,
-            isLoading: true
+            usuario: this.props.usuario,
+            isLoading: false
         };
     }
-
-    /*componentWillMount() {
-        axios.get("api/usuario/" + this.state.userId).then(res => {
-            console.log(res);
-        });
-    }*/
 
     render() {
         if (this.state.isLoading) {
             return "";
         } else {
             return (
-                <header class="top-header">
-                    <a href="#" class="top-header-logo">
-                        <img class="logo-inside" src={logo} />
+                <header className="top-header">
+                    <a href="#" className="top-header-logo">
+                        <img className="logo-inside" src={logo} />
                     </a>
 
-                    <nav id="navbar-principal" class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
+                    <nav
+                        id="navbar-principal"
+                        className="navbar navbar-default"
+                    >
+                        <div className="container-fluid">
+                            <div className="navbar-header">
                                 <button
                                     type="button"
-                                    class="navbar-sidebar-toggle"
+                                    className="navbar-sidebar-toggle"
                                     data-toggle-sidebar
                                 >
-                                    <span class="fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open" />
-                                    <span class="fas fa-arrow-right fa-xs icon-arrow visible-sidebar-sm-closed" />
-                                    <span class="fas fa-arrow-left fa-xs icon-arrow visible-sidebar-md-open" />
-                                    <span class="fas fa-arrow-right fa-xs icon-arrow visible-sidebar-md-closed" />
+                                    <span className="fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open" />
+                                    <span className="fas fa-arrow-right fa-xs icon-arrow visible-sidebar-sm-closed" />
+                                    <span className="fas fa-arrow-left fa-xs icon-arrow visible-sidebar-md-open" />
+                                    <span className="fas fa-arrow-right fa-xs icon-arrow visible-sidebar-md-closed" />
                                 </button>
                             </div>
 
-                            <ul class="navbar-nav ml-auto">
-                                <li class="nav-item dropdown">
+                            <ul className="navbar-nav ml-auto">
+                                <li className="nav-item dropdown">
                                     <a
-                                        class="nav-link dropdown-toggle"
+                                        className="nav-link dropdown-toggle"
                                         href="#"
                                         id="navbarDropdownMenuLink"
                                         role="button"
@@ -54,26 +51,27 @@ export default class Header extends Component {
                                         aria-haspopup="true"
                                         aria-expanded="false"
                                     >
-                                        <i class="fas fa-user" />
+                                        <i className="fas fa-user" />
                                         &nbsp;
+                                        {this.state.usuario.Correo}
                                         {/*{ Str::limit(Auth::user()->nameMail(), 15) }*/}
                                     </a>
                                     <div
-                                        class="dropdown-menu dropdown-menu-right dropdown-menu-sm-right"
+                                        className="dropdown-menu dropdown-menu-right dropdown-menu-sm-right"
                                         aria-labelledby="navbarDropdownMenuLink"
                                     >
                                         <a
-                                            class="dropdown-item"
+                                            className="dropdown-item"
                                             href="{{ route('change-password') }}"
                                         >
-                                            <i class="fas fa-key" />
+                                            <i className="fas fa-key" />
                                             &nbsp;Cambiar Contraseña
                                         </a>
                                         <a
-                                            class="dropdown-item"
+                                            className="dropdown-item"
                                             href="{{ route('logout') }}"
                                         >
-                                            <i class="fas fa-sign-out-alt" />
+                                            <i className="fas fa-sign-out-alt" />
                                             &nbsp;Salir
                                         </a>
                                     </div>

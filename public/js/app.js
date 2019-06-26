@@ -106339,7 +106339,9 @@ function (_Component) {
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_4__["default"], {
         usuario: this.state.user
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        usuario: this.state.user
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "content-wrapper"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
         className: "page-header"
@@ -106720,17 +106722,11 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Header).call(this, props));
     _this.state = {
       url: "",
-      userId: _this.props.userId,
-      isLoading: true
+      usuario: _this.props.usuario,
+      isLoading: false
     };
     return _this;
   }
-  /*componentWillMount() {
-      axios.get("api/usuario/" + this.state.userId).then(res => {
-          console.log(res);
-      });
-  }*/
-
 
   _createClass(Header, [{
     key: "render",
@@ -106739,38 +106735,38 @@ function (_Component) {
         return "";
       } else {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-          "class": "top-header"
+          className: "top-header"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
           href: "#",
-          "class": "top-header-logo"
+          className: "top-header-logo"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          "class": "logo-inside",
+          className: "logo-inside",
           src: _public_images_logo_oneshow_png__WEBPACK_IMPORTED_MODULE_2___default.a
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
           id: "navbar-principal",
-          "class": "navbar navbar-default"
+          className: "navbar navbar-default"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          "class": "container-fluid"
+          className: "container-fluid"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          "class": "navbar-header"
+          className: "navbar-header"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
-          "class": "navbar-sidebar-toggle",
+          className: "navbar-sidebar-toggle",
           "data-toggle-sidebar": true
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          "class": "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open"
+          className: "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          "class": "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-sm-closed"
+          className: "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-sm-closed"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          "class": "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-md-open"
+          className: "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-md-open"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          "class": "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-md-closed"
+          className: "fas fa-arrow-right fa-xs icon-arrow visible-sidebar-md-closed"
         }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          "class": "navbar-nav ml-auto"
+          className: "navbar-nav ml-auto"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          "class": "nav-item dropdown"
+          className: "nav-item dropdown"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          "class": "nav-link dropdown-toggle",
+          className: "nav-link dropdown-toggle",
           href: "#",
           id: "navbarDropdownMenuLink",
           role: "button",
@@ -106778,20 +106774,20 @@ function (_Component) {
           "aria-haspopup": "true",
           "aria-expanded": "false"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          "class": "fas fa-user"
-        }), "\xA0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          "class": "dropdown-menu dropdown-menu-right dropdown-menu-sm-right",
+          className: "fas fa-user"
+        }), "\xA0", this.state.usuario.Correo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "dropdown-menu dropdown-menu-right dropdown-menu-sm-right",
           "aria-labelledby": "navbarDropdownMenuLink"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          "class": "dropdown-item",
+          className: "dropdown-item",
           href: "{{ route('change-password') }}"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          "class": "fas fa-key"
+          className: "fas fa-key"
         }), "\xA0Cambiar Contrase\xF1a"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          "class": "dropdown-item",
+          className: "dropdown-item",
           href: "{{ route('logout') }}"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          "class": "fas fa-sign-out-alt"
+          className: "fas fa-sign-out-alt"
         }), "\xA0Salir")))))));
       }
     }

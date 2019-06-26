@@ -30,7 +30,7 @@ export default class Welcome extends Component {
         return (
             <div>
                 <Menu usuario={this.state.user} />
-                <Header />
+                <Header usuario={this.state.user} />
                 <div className="content-wrapper">
                     <header className="page-header">
                         <div className="container-fluid">
