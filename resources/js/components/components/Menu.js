@@ -87,79 +87,93 @@ export default class Menu extends Component {
                         )}
 
                         <li className="sidebar-nav-link sidebar-nav-link-group">
-                            <a data-subnav-toggle>
+                            <a
+                                data-subnav-toggle
+                                data-toggle="collapse"
+                                href="#submenu-invitacion"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="submenu-invitacion"
+                            >
                                 <i className="fas fa-user-friends sidebar-nav-link-logo" />{" "}
                                 Invitados
                                 <span className="fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed" />
                                 <span className="fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened" />
                             </a>
 
-                            <ul className="sidebar-nav">
-                                {/*@if(true)*/}
-                                {true ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('invitados.invitacion') }}">
-                                            <i className="fas fa-envelope-open-text sidebar-nav-link-logo" />{" "}
-                                            Invitación
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
+                            <div className="row">
+                                <div
+                                    className="collapse multi-collapse offset-1"
+                                    id="submenu-invitacion"
+                                >
+                                    <ul className="sidebar-nav">
+                                        {/*@if(true)*/}
+                                        {true ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('invitados.invitacion') }}">
+                                                    <i className="fas fa-envelope-open-text sidebar-nav-link-logo" />{" "}
+                                                    Invitación
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
 
-                                {/*@endif*/}
+                                        {/*@endif*/}
 
-                                {/*@if(true)*/}
-                                {true ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('invitados.invitado') }}">
-                                            <i className="fas fa-user-friends sidebar-nav-link-logo" />{" "}
-                                            Invitados
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
+                                        {/*@if(true)*/}
+                                        {true ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('invitados.invitado') }}">
+                                                    <i className="fas fa-user-friends sidebar-nav-link-logo" />{" "}
+                                                    Invitados
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
 
-                                {/*@endif*/}
+                                        {/*@endif*/}
 
-                                {/*@if(true)*/}
-                                {true ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('invitados.asiento') }}">
-                                            <i className="fas fa-chair sidebar-nav-link-logo" />{" "}
-                                            Asientos
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
+                                        {/*@if(true)*/}
+                                        {true ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('invitados.asiento') }}">
+                                                    <i className="fas fa-chair sidebar-nav-link-logo" />{" "}
+                                                    Asientos
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
 
-                                {/*@endif*/}
+                                        {/*@endif*/}
 
-                                {/*@if(true)*/}
-                                {true ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('invitados.regalo') }}">
-                                            <i className="fas fa-gift sidebar-nav-link-logo" />{" "}
-                                            Regalos
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
-                            </ul>
+                                        {/*@if(true)*/}
+                                        {true ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('invitados.regalo') }}">
+                                                    <i className="fas fa-gift sidebar-nav-link-logo" />{" "}
+                                                    Regalos
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
 
                         <li className="sidebar-nav-link sidebar-nav-link-group">
                             <a
                                 data-subnav-toggle
                                 data-toggle="collapse"
-                                href="#collapseExample"
+                                href="#submenu-configuracion"
                                 role="button"
                                 aria-expanded="false"
-                                aria-controls="collapseExample"
+                                aria-controls="submenu-configuracion"
                             >
                                 <i className="fas fa-tools sidebar-nav-link-logo" />{" "}
                                 Configuración
@@ -167,86 +181,96 @@ export default class Menu extends Component {
                                 <span className="fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened" />
                             </a>
 
-                            <ul className="sidebar-nav" id="collapseExample">
-                                {/*@if(Auth::user()->hasPermission('biblioteca', 'show'))*/}
-                                {permisos.biblioteca.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.biblioteca') }}">
-                                            <i className="fas fa-book sidebar-nav-link-logo" />{" "}
-                                            Biblioteca
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                            <div className="row">
+                                <div
+                                    className="collapse multi-collapse offset-1"
+                                    id="submenu-configuracion"
+                                >
+                                    <ul
+                                        className="sidebar-nav"
+                                        id="collapseExample"
+                                    >
+                                        {/*@if(Auth::user()->hasPermission('biblioteca', 'show'))*/}
+                                        {permisos.biblioteca.includes(
+                                            "show"
+                                        ) ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.biblioteca') }}">
+                                                    <i className="fas fa-book sidebar-nav-link-logo" />{" "}
+                                                    Biblioteca
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/*@if(Auth::user()->hasPermission('empresa', 'show'))*/}
-                                {permisos.empresa.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.empresa') }}">
-                                            <i className="fas fa-industry sidebar-nav-link-logo" />{" "}
-                                            Empresas
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                                        {/*@if(Auth::user()->hasPermission('empresa', 'show'))*/}
+                                        {permisos.empresa.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.empresa') }}">
+                                                    <i className="fas fa-industry sidebar-nav-link-logo" />{" "}
+                                                    Empresas
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/*@if(Auth::user()->hasPermission('cliente', 'show'))*/}
-                                {permisos.cliente.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.cliente') }}">
-                                            <i className="fas fa-user-tie sidebar-nav-link-logo" />{" "}
-                                            Invitados
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                                        {/*@if(Auth::user()->hasPermission('cliente', 'show'))*/}
+                                        {permisos.cliente.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.cliente') }}">
+                                                    <i className="fas fa-user-tie sidebar-nav-link-logo" />{" "}
+                                                    Invitados
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/*@if(Auth::user()->hasPermission('monitor', 'show'))*/}
-                                {permisos.monitor.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.monitor') }}">
-                                            <i className="fas fa-desktop sidebar-nav-link-logo" />{" "}
-                                            Monitor
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                                        {/*@if(Auth::user()->hasPermission('monitor', 'show'))*/}
+                                        {permisos.monitor.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.monitor') }}">
+                                                    <i className="fas fa-desktop sidebar-nav-link-logo" />{" "}
+                                                    Monitor
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/*@if(Auth::user()->hasPermission('usuario', 'show'))*/}
-                                {permisos.usuario.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.usuario') }}">
-                                            <i className="fas fa-user-cog sidebar-nav-link-logo" />{" "}
-                                            Usuarios
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
+                                        {/*@if(Auth::user()->hasPermission('usuario', 'show'))*/}
+                                        {permisos.usuario.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.usuario') }}">
+                                                    <i className="fas fa-user-cog sidebar-nav-link-logo" />{" "}
+                                                    Usuarios
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
 
-                                {/*@endif*/}
-                                {/*@if(Auth::user()->hasPermission('agenda', 'show'))*/}
-                                {permisos.agenda.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.agenda') }}">
-                                            <i className="fas fa-address-book sidebar-nav-link-logo" />{" "}
-                                            Agendas
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                                        {/*@endif*/}
+                                        {/*@if(Auth::user()->hasPermission('agenda', 'show'))*/}
+                                        {permisos.agenda.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.agenda') }}">
+                                                    <i className="fas fa-address-book sidebar-nav-link-logo" />{" "}
+                                                    Agendas
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/* {/@if(Auth::user()->hasPermission('etapas', 'show'))
+                                        {/* {/@if(Auth::user()->hasPermission('etapas', 'show'))
                                 <li className="sidebar-nav-link">
                                     <a href="{{ route('configuracion.menug_platos') }}">
                                         <i className="fas fa-coffee sidebar-nav-link-logo" />{" "}
@@ -255,32 +279,34 @@ export default class Menu extends Component {
                                 </li>
                                 {/*@endif -->*/}
 
-                                {/*@if(Auth::user()->hasPermission('etapas', 'show')) */}
-                                {permisos.etapas.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.menug_etapas') }}">
-                                            <i className="fas fa-folder-open sidebar-nav-link-logo" />{" "}
-                                            Menú Etapas
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif*/}
+                                        {/*@if(Auth::user()->hasPermission('etapas', 'show')) */}
+                                        {permisos.etapas.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.menug_etapas') }}">
+                                                    <i className="fas fa-folder-open sidebar-nav-link-logo" />{" "}
+                                                    Menú Etapas
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif*/}
 
-                                {/*@if(Auth::user()->hasPermission('platos', 'show'))*/}
-                                {permisos.platos.includes("show") ? (
-                                    <li className="sidebar-nav-link">
-                                        <a href="{{ route('configuracion.menug_platos') }}">
-                                            <i className="fas fa-coffee sidebar-nav-link-logo" />{" "}
-                                            Menú Platos
-                                        </a>
-                                    </li>
-                                ) : (
-                                    ""
-                                )}
-                                {/*@endif */}
-                            </ul>
+                                        {/*@if(Auth::user()->hasPermission('platos', 'show'))*/}
+                                        {permisos.platos.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <a href="{{ route('configuracion.menug_platos') }}">
+                                                    <i className="fas fa-coffee sidebar-nav-link-logo" />{" "}
+                                                    Menú Platos
+                                                </a>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {/*@endif */}
+                                    </ul>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </aside>

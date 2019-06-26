@@ -106947,14 +106947,24 @@ function (_Component) {
         }), " ", "Multimedia")) : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link sidebar-nav-link-group"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          "data-subnav-toggle": true
+          "data-subnav-toggle": true,
+          "data-toggle": "collapse",
+          href: "#submenu-invitacion",
+          role: "button",
+          "aria-expanded": "false",
+          "aria-controls": "submenu-invitacion"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-user-friends sidebar-nav-link-logo"
         }), " ", "Invitados", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "collapse multi-collapse offset-1",
+          id: "submenu-invitacion"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           className: "sidebar-nav"
         }, true ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link"
@@ -106980,24 +106990,28 @@ function (_Component) {
           href: "{{ route('invitados.regalo') }}"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-gift sidebar-nav-link-logo"
-        }), " ", "Regalos")) : undefined)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+        }), " ", "Regalos")) : undefined)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link sidebar-nav-link-group"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
           "data-subnav-toggle": true,
-          className: "btn btn-primary",
           "data-toggle": "collapse",
-          href: "#collapseExample",
+          href: "#submenu-configuracion",
           role: "button",
           "aria-expanded": "false",
-          "aria-controls": "collapseExample"
+          "aria-controls": "submenu-configuracion"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-tools sidebar-nav-link-logo"
         }), " ", "Configuraci\xF3n", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "fa fa-chevron-right subnav-toggle-icon subnav-toggle-icon-closed"
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "fa fa-chevron-down subnav-toggle-icon subnav-toggle-icon-opened"
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-          className: "sidebar-nav collapse",
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "collapse multi-collapse offset-1",
+          id: "submenu-configuracion"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "sidebar-nav",
           id: "collapseExample"
         }, permisos.biblioteca.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link"
@@ -107047,7 +107061,7 @@ function (_Component) {
           href: "{{ route('configuracion.menug_platos') }}"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-coffee sidebar-nav-link-logo"
-        }), " ", "Men\xFA Platos")) : ""))));
+        }), " ", "Men\xFA Platos")) : ""))))));
       }
     }
   }]);
