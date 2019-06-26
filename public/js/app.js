@@ -106729,6 +106729,18 @@ function (_Component) {
   }
 
   _createClass(Header, [{
+    key: "handleClick",
+    value: function handleClick() {
+      var body = document.getElementsByTagName("body")[0];
+      console.log(body.className);
+
+      if (body.className == "sidebar-closed-md") {
+        body.className = "";
+      } else {
+        body.className = "sidebar-closed-md";
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       if (this.state.isLoading) {
@@ -106752,6 +106764,7 @@ function (_Component) {
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
           type: "button",
           className: "navbar-sidebar-toggle",
+          onClick: this.handleClick,
           "data-toggle-sidebar": true
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
           className: "fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open"

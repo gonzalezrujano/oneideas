@@ -12,6 +12,16 @@ export default class Header extends Component {
         };
     }
 
+    handleClick() {
+        var body = document.getElementsByTagName("body")[0];
+        console.log(body.className);
+        if (body.className == "sidebar-closed-md") {
+            body.className = "";
+        } else {
+            body.className = "sidebar-closed-md";
+        }
+    }
+
     render() {
         if (this.state.isLoading) {
             return "";
@@ -31,6 +41,7 @@ export default class Header extends Component {
                                 <button
                                     type="button"
                                     className="navbar-sidebar-toggle"
+                                    onClick={this.handleClick}
                                     data-toggle-sidebar
                                 >
                                     <span className="fas fa-arrow-left fa-xs icon-arrow visible-sidebar-sm-open" />
