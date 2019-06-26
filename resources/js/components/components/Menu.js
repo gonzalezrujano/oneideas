@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import axios from "axios";
 
 export default class Menu extends Component {
@@ -77,10 +79,10 @@ export default class Menu extends Component {
 
                         {permisos.multimedia.includes("show") ? (
                             <li className="sidebar-nav-link">
-                                <a href="{{ route('multimedia') }}">
+                                <Link to="/multimedia">
                                     <i className="fas fa-compact-disc sidebar-nav-link-logo" />{" "}
                                     Multimedia
-                                </a>
+                                </Link>
                             </li>
                         ) : (
                             ""

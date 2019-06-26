@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
-import swal from "sweetalert2";
 import Menu from "../components/Menu";
 import Header from "../components/Header";
 

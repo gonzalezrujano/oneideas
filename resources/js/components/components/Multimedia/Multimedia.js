@@ -737,7 +737,7 @@ MQTTconnect();
         );
     }
 }
-
+/*
 if (document.getElementById('multimedia')) {
 
     const element = document.getElementById('multimedia');
@@ -745,4 +745,4 @@ if (document.getElementById('multimedia')) {
     const props = Object.assign({}, element.dataset);
 
     ReactDOM.render(<Multimedia {...props} />, element);
-}
+}*/

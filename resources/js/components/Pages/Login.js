@@ -50,6 +50,7 @@ export default class Login extends Component {
                     });
                     console.log("log valido");
                     console.log(r);
+                    localStorage.setItem("usuario", JSON.stringify(r.usuario));
                     this.props.history.push({
                         pathname: "/welcome",
                         state: r.usuario
