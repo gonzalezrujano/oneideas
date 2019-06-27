@@ -14,13 +14,18 @@ export default class Menu extends Component {
         };
     }
 
-    componentWillMount() {
-        console.log(this.state.usuario);
+    getPermisos() {
         axios
             .get("api/usuarios/permisos/" + this.state.usuario.Rol_id)
             .then(res => {
                 let r = res.data.data;
-                console.log(r);
+                localStorage.setItem(
+                    "permisosUsuario",
+                    JSON.stringify({
+                        nombre: r.Nombre,
+                        permisos: r.Permisos
+                    })
+                );
                 this.setState({
                     permisosUsuario: {
                         nombre: r.Nombre,
@@ -28,11 +33,22 @@ export default class Menu extends Component {
                     },
                     isLoading: false
                 });
-                console.log(this.state);
             });
     }
 
     render() {
+        /** el siguiente if compara si tengo guardada en cache los permisos
+         * del usuario logeado
+         */
+        if (!JSON.parse(localStorage.getItem("permisosUsuario"))) {
+            this.getPermisos();
+        } else {
+            this.state.permisosUsuario = JSON.parse(
+                localStorage.getItem("permisosUsuario")
+            );
+            this.state.isLoading = false;
+        }
+
         if (this.state.isLoading) {
             return "";
         } else {
@@ -71,10 +87,10 @@ export default class Menu extends Component {
                 <aside className="left-sidebar">
                     <ul className="sidebar-nav mt-3">
                         <li className="sidebar-nav-link active">
-                            <a href="{{ route('welcome') }}">
+                            <Link to="/welcome">
                                 <i className="fas fa-tachometer-alt sidebar-nav-link-logo" />{" "}
                                 Dashboard
-                            </a>
+                            </Link>
                         </li>
 
                         {permisos.multimedia.includes("show") ? (

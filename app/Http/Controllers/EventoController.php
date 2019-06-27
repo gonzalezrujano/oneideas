@@ -11,6 +11,9 @@ use App\Models\MongoDB\MenuAppInvitado;
 use App\Models\MongoDB\Pais;
 use App\Models\MongoDB\Estado;
 use App\Models\MongoDB\Envio;
+use App\Models\MongoDB\Usuario;
+use App\Models\MongoDB\Sector;
+use App\Models\MongoDB\Rol;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB, DataTables, Image, Storage, File, Auth, Mail, QrCode;
@@ -572,6 +575,39 @@ class EventoController extends Controller
 
         //devuelvo el resultado en formato json
         return $result;
+    }
+
+
+    public function getEventosUsuario($id){
+        $usuario = Usuario::find($id);
+        $id_rol = $usuario->Rol_id;
+        $rol = Rol::find($id_rol);
+        $nombreRol = $rol->Nombre;
+
+        if($nombreRol == 'ADMINISTRADOR'){
+
+            //cargo los eventos
+            $data['eventos'] = Evento::borrado(false)->activo(true)->app(true)->orderBy('Nombre', 'ASC')->get();
+
+        }else if($nombreRol == 'EMPRESA'){
+
+            //cargo los eventos
+            $data['eventos'] = Evento::borrado(false)->activo(true)->app(true)->where('Empresa_id', new ObjectId((string)$usuario->Empresa_id) )->orderBy('Nombre', 'ASC')->get();
+
+        }else if($nombreRol == 'EVENTO'){
+
+            //cargo los eventos
+            $data['eventos'] = Evento::borrado(false)->activo(true)->app(true)->where('_id', new ObjectId((string)$usuario->Evento_id) )->orderBy('Nombre', 'ASC')->get();
+
+        }
+
+        for ($i=0; $i < count($data['eventos']); $i++) { 
+          $pais = Pais::find(new ObjectId($data['eventos'][$i]->Pais_id));
+          $data['eventos'][$i]->Pais=$pais;
+        }
+        $data['sectores'] = Sector::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+
+        return json_encode(['code' => 200, "data"=>$data]);
     }
 
 }

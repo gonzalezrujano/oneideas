@@ -14,7 +14,6 @@ export default class Header extends Component {
 
     handleClick() {
         var body = document.getElementsByTagName("body")[0];
-        console.log(body.className);
         if (body.className == "sidebar-closed-md") {
             body.className = "";
         } else {
@@ -26,6 +25,11 @@ export default class Header extends Component {
         if (this.state.isLoading) {
             return "";
         } else {
+            if (!this.state.usuario) {
+                this.state.usuario = JSON.parse(
+                    localStorage.getItem("usuario")
+                );
+            }
             return (
                 <header className="top-header">
                     <a href="#" className="top-header-logo">

@@ -22,3 +22,9 @@ Route::group(['prefix' => 'usuarios'], function() {
     Route::get('/{id}', 'UsuarioController@getUsuario');
     Route::get('/permisos/{id}', 'UsuarioController@getPermisosUsuario');
 });
+
+
+
+Route::group(['prefix' => 'eventos'], function() {
+    Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
+});

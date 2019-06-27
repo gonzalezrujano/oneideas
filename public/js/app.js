@@ -106273,6 +106273,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Menu */ "./resources/js/components/components/Menu.js");
 /* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Header */ "./resources/js/components/components/Header.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-live-clock */ "./node_modules/react-live-clock/lib/index.js");
+/* harmony import */ var react_live_clock__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_live_clock__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_full_screen__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-full-screen */ "./node_modules/react-full-screen/dist/index.js");
+/* harmony import */ var react_full_screen__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_full_screen__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -106295,6 +106301,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+
 var Multimedia =
 /*#__PURE__*/
 function (_Component) {
@@ -106310,40 +106319,132 @@ function (_Component) {
       url: "",
       correo: "",
       password: "",
+      eventos: [],
+      sectores: [],
+      usuario: JSON.parse(localStorage.getItem("usuario")),
+      permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
       opcion: "Multimedia",
+      evento: "prueba",
       footer: "Footer",
-      isLoading: false
+      zonaevento: "Etc/GMT+4",
+      isFull: false,
+      isLoading: true
     };
     return _this;
   }
 
   _createClass(Multimedia, [{
+    key: "getEventos",
+    value: function getEventos() {
+      var _this2 = this;
+
+      console.log(this.state.usuario._id);
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("/api/eventos/usuario/" + this.state.usuario._id).then(function (res) {
+        var r = res.data.data;
+        localStorage.setItem("eventosUsuario", JSON.stringify(r));
+
+        _this2.setState({
+          eventos: r.eventos,
+          sectores: r.sectores,
+          isLoading: false
+        });
+
+        console.log(r);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      console.log("abajo es el localstorage");
-      console.log(JSON.parse(localStorage.getItem("usuario")));
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "content-wrapper"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-        className: "page-header"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-12 col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        className: "page-header-heading"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-tachometer-alt page-header-heading-icon"
-      }), this.state.opcion))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "sweet",
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, "Esto es Multimedia"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
-        className: "content-wrapper-footer"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer)))));
+      var _this3 = this;
+
+      if (!JSON.parse(localStorage.getItem("eventosUsuario"))) {
+        this.getEventos();
+      } else {
+        this.state.eventos = JSON.parse(localStorage.getItem("eventosUsuario")).eventos;
+        this.state.sectores = JSON.parse(localStorage.getItem("eventosUsuario")).sectores;
+        this.state.isLoading = false;
+      }
+
+      if (this.state.isLoading) {
+        return "";
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_full_screen__WEBPACK_IMPORTED_MODULE_5___default.a, {
+          enabled: this.state.isFull,
+          onChange: function onChange(isFull) {
+            return _this3.setState({
+              isFull: isFull
+            });
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          usuario: this.state.user
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          usuario: this.state.user
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "content-wrapper"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+          className: "page-header"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container-fluid"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-12 col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "d-flex"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "my-2"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+          className: "page-header-heading"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-compact-disc page-header-heading-icon"
+        }), "Multimedia", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-clock mr-2 ml-4"
+        }), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_live_clock__WEBPACK_IMPORTED_MODULE_4___default.a, {
+          format: "HH:mm:ss A",
+          ticking: true,
+          timezone: this.state.zonaevento
+        }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+          className: "form-inline ml-5"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-calendar-week fa-lg mr-3"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+          className: "form-control form-control-sm form-select-event",
+          name: "evento",
+          value: this.state.evento,
+          onChange: this.handleChange
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+          value: ""
+        }, "Seleccione evento"), this.state.eventos.map(function (p, index) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+            key: index,
+            value: p._id + "_" + p.Empresa_id
+          }, p.Nombre);
+        }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "ml-auto"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          type: "button",
+          className: "btn btn-sm btn-dark ml-4",
+          onClick: this.goFull
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-arrows-alt"
+        }), "\xA0Fullscreen"))))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          id: "sweet",
+          className: "container-fluid"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-lg-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "widget widget-default"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "widget-body"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-success",
+          role: "alert"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-info-circle"
+        }), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Bienvenido"), " a ONE Show Console.")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+          className: "content-wrapper-footer"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer)))));
+      }
     }
   }]);
 
@@ -106401,8 +106502,6 @@ function (_Component) {
     _classCallCheck(this, Welcome);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Welcome).call(this, props));
-    console.log("abajo es el prop lcoation del welcome");
-    console.log(_this.props.location.state);
     _this.state = {
       url: "",
       correo: "",
@@ -106825,7 +106924,6 @@ function (_Component) {
     key: "handleClick",
     value: function handleClick() {
       var body = document.getElementsByTagName("body")[0];
-      console.log(body.className);
 
       if (body.className == "sidebar-closed-md") {
         body.className = "";
@@ -106839,6 +106937,10 @@ function (_Component) {
       if (this.state.isLoading) {
         return "";
       } else {
+        if (!this.state.usuario) {
+          this.state.usuario = JSON.parse(localStorage.getItem("usuario"));
+        }
+
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
           className: "top-header"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -106964,14 +107066,16 @@ function (_Component) {
   }
 
   _createClass(Menu, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {
+    key: "getPermisos",
+    value: function getPermisos() {
       var _this2 = this;
 
-      console.log(this.state.usuario);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get("api/usuarios/permisos/" + this.state.usuario.Rol_id).then(function (res) {
         var r = res.data.data;
-        console.log(r);
+        localStorage.setItem("permisosUsuario", JSON.stringify({
+          nombre: r.Nombre,
+          permisos: r.Permisos
+        }));
 
         _this2.setState({
           permisosUsuario: {
@@ -106980,13 +107084,21 @@ function (_Component) {
           },
           isLoading: false
         });
-
-        console.log(_this2.state);
       });
     }
   }, {
     key: "render",
     value: function render() {
+      /** el siguiente if compara si tengo guardada en cache los permisos
+       * del usuario logeado
+       */
+      if (!JSON.parse(localStorage.getItem("permisosUsuario"))) {
+        this.getPermisos();
+      } else {
+        this.state.permisosUsuario = JSON.parse(localStorage.getItem("permisosUsuario"));
+        this.state.isLoading = false;
+      }
+
       if (this.state.isLoading) {
         return "";
       } else {
@@ -107038,8 +107150,8 @@ function (_Component) {
           className: "sidebar-nav mt-3"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link active"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: "{{ route('welcome') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/welcome"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-tachometer-alt sidebar-nav-link-logo"
         }), " ", "Dashboard")), permisos.multimedia.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
