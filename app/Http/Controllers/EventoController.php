@@ -610,4 +610,83 @@ class EventoController extends Controller
         return json_encode(['code' => 200, "data"=>$data]);
     }
 
+
+    //metodo para cambiar la visualizacion o estado
+    public function getEnvios(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+            $id = $input['evento'];
+
+            //valido que venga el id sino mando un error
+            if($id){
+
+                //ubico el id en la bd
+                $registro = Evento::find(new ObjectId($id));
+                $envios = Envio::where('Evento',$id)->get();
+
+                if($registro){
+                    return json_encode(['code' => 200,'envios'=>$envios]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
+
+    //metodo para cambiar la visualizacion o estado
+    public function quitarEnvios(Request $request){
+
+        //verifico que la respuesta venga por ajax
+        if($request->ajax()){
+
+            //capturo el valor del id
+            $input = $request->all();
+           // $evento = $input['evento'];
+          //  $title = $input['title'];
+            //$estado = $input['estado'];
+            //$inicio = $input['inicio'];
+            //$fin = $input['fin'];
+           // $parametro = $input['parametro'];
+            $id = $input['id'];
+
+            //valido que venga el id sino mando un error
+            if($id){
+
+                //ubico el id en la bd
+                //$evento = Evento::find($evento);
+
+               /* $envio = new Envio;
+                $envio->Evento = $input['evento'];
+                $envio->Tipo = $title;
+                $envio->Estado = $estado;
+                $envio->Inicio = $inicio;
+                $envio->Fin = $fin;
+                $envio->Parametro = $parametro;*/
+                $envio = Envio::find($id);
+                
+
+                if($envio&&$envio->delete()){
+                    $envios = Envio::get();
+                    return json_encode(['code' => 200,'envios'=>$envios]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        }
+
+    }
+
 }

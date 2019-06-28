@@ -27,4 +27,14 @@ Route::group(['prefix' => 'usuarios'], function() {
 
 Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
+    Route::post('/envios', 'EventoController@getEnvios');
+    Route::post('/remove-envios', 'EventoController@quitarEnvios');
+});
+
+
+
+Route::group(['prefix' => 'multimedia'], function() {
+    //rutas de multimedia
+    Route::post('/action-tool', 'MultimediaController@actionTool');
+    Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 });

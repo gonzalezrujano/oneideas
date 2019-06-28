@@ -81,7 +81,7 @@ class MultimediaController extends Controller
     }
 
     //metodo para activar la accion de las herramientas
-    public function ajaxActionTool(Request $request){
+    public function actionTool(Request $request){
 
         $input = $request->all();
 
