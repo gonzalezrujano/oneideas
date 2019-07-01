@@ -36,5 +36,5 @@ Route::group(['prefix' => 'eventos'], function() {
 Route::group(['prefix' => 'multimedia'], function() {
     //rutas de multimedia
     Route::post('/action-tool', 'MultimediaController@actionTool');
-    Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
+    //Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 });

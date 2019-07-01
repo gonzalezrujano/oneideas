@@ -1,53 +1,62 @@
-import React from 'react';
+import React from "react";
 
-const Ejecucion = (props) => {
+import "./css/Ejecucion.css";
 
+const Ejecucion = props => {
     return (
-
         <div>
-
             <table className="table table-dark-theme-console fixed_header">
                 <thead>
-                <tr>
-                    <th>Ejecutando</th>
-                    <th>Inicio</th>
-                    <th>Fin</th>
-                    <th>Sectores</th>
-                    <th>Parametros</th>
-                    <th>Accion</th>
-                </tr>
+                    <tr className="titulos-tabla">
+                        <th>Ejecutando</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Sectores</th>
+                        <th>Parametros</th>
+                        <th>Accion</th>
+                    </tr>
                 </thead>
                 <tbody>
-               {
-                                                props.envios.map( (e, index) => {
-                                                    if(e.Estado!='ejecucion'){
-                                                        return false;
-                                                    }
-                                                    var evento=props.evento.split("_")[0];
-                                                    if(e.Evento!=evento){
-                                                        return false;
-                                                    }
-                                                    return <tr key={index} id={e._id}>
-                    <td>{e.Tipo}</td>
-                     <td>{e.Inicio}</td>
-                    <td>{e.Fin}</td>
-                    <td>Grada, Campo</td>
-                    <td>{e.Parametro}</td>
-                    <td><i className="fa fa-trash" style={{'cursor': 'pointer'}}  onClick={(ev) => props.sincola('ejecucion',e.Tipo,e.inicio,e.fin,e._id)}></i></td>
-                </tr>
-                                                })
-                                            }
+                    {props.envios.map((e, index) => {
+                        if (e.Estado != "ejecucion") {
+                            return false;
+                        }
+                        var evento = props.evento.split("_")[0];
+                        if (e.Evento != evento) {
+                            return false;
+                        }
+                        return (
+                            <tr key={index} id={e._id}>
+                                <td>{e.Tipo}</td>
+                                <td>{e.Inicio}</td>
+                                <td>{e.Fin}</td>
+                                <td>Grada, Campo</td>
+                                <td>{e.Parametro}</td>
+                                <td>
+                                    <i
+                                        className="fa fa-trash"
+                                        style={{ cursor: "pointer" }}
+                                        onClick={ev =>
+                                            props.sincola(
+                                                "ejecucion",
+                                                e.Tipo,
+                                                e.inicio,
+                                                e.fin,
+                                                e._id
+                                            )
+                                        }
+                                    />
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
-
         </div>
-
     );
-
 };
 
 export default Ejecucion;
-
 
 /*
  <tr>

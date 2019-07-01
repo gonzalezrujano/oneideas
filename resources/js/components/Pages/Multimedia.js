@@ -641,7 +641,8 @@ export default class Multimedia extends Component {
                                         <EmptyMultimedia/>
                                     ):(
                                         <div>
-
+                                            {console.log(this.state.envios)}
+                                            {console.log(this.state.evento)}
                                         <Ejecucion envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)} />
 
                                         <Cola envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)}/>

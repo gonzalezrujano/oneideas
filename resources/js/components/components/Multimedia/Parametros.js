@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import reactMobileDatePicker from 'react-mobile-datepicker';
 import InputColor from 'react-input-color';
+
+import "./css/Parametros.css";
+
 const Datepicker = reactMobileDatePicker;
 const dateConfig = {
      'hour': {
@@ -58,7 +61,7 @@ const Parametros = (props) => {
 
                     <div>
 
-                        <div className="text-left mb-4 mt-4"><h5 className="font-weight-bold text-capitalize">{title}</h5></div>
+                        <div className="text-left mb-4 mt-4"><h2 className="font-weight-bold text-capitalize">{title}</h2></div>
 
                         {title == 'video' ?
 
@@ -68,7 +71,7 @@ const Parametros = (props) => {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Archivo</label>
                                             <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change}>
                                                 <option value="">Seleccione</option>
@@ -80,10 +83,10 @@ const Parametros = (props) => {
                                             </select>
                                         </div>
 
-                                         <div className="col-md-3 mb-3">
+                                         <div className="col-md-3 mb-4">
                                             <label>Hora Inicio </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
                                              {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
                                         </a>
@@ -103,10 +106,10 @@ const Parametros = (props) => {
                                         />
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Hora Fin </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
                                         </a>
@@ -128,7 +131,7 @@ const Parametros = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Sector</label>
                                             <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
                                                 <option value="">Seleccione</option>
@@ -160,9 +163,8 @@ const Parametros = (props) => {
 
                                 <form>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-3">
+                                    <div className="form-row mb-4">
+                                            <div className="col">
                                             <label>Archivo</label>
                                             <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change}>
                                                 <option value="">Seleccione</option>
@@ -172,57 +174,9 @@ const Parametros = (props) => {
                                                     })
                                                 }
                                             </select>
-                                        </div>
+                                            </div>
 
-                                         <div className="col-md-3 mb-3">
-                                            <label>Hora Inicio </label>
-                                            <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
-                                            onClick={props.handleThemeToggle}>
-                                             {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
-                                        </a>
-                                        <Datepicker
-                                        showCaption={true}
-                                        showHeader={true}
-                                        headerFormat={'hh:mm:ss'}
-                                        value={new Date()}
-                                        theme="default"
-                                        isOpen={props.isOpenHora}
-                                        onSelect={props.handleSelect}
-                                        onCancel={(e) => props.handleToggle(false)} 
-                                        confirmText="Seleccionar"
-                                        cancelText="Cancelar"
-                                        max={maxDate}
-                                        dateConfig={dateConfig}
-                                        />
-                                        </div>
-
-                                        <div className="col-md-3 mb-3">
-                                            <label>Hora Fin </label>
-                                            <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
-                                            onClick={props.handleThemeToggle2}>
-                                            {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
-                                        </a>
-                                        <Datepicker
-                                        showCaption={true}
-                                        showHeader={true}
-                                        headerFormat={'hh:mm:ss'}
-                                        value={new Date()}
-                                        theme="default"
-                                        isOpen={props.isOpenHora2}
-                                        onSelect={props.handleSelect2}
-                                        onCancel={(e) => props.handleToggle2(false)} 
-                                        confirmText="Seleccionar"
-                                        cancelText="Cancelar"
-                                        max={maxDate}
-                                        dateConfig={dateConfig}
-                                        />
-                                            
-                                        </div>
-
-
-                                        <div className="col-md-3 mb-3">
+                                            <div className="col">
                                             <label>Sector</label>
                                             <select className="form-control form-control-sm">
                                                 <option value="">Seleccione</option>
@@ -232,10 +186,58 @@ const Parametros = (props) => {
                                                     })
                                                 }
                                             </select>
-                                        </div>
-
+                                            </div>
+                                            
 
                                     </div>
+
+                                    <div className="form-row mb-4">
+                                        <div className="col">
+                                                        <label className="label-inicio">Hora Inicio </label>
+                                                        <a
+                                                            className="select-btn sm boton-hora" 
+                                                            onClick={props.handleThemeToggle}>
+                                                            {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
+                                                        </a>
+                                                        <Datepicker
+                                                        showCaption={true}
+                                                        showHeader={true}
+                                                        headerFormat={'hh:mm:ss'}
+                                                        value={new Date()}
+                                                        theme="default"
+                                                        isOpen={props.isOpenHora}
+                                                        onSelect={props.handleSelect}
+                                                        onCancel={(e) => props.handleToggle(false)} 
+                                                        confirmText="Seleccionar"
+                                                        cancelText="Cancelar"
+                                                        max={maxDate}
+                                                        dateConfig={dateConfig}
+                                                        />
+                                                    </div>
+                                        <div className="col">
+                                                <label className="label-fin">Hora Fin </label>
+                                                <a
+                                                className="select-btn sm boton-hora" 
+                                                onClick={props.handleThemeToggle2}>
+                                                {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
+                                                </a>
+                                                <Datepicker
+                                                showCaption={true}
+                                                showHeader={true}
+                                                headerFormat={'hh:mm:ss'}
+                                                value={new Date()}
+                                                theme="default"
+                                                isOpen={props.isOpenHora2}
+                                                onSelect={props.handleSelect2}
+                                                onCancel={(e) => props.handleToggle2(false)} 
+                                                confirmText="Seleccionar"
+                                                cancelText="Cancelar"
+                                                max={maxDate}
+                                                dateConfig={dateConfig}
+                                                />
+                                                </div>
+                                    </div> 
+                        
 
                                    
 
@@ -256,7 +258,7 @@ const Parametros = (props) => {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Archivo</label>
                                             <select className="form-control form-control-sm"  name="archivo"  value={archivo} onChange={props.change} >
                                                 <option value="">Seleccione</option>
@@ -268,10 +270,10 @@ const Parametros = (props) => {
                                             </select>
                                         </div>
 
-                                         <div className="col-md-3 mb-3">
+                                         <div className="col-md-3 mb-4">
                                             <label>Hora Inicio </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
                                              {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
                                         </a>
@@ -291,10 +293,10 @@ const Parametros = (props) => {
                                         />
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Hora Fin </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
                                         </a>
@@ -316,7 +318,7 @@ const Parametros = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Sector</label>
                                             <select className="form-control form-control-sm">
                                                 <option value="">Seleccione</option>
@@ -351,7 +353,7 @@ const Parametros = (props) => {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Estado</label>
                                             <select className="form-control form-control-sm" name="flash2" value={flash2} onChange={props.change}>
                                                 <option key="flas1" value="">Seleccione</option>
@@ -361,10 +363,10 @@ const Parametros = (props) => {
                                             </select>
                                         </div>
 
-                                         <div className="col-md-3 mb-3">
+                                         <div className="col-md-3 mb-4">
                                             <label>Hora Inicio </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
                                              {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
                                         </a>
@@ -384,10 +386,10 @@ const Parametros = (props) => {
                                         />
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Hora Fin </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
                                         </a>
@@ -409,7 +411,7 @@ const Parametros = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Sector</label>
                                             <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
                                                 <option value="">Seleccione</option>
@@ -443,10 +445,10 @@ const Parametros = (props) => {
                                     <div className="form-row">
 
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Hora Inicio </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
                                              {props.hora==''?'Ingrese (Opcional)':props.hora.getHours()+':'+props.hora.getMinutes() +':'+props.hora.getSeconds()}
                                         </a>
@@ -466,10 +468,10 @@ const Parametros = (props) => {
                                         />
                                         </div>
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Hora Fin </label>
                                             <a
-                                            className="select-btn sm" style={{'border': '1px solid #fff','padding-top': '0.5rem','padding-bottom': '0.5rem','width': '88%','color': '#dadada'}}
+                                            className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
                                         </a>
@@ -491,7 +493,7 @@ const Parametros = (props) => {
                                         </div>
 
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Sector</label>
                                             <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
                                                 <option value="">Seleccione</option>
@@ -508,7 +510,7 @@ const Parametros = (props) => {
 
                                     <div className="form-row">
 
-                                        <div className="col-md-3 mb-3">
+                                        <div className="col-md-3 mb-4">
                                             <label>Parametro color </label>
                                              <InputColor
                                                             initialHexColor="#5e72e4"
@@ -532,7 +534,7 @@ const Parametros = (props) => {
 
 
 
-                        <div className="text-center mb-4">
+                        <div className="offset-3 mb-4">
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e)=> props.enviar(fechainicio,fechafin)}>Inmediata</button>
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.enviar('audio')}>Proxima</button>
                             <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.cola('cola',fechainicio,fechafin)}>En cola</button>
