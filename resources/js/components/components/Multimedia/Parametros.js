@@ -69,10 +69,9 @@ const Parametros = (props) => {
 
                                 <form>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Archivo</label>
+                                    <div className="form-row mb-4">
+                                        <div className="col">
+                                        <label>Archivo</label>
                                             <select className="form-control form-control-sm" name="archivo" value={archivo} onChange={props.change}>
                                                 <option value="">Seleccione</option>
                                                 {
@@ -82,9 +81,23 @@ const Parametros = (props) => {
                                                 }
                                             </select>
                                         </div>
+                                        <div className="col">
+                                        <label>Sector</label>
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                         <div className="col-md-3 mb-4">
-                                            <label>Hora Inicio </label>
+                                    <div className="form-row mb-4">
+
+                                        <div className="col">
+                                        <label className="label-inicio">Hora Inicio </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
@@ -106,47 +119,31 @@ const Parametros = (props) => {
                                         />
                                         </div>
 
-                                        <div className="col-md-3 mb-4">
-                                            <label>Hora Fin </label>
+                                        <div className="col">
+                                            <label className="label-fin">Hora Fin </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
                                             {props.hora2==''?'Ingrese (Opcional)':props.hora2.getHours()+':'+props.hora2.getMinutes() +':'+props.hora2.getSeconds()}
-                                        </a>
-                                        <Datepicker
-                                        showCaption={true}
-                                        showHeader={true}
-                                        headerFormat={'hh:mm:ss'}
-                                        value={new Date()}
-                                        theme="default"
-                                        isOpen={props.isOpenHora2}
-                                        onSelect={props.handleSelect2}
-                                        onCancel={(e) => props.handleToggle2(false)} 
-                                        confirmText="Seleccionar"
-                                        cancelText="Cancelar"
-                                        max={maxDate}
-                                        dateConfig={dateConfig}
-                                        />
-                                            
+                                            </a>
+                                            <Datepicker
+                                            showCaption={true}
+                                            showHeader={true}
+                                            headerFormat={'hh:mm:ss'}
+                                            value={new Date()}
+                                            theme="default"
+                                            isOpen={props.isOpenHora2}
+                                            onSelect={props.handleSelect2}
+                                            onCancel={(e) => props.handleToggle2(false)} 
+                                            confirmText="Seleccionar"
+                                            cancelText="Cancelar"
+                                            max={maxDate}
+                                            dateConfig={dateConfig}
+                                            />
                                         </div>
-
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Sector</label>
-                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
-                                                <option value="">Seleccione</option>
-                                                {
-                                                    sectores.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-
-
                                     </div>
 
-                                 
+
 
                                 </form>
 
@@ -188,7 +185,6 @@ const Parametros = (props) => {
                                             </select>
                                             </div>
                                             
-
                                     </div>
 
                                     <div className="form-row mb-4">
@@ -239,8 +235,6 @@ const Parametros = (props) => {
                                     </div> 
                         
 
-                                   
-
                                 </form>
 
 
@@ -256,9 +250,9 @@ const Parametros = (props) => {
 
                                 <form>
 
-                                    <div className="form-row">
+                                    <div className="form-row mb-4">
 
-                                        <div className="col-md-3 mb-4">
+                                        <div className="col">
                                             <label>Archivo</label>
                                             <select className="form-control form-control-sm"  name="archivo"  value={archivo} onChange={props.change} >
                                                 <option value="">Seleccione</option>
@@ -269,9 +263,23 @@ const Parametros = (props) => {
                                                 }
                                             </select>
                                         </div>
+                                        <div className="col">
+                                            <label>Sector</label>
+                                            <select className="form-control form-control-sm">
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
 
-                                         <div className="col-md-3 mb-4">
-                                            <label>Hora Inicio </label>
+                                    </div>
+
+                                    <div className="form-row mb-4">
+                                         <div className="col">
+                                         <label className="label-inicio">Hora Inicio </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
@@ -291,10 +299,10 @@ const Parametros = (props) => {
                                         max={maxDate}
                                         dateConfig={dateConfig}
                                         />
-                                        </div>
+                                         </div>
 
-                                        <div className="col-md-3 mb-4">
-                                            <label>Hora Fin </label>
+                                         <div className="col">
+                                         <label className="label-fin">Hora Fin </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
@@ -314,26 +322,8 @@ const Parametros = (props) => {
                                         max={maxDate}
                                         dateConfig={dateConfig}
                                         />
-                                            
-                                        </div>
-
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Sector</label>
-                                            <select className="form-control form-control-sm">
-                                                <option value="">Seleccione</option>
-                                                {
-                                                    sectores.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-
-
+                                         </div>
                                     </div>
-
-                                   
 
                                 </form>
 
@@ -352,9 +342,8 @@ const Parametros = (props) => {
                                 <form>
 
                                     <div className="form-row">
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Estado</label>
+                                        <div className="col">
+                                        <label>Estado</label>
                                             <select className="form-control form-control-sm" name="flash2" value={flash2} onChange={props.change}>
                                                 <option key="flas1" value="">Seleccione</option>
                                                 
@@ -363,8 +352,22 @@ const Parametros = (props) => {
                                             </select>
                                         </div>
 
-                                         <div className="col-md-3 mb-4">
-                                            <label>Hora Inicio </label>
+                                        <div className="col">
+                                        <label>Sector</label>
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>   
+                                        </div>
+                                    </div>
+
+                                    <div className="form-row">
+                                        <div className="col">
+                                        <label className="label-inicio">Hora Inicio </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
@@ -385,9 +388,8 @@ const Parametros = (props) => {
                                         dateConfig={dateConfig}
                                         />
                                         </div>
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Hora Fin </label>
+                                        <div className="col">
+                                        <label className="label-fin">Hora Fin </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
@@ -407,28 +409,10 @@ const Parametros = (props) => {
                                         max={maxDate}
                                         dateConfig={dateConfig}
                                         />
-                                            
                                         </div>
-
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Sector</label>
-                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
-                                                <option value="">Seleccione</option>
-                                                {
-                                                    sectores.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-
-
                                     </div>
 
-
                                 </form>
-
 
                             </div>
 
@@ -446,7 +430,7 @@ const Parametros = (props) => {
 
 
                                         <div className="col-md-3 mb-4">
-                                            <label>Hora Inicio </label>
+                                            <label className="label-inicio">Hora Inicio </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle}>
@@ -469,7 +453,7 @@ const Parametros = (props) => {
                                         </div>
 
                                         <div className="col-md-3 mb-4">
-                                            <label>Hora Fin </label>
+                                            <label className="label-fin">H>Hora Fin </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>

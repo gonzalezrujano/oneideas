@@ -110184,9 +110184,9 @@ var Parametros = function Parametros(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
     className: "font-weight-bold text-capitalize"
   }, title)), title == 'video' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "form-row"
+    className: "form-row mb-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
+    className: "col"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
     name: "archivo",
@@ -110200,8 +110200,26 @@ var Parametros = function Parametros(props) {
       value: p.NombreCompleto
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm",
+    name: "sector",
+    value: sector,
+    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row mb-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-inicio"
+  }, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110220,8 +110238,10 @@ var Parametros = function Parametros(props) {
     max: maxDate,
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-fin"
+  }, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle2
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110239,21 +110259,7 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: maxDate,
     dateConfig: dateConfig
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm",
-    name: "sector",
-    value: sector,
-    onChange: props.change
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: ""
-  }, "Seleccione"), sectores.map(function (p, index) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      key: index,
-      value: p._id
-    }, p.Nombre);
-  })))))) : '', title == 'audio' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }))))) : '', title == 'audio' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row mb-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col"
@@ -110327,9 +110333,9 @@ var Parametros = function Parametros(props) {
     max: maxDate,
     dateConfig: dateConfig
   }))))) : '', title == 'imagen' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "form-row"
+    className: "form-row mb-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
+    className: "col"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Archivo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
     name: "archivo",
@@ -110343,8 +110349,23 @@ var Parametros = function Parametros(props) {
       value: p.NombreCompleto
     }, p.NombreCompleto);
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row mb-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-inicio"
+  }, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110363,8 +110384,10 @@ var Parametros = function Parametros(props) {
     max: maxDate,
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-fin"
+  }, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle2
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110382,21 +110405,10 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: maxDate,
     dateConfig: dateConfig
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: ""
-  }, "Seleccione"), sectores.map(function (p, index) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      key: index,
-      value: p._id
-    }, p.Nombre);
-  })))))) : '', title == 'flash' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }))))) : '', title == 'flash' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
+    className: "col"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Estado"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control form-control-sm",
     name: "flash2",
@@ -110412,8 +110424,26 @@ var Parametros = function Parametros(props) {
     key: "flas3",
     value: "1"
   }, "Encender"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control form-control-sm",
+    name: "sector",
+    value: sector,
+    onChange: props.change
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    value: ""
+  }, "Seleccione"), sectores.map(function (p, index) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: index,
+      value: p._id
+    }, p.Nombre);
+  })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "form-row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-inicio"
+  }, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110432,8 +110462,10 @@ var Parametros = function Parametros(props) {
     max: maxDate,
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    className: "col"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-fin"
+  }, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle2
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110451,25 +110483,13 @@ var Parametros = function Parametros(props) {
     cancelText: "Cancelar",
     max: maxDate,
     dateConfig: dateConfig
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Sector"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
-    className: "form-control form-control-sm",
-    name: "sector",
-    value: sector,
-    onChange: props.change
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-    value: ""
-  }, "Seleccione"), sectores.map(function (p, index) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-      key: index,
-      value: p._id
-    }, p.Nombre);
-  })))))) : '', title == 'colores' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }))))) : '', title == 'colores' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "form-row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-inicio"
+  }, "Hora Inicio "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle
   }, props.hora == '' ? 'Ingrese (Opcional)' : props.hora.getHours() + ':' + props.hora.getMinutes() + ':' + props.hora.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
@@ -110489,7 +110509,9 @@ var Parametros = function Parametros(props) {
     dateConfig: dateConfig
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-md-3 mb-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "label-fin"
+  }, "H>Hora Fin "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     className: "select-btn sm boton-hora",
     onClick: props.handleThemeToggle2
   }, props.hora2 == '' ? 'Ingrese (Opcional)' : props.hora2.getHours() + ':' + props.hora2.getMinutes() + ':' + props.hora2.getSeconds()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Datepicker, {
