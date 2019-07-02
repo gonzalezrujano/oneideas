@@ -38,3 +38,8 @@ Route::group(['prefix' => 'multimedia'], function() {
     Route::post('/action-tool', 'MultimediaController@actionTool');
     //Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 });
+
+Route::group(['prefix' => 'empresas'], function() {
+    //rutas de empresas
+    Route::get('/', 'EmpresaController@getEmpresas');
+});

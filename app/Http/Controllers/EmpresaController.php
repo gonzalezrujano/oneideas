@@ -324,4 +324,15 @@ class EmpresaController extends Controller
 
     }
 
+    /**
+     * metodo para retornar todas las empresas
+     */
+    public function getEmpresas(){
+        $empresas = Empresa::borrado(false)->get();
+        //devuelvo un json con la data
+        return response()->json([
+            'code' => 200,
+            'empresas' => $empresas
+        ]);
+    }
 }

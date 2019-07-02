@@ -107807,8 +107807,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Biblioteca; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Menu */ "./resources/js/components/components/Menu.js");
-/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Header */ "./resources/js/components/components/Header.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Menu */ "./resources/js/components/components/Menu.js");
+/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Header */ "./resources/js/components/components/Header.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -107831,6 +107833,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var Biblioteca =
 /*#__PURE__*/
 function (_Component) {
@@ -107845,53 +107848,112 @@ function (_Component) {
     _this.state = {
       usuario: JSON.parse(localStorage.getItem("usuario")),
       permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+      empresas: JSON.parse(localStorage.getItem("empresas")),
       opcion: "Biblioteca",
       footer: "Footer",
       user: _this.props.location.state,
-      isLoading: false
+      isLoading: true
     };
     return _this;
   }
 
   _createClass(Biblioteca, [{
+    key: "getEmpresas",
+    value: function getEmpresas() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("api/empresas").then(function (res) {
+        var r = res.data;
+        localStorage.setItem("empresas", JSON.stringify(r.empresas));
+
+        _this2.setState({
+          empresas: r.empresas,
+          isLoading: false
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      console.log(this.state.permisoUsuario);
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_1__["default"], {
-        usuario: this.state.user
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        usuario: this.state.user
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "content-wrapper"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
-        className: "page-header"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-12 col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        className: "page-header-heading"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-tachometer-alt page-header-heading-icon"
-      }), this.state.opcion))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        id: "sweet",
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-lg-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "widget widget-default"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "widget-body"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "alert alert-success",
-        role: "alert"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fas fa-info-circle"
-      }), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Bienvenido"), " a ONE Show Console.")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
-        className: "content-wrapper-footer"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer)))));
+      if (!JSON.parse(localStorage.getItem("empresas"))) {
+        console.log("no esta en local storage");
+        this.getEmpresas();
+      } else {
+        console.log("esta en local storage");
+        this.state.isLoading = false;
+      }
+
+      if (this.state.isLoading) {
+        return "";
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          usuario: this.state.user
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          usuario: this.state.user
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "content-wrapper"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+          className: "page-header"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container-fluid"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-12 col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+          className: "page-header-heading"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fas fa-tachometer-alt page-header-heading-icon"
+        }), this.state.opcion))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          id: "sweet",
+          className: "container-fluid"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-inline mb-3"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+          className: "my-1 mr-2 form-control-sm"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Empresa")), this.state.permisoUsuario.nombre == "ADMINISTRADOR" ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+          className: "form-control form-control-sm my-1 mr-sm-2 col-2",
+          id: "pro-find-empresa",
+          name: "pro-find-empresa"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+          value: ""
+        }, "Todas"), console.log("estoy aqui"), this.state.empresas.map(function (e, index) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+            value: e._id,
+            key: index
+          }, e.Nombre);
+        })) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+          className: "form-control form-control-sm my-1 mr-sm-2 col-2",
+          id: "pro-find-empresa",
+          name: "pro-find-empresa",
+          disabled: true
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          id: "p-buscar",
+          className: "btn btn-dark btn-sm mr-1",
+          "data-toggle": "tooltip",
+          "data-placement": "top",
+          title: "Buscar"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-search",
+          "aria-hidden": "true"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          id: "p-limpiar",
+          className: "btn btn-dark btn-sm mr-1",
+          "data-toggle": "tooltip",
+          "data-placement": "top",
+          title: "Limpiar Busqueda"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-trash",
+          "aria-hidden": "true"
+        }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+          className: "table table-hover table-condensed table-dark-theme table-responsive-sm",
+          id: "dt-eventos"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "EMPRESA"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "EVENTO"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "FECHA"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "APP"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "ARCHIVOS"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+          className: "text-center"
+        }, "ACCIONES"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+          className: "content-wrapper-footer"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer))));
+      }
     }
   }]);
 
