@@ -107795,6 +107795,113 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Pages/configuracion/Biblioteca.js":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Pages/configuracion/Biblioteca.js ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Biblioteca; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Menu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Menu */ "./resources/js/components/components/Menu.js");
+/* harmony import */ var _components_Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Header */ "./resources/js/components/components/Header.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+var Biblioteca =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Biblioteca, _Component);
+
+  function Biblioteca(props) {
+    var _this;
+
+    _classCallCheck(this, Biblioteca);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Biblioteca).call(this, props));
+    _this.state = {
+      usuario: JSON.parse(localStorage.getItem("usuario")),
+      permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+      opcion: "Biblioteca",
+      footer: "Footer",
+      user: _this.props.location.state,
+      isLoading: false
+    };
+    return _this;
+  }
+
+  _createClass(Biblioteca, [{
+    key: "render",
+    value: function render() {
+      console.log(this.state.permisoUsuario);
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Menu__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        usuario: this.state.user
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Header__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        usuario: this.state.user
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "content-wrapper"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
+        className: "page-header"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-sm-12 col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+        className: "page-header-heading"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-tachometer-alt page-header-heading-icon"
+      }), this.state.opcion))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "sweet",
+        className: "container-fluid"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-lg-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget widget-default"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "widget-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-success",
+        role: "alert"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-info-circle"
+      }), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Bienvenido"), " a ONE Show Console.")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+        className: "content-wrapper-footer"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, this.state.footer)))));
+    }
+  }]);
+
+  return Biblioteca;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/components/App.js":
 /*!***************************************************!*\
   !*** ./resources/js/components/components/App.js ***!
@@ -107810,12 +107917,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Pages/Login */ "./resources/js/components/Pages/Login.js");
 /* harmony import */ var _Pages_Welcome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Pages/Welcome */ "./resources/js/components/Pages/Welcome.js");
 /* harmony import */ var _Pages_Multimedia__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Pages/Multimedia */ "./resources/js/components/Pages/Multimedia.js");
+/* harmony import */ var _Pages_configuracion_Biblioteca__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Pages/configuracion/Biblioteca */ "./resources/js/components/Pages/configuracion/Biblioteca.js");
 
 
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
  */
+
 
 
 
@@ -107834,6 +107943,10 @@ function App() {
     exact: true,
     path: "/multimedia",
     component: _Pages_Multimedia__WEBPACK_IMPORTED_MODULE_4__["default"]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    exact: true,
+    path: "/configuracion/biblioteca",
+    component: _Pages_configuracion_Biblioteca__WEBPACK_IMPORTED_MODULE_5__["default"]
   })));
 }
 
@@ -108458,8 +108571,8 @@ function (_Component) {
           id: "collapseExample"
         }, permisos.biblioteca.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           className: "sidebar-nav-link"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: "{{ route('configuracion.biblioteca') }}"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: "/configuracion/biblioteca"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-book sidebar-nav-link-logo"
         }), " ", "Biblioteca")) : "", permisos.empresa.includes("show") ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {

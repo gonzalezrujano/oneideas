@@ -213,10 +213,10 @@ export default class Menu extends Component {
                                             "show"
                                         ) ? (
                                             <li className="sidebar-nav-link">
-                                                <a href="{{ route('configuracion.biblioteca') }}">
+                                                <Link to="/configuracion/biblioteca">
                                                     <i className="fas fa-book sidebar-nav-link-logo" />{" "}
                                                     Biblioteca
-                                                </a>
+                                                </Link>
                                             </li>
                                         ) : (
                                             ""

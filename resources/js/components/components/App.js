@@ -8,7 +8,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "../Pages/Login";
 import Welcome from "../Pages/Welcome";
 import Multimedia from "../Pages/Multimedia";
-
+import Biblioteca from "../Pages/configuracion/Biblioteca";
 function App() {
     return (
         <BrowserRouter>
@@ -18,6 +18,11 @@ function App() {
                 <Route exact path="/" component={Login} />
                 <Route exact path="/welcome" component={Welcome} />
                 <Route exact path="/multimedia" component={Multimedia} />
+                <Route
+                    exact
+                    path="/configuracion/biblioteca"
+                    component={Biblioteca}
+                />
             </Switch>
         </BrowserRouter>
     );
