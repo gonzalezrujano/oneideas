@@ -3,6 +3,8 @@ import axios from "axios";
 import Menu from "../../components/Menu";
 import Header from "../../components/Header";
 
+import $ from "jquery";
+
 export default class Biblioteca extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +14,7 @@ export default class Biblioteca extends Component {
             empresas: JSON.parse(localStorage.getItem("empresas")),
             opcion: "Biblioteca",
             footer: "Footer",
+            eventos: [],
             user: this.props.location.state,
             isLoading: true
         };
@@ -20,6 +23,7 @@ export default class Biblioteca extends Component {
     getEmpresas() {
         axios.get("api/empresas").then(res => {
             let r = res.data;
+            console.log(r);
             localStorage.setItem("empresas", JSON.stringify(r.empresas));
             this.setState({
                 empresas: r.empresas,
@@ -28,12 +32,29 @@ export default class Biblioteca extends Component {
         });
     }
 
+    getDataTables() {
+        axios
+            .post("api/biblioteca", {
+                rol: this.state.permisoUsuario.nombre,
+                id: this.state.usuario._id
+            })
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    eventos: res.data
+                });
+            });
+    }
+
     render() {
         if (!JSON.parse(localStorage.getItem("empresas"))) {
             console.log("no esta en local storage");
             this.getEmpresas();
+            this.getDataTables();
         } else {
             console.log("esta en local storage");
+            console.log(this.state.empresas);
+            this.getDataTables();
             this.state.isLoading = false;
         }
 
@@ -134,6 +155,10 @@ export default class Biblioteca extends Component {
                                         </th>
                                     </tr>
                                 </thead>
+
+                                <tbody>
+                                    <tr />
+                                </tbody>
                             </table>
                         </div>
 

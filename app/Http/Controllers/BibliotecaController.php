@@ -80,10 +80,10 @@ class BibliotecaController extends Controller
     //metodo para mandar la data de los eventos al datatables
     public function ajaxDatatables(Request $request){
 
-        //capturo el id de la empresa para buscar los eventos en base a ella
+        //almaceno los valores enviados por ajax
         $input = $request->all();
 
-        //almaceno los valores enviados por ajax
+        //capturo el id de la empresa para buscar los eventos en base a ella
         $empresa   = $input['empresa'];
 
         //guardo el rol del usuario
@@ -275,4 +275,74 @@ class BibliotecaController extends Controller
         }
 
     }
+
+
+
+        //metodo para mandar la data de los eventos al datatables
+        public function getBibliotecasRol(Request $request){
+            //almaceno los valores recibidos de la peticion
+            $input = $request->all();
+            //Guardo el rol del usuario logeado
+            $rol = $input['rol'];
+            //guardo su id independiente de su rol
+            $id = $input['id'];
+            //obtengo el id de empresa si llegan a enviar
+            /*if($input['id_empresa']){
+                $empresa = $input['id_empresa'];
+            }else{
+                $empresa = " ";
+            }*/
+
+            if($rol == 'ADMINISTRADOR'){
+    
+                $eve = Evento::borrado(false);
+    
+                //si contiene la empresa se la agrego al query de busqueda
+               /* if($empresa != " "){
+    
+                    $eve->where(function ($q) use ($empresa){
+                        $q->where('Empresa_id', new ObjectId($empresa) );
+                    });
+                }*/
+    
+            }else if($rol == 'EMPRESA'){
+    
+                $eve = Evento::borrado(false)->where('Empresa_id', new ObjectId($id) );
+    
+            }else if($rol == 'EVENTO'){
+    
+                $eve = Evento::borrado(false)->where('_id', $id );
+    
+            }
+
+            $eventos = [];
+    
+            //extraigo el query con o sin los filtros
+            $ev = $eve->get();
+            //return $ev;
+    
+            //verifico que exista data sino lo devulevo vacio
+            if($ev){
+    
+                foreach ($ev as $e) {
+    
+                    $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($e->_id))->get();
+    
+                    //armo la data que se muestra en la tabla de inicio de la pagina de eventos
+                    $eventos[] = [
+                        '_id'       => $e->_id,
+                        'Empresa'   => Empresa::find($e->Empresa_id)->Nombre,
+                        'Evento'    => strtoupper($e->Nombre),
+                        'IDEvento'  => $e->IDEvento,
+                        'Fecha'     => $e->Fecha. ' '.$e->Hora,
+                        'App'       => $e->App,
+                        'Archivos'  => count($files)
+                    ];
+                }
+    
+            }
+
+            return $eventos;
+
+        }
 }

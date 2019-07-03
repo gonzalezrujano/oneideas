@@ -43,3 +43,9 @@ Route::group(['prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
 });
+
+Route::group(['prefix' => 'biblioteca'], function() {
+    //rutas de empresas
+    Route::post('/', 'BibliotecaController@getBibliotecasRol');
+});
+
