@@ -29,6 +29,7 @@ Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
     Route::post('/remove-envios', 'EventoController@quitarEnvios');
+    Route::get('/{id}', 'EventoController@getEvento');
 });
 
 
@@ -48,6 +49,7 @@ Route::group(['prefix' => 'biblioteca'], function() {
     //rutas de empresas
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
 });
+
 
 Route::group(['prefix' => 'agendas'], function() {
     // Endpoints de agendas

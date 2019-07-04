@@ -213,7 +213,7 @@ export default class Menu extends Component {
                                             "show"
                                         ) ? (
                                             <li className="sidebar-nav-link">
-                                                <Link to="/configuracion/biblioteca">
+                                                <Link to="/biblioteca">
                                                     <i className="fas fa-book sidebar-nav-link-logo" />{" "}
                                                     Biblioteca
                                                 </Link>

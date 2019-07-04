@@ -8,7 +8,9 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "../Pages/Login";
 import Welcome from "../Pages/Welcome";
 import Multimedia from "../Pages/Multimedia";
-import Biblioteca from "../Pages/configuracion/Biblioteca";
+import Biblioteca from "../Pages/configuracion/Biblioteca/Biblioteca";
+import ViewEventoBiblioteca from "../Pages/configuracion/Biblioteca/Show";
+
 function App() {
     return (
         <BrowserRouter>
@@ -18,10 +20,11 @@ function App() {
                 <Route exact path="/" component={Login} />
                 <Route exact path="/welcome" component={Welcome} />
                 <Route exact path="/multimedia" component={Multimedia} />
+                <Route exact path="/biblioteca" component={Biblioteca} />
                 <Route
                     exact
-                    path="/configuracion/biblioteca"
-                    component={Biblioteca}
+                    path="/biblioteca/evento/:id"
+                    component={ViewEventoBiblioteca}
                 />
             </Switch>
         </BrowserRouter>
