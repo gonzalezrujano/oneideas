@@ -215,7 +215,7 @@ class AgendaController extends Controller
     }
 
     // Custom functions 
-    public function get_events (Request $request) {
+    public function getEvents (Request $request) {
         $data = $request->all();
         $id_empresa = $data['id_empresa'];
         $events = Evento::where('Empresa_id', new ObjectID($id_empresa))->get();

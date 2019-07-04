@@ -49,3 +49,14 @@ Route::group(['prefix' => 'biblioteca'], function() {
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
 });
 
+Route::group(['prefix' => 'agendas'], function() {
+    // Endpoints de agendas
+    Route::post('/add', 'AgendaController@ajaxAdd');
+    Route::post('/datatables', 'AgendaController@ajaxDatatables');
+    Route::get('/{id}', 'AgendaController@viewShow');
+    Route::post('/update', 'AgendaController@ajaxUpdate');
+    Route::post('/delete', 'AgendaController@ajaxDelete');
+    Route::post('/events', 'AgendaController@get_events');
+    Route::post('/datatable-get-agendas/{id}/{fecha}', 'AgendaController@datatable_get_agendas');
+
+});
