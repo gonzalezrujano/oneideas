@@ -689,4 +689,10 @@ class EventoController extends Controller
 
     }
 
+    public function getEvento($id){
+        $registro = Evento::find($id);
+
+        return json_encode(['code' => 200,'evento'=>$registro]);
+    }
+
 }

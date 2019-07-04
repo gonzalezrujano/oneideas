@@ -49,3 +49,8 @@ Route::group(['prefix' => 'biblioteca'], function() {
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
 });
 
+Route::group(['prefix' => 'eventos'], function() {
+    //rutas de eventos
+    Route::get('/{id}', 'EventoController@getEvento');
+});
+
