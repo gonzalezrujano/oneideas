@@ -18,6 +18,7 @@
 
                     <table class="table table-hover table-condensed table-dark-theme table-responsive-sm" id="dt-files">
                         <thead>
+                        
                         <tr>
                             <th>NOMBRE</th>
                             <!--<th>TIPO</th>-->
@@ -143,7 +144,7 @@
 
                             if(rs.code === 200) {
                                 sweetalert("Item eliminado correctamente", "success", "sweet");
-                                $('#dt-files').DataTable().ajax.reload();
+                                $('#'+id).remove();
                             }else if(rs.code === 600){
                                 sweetalert("Error en el Proceso de Eliminacion. Consulte al Administrador", "error", "sweet");
                             }else if(rs.code == 500){

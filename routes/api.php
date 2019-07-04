@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::group(['prefix' => 'usuarios'], function() {
     Route::post('/login', 'LoginController@login');
     Route::get('/{id}', 'UsuarioController@getUsuario');
@@ -24,13 +25,11 @@ Route::group(['prefix' => 'usuarios'], function() {
 });
 
 
-
 Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
     Route::post('/remove-envios', 'EventoController@quitarEnvios');
 });
-
 
 
 Route::group(['prefix' => 'multimedia'], function() {
@@ -47,6 +46,8 @@ Route::group(['prefix' => 'empresas'], function() {
 Route::group(['prefix' => 'biblioteca'], function() {
     //rutas de empresas
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
+    Route::post('/evento/files', 'BibliotecaController@getFilesEvento');
+    Route::post('/evento/files/delete', 'BibliotecaController@deleteFile');
 });
 
 Route::group(['prefix' => 'eventos'], function() {

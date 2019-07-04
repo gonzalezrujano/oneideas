@@ -11,9 +11,13 @@ export default class Show extends React.Component {
         super();
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
+            permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+            eventos: JSON.parse(localStorage.getItem("eventos")),
             evento: null,
+            archivos: [],
             isLoading: true
         };
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
     componentDidMount() {
@@ -21,20 +25,113 @@ export default class Show extends React.Component {
         let idEvento = this.props.match.params.id;
 
         axios.get(`api/eventos/${idEvento}`).then(res => {
-            console.log(res);
             let r = res.data;
             this.setState(() => ({
-                evento: r.evento
+                evento: r.evento,
+                isLoading: false
             }));
+            axios
+                .post("api/biblioteca/evento/files", { evento: idEvento })
+                .then(res => {
+                    if (res.status == "200") {
+                        this.setState({
+                            archivos: res.data.archivos,
+                            isLoading: false
+                        });
+                    } else if (res.status == "600") {
+                        this.setState({
+                            archivos: [],
+                            isLoading: false
+                        });
+                    }
+                });
         });
+    }
 
-        axios.get();
+    handleDelete(id) {
+        console.log("estoy aqui " + id);
+        Swal.fire({
+            text: "¿Está seguro que desea borrar el archivo?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#343a40",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            target: document.getElementById("sweet")
+        }).then(result => {
+            if (result.value) {
+                axios
+                    .post("/api/biblioteca/evento/files/delete", {
+                        id
+                    })
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.code === 200) {
+                            sweetalert(
+                                "Item eliminado correctamente",
+                                "success",
+                                "sweet"
+                            );
+                            $("#" + id).remove();
+                            for (
+                                let i = 0;
+                                i < this.state.eventos.length;
+                                i++
+                            ) {
+                                if (this.state.eventos[i]._id == id) {
+                                    this.state.eventos[i].Archivos--;
+                                    localStorage.setItem(
+                                        "eventos",
+                                        JSON.stringify(this.state.eventos)
+                                    );
+                                }
+                            }
+                        } else if (res.data.code === 600) {
+                            sweetalert(
+                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (res.data.code == 500) {
+                            sweetalert(
+                                "Error al Eliminar. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
+            }
+        });
     }
 
     render() {
         if (this.state.isLoading) {
-            return "";
+            return (
+                <div>
+                    <Menu usuario={this.state.user} />
+                    <Header usuario={this.state.user} />
+                    <div className="content-wrapper">
+                        <header className="page-header">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-12">
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-book page-header-heading-icon" />
+                                            &nbsp;
+                                            <Link to="/biblioteca">
+                                                Biblioteca
+                                            </Link>{" "}
+                                            / Ver Archivos
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+            );
         } else {
+            console.log(this.state);
             return (
                 <div>
                     <Menu usuario={this.state.user} />
@@ -60,20 +157,117 @@ export default class Show extends React.Component {
                         <div id="sweet" className="container-fluid">
                             {this.state.evento != null ? (
                                 <table
-                                    class="table table-hover table-condensed table-dark-theme table-responsive-sm"
+                                    className="table table-hover table-condensed table-dark-theme table-responsive-sm"
                                     id="dt-files"
                                 >
                                     <thead>
-                                        <tr>
-                                            <th>NOMBRE</th>
-                                            {/*<th>TIPO</th>-*/}
-                                            <th>TAMAÑO</th>
-                                            <th>CATEGORIA</th>
-                                            <th class="text-center">
+                                        {console.log(
+                                            this.state.permisoUsuario.permisos
+                                                .biblioteca
+                                        )}
+                                        {this.state.permisoUsuario.permisos.biblioteca.includes(
+                                            "add"
+                                        ) ? (
+                                            <tr>
+                                                <td>
+                                                    <Link
+                                                        to="/"
+                                                        className="btn-sm btn-dark button-add p-2"
+                                                    >
+                                                        Agregar Archivo
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            <tr>
+                                                <td>
+                                                    <Link
+                                                        to="/"
+                                                        className="btn-sm btn-dark button-add p-2"
+                                                        disabled
+                                                    >
+                                                        Agregar Archivo
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        )}
+
+                                        <tr className="fila-head">
+                                            <th className="text-center">
+                                                NOMBRE
+                                            </th>
+                                            {/*<th className="text-cent">TIPO</th>-*/}
+                                            <th className="text-center">
+                                                TAMAÑO
+                                            </th>
+                                            <th className="text-center">
+                                                CATEGORIA
+                                            </th>
+                                            <th className="text-center">
                                                 ACCIONES
                                             </th>
                                         </tr>
                                     </thead>
+                                    {this.state.archivos.length > 0 ? (
+                                        <tbody>
+                                            {this.state.archivos.map(
+                                                (e, index) => {
+                                                    return (
+                                                        <tr
+                                                            key={index}
+                                                            id={e._id}
+                                                        >
+                                                            <td className="text-center">
+                                                                {e.Nombre}
+                                                            </td>
+                                                            <td className="text-center">
+                                                                {e.Size}
+                                                            </td>
+                                                            <td className="text-center">
+                                                                {e.Categoria}
+                                                            </td>
+                                                            <td className="text-center">
+                                                                {this.state.permisoUsuario.permisos.biblioteca.includes(
+                                                                    "delete"
+                                                                ) ? (
+                                                                    <div className="text-center">
+                                                                        <a
+                                                                            onClick={ev =>
+                                                                                this.handleDelete(
+                                                                                    e._id,
+                                                                                    ev
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <i
+                                                                                data-toggle="tooltip"
+                                                                                data-placement="top"
+                                                                                title="Borrar"
+                                                                                className="fas fa-trash-alt icono-eliminar"
+                                                                            />
+                                                                        </a>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="text-center">
+                                                                        <h3>
+                                                                            No
+                                                                            tienes
+                                                                            permiso
+                                                                            sobre
+                                                                            este
+                                                                            archivo
+                                                                        </h3>
+                                                                    </div>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                }
+                                            )}
+                                        </tbody>
+                                    ) : (
+                                        ""
+                                    )}
                                 </table>
                             ) : (
                                 <div

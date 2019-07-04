@@ -243,7 +243,7 @@ class BibliotecaController extends Controller
     }
 
     //metodo para borrar
-    public function ajaxDelete(Request $request){
+    public function deleteFile(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
@@ -344,5 +344,40 @@ class BibliotecaController extends Controller
 
             return $eventos;
 
+        }
+
+        public function getFilesEvento(Request $request){
+
+            //capturo el id de la empresa para buscar los eventos en base a ella
+            $input = $request->all();
+            $idevento = $input['evento'];
+    
+            $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectID($idevento) )->get();
+    
+            $archivos = [];
+    
+            //verifico que exista data sino lo devulevo vacio
+            if($files){
+    
+                foreach ($files as $f) {
+    
+                    //armo la data que se muestra en la tabla
+                    $archivos[] = [
+                        '_id'       => $f->_id,
+                        'Nombre'    => $f->NombreCompleto,
+                        //'Tipo'      => $f->Tipo,
+                        'Size'      => $f->Size,
+                        'Categoria' => CategoriaBiblioteca::find($f->CategoriaBiblioteca_id)->Nombre,
+                        'Activo'    => $f->Activo
+                    ];
+                }
+    
+            }
+    
+            if($archivos){
+                return json_encode(['code' => 200,'archivos'=>$archivos]);
+            }else{
+                return json_encode(['code' => 600]);
+            }
         }
 }
