@@ -380,4 +380,81 @@ class BibliotecaController extends Controller
                 return json_encode(['code' => 600]);
             }
         }
+
+
+        public function getDataAdd(){
+
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['categorias'] = CategoriaBiblioteca::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+
+            if($data){
+                return json_encode(['code' => 200,'data'=>$data]);
+            }else{
+                return json_encode(['code' => 600]);
+            }
+        }
+
+         //metodo para agregar archivo
+    public function addFile(ValidateArchivo $request){
+        $input = $request->all();
+
+        $evento  = (string)$input['id-evento'];
+        $empresa = (string)Evento::find($evento)->Empresa_id;
+        $pathSave = $empresa.'/'.$evento.'/';
+
+        $archivo = $input['archivo'];
+
+        $fileData = [
+            'extension' => $archivo->getClientOriginalExtension(),
+            'size'      => humanFileSize($archivo->getSize()),
+            'mime'      => $archivo->getMimeType()
+        ];
+
+        //dd($fileData);
+        //creo el nombre del archivo
+        $name = $input['name'].'.'.$fileData['extension'];
+
+        Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
+
+        //capturo los datos y los acomodo en un arreglo
+        $data = [
+            'id-evento'        => new ObjectID($input['id-evento']),
+            'nombre'           => $input['name'],
+            'nombrec'          => $name,
+            //'tipo'             => $type,
+            'path'             => $pathSave.$name,
+            'size'             => $fileData['size'],
+            'categoria'        => new ObjectId($input['categoria']),
+            'activo'           => true,
+            'borrado'          => false
+        ];
+
+
+        //procedo a guardarlos en la bd
+        $registro = new Biblioteca;
+        $registro->Evento_id                 = $data['id-evento'];
+        //$registro->Tipo                      = $data['tipo'];
+        $registro->Nombre                    = $data['nombre'];
+        $registro->NombreCompleto            = $data['nombrec'];
+        $registro->Path                      = $data['path'];
+        $registro->Extension                 = $fileData['extension'];
+        $registro->Size                      = $data['size'];
+        $registro->CategoriaBiblioteca_id    = $data['categoria'];
+        $registro->Fecha                     = Carbon::now();
+        $registro->Activo                    = $data['activo'];
+        $registro->Borrado                   = $data['borrado'];
+
+
+        //verifico si fue exitoso el insert en la bd
+        if($registro->save()){
+
+            return response()->json(['code' => 200]);
+
+        }else{
+            return response()->json(['code' => 500]);
+        }
+        
+
+    }
+
 }
