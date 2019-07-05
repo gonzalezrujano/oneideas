@@ -169,25 +169,25 @@ export default class Biblioteca extends Component {
                                             "/biblioteca/evento/" + e._id;
                                         return (
                                             <tr key={index}>
-                                                <th className="text-center">
+                                                <td className="text-center">
                                                     {e.Empresa}
-                                                </th>
-                                                <th className="text-center">
+                                                </td>
+                                                <td className="text-center">
                                                     {e.Evento}
-                                                </th>
-                                                <th className="text-center">
+                                                </td>
+                                                <td className="text-center">
                                                     {e.Fecha}
-                                                </th>
-                                                <th className="text-center">
+                                                </td>
+                                                <td className="text-center">
                                                     {e.app}
-                                                </th>
-                                                <th className="text-center">
+                                                </td>
+                                                <td className="text-center">
                                                     {e.Archivos}
-                                                </th>
+                                                </td>
                                                 {this.state.permisoUsuario.permisos.biblioteca.includes(
                                                     "show"
                                                 ) ? (
-                                                    <th className="columna-icono">
+                                                    <td className="columna-icono">
                                                         <Link to={link}>
                                                             <i
                                                                 data-toggle="tooltip"
@@ -196,7 +196,7 @@ export default class Biblioteca extends Component {
                                                                 className="fas fa-eye icono-ver"
                                                             />
                                                         </Link>
-                                                    </th>
+                                                    </td>
                                                 ) : (
                                                     ""
                                                 )}

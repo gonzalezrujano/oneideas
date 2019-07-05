@@ -1,7 +1,8 @@
 .columna-icono {
     text-align: center;
 }
-.icono-ver {
+.icono-ver,
+.icono-eliminar {
     color: #ffffff;
     cursor: pointer;
 }
