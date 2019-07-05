@@ -72,12 +72,11 @@ Route::group(['prefix' => 'menu'], function() {
         Route::post('/menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
         Route::post('/menu-etapas-delete', 'MenugEtapasController@ajaxDelete');        
     });
-
     // Endpoints para el Menu Gastronimico Platos
     Route::group(['prefix' => 'platos'], function() {
-        Route::post('/', 'MenugPlatosController@ajaxDatatables');
-        Route::post('/add', 'MenugPlatosController@ajaxAdd');
-        Route::post('/update', 'MenugPlatosController@ajaxUpdate');
-        Route::post('/delete', 'MenugPlatosController@ajaxDelete');        
+        Route::get('/', 'MenugPlatosController@getDatatables');
+        Route::post('/agregar', 'MenugPlatosController@agregar');
+        Route::post('/actualizar', 'MenugPlatosController@actualizar');
+        Route::post('/delete', 'MenugPlatosController@delete');        
     });
 });
