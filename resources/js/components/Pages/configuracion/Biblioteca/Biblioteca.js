@@ -64,7 +64,36 @@ export default class Biblioteca extends Component {
         console.log(this.state.permisoUsuario);
 
         if (this.state.isLoading) {
-            return "";
+            return (
+                <div>
+                    <Menu usuario={this.state.user} />
+                    <Header usuario={this.state.user} />
+                    <div className="content-wrapper">
+                        <header className="page-header">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-12">
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            {this.state.opcion}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+                        <div id="sweet" className="container-fluid">
+                            <div className="row">
+                                <div className="offset-6">
+                                    <h3>
+                                        <i class="fa fa-spinner fa-spin" />{" "}
+                                        Cagargando
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         } else {
             return (
                 <div>

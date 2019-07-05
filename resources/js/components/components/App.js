@@ -10,6 +10,7 @@ import Welcome from "../Pages/Welcome";
 import Multimedia from "../Pages/Multimedia";
 import Biblioteca from "../Pages/configuracion/Biblioteca/Biblioteca";
 import ViewEventoBiblioteca from "../Pages/configuracion/Biblioteca/Show";
+import AddEventoBiblioteca from "../Pages/configuracion/Biblioteca/Add";
 
 function App() {
     return (
@@ -25,6 +26,11 @@ function App() {
                     exact
                     path="/biblioteca/evento/:id"
                     component={ViewEventoBiblioteca}
+                />
+                <Route
+                    exact
+                    path="/biblioteca/evento/add-file/:id"
+                    component={AddEventoBiblioteca}
                 />
             </Switch>
         </BrowserRouter>

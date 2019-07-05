@@ -48,6 +48,8 @@ Route::group(['prefix' => 'biblioteca'], function() {
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
     Route::post('/evento/files', 'BibliotecaController@getFilesEvento');
     Route::post('/evento/files/delete', 'BibliotecaController@deleteFile');
+    Route::get('/evento/files/data-add', 'BibliotecaController@getDataAdd');
+    Route::post('/evento/add-file','BibliotecaController@addFile');
 });
 
 

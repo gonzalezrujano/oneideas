@@ -27,18 +27,20 @@ export default class Show extends React.Component {
         axios.get(`api/eventos/${idEvento}`).then(res => {
             let r = res.data;
             this.setState(() => ({
-                evento: r.evento,
-                isLoading: false
+                evento: r.evento
             }));
             axios
                 .post("api/biblioteca/evento/files", { evento: idEvento })
                 .then(res => {
-                    if (res.status == "200") {
+                    console.log("abajo es archivos");
+                    console.log(res);
+                    if (res.data.code == "200") {
                         this.setState({
                             archivos: res.data.archivos,
                             isLoading: false
                         });
-                    } else if (res.status == "600") {
+                    } else if (res.data.code == "600") {
+                        console.log("entre a 600");
                         this.setState({
                             archivos: [],
                             isLoading: false
@@ -127,6 +129,16 @@ export default class Show extends React.Component {
                                 </div>
                             </div>
                         </header>
+                        <div id="sweet" className="container-fluid">
+                            <div className="row">
+                                <div className="offset-6">
+                                    <h3>
+                                        <i class="fa fa-spinner fa-spin" />{" "}
+                                        Cagargando
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             );
@@ -171,7 +183,10 @@ export default class Show extends React.Component {
                                             <tr>
                                                 <td>
                                                     <Link
-                                                        to="/"
+                                                        to={`/biblioteca/evento/add-file/${
+                                                            this.props.match
+                                                                .params.id
+                                                        }`}
                                                         className="btn-sm btn-dark button-add p-2"
                                                     >
                                                         Agregar Archivo
@@ -266,7 +281,15 @@ export default class Show extends React.Component {
                                             )}
                                         </tbody>
                                     ) : (
-                                        ""
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-center ml-4">
+                                                    <i class="fas fa-exclamation-triangle" />{" "}
+                                                    No hay archivos asociados a
+                                                    este evento
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                     )}
                                 </table>
                             ) : (
