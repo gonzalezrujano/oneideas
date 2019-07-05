@@ -63,21 +63,18 @@ class MultimediaController extends Controller
 
         if($evento){
 
-            $bibliotecas = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento) )->get();
+            $bibliotecas = Biblioteca::borrado(false)->activo(true)->where(
+                'Evento_id', new ObjectId($evento))->get();
 
             if($bibliotecas){
-
                 return response()->json(['code' => 200, 'multimedia' => $bibliotecas]);
-
-            }else{
-                return response()->json(['code' => 500, 'msj' => 'No existen archivos multimedia']);
             }
-
-        }else{
-
-            return response()->json(['code' => 500, 'msj' => 'Ocurrio un problema al cargar los archivos multimedia']);
+            return response()->json(['code' => 500, 'msj' => 'No existen archivos multimedia']);
         }
-
+        return response()->json([
+            'code' => 500, 
+            'msj' => 'Ocurrio un problema al cargar los archivos multimedia'
+        ]);
     }
 
     //metodo para activar la accion de las herramientas
@@ -94,15 +91,25 @@ class MultimediaController extends Controller
 
             if($tool == 'Video'){
 
-                $biblioteca = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp4'])->get();
+                $biblioteca = Biblioteca::borrado(false)->activo(true)->where(
+                    'Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp4'])->get();
 
-                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca]);
+                return response()->json([
+                    'code' => 200, 
+                    'tool' => $tool, 
+                    'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca
+                ]);
 
 
             }else if($tool == 'Audio'){
 
-                $biblioteca = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp3'])->get();
-                return response()->json(['code' => 200, 'tool' => $tool, 'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca]);
+                $biblioteca = Biblioteca::borrado(false)->activo(true)->where(
+                    'Evento_id', new ObjectId($evento))->whereIn('Extension', ['mp3'])->get();
+                return response()->json([
+                    'code' => 200, 
+                    'tool' => $tool, 
+                    'msj' => 'Herramienta Encontrada', 'biblioteca' => $biblioteca
+                ]);
 
 
             }else if($tool == 'Imagen') {
@@ -117,11 +124,12 @@ class MultimediaController extends Controller
 
             }
 
-        }else{
-            return response()->json(['code' => 700, 'tool' => $tool, 'msj' => 'Herramienta no habilitada']);
-
         }
-
+        return response()->json([
+            'code' => 700, 
+            'tool' => $tool, 
+            'msj' => 'Herramienta no habilitada'
+        ]);
     }
 
 

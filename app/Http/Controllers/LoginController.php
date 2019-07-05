@@ -46,23 +46,29 @@ class LoginController extends Controller
 
                     $exito = Auth::guard('web')->login($user);
 
-                    return response()->json(['code' => 200, 'msj' => 'exito' , 'usuario' => $user]);
-
-                }else{
-
-                    return response()->json(['code' => 600, 'msj' => 'Correo y/o Contraseña incorrectos' ]);
+                    return response()->json([
+                        'code' => 200, 
+                        'msj' => 'exito' , 
+                        'usuario' => $user
+                    ]);
 
                 }
 
-           }else{
-                return response()->json(['code' => 600, 'msj' => 'Usuario inactivo' ]);
-           }
+                return response()->json([
+                    'code' => 600, 
+                    'msj' => 'Correo y/o Contraseña incorrectos' ]
+                );
+            }
+            return response()->json([
+                'code' => 600, 
+                'msj' => 'Usuario inactivo' 
+            ]);
 
-        }else{
-
-            return response()->json(['code' => 600, 'msj' => 'Usuario no registrado' ]);
         }
-
+        return response()->json([
+            'code' => 600, 
+            'msj' => 'Usuario no registrado' 
+        ]);
     }
 
 

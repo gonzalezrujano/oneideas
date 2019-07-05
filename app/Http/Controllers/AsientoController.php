@@ -6,11 +6,9 @@ namespace App\Http\Controllers;
 
 class AsientoController extends Controller
 {
-
-    //metodo que crea la vista principal
-    public function index(){
-        //devuelve la vista asociada
-        return view('Invitados.Asientos.index');
-    }
-
+  //metodo que crea la vista principal
+  public function index(){
+      //devuelve la vista asociada
+      return view('Invitados.Asientos.index');
+  }
 }

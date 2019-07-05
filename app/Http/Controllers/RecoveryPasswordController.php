@@ -53,19 +53,15 @@ class RecoveryPasswordController extends Controller
                 //le envio un correo al usuario con las intrucciones para recuperar la contraseña
                 Mail::to(strtolower($usuario->Correo))->send(new MailRecoveryPassword($token));
 
-                return response()->json(['code' => 200, 'msj' => 'Le ha sido enviado un correo con un enlace para restablecer su contraseña' ]);
+                return response()->json([
+                    'code' => 200, 
+                    'msj' => 'Le ha sido enviado un correo con un enlace para restablecer su contraseña' 
+                ]);
 
-            }else{
-
-                return response()->json(['code' => 600, 'msj' => 'Usuario inactivo' ]);
             }
-
-        }else{
-
-            return response()->json(['code' => 600, 'msj' => 'Correo no existe' ]);
-
+            return response()->json(['code' => 600, 'msj' => 'Usuario inactivo' ]);
         }
-
+        return response()->json(['code' => 600, 'msj' => 'Correo no existe' ]);
     }
 
     //metodo para validar que el token del usuario es valido y no ha expirado
@@ -75,19 +71,12 @@ class RecoveryPasswordController extends Controller
 
         //caputro y verifico el token en la bd
         $token = ResetClaveUsuarios::where('Token', $tok)->first();
-
-
         //si el token existe y es valido, mando al usuario a cambiar su contraseña por la de su preferencia, en caso de que no le indico que el token es invalido o ha expirado
         if ($token){
-
             $tokenValido = true;
             return view('reset-password', ['token' => $token->Token, 'tokenValido' => $tokenValido]);
-
-        }else{
-
-            return view('reset-password', ['token' => $token->Token, 'tokenValido' => $tokenValido]);
-
         }
+        return view('reset-password', ['token' => $token->Token, 'tokenValido' => $tokenValido]);
     }
 
     //metodo para cambiar la contraseña una vez el token haya sido valido
@@ -114,18 +103,18 @@ class RecoveryPasswordController extends Controller
                 //elimino todas las entradas de token del usuario
                 ResetClaveUsuarios::where('Correo', $user->Correo)->delete();
 
-                return response()->json(['code' => 200, 'msj' => 'Contraseña cambiada exitosamente' ]);
-
-            }else{
-                return response()->json(['code' => 600, 'msj' => 'Ocurrio un problema al cambiar la contraseña. Consulte al administrador' ]);
+                return response()->json([
+                    'code' => 200, 
+                    'msj' => 'Contraseña cambiada exitosamente' 
+                ]);
 
             }
-
-        }else{
-
-            return response()->json(['code' => 600, 'msj' => 'Usuario no existe' ]);
+            return response()->json([
+                'code' => 600, 
+                'msj' => 'Ocurrio un problema al cambiar la contraseña. Consulte al administrador' 
+            ]);
 
         }
-
+        return response()->json(['code' => 600, 'msj' => 'Usuario no existe' ]);
     }
 }

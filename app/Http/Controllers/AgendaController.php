@@ -15,32 +15,26 @@ use DB, DataTables, Image, Storage, File, Auth, Session;
 //controlador encargado de la seccion empresa
 class AgendaController extends Controller
 {
-
     //metodo para llamar la vista principal de empresas
     public function index(){
-
         //devuleve la vista
         $rol = strtoupper(Auth::user()->nameRol());
-
         //verifico que tipo de datos voy a cargar acorde al rol
         if($rol == 'ADMINISTRADOR'){
-
             //cargo las empresas
-            $select['empresas'] = Empresa::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+            $select['empresas'] = Empresa::borrado(false)->activo(true)->orderBy(
+                'Nombre', 'ASC')->get();
             $select['eventos'] = Evento::where('Empresa_id',Auth::user()->Empresa_id)->get();
             $select['show_select_evento'] = false;
             $select['active_fecha'] = false; 
-
         }else if($rol == 'EMPRESA'){
-
             //cargo las empresas
-            $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
+            $select['empresas'] = Empresa::borrado(false)->activo(true)->where(
+                '_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
             $select['eventos'] = Evento::borrado(false)->activo(true)->get();
             $select['show_select_evento'] = true;
             $select['active_fecha'] = true; 
-
         }else if($rol == 'EVENTO'){
-
             //cargo las empresas
             $select['empresas'] = Empresa::borrado(false)->activo(true)->where('_id', Auth::user()->Empresa_id )->orderBy('Nombre', 'ASC')->get();
             $select['eventos'] = Evento::where('_id',Auth::user()->Evento_id)->get();
@@ -61,68 +55,46 @@ class AgendaController extends Controller
 
     //metodo para llamar la vista de ver empresa
     public function viewShow($id){
-
         $data['existe'] = false;
-
         $registro = Agenda::find($id);
-
         if($registro){
             $data['existe'] = true;
             $data['evento'] = Evento::where('_id', $registro->Evento_id)->get()[0];
             $data['agenda'] = $registro;
-
         }
-
         //devuelve la vista
         return view('Configuracion.Agendas.show', $data);
     }
 
     //metodo para llamar la vista de editar empresa
     public function viewEdit($id){
-
         $data['existe'] = false;
-
         $registro = Agenda::find($id);
-
         if($registro){
-
             $data['existe'] = true;
             $data['agenda'] = $registro;
             $data['evento'] = Evento::where('_id', $registro->Evento_id)->get()[0];
         }
-
         //devuleve la vista
         return view('Configuracion.Agendas.edit', $data);
     }
 
     //metodo para mandar la data de las empresas al datatables
     public function ajaxDatatables(){
-
         //guardo el tipo de rol del usuario
         $rol = strtoupper(Auth::user()->nameRol());
-
         //acorde al tipo de rol cargo empresas
         if($rol == 'ADMINISTRADOR'){
-
             $agenda = Agenda::all();
-
         }else if($rol == 'EMPRESA'){
-
             $agenda = Agenda::all();//$emp = Agenda::borrado(false)->where('_id',  Auth::user()->Empresa_id  )->get();
-
         }else if($rol == 'EVENTO'){
-
             $agenda = Agenda::all();//$emp = Agenda::borrado(false)->where('_id', Auth::user()->Empresa_id  )->get();
-
         }
-
         $agendas = [];
-
         //verifico que exista data sino lo devulevo vacio
         if($agenda){
-
             foreach ($agenda as $ag) {
-
                 //armo la data que se muestra en la tabla de inicio de la pagina de agendas
                 $agendas[] = [
                     '_id'    => $ag->_id,
@@ -132,18 +104,14 @@ class AgendaController extends Controller
                     'Hora'  => $ag->Hora
                 ];
             }
-
         }
-
         return DataTables::collection( $agendas )->make(true);
     }
 
     //metodo para agregar las empresas
     public function ajaxAdd(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
-
             $data = $request->all();
             $registro =  new Agenda;
             $registro->Hora = $data['hora'];
@@ -153,16 +121,13 @@ class AgendaController extends Controller
             $saved = $registro->save();
             if ($saved) {
                 return response()->json(['code' => 200, 'last_id' => $registro->id]);
-            } else {
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
-
     }
 
     //metodo para actualizar las empresas
     public function ajaxUpdate(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
             //obtengo todos los datos del formulario
@@ -174,44 +139,31 @@ class AgendaController extends Controller
             
             if($agenda->save()){
                 return response()->json(['code' => 200, 'data' => $data]);
-            }else{
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
-
     }
 
     //metodo para borrar empresas
     public function ajaxDelete(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
-
             //capturo el valor del id
             $input = $request->all();
             $id = $input['id'];
-
             //valido que venga el id sino mando un error
             if($id){
-
                 //ubico el id en la bd
                 $registro = Agenda::find($id);
-
                 //DB::table('Sucursales')->where('Empresa_id', new ObjectId($id))->update(['Borrado' => true]);
-
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
                     return json_encode(['code' => 200]);
-                }else{
-                    return json_encode(['code' => 500]);
                 }
-
-            }else{
-
-                return json_encode(['code' => 600]);
+                return json_encode(['code' => 500]);
             }
+            return json_encode(['code' => 600]);
         }
-
     }
 
     // Custom functions 
@@ -233,13 +185,13 @@ class AgendaController extends Controller
             }
             if ($data_events) {
                 return response()->json(['code' => 200, 'data' => $data_events]);
-            } else {
-                return response()->json(['code' => 404, 'message' => 'Empresa no posee eventos con Agenda']);
-            }       
-            
-        } else {
-             return response()->json(['code' => 404, 'message' => 'Empresa no posee eventos']);
+            }
+            return response()->json([
+                'code' => 404, 
+                'message' => 'Empresa no posee eventos con Agenda'
+            ]);       
         }
+        return response()->json(['code' => 404, 'message' => 'Empresa no posee eventos']);
     }
 
     public function datatable_get_agendas( $id_evento, $fecha ) {
@@ -256,14 +208,10 @@ class AgendaController extends Controller
             $fecha_filter = str_replace('-', '/', $fecha);
             $agendas = Agenda::where('Fecha',$fecha_filter)->get();
         }
-        
         $data_agendas = [];
-
         //verifico que exista data sino lo devulevo vacio
         if($agendas){
-
             foreach ($agendas as $agenda) {
-
                 //armo la data que se muestra en la tabla de inicio de la pagina de agendas
                 $evento = Evento::where('_id',$agenda->Evento_id)->get()[0];
                 $data_agendas[] = [
@@ -275,10 +223,7 @@ class AgendaController extends Controller
                     'Fecha' => $agenda->Fecha
                 ];
             }
-
         }
-
         return DataTables::collection( $data_agendas )->make(true);
     }
-
 }

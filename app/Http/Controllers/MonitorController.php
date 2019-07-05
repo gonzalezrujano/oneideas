@@ -168,11 +168,12 @@ class MonitorController extends Controller
             //devuelvo la respuesta
             return response()->json(['code' => 200, 'data' => $result, 'msj' => '']);
 
-        }else{
-            //devuelvo code 600 cuando no se enviaron los parametros necesarios para armar el comando
-            return json_encode(['code' => 600, 'msj' => 'Error al procesar acción del servicio. Consulte al administrador.']);
         }
-
+        //devuelvo code 600 cuando no se enviaron los parametros necesarios para armar el comando
+        return json_encode([
+            'code' => 600,
+            'msj' => 'Error al procesar acción del servicio. Consulte al administrador.'
+        ]);
     }
 
     //metodo para obtener la data de los cron que se estan ejecutando

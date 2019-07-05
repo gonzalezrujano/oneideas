@@ -48,48 +48,36 @@ class MenugPlatosController extends Controller
             $data['estados'] = Estado::borrado(false)->get();
             $data['etapa'] = MenuGEtapas::where('_id', new ObjectID($registro->Etapa_id))->get()[0];
             $data['plato'] = $registro;
-
         }
-
         //devuelve la vista
         return view('Configuracion.Menugplatos.show', $data);
     }
 
     //metodo para llamar la vista de editar empresa
     public function viewEdit($id){
-
         $data['existe'] = false;
-
-         $registro = MenuGPlatos::find($id);
-
+        $registro = MenuGPlatos::find($id);
         if($registro){
             $data['existe'] = true;
             $data['etapas'] = MenuGEtapas::where('Borrado', false)->get();
             $data['estados'] = Estado::borrado(false)->get();
             $data['plato'] = $registro;
         }
-
         //devuleve la vista
         return view('Configuracion.Menugplatos.edit', $data);
     }
 
     //metodo para mandar la data de las empresas al datatables
     public function ajaxDatatables(){
-
         //guardo el tipo de rol del usuario
         $rol = strtoupper(Auth::user()->nameRol());
-
         //acorde al tipo de rol cargo empresas
         if($rol == 'ADMINISTRADOR'){
-
             $menu_g_platos = MenuGPlatos::where('Borrado', false)->get();
-
         }
         $menu_platos = [];
-
         //verifico que exista data sino lo devulevo vacio
         if($menu_g_platos){
-
             foreach ($menu_g_platos as $m_plato) {
                 $menu_platos[] = [
                     '_id'    => $m_plato->_id,
@@ -100,18 +88,14 @@ class MenugPlatosController extends Controller
                     'Activo'  => $m_plato->Activo
                 ];
             }
-
         }
-
         return DataTables::collection( $menu_platos )->make(true);
     }
 
     //metodo para agregar las empresas
     public function ajaxAdd(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
-
             $data = $request->all();
             $registro =  new MenuGPlatos;
             $registro->Numero_plato = $data['numero_plato'];
@@ -123,16 +107,13 @@ class MenugPlatosController extends Controller
             $saved = $registro->save();
             if ($saved) {
                 return response()->json(['code' => 200, 'last_id' => $registro->id]);
-            } else {
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
-
     }
 
     //metodo para actualizar las empresas
     public function ajaxUpdate(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
             //obtengo todos los datos del formulario
@@ -143,47 +124,32 @@ class MenugPlatosController extends Controller
             $etapa->Descripcion = $data['descripcion'];
             $etapa->Etapa_id = new ObjectID($data['etapa']);
             $etapa->Activo = $data['status'];
-            
             if($etapa->save()){
                 return response()->json(['code' => 200, 'data' => $data]);
-            }else{
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
-
     }
 
     //metodo para borrar empresas
     public function ajaxDelete(Request $request){
-
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
-
             //capturo el valor del id
             $input = $request->all();
             $id = $input['id'];
-
             //valido que venga el id sino mando un error
             if($id){
-
                 //ubico el id en la bd
                 $registro = MenuGPlatos::find($id);
-
                 //DB::table('Sucursales')->where('Empresa_id', new ObjectId($id))->update(['Borrado' => true]);
-
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
                     return json_encode(['code' => 200]);
-                }else{
-                    return json_encode(['code' => 500]);
                 }
-            }else{
-
-                return json_encode(['code' => 600]);
+                return json_encode(['code' => 500]);
             }
+            return json_encode(['code' => 600]);
         }
-
     }
-
-    // Custom functions
 }

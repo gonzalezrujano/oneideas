@@ -23,16 +23,13 @@ Route::group(['prefix' => 'usuarios'], function() {
     Route::get('/permisos/{id}', 'UsuarioController@getPermisosUsuario');
 });
 
-
-
 Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
     Route::post('/remove-envios', 'EventoController@quitarEnvios');
     Route::get('/{id}', 'EventoController@getEvento');
+
 });
-
-
 
 Route::group(['prefix' => 'multimedia'], function() {
     //rutas de multimedia
@@ -58,7 +55,26 @@ Route::group(['prefix' => 'agendas'], function() {
     Route::get('/{id}', 'AgendaController@viewShow');
     Route::post('/update', 'AgendaController@ajaxUpdate');
     Route::post('/delete', 'AgendaController@ajaxDelete');
-    Route::post('/events', 'AgendaController@get_events');
+    Route::post('/events', 'AgendaController@getEvents');
     Route::post('/datatable-get-agendas/{id}/{fecha}', 'AgendaController@datatable_get_agendas');
 
+});
+
+
+Route::group(['prefix' => 'menu'], function() {
+    // Endpoints para el Menu Gastronimico Etapas
+    Route::group(['prefix' => 'gastronomico'], function() {
+        Route::post('/etapas', 'MenugEtapasController@ajaxDatatables');
+        Route::post('/etapas-add', 'MenugEtapasController@ajaxAdd');
+        Route::post('/menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
+        Route::post('/menu-etapas-delete', 'MenugEtapasController@ajaxDelete');        
+    });
+
+    // Endpoints para el Menu Gastronimico Platos
+    Route::group(['prefix' => 'platos'], function() {
+        Route::post('/', 'MenugPlatosController@ajaxDatatables');
+        Route::post('/add', 'MenugPlatosController@ajaxAdd');
+        Route::post('/update', 'MenugPlatosController@ajaxUpdate');
+        Route::post('/delete', 'MenugPlatosController@ajaxDelete');        
+    });
 });

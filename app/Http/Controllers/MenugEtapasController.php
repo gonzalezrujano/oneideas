@@ -138,9 +138,8 @@ class MenugEtapasController extends Controller
             $saved = $registro->save();
             if ($saved) {
                 return response()->json(['code' => 200, 'last_id' => $registro->id]);
-            } else {
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
 
     }
@@ -160,9 +159,8 @@ class MenugEtapasController extends Controller
             
             if($etapa->save()){
                 return response()->json(['code' => 200, 'data' => $data]);
-            }else{
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
 
     }
@@ -188,13 +186,10 @@ class MenugEtapasController extends Controller
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
                     return json_encode(['code' => 200]);
-                }else{
-                    return json_encode(['code' => 500]);
                 }
-            }else{
-
-                return json_encode(['code' => 600]);
+                return json_encode(['code' => 500]);
             }
+            return json_encode(['code' => 600]);
         }
 
     }

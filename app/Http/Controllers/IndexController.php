@@ -6,13 +6,9 @@ namespace App\Http\Controllers;
 
 class IndexController extends Controller
 {
-
     //metodo que crea la vista login
     public function index(){
         //devuelve la vista asociada
         return view('index');
     }
-
-
-
 }

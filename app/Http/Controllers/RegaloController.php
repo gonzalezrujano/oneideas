@@ -6,11 +6,9 @@ namespace App\Http\Controllers;
 
 class RegaloController extends Controller
 {
-
-    //metodo que crea la vista principal
-    public function index(){
-        //devuelve la vista asociada
-        return view('Invitados.Regalos.index');
-    }
-
+  //metodo que crea la vista principal
+  public function index(){
+    //devuelve la vista asociada 
+    return view('Invitados.Regalos.index');
+  }
 }

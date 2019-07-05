@@ -188,9 +188,8 @@ class UsuarioController extends Controller
             //verifico si fue exitoso el insert en la bd
             if($registro->save()){
                 return response()->json(['code' => 200]);
-            }else{
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
 
     }
@@ -248,9 +247,8 @@ class UsuarioController extends Controller
             //verifico si fue exitoso el insert en la bd
             if($registro->update()){
                 return response()->json(['code' => 200]);
-            }else{
-                return response()->json(['code' => 500]);
             }
+            return response()->json(['code' => 500]);
         }
 
     }
@@ -275,14 +273,10 @@ class UsuarioController extends Controller
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->save()){
                     return json_encode(['code' => 200]);
-                }else{
-                    return json_encode(['code' => 500]);
                 }
-
-            }else{
-
-                return json_encode(['code' => 600]);
+                return json_encode(['code' => 500]);
             }
+            return json_encode(['code' => 600]);
         }
 
     }
@@ -304,8 +298,6 @@ class UsuarioController extends Controller
             $data['usuario'] = $registro;
 
         }
-
-
         return json_encode(['code' => 200, 'data' => $data]);
     }
 
