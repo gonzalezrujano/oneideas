@@ -335,4 +335,81 @@ class EmpresaController extends Controller
             'empresas' => $empresas
         ]);
     }
+
+    public function getEmpresasTabla(Request $request){
+        //acorde al tipo de rol cargo empresas
+        $input = $request->all();
+            //Guardo el rol del usuario logeado
+        $rol = $input['rol'];
+            //guardo su id independiente de su rol
+        $id = $input['id'];
+
+        if($rol == 'ADMINISTRADOR'){
+
+            $emp = Empresa::borrado(false)->get();
+
+        }else if($rol == 'EMPRESA'){
+
+            $emp = Empresa::borrado(false)->where('_id',  $id  )->get();
+
+        }else if($rol == 'EVENTO'){
+
+            $emp = Empresa::borrado(false)->where('_id', $id  )->get();
+
+        }
+
+        $empresas = [];
+
+        //verifico que exista data sino lo devulevo vacio
+        if($emp){
+
+            foreach ($emp as $e) {
+
+                //armo la data que se muestra en la tabla de inicio de la pagina de empresas
+                $empresas[] = [
+                    '_id'    => $e->_id,
+                    'Cuit_rut' => strtoupper($e->Cuit_rut),
+                    'Nombre' => $e->Nombre,
+                    'Correo' => $e->Correo,
+                    'Telefono'  => $e->Telefono,
+                    'Pais' => Pais::find($e->Pais_id)->Nombre,
+                    'Activo' => $e->Activo
+                ];
+            }
+
+        }
+
+        return $empresas;
+    }
+    
+    public function deleteEmpresa(Request $input){
+        //capturo el valor del id
+        $input = $request->all();
+        $id = $input['id'];
+
+        //valido que venga el id sino mando un error
+        if($id){
+            //ubico el id en la bd
+            $registro = Empresa::find($id);
+            $registro->Borrado = true;
+
+            //DB::table('Sucursales')->where('Empresa_id', new ObjectId($id))->update(['Borrado' => true]);
+
+            //valido que de verdad sea borrado en caso de que no arrojo un error
+            if($registro->save()){
+
+                return json_encode(['code' => 200]);
+            }else{
+                return json_encode(['code' => 500]);
+            }
+        }
+    }
+
+    public function getPaises(){
+            $select['paises'] = Pais::borrado(false)->get();
+            $select['estados'] = Estado::borrado(false)->get();
+   
+            return json_encode(['code'=>200,'data'=> $select]);
+        
+    }
 }

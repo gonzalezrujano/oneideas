@@ -1,3 +1,4 @@
+
 @extends('Layouts.template-inside')
 
 @section('heading')

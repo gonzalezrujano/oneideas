@@ -11,6 +11,10 @@ import Multimedia from "../Pages/Multimedia";
 import Biblioteca from "../Pages/configuracion/Biblioteca/Biblioteca";
 import ViewEventoBiblioteca from "../Pages/configuracion/Biblioteca/Show";
 import AddEventoBiblioteca from "../Pages/configuracion/Biblioteca/Add";
+import Empresas from "../Pages/configuracion/Empresas/Empresas";
+import AddEmpresa from "../Pages/configuracion/Empresas/Add";
+import ShowEmpresas from "../Pages/configuracion/Empresas/Show";
+import EditEmpresas from "../Pages/configuracion/Empresas/Edit";
 
 function App() {
     return (
@@ -31,6 +35,18 @@ function App() {
                     exact
                     path="/biblioteca/evento/add-file/:id"
                     component={AddEventoBiblioteca}
+                />
+                <Route exact path="/empresas" component={Empresas} />
+                <Route exact path="/empresas/add" component={AddEmpresa} />
+                <Route
+                    exact
+                    path="/empresas/show/:id"
+                    component={ShowEmpresas}
+                />
+                <Route
+                    exact
+                    path="/empresas/edit/:id"
+                    component={EditEmpresas}
                 />
             </Switch>
         </BrowserRouter>
