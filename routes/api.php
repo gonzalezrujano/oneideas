@@ -69,6 +69,10 @@ Route::group(['prefix' => 'agendas'], function() {
 Route::group(['prefix' => 'menu'], function() {
     // Endpoints para el Menu Gastronimico Etapas
     Route::group(['prefix' => 'gastronomico'], function() {
+        Route::get('/index', 'MenugEtapasController@index');
+        Route::get('/view-add', 'MenugEtapasController@viewAdd');
+        Route::get('/view-show/{id}', 'MenugEtapasController@viewShow');
+        Route::get('/view-edit/{id}', 'MenugEtapasController@viewEdit');        
         Route::post('/etapas', 'MenugEtapasController@ajaxDatatables');
         Route::post('/etapas-add', 'MenugEtapasController@ajaxAdd');
         Route::post('/menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
@@ -77,6 +81,9 @@ Route::group(['prefix' => 'menu'], function() {
     // Endpoints para el Menu Gastronimico Platos
     Route::group(['prefix' => 'platos'], function() {
         Route::get('/', 'MenugPlatosController@getDatatables');
+        Route::get('/view-add', 'MenugPlatosController@viewAdd');
+        Route::get('/view-show/{id}', 'MenugPlatosController@viewShow');
+        Route::get('/view-edit/{id}', 'MenugPlatosController@viewEdit');
         Route::post('/agregar', 'MenugPlatosController@agregar');
         Route::post('/actualizar', 'MenugPlatosController@actualizar');
         Route::post('/delete', 'MenugPlatosController@delete');        

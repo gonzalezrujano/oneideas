@@ -19,7 +19,7 @@ class MenugEtapasController extends Controller
 {
 
     //metodo para llamar la vista principal de empresas
-    public function index(){
+    /*public function index(){
 
         //devuleve la vista
         $rol = strtoupper(Auth::user()->nameRol());
@@ -45,17 +45,56 @@ class MenugEtapasController extends Controller
             $select['show_select_evento'] = false;
         }
         return view('Configuracion.Menugetapas.index', $select);
+    }*/
+
+    //metodo para llamar la vista principal de empresas
+    public function index(Request $request){
+
+        $empresas = $eventos = $show_select_evento = [];
+        $rol = $request->input('rol');
+        $empresa_id = $request->input('empresa_id');
+
+        // Se verifica que tipo de datos se van a cargar acorde al rol
+        if($rol == 'ADMINISTRADOR'){
+            // Se cargan las empresas
+            $empresas = Empresa::borrado(false)->activo(true)->orderBy('Nombre', 'ASC')->get();
+            $show_select_evento = false;            
+        }else if($rol == 'EMPRESA'){
+            // Se cargan las empresas
+            $empresas = Empresa::borrado(false)->activo(true)->where('_id', $empresa_id)->orderBy('Nombre', 'ASC')->get();
+            $eventos = Evento::where('Empresa_id',$empresa_id)->get();
+            $show_select_evento = true;
+        }else if($rol == 'EVENTO'){
+            // Se cargan las empresas
+            $empresas = Empresa::borrado(false)->activo(true)->where('_id',$empresa_id)->orderBy('Nombre', 'ASC')->get();
+            $show_select_evento = false;
+        }
+        return response()->json([
+            'empresas' => $empresas,
+            'eventos' => $eventos,
+            'show_select_evento' => $show_select_evento],
+            200
+        );        
     }
 
     //metodo para llamar la vista de agregar empresa
-    public function viewAdd(){
+    /*public function viewAdd(){
         $data['estados'] = Estado::borrado(false)->get();
         //return view
         return view('Configuracion.Menugetapas.add', $data);
+    }*/
+
+    // Metodo para llamar la vista de agregar empresa
+    public function viewAdd(){
+        $estados = Estado::borrado(false)->get();
+        return response()->json([
+            'estados' => $estados],
+            200
+        );           
     }
 
     //metodo para llamar la vista de ver empresa
-    public function viewShow($id){
+    /*public function viewShow($id){
 
         $data['existe'] = false;
 
@@ -67,13 +106,35 @@ class MenugEtapasController extends Controller
             $data['etapa'] = $registro;
 
         }
-
-        //devuelve la vista
+        // devuelve la vista
         return view('Configuracion.Menugetapas.show', $data);
+    }*/
+
+    // Metodo para llamar la vista de ver empresa
+    public function viewShow($id){
+
+        $existe = false;
+        $estados = $etapa = [];
+        $registro = MenuGEtapas::find($id);
+
+        if($registro){
+            $existe = true;
+            $estados = Estado::borrado(false)->get();
+            $etapa = $registro;
+
+        }
+
+        // Devuelve la lista
+        return response()->json([
+            'existe' => $existe,
+            'estados' => $estados,
+            'etapas' => $etapa],
+            200
+        );
     }
 
     //metodo para llamar la vista de editar empresa
-    public function viewEdit($id){
+    /*public function viewEdit($id){
 
         $data['existe'] = false;
 
@@ -88,6 +149,28 @@ class MenugEtapasController extends Controller
 
         //devuleve la vista
         return view('Configuracion.Menugetapas.edit', $data);
+    }*/
+
+
+    // Metodo para llamar la vista de editar empresa
+    public function viewEdit($id){
+        $existe = false;
+        $estados = $etapa = [];
+        $registro = MenuGEtapas::find($id);
+
+        if($registro){
+            $existe = true;
+            $estados = Estado::borrado(false)->get();
+            $etapa = $registro;
+        }
+
+        // Retorna una lista
+        return response()->json([
+            'existe' => $existe,
+            'estados' => $estados,
+            'etapas' => $etapa],
+            200
+        );
     }
 
     //metodo para mandar la data de las empresas al datatables

@@ -29,14 +29,28 @@ class MenugPlatosController extends Controller
     }
 
     //metodo para llamar la vista de agregar empresa
-    public function viewAdd(){
+    /*public function viewAdd(){
         $data['estados'] = Estado::borrado(false)->get();
         $data['etapas'] = MenuGEtapas::where('Borrado', false)->get();
         //return view
         return view('Configuracion.Menugplatos.add', $data);
+    }*/
+
+    //metodo para llamar la vista de agregar empresa
+    public function viewAdd(){
+        $estados = Estado::borrado(false)->get();
+        $etapas = MenuGEtapas::where('Borrado', false)->get();
+        //return view
+        #return view('Configuracion.Menugplatos.add', $data);
+        return response()->json([
+            'estados' => $estados,
+            'etapas' => $etapas],
+            200
+        );
     }
 
     //metodo para llamar la vista de ver empresa
+    /*
     public function viewShow($id){
 
         $data['existe'] = false;
@@ -52,9 +66,37 @@ class MenugPlatosController extends Controller
         //devuelve la vista
         return view('Configuracion.Menugplatos.show', $data);
     }
+    */
+
+    //metodo para llamar la vista de ver empresa
+    public function viewShow($id){
+
+        $existe = false;
+        $estados = [];
+        $etapas = [];
+        $plato = [];
+
+        $registro = MenuGPlatos::find($id);
+
+        if($registro){
+            $existe = true;
+            $estados = Estado::borrado(false)->get();
+            $etapa = MenuGEtapas::where('_id', new ObjectID($registro->Etapa_id))->get()[0];
+            $plato = $registro;        
+        }
+
+        // devuelve la lista
+        return response()->json([
+            'existe' => $existe,
+            'estados' => $estados,
+            'etapas' => $etapas,
+            'plato' => $plato],
+            200
+        );
+    }
 
     //metodo para llamar la vista de editar empresa
-    public function viewEdit($id){
+    /*public function viewEdit($id){
         $data['existe'] = false;
         $registro = MenuGPlatos::find($id);
         if($registro){
@@ -65,6 +107,31 @@ class MenugPlatosController extends Controller
         }
         //devuleve la vista
         return view('Configuracion.Menugplatos.edit', $data);
+    }*/
+
+    //metodo para llamar la vista de editar empresa
+    public function viewEdit($id){
+        $existe = false;
+        $estados = [];
+        $etapas = [];
+        $plato = [];        
+        $registro = MenuGPlatos::find($id);
+
+        if($registro){
+            $existe = true;
+            $estados = Estado::borrado(false)->get();
+            $etapa = MenuGEtapas::where('Borrado', false)->get();
+            $plato = $registro;        
+        }        
+
+        // Devuelve la lista
+        return response()->json([
+            'existe' => $existe,
+            'estados' => $estados,
+            'etapas' => $etapas,
+            'plato' => $plato],
+            200
+        );        
     }
 
     //metodo para mandar la data de las empresas al datatables
