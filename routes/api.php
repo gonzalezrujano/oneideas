@@ -41,6 +41,8 @@ Route::group(['prefix' => 'multimedia'], function() {
 Route::group(['prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
+    Route::post('/add','EmpresaController@addEmpresa');
+    Route::get('/{id}','EmpresaController@getEmpresa');
     Route::post('/tabla',"EmpresaController@getEmpresasTabla");
     Route::get('/paises',"EmpresaController@getPaises");
 });

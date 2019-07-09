@@ -180,7 +180,9 @@ export default class Empresas extends Component {
                                         </th>
                                         <th className="text-center">PAÍS</th>
                                         <th className="text-center">ESTADO</th>
-                                        <th class="text-center">ACCIONES</th>
+                                        <th className="text-center">
+                                            ACCIONES
+                                        </th>
                                     </tr>
                                 </thead>
 

@@ -412,4 +412,76 @@ class EmpresaController extends Controller
             return json_encode(['code'=>200,'data'=> $select]);
         
     }
+
+    public function addEmpresa(ValidateEmpresa $request){
+        $input = $request->all();
+
+            //guardo la imagen en una variable
+            $image = $input['logo'];
+            //ubico la ruta de la imagen
+            $path = $image->getRealPath();
+            //obtengo la extension
+            $type = $image->getClientOriginalExtension();
+            //creo un nombre temporal
+            $name = time().'.'.$type;
+            //ruta imagen temporal
+            $pathImgTemporal = public_path('images/'.$name);
+            //proceso la imagen a 200x200
+            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+            //obtengo la data de la imagen
+            $data = file_get_contents($pathImgTemporal);
+            //convierto a base64
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            //elimino imagen temporal
+            File::delete($pathImgTemporal);
+
+
+            //capturo los datos y los acomodo en un arreglo
+            $data = [
+                'identificacion'   => strtoupper($input['identificacion']),
+                'nombre'           => $input['nombre'],
+                'correo'           => $input['correo'],
+                'telefono'         => $input['telefono'],
+                'pais'             => new ObjectID($input['pais']),
+                'estatus'          => (boolean) $input['estatus'],
+                'logo'             => $base64,
+                'borrado'          => false
+            ];
+
+            //procedo a guardarlos en la bd
+            $registro                            = new Empresa;
+            $registro->Cuit_rut                  = $data['identificacion'];
+            $registro->Nombre                    = $data['nombre'];
+            $registro->Correo                    = $data['correo'];
+            $registro->Telefono                  = $data['telefono'];
+            $registro->Pais_id                   = $data['pais'];
+            $registro->Activo                    = $data['estatus'];
+            $registro->Logo                      = $data['logo'];
+            $registro->Borrado                   = $data['borrado'];
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->save()){
+                return response()->json(['code' => 200]);
+            }else{
+                return response()->json(['code' => 500]);
+            }
+    }
+
+    public function getEmpresa($id){
+        $data['existe'] = false;
+        $registro = Empresa::find($id);
+        if($registro){
+            $data['existe'] = true;
+            $data['paises'] = Pais::borrado(false)->get();
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['empresa'] = $registro;
+
+            return response()->json(['code' => 200,'data'=>$data]);
+        }else{
+            return response()->json(['code' => 500]);
+        }
+
+        
+    }
+    
 }
