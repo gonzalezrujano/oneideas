@@ -312,9 +312,7 @@ class MenugPlatosController extends Controller
         }
     }*/
     // Permite borrar empresas
-    public function delete(Request $request){
-        // Secapturo el valor del id
-        $id = $request->input('id');
+    public function eliminar($id){
         //valido que venga el id sino mando un error
         if($id){
             try{

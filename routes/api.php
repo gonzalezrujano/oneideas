@@ -70,9 +70,13 @@ Route::group(['prefix' => 'menu'], function() {
     // Endpoints para el Menu Gastronimico Etapas
     Route::group(['prefix' => 'gastronomico'], function() {
         Route::get('/index', 'MenugEtapasController@index');
-        Route::get('/view-add', 'MenugEtapasController@viewAdd');
+        Route::get('/estados', 'MenugEtapasController@getEstados');
         Route::get('/view-show/{id}', 'MenugEtapasController@viewShow');
-        Route::get('/view-edit/{id}', 'MenugEtapasController@viewEdit');        
+        Route::get('/view-edit/{id}', 'MenugEtapasController@viewEdit');
+        Route::get('/datatables', 'MenugEtapasController@datatables');
+        Route::post('/agregar', 'MenugEtapasController@agregar');
+        Route::post('/actualizar', 'MenugEtapasController@actualizar');
+        Route::post('/eliminar/{id}', 'MenugEtapasController@eliminar');
         Route::post('/etapas', 'MenugEtapasController@ajaxDatatables');
         Route::post('/etapas-add', 'MenugEtapasController@ajaxAdd');
         Route::post('/menu-etapas-update', 'MenugEtapasController@ajaxUpdate');
@@ -86,6 +90,6 @@ Route::group(['prefix' => 'menu'], function() {
         Route::get('/view-edit/{id}', 'MenugPlatosController@viewEdit');
         Route::post('/agregar', 'MenugPlatosController@agregar');
         Route::post('/actualizar', 'MenugPlatosController@actualizar');
-        Route::post('/delete', 'MenugPlatosController@delete');        
+        Route::post('/eliminar/{id}', 'MenugPlatosController@eliminar');        
     });
 });

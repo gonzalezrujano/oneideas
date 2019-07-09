@@ -85,7 +85,7 @@ class MenugEtapasController extends Controller
     }*/
 
     // Metodo para llamar la vista de agregar empresa
-    public function viewAdd(){
+    public function getEstados(){
         $estados = Estado::borrado(false)->get();
         return response()->json([
             'estados' => $estados],
@@ -174,7 +174,7 @@ class MenugEtapasController extends Controller
     }
 
     //metodo para mandar la data de las empresas al datatables
-    public function ajaxDatatables(){
+    /*public function ajaxDatatables(){
 
         //guardo el tipo de rol del usuario
         $rol = strtoupper(Auth::user()->nameRol());
@@ -203,10 +203,41 @@ class MenugEtapasController extends Controller
         }
 
         return DataTables::collection( $menu_etapas )->make(true);
-    }
+    }*/
+
+    // Metodo para mandar la data de las empresas al datatables
+    public function datatables(Request $request){
+
+        // Se guarda el tipo de rol del usuario
+        $rol = $request->input('rol');
+        $menu_g_etapas = $menu_etapas = [];
+        // Acorde al tipo de rol cargo empresas
+        if($rol == 'ADMINISTRADOR'){
+
+            $menu_g_etapas = MenuGEtapas::where('Borrado', false)->get();
+
+        }
+
+        //verifico que exista data sino lo devulevo vacio
+        if($menu_g_etapas){
+
+            foreach ($menu_g_etapas as $m_etapa) {
+                $menu_etapas[] = [
+                    '_id'    => $m_etapa->_id,
+                    'Titulo' => strtoupper($m_etapa->Titulo),
+                    'Descripcion' => $m_etapa->Descripcion,
+                    'Numero_etapa' => $m_etapa->Numero_etapa,
+                    'Activo'  => $m_etapa->Activo
+                ];
+            }
+
+        }
+
+        return DataTables::collection( $menu_etapas )->make(true);
+    }    
 
     //metodo para agregar las empresas
-    public function ajaxAdd(Request $request){
+    /*public function ajaxAdd(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
@@ -225,10 +256,33 @@ class MenugEtapasController extends Controller
             return response()->json(['code' => 500]);
         }
 
-    }
+    }*/
+
+    // Metodo para agregar las empresas
+    public function agregar(Request $request){
+        try {
+            $data = $request->all();
+            $registro =  new MenuGEtapas;
+            $registro->Numero_etapa = $data['numero_etapa'];
+            $registro->Titulo = $data['titulo'];
+            $registro->Descripcion = $data['descripcion'];
+            $registro->Activo = $data['status'];
+            $registro->Borrado = false;
+            $saved = $registro->save();
+            if ($saved) {
+                return response()->json([
+                    'message' => 'El registro fue creado exitosamente', 
+                    'last_id' => $registro->id], 
+                    201);                
+            }
+
+        } catch (\Exception $e) { // Si ocurre algun error interno
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }    
 
     //metodo para actualizar las empresas
-    public function ajaxUpdate(Request $request){
+    /*public function ajaxUpdate(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
@@ -246,10 +300,33 @@ class MenugEtapasController extends Controller
             return response()->json(['code' => 500]);
         }
 
+    }*/
+
+    // Metodo para actualizar las empresas
+    public function actualizar(Request $request){
+        try {
+            //obtengo todos los datos del formulario
+            $data = $request->all();
+            $etapa = MenuGEtapas::find($data['etapa_id']);
+            $etapa->Titulo = $data['titulo'];
+            $etapa->Numero_etapa = $data['numero_etapa'];
+            $etapa->Descripcion = $data['descripcion'];
+            $etapa->Activo = $data['status'];
+            
+            if($etapa->save()){
+                return response()->json([
+                    'message' => 'Registro actualizado exitosamente', 
+                    'data' => $data], 
+                    200);           
+            }
+        } catch (\Exception $e) { // Si ocurre algun error interno
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
     }
 
     //metodo para borrar empresas
-    public function ajaxDelete(Request $request){
+    /*public function ajaxDelete(Request $request){
 
         //verifico que la respuesta venga por ajax
         if($request->ajax()){
@@ -274,8 +351,23 @@ class MenugEtapasController extends Controller
             }
             return json_encode(['code' => 600]);
         }
+    }*/
 
+    // Metodo para borrar empresas
+    public function eliminar($id){
+        // Se valida que venga el id sino se manda un error
+        if($id){
+            try {
+                // Se ubica el id en la bd
+                $registro = MenuGEtapas::find($id);
+                // Se valida que sea borrado, en caso contrario, se arroja un error
+                if($registro->delete()){
+                    return json_encode(['message' => 'El registro fue eliminado exitosamente'],204);
+                }
+            } catch (\Exception $e) { // Si ocurre algun error interno
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        }
+        return json_encode(['message' => 'Debe ingresar el parámetro id'],400);
     }
-
-    // Custom functions
 }
