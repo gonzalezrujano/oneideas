@@ -382,7 +382,7 @@ class EmpresaController extends Controller
         return $empresas;
     }
     
-    public function deleteEmpresa(Request $input){
+    public function deleteEmpresa(Request $request){
         //capturo el valor del id
         $input = $request->all();
         $id = $input['id'];
@@ -393,11 +393,7 @@ class EmpresaController extends Controller
             $registro = Empresa::find($id);
             $registro->Borrado = true;
 
-            //DB::table('Sucursales')->where('Empresa_id', new ObjectId($id))->update(['Borrado' => true]);
-
-            //valido que de verdad sea borrado en caso de que no arrojo un error
             if($registro->save()){
-
                 return json_encode(['code' => 200]);
             }else{
                 return json_encode(['code' => 500]);
@@ -483,5 +479,70 @@ class EmpresaController extends Controller
 
         
     }
+
+        //metodo para actualizar las empresas
+        public function updateEmpresa(ValidateEmpresa $request){
+        //obtengo todos los datos del formulario
+        $input = $request->all();
+
+        //instancio los datos de la empresa a editar
+        $registro = Empresa::find($input['emp-id']);
+
+        //guardo la imagen en una variable
+        $image = $input['logo'];
+
+        //valido que la imagen este o no vacio, si esta vacia vuelvo a guardar la imagen actual sino la actualizo
+        if($image == 'undefined'){
+            $base64 = $registro->Logo;
+        }else{
+
+            //ubico la ruta de la imagen
+            $path = $image->getRealPath();
+            //obtengo la extension
+            $type = $image->getClientOriginalExtension();
+            //creo un nombre temporal
+            $name = time().'.'.$type;
+            //ruta imagen temporal
+            $pathImgTemporal = public_path('images/'.$name);
+            //proceso la imagen a 200x200
+            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+            //obtengo la data de la imagen
+            $data = file_get_contents($pathImgTemporal);
+            //convierto a base64
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            //elimino imagen temporal
+            File::delete($pathImgTemporal);
+
+        }
+
+        //capturo los datos y los acomodo en un arreglo
+        $data = [
+            'identificacion'   => strtoupper($input['identificacion']),
+            'nombre'           => $input['nombre'],
+            'correo'           => $input['correo'],
+            'telefono'         => $input['telefono'],
+            'pais'             => new ObjectID($input['pais']),
+            'estatus'          => $input['estatus'] == 0 ? false : true,
+            'logo'             => $base64
+        ];
+
+        //procedo a guardarlos en la bd
+        $registro->Cuit_rut                  = $data['identificacion'];
+        $registro->Nombre                    = $data['nombre'];
+        $registro->Correo                    = $data['correo'];
+        $registro->Telefono                  = $data['telefono'];
+        $registro->Pais_id                   = $data['pais'];
+        $registro->Activo                    = (boolean) $data['estatus'];
+        $registro->Logo                      = $data['logo'];
+
+        //verifico si fue exitoso el insert en la bd
+        if($registro->save()){
+            return response()->json(['code' => 200]);
+        }else{
+            return response()->json(['code' => 500]);
+        }
+            
+    
+        }
     
 }

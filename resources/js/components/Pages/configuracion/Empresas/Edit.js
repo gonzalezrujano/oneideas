@@ -52,7 +52,11 @@ export default class AddEmpresas extends Component {
             console.log(res)
             let r = res.data;
             this.setState(() => ({
-                empresa: r.data,
+                empresa: r.data.empresa,
+                identificacion:r.data.empresa.Cuit_rut,
+                nombre:r.data.empresa.Nombre,
+                telefono:r.data.empresa.Telefono,
+                correo:r.data.empresa.Correo,
                 isLoading:false
             }));
         });
@@ -60,6 +64,7 @@ export default class AddEmpresas extends Component {
 
     
         handleChange(event) {
+            console.log("evento change")
             const target = event.target;
             const value = target.value;
             const name = target.name;
@@ -71,10 +76,10 @@ export default class AddEmpresas extends Component {
           }
     
 
-    addLogo(){
-        
-        let input = ($('#emp-logo'))[0];
-        var $image = $('#preview-add-emp');
+    updateLogo(){
+        console.log("update logo!")
+        let input = ($('#emp-logo-edit'))[0];
+        var $image = $('#preview-emp-logo-edit-new');
         var oFReader = new FileReader();
 
         oFReader.readAsDataURL(input.files[0]);
@@ -93,39 +98,42 @@ export default class AddEmpresas extends Component {
                 minContainerHeight: 200,
                 autoCropArea: 1,
                 crop: function(event) {
-
-                    $('#emp-add-x').val(event.detail.x);
-                    $('#emp-add-y').val(event.detail.y);
-                    $('#emp-add-w').val(event.detail.width);
-                    $('#emp-add-h').val(event.detail.height);
+                    $('#emp-edit-x').val(event.detail.x);
+                            $('#emp-edit-y').val(event.detail.y);
+                            $('#emp-edit-w').val(event.detail.width);
+                            $('#emp-edit-h').val(event.detail.height);
                 }
             });
 
 
         };
+        $('#div-edit-emp-img-new').show();
+        $('#div-edit-emp-img-preview').hide();
     }
 
     handleSubmit(e){
         e.preventDefault();
         let formData = new FormData();
+
+        formData.append("emp-id",this.state.empresa._id);
         formData.append("identificacion", this.state.identificacion);
         formData.append("nombre", this.state.nombre);
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
         formData.append("pais", this.state.paisSeleccionado);
         formData.append("estatus", this.state.estadoSeleccionado);
-        formData.append("logo", $('#form-add-empresa input[name=emp-logo]')[0].files[0] === undefined ? '' : $('#form-add-empresa input[name=emp-logo]')[0].files[0] );
-        formData.append("x", $('#emp-add-x').val());
-        formData.append("y", $('#emp-add-y').val());
-        formData.append("w", $('#emp-add-w').val());
-        formData.append("h", $('#emp-add-h').val());
-        $('button#save-empresa').prepend('<i className="fa fa-spinner fa-spin"></i> ');
-        axios.post('api/empresas/add',formData).then(res=>{
-            $('button#save-empresa').find('i.fa').remove();
+        formData.append("logo", $('#form-edit-empresa input[name=emp-logo]')[0].files[0]);
+        formData.append("x", $('#emp-edit-x').val());
+        formData.append("y", $('#emp-edit-y').val());
+        formData.append("w", $('#emp-edit-w').val());
+        formData.append("h", $('#emp-edit-h').val());
+        $("#save-empresa").prepend("<i className='fa fa-spinner fa-spin'></i> ");
+        axios.post('api/empresas/update',formData).then(res=>{
+            $("save-empresa").find("i.fa").remove();
             if(res.data.code === 200) {
 
                 Swal.fire({
-                    text: "Empresa agregada exitosamente",
+                    text: "Empresa editada exitosamente exitosamente",
                     type: "success",
                     showCancelButton: false,
                     confirmButtonColor: "#343a40",
@@ -220,7 +228,8 @@ export default class AddEmpresas extends Component {
 
                 <hr className="line-gray"/>
 
-                <form id="form-add-empresa" className="form-change-password form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+                <form id="form-edit-empresa" className="form-change-password form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+                    {console.log(this.state.empresa)}
 
                     <div className="tab-content" id="pills-tabContent">
                         <div className="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
@@ -228,28 +237,28 @@ export default class AddEmpresas extends Component {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Identificación</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="identificacion" name="identificacion" value={this.state.empresa.Cuit_rut}placeholder="Ingrese el numero de identificacion fiscal"  onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="identificacion" name="identificacion" value={this.state.identificacion}placeholder="Ingrese el numero de identificacion fiscal"  onChange={this.handleChange}/>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Nombre</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="nombre" name="nombre" value={this.state.empresa.Nombre} placeholder="Ingrese el nombre de la empresa"  onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="nombre" name="nombre" value={this.state.nombre} placeholder="Ingrese el nombre de la empresa"  onChange={this.handleChange}/>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Correo</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="correo" value={this.state.empresa.Correo} name="correo"  placeholder="Ingrese el correo de la empresa"  onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="correo" value={this.state.correo} name="correo"  placeholder="Ingrese el correo de la empresa"  onChange={this.handleChange}/>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="telefono" name="telefono" value={this.state.empresa.telefono} placeholder="Ingrese el teléfono de la empresa"  onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="telefono" name="telefono" value={this.state.telefono} placeholder="Ingrese el teléfono de la empresa"  onChange={this.handleChange}/>
                                 </div>
                             </div>
 
@@ -295,18 +304,27 @@ export default class AddEmpresas extends Component {
                                 La imagén a subir debe tener una resolución de <strong>200x200</strong>, en formato <strong>.jpg</strong> o <strong>.png</strong> y un peso aproximado entre <strong>10KB</strong> y <strong>5MB</strong>.
                             </div>
 
-                            <div className="text-center btn-upload-image mb-5">
-                                <span className="btn btn-dark btn-file">Subir Imagen <input type="file" id="emp-logo" name="emp-logo" onChange={this.addLogo}/></span>
-                            </div>
+                        
 
-                            <div id="div-add-emp-img" className="text-center area-cropper">
-                                <img id="preview-add-emp" src="" className="rounded img-example preview-add" alt=""/>
-                            </div>
+                            <div class="text-center btn-upload-image mb-5">
+                                    <span class="btn btn-dark btn-file">Subir Imagen <input type="file" id="emp-logo-edit" name="emp-logo" onChange={this.updateLogo}/></span>
+                                </div>
 
-                            <input type="hidden" id="emp-add-x"/>
-                            <input type="hidden" id="emp-add-y"/>
-                            <input type="hidden" id="emp-add-w"/>
-                            <input type="hidden" id="emp-add-h"/>
+
+
+                                <div id="div-edit-emp-img-preview" class="text-center">
+                                    <img id="preview-emp-logo-edit" src={this.state.empresa.Logo} class="rounded img-example preview-emp-logo-edit" alt=""/>
+                                </div>
+
+                                <div id="div-edit-emp-img-new" class="text-center area-cropper">
+                                    <img id="preview-emp-logo-edit-new" src="" class="rounded img-example preview-emp-edit-new" alt=""/>
+                                </div>
+
+                                <input type="hidden" id="emp-edit-x"/>
+                                <input type="hidden" id="emp-edit-y"/>
+                                <input type="hidden" id="emp-edit-w"/>
+                                <input type="hidden" id="emp-edit-h"/>
+
 
                         </div>
 

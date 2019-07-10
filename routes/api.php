@@ -45,6 +45,8 @@ Route::group(['prefix' => 'empresas'], function() {
     Route::get('/{id}','EmpresaController@getEmpresa');
     Route::post('/tabla',"EmpresaController@getEmpresasTabla");
     Route::get('/paises',"EmpresaController@getPaises");
+    Route::post('/delete','EmpresaController@deleteEmpresa');
+    Route::post('/update','EmpresaController@updateEmpresa');
 });
 
 Route::group(['prefix' => 'biblioteca'], function() {

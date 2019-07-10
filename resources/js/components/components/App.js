@@ -15,6 +15,7 @@ import Empresas from "../Pages/configuracion/Empresas/Empresas";
 import AddEmpresa from "../Pages/configuracion/Empresas/Add";
 import ShowEmpresas from "../Pages/configuracion/Empresas/Show";
 import EditEmpresas from "../Pages/configuracion/Empresas/Edit";
+import Eventos from "../Pages/configuracion/Eventos/Eventos";
 
 function App() {
     return (
@@ -48,6 +49,7 @@ function App() {
                     path="/empresas/edit/:id"
                     component={EditEmpresas}
                 />
+                <Route exact path="/empresa/evento" component={Eventos} />
             </Switch>
         </BrowserRouter>
     );

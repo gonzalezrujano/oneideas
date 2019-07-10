@@ -40,6 +40,7 @@ export default class Empresas extends Component {
     }
 
     modalDelete(id) {
+        console.log("el id de la funcion a eliminar fue este " + id);
         Swal.fire({
             text:
                 "¿Está seguro que desea borrar la empresa? Al decir que si, se eliminará todo lo relacionado con la misma (eventos).",
@@ -52,6 +53,7 @@ export default class Empresas extends Component {
         }).then(result => {
             if (result.value) {
                 axios.post("/api/empresas/delete/", { id: id }).then(res => {
+                    console.log(res);
                     let r = res.data;
                     if (r.code === 200) {
                         sweetalert(
@@ -59,9 +61,22 @@ export default class Empresas extends Component {
                             "success",
                             "sweet"
                         );
-                        $("#dt-empresas")
-                            .DataTable()
-                            .ajax.reload();
+                        console.log("voy a eliminar este id" + id);
+                        $("#" + id)
+                            .closest("tr")
+                            .remove();
+                        axios
+                            .post("api/empresas/tabla/", {
+                                rol: this.state.permisoUsuario.nombre,
+                                id: this.state.usuario._id
+                            })
+                            .then(res => {
+                                localStorage.setItem(
+                                    "empresasTabla",
+                                    JSON.stringify(res.data)
+                                );
+                                this.props.history.push("/empresas");
+                            });
                     } else if (r.code === 600) {
                         sweetalert(
                             "Error en el Proceso de Eliminacion. Consulte al Administrador",
@@ -74,16 +89,6 @@ export default class Empresas extends Component {
                             "error",
                             "sweet"
                         );
-                    }
-                    $("#" + id).remove();
-                    for (let i = 0; i < this.state.eventos.length; i++) {
-                        if (this.state.eventos[i]._id == id) {
-                            this.state.eventos[i].Archivos--;
-                            localStorage.setItem(
-                                "eventos",
-                                JSON.stringify(this.state.eventos)
-                            );
-                        }
                     }
                 });
             }
@@ -194,6 +199,10 @@ export default class Empresas extends Component {
                                             let linkShow =
                                                 "/empresas/show/" + e._id;
                                             let linkEvento = "/evento/" + e._id;
+                                            console.log(
+                                                "el id del siguiente es este " +
+                                                    e._id
+                                            );
                                             return (
                                                 <tr key={index} id={e._id}>
                                                     <td className="text-center">
@@ -257,9 +266,12 @@ export default class Empresas extends Component {
                                                                             data-placement="top"
                                                                             title="Eliminar"
                                                                             className="fas fa-trash-alt icono-ver"
-                                                                            onClick={this.modalDelete(
-                                                                                e._id
-                                                                            )}
+                                                                            onClick={ev =>
+                                                                                this.modalDelete(
+                                                                                    e._id,
+                                                                                    ev
+                                                                                )
+                                                                            }
                                                                         />
                                                                     </Link>
                                                                 ) : (
