@@ -13,23 +13,24 @@ export default class Eventos extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
-            idEmpresa: props.history.location.state.empresaId,
+            idEmpresa: this.props.match.params.id,
             eventosEmpresa: [],
             opcion: "Eventos",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
-            user: this.props.location.state,
             isLoading: true
         };
     }
 
     componentDidMount() {
+        console.log("que es lo que es CRACK");
         axios
             .post("api/eventos/empresa", {
                 idEmpresa: this.state.idEmpresa,
                 rol: this.state.permisoUsuario.nombre
             })
             .then(res => {
+                console.log(res);
                 this.setState({
                     eventosEmpresa: res.data.eventos,
                     isLoading: false
@@ -38,7 +39,6 @@ export default class Eventos extends Component {
     }
 
     render() {
-        console.log(this.state.permisoUsuario);
         if (this.state.isLoading) {
             return (
                 <div>
@@ -109,8 +109,11 @@ export default class Eventos extends Component {
                                         <tr>
                                             <td>
                                                 <Link
-                                                    to="/empresa/eventos/add"
                                                     className="btn-sm btn-dark button-add p-2"
+                                                    to={
+                                                        "/eventos/add/" +
+                                                        this.state.idEmpresa
+                                                    }
                                                 >
                                                     Agregar Evento
                                                 </Link>

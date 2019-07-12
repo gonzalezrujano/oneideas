@@ -51,11 +51,7 @@ function App() {
                     component={EditEmpresas}
                 />
                 <Route exact path="/empresa/eventos/:id" component={Eventos} />
-                <Route
-                    exact
-                    path="/empresa/eventos/add"
-                    component={EventosAdd}
-                />
+                <Route exact path="/eventos/add/:id" component={EventosAdd} />
             </Switch>
         </BrowserRouter>
     );

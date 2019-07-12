@@ -745,5 +745,104 @@ class EventoController extends Controller
            
     }
 
+    public function getMenuAppInvitado(){
+        $data = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
+
+        if($data){
+            return json_encode(['code' => 200,'data'=>$data]);
+        }else{
+             
+        return json_encode(['code' => 500]);
+        }
+    }
+
+    public function addEvento(ValidateEvento $request){
+            $input = $request->all();
+            //guardo la imagen en una variable
+            $image = $input['logo'];
+            //ubico la ruta de la imagen
+            $path = $image->getRealPath();
+            //obtengo la extension
+            $type = $image->getClientOriginalExtension();
+            //creo un nombre temporal
+            $name = time().'.'.$type;
+            //ruta imagen temporal
+            $pathImgTemporal = public_path('images/'.$name);
+            //proceso la imagen a 200x200
+            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+            //obtengo la data de la imagen
+            $data = file_get_contents($pathImgTemporal);
+            //convierto a base64
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            //elimino imagen temporal
+            File::delete($pathImgTemporal);
+
+            $ubi = $input['ubicacion'];
+            $ubicacion = 'MANUAL';
+
+            if($ubi == 'g'){
+                $ubicacion = 'GPS';
+            }
+
+            $menusapp = [];
+
+            if($input['menuapp']){
+
+                //proceso los menus
+                $menusapp = $this->processMenuApp($input['menuapp']);
+            }
+
+
+            //capturo los datos y los acomodo en un arreglo
+            $data = [
+                'id-emp'           => new ObjectID($input['id-emp']),
+                'nombre'           => $input['nombre'],
+                'fecha'            => $input['fecha'],
+                'hora'             => $input['hora'],
+                'estatus'          => $input['estatus'],
+                'app'              => $input['app'],
+                'licencias'        => $input['licencias'],
+                'pais'             => new ObjectID($input['pais']),
+                'latitud'          => $input['latitud'],
+                'longitud'         => $input['longitud'],
+                'ubicacion'        => $ubicacion,
+                'logo'             => $base64,
+                'idevento'         => $this->generateRandomIDEvento(),
+                'borrado'          => false
+            ];
+
+            //procedo a guardarlos en la bd
+            $registro = new Evento;
+            $registro->Empresa_id                = $data['id-emp'];
+            $registro->Nombre                    = $data['nombre'];
+            $registro->Fecha                     = $data['fecha'];
+            $registro->Hora                      = $data['hora'];
+            $registro->Activo                    = (boolean) $data['estatus'];
+            $registro->App                       = (boolean) $data['app'];
+            $registro->Licencias                 = $data['licencias'];
+            $registro->Pais_id                   = $data['pais'];
+            $registro->Latitud                   = $data['latitud'];
+            $registro->Longitud                  = $data['longitud'];
+            $registro->Ubicacion                 = $data['ubicacion'];
+            $registro->Logo                      = $data['logo'];
+            $registro->IDEvento                  = $data['idevento'];
+            $registro->MenuApp                   = $menusapp;
+            $registro->Borrado                   = $data['borrado'];
+
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->save()){
+
+                return response()->json(['code' => 200]);
+
+            }else{
+                return response()->json(['code' => 500]);
+            }
+        }
+
+
+    
+    
+
 
 }

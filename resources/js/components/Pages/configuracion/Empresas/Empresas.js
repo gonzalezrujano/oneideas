@@ -198,11 +198,8 @@ export default class Empresas extends Component {
                                                 "/empresas/edit/" + e._id;
                                             let linkShow =
                                                 "/empresas/show/" + e._id;
-                                            let linkEvento = "/empresa/eventos";
-                                            console.log(
-                                                "el id del siguiente es este " +
-                                                    e._id
-                                            );
+                                            let linkEvento =
+                                                "/empresa/eventos/" + e._id;
                                             return (
                                                 <tr key={index} id={e._id}>
                                                     <td className="text-center">
@@ -282,16 +279,9 @@ export default class Empresas extends Component {
                                                                 ) ? (
                                                                     <Link
                                                                         className="mr-2"
-                                                                        to={{
-                                                                            pathname:
-                                                                                linkEvento +
-                                                                                "/" +
-                                                                                e._id,
-                                                                            state: {
-                                                                                empresaId:
-                                                                                    e._id
-                                                                            }
-                                                                        }}
+                                                                        to={
+                                                                            linkEvento
+                                                                        }
                                                                     >
                                                                         <i
                                                                             data-toggle="tooltip"
