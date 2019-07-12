@@ -695,4 +695,55 @@ class EventoController extends Controller
         return json_encode(['code' => 200,'evento'=>$registro]);
     }
 
+    public function getEventosEmpresa(Request $request){
+           //capturo el id de la empresa para buscar los eventos en base a ella
+           $input = $request->all();
+           $id_emp = $input['idEmpresa'];
+   
+           //guardo el rol del usuario
+           $rol = $input['rol'];
+   
+           //acorde al rol muestro los eventos
+           if($rol == 'ADMINISTRADOR'){
+   
+               $eve = Evento::borrado(false)->where('Empresa_id', new ObjectID($id_emp) )->get();
+   
+           }else if($rol == 'EMPRESA'){
+   
+               $eve = Evento::borrado(false)->where('Empresa_id', new ObjectID($id_emp) )->get();
+   
+           }else if($rol == 'EVENTO'){
+   
+               $eve = Evento::borrado(false)->where('_id', Auth::user()->Evento_id )->get();
+   
+           }
+   
+           $eventos = [];
+   
+           //verifico que exista data sino lo devulevo vacio
+           if($eve){
+   
+               foreach ($eve as $e) {
+   
+                   //armo la data que se muestra en la tabla de inicio de la pagina de eventos
+                   $eventos[] = [
+                       '_id'       => $e->_id,
+                       'Nombre'    => $e->Nombre,
+                       'IDEvento'  => $e->IDEvento,
+                       'Fecha'     => $e->Fecha. ' '.$e->Hora,
+                       'Pais'      => Pais::find($e->Pais_id)->Nombre,
+                       'App'       => $e->App,
+                       'Activo'    => $e->Activo
+                   ];
+               }
+               return json_encode(['code' => 200,'eventos'=>$eventos]);
+           }else{
+                
+           return json_encode(['code' => 500]);
+           }
+   
+           
+    }
+
+
 }

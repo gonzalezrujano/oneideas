@@ -16,6 +16,7 @@ import AddEmpresa from "../Pages/configuracion/Empresas/Add";
 import ShowEmpresas from "../Pages/configuracion/Empresas/Show";
 import EditEmpresas from "../Pages/configuracion/Empresas/Edit";
 import Eventos from "../Pages/configuracion/Eventos/Eventos";
+import EventosAdd from "../Pages/configuracion/Eventos/Add";
 
 function App() {
     return (
@@ -49,7 +50,12 @@ function App() {
                     path="/empresas/edit/:id"
                     component={EditEmpresas}
                 />
-                <Route exact path="/empresa/evento" component={Eventos} />
+                <Route exact path="/empresa/eventos/:id" component={Eventos} />
+                <Route
+                    exact
+                    path="/empresa/eventos/add"
+                    component={EventosAdd}
+                />
             </Switch>
         </BrowserRouter>
     );

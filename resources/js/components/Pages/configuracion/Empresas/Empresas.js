@@ -198,7 +198,7 @@ export default class Empresas extends Component {
                                                 "/empresas/edit/" + e._id;
                                             let linkShow =
                                                 "/empresas/show/" + e._id;
-                                            let linkEvento = "/evento/" + e._id;
+                                            let linkEvento = "/empresa/eventos";
                                             console.log(
                                                 "el id del siguiente es este " +
                                                     e._id
@@ -282,9 +282,16 @@ export default class Empresas extends Component {
                                                                 ) ? (
                                                                     <Link
                                                                         className="mr-2"
-                                                                        to={
-                                                                            linkEvento
-                                                                        }
+                                                                        to={{
+                                                                            pathname:
+                                                                                linkEvento +
+                                                                                "/" +
+                                                                                e._id,
+                                                                            state: {
+                                                                                empresaId:
+                                                                                    e._id
+                                                                            }
+                                                                        }}
                                                                     >
                                                                         <i
                                                                             data-toggle="tooltip"

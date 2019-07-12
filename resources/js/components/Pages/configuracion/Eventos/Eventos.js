@@ -13,6 +13,8 @@ export default class Eventos extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
+            idEmpresa: props.history.location.state.empresaId,
+            eventosEmpresa: [],
             opcion: "Eventos",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -21,48 +23,22 @@ export default class Eventos extends Component {
         };
     }
 
-    getEmpresas() {
-        axios.get("api/empresas").then(res => {
-            let r = res.data;
-            console.log(r);
-            localStorage.setItem("empresas", JSON.stringify(r.empresas));
-            this.setState({
-                empresas: r.empresas,
-                isLoading: false
-            });
-        });
-    }
-
-    getDataTables() {
+    componentDidMount() {
         axios
-            .post("api/biblioteca", {
-                rol: this.state.permisoUsuario.nombre,
-                id: this.state.usuario._id
+            .post("api/eventos/empresa", {
+                idEmpresa: this.state.idEmpresa,
+                rol: this.state.permisoUsuario.nombre
             })
             .then(res => {
-                localStorage.setItem("eventos", JSON.stringify(res.data));
                 this.setState({
-                    eventos: res.data
+                    eventosEmpresa: res.data.eventos,
+                    isLoading: false
                 });
             });
     }
 
     render() {
-        if (
-            !JSON.parse(localStorage.getItem("empresas")) ||
-            !JSON.parse(localStorage.getItem("eventos"))
-        ) {
-            console.log("no esta en local storage");
-            this.getEmpresas();
-            this.getDataTables();
-        } else {
-            console.log("esta en local storage");
-            console.log(this.state.empresas);
-            console.log(this.state.eventos);
-            this.state.isLoading = false;
-        }
         console.log(this.state.permisoUsuario);
-
         if (this.state.isLoading) {
             return (
                 <div>
@@ -73,14 +49,12 @@ export default class Eventos extends Component {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
-                                        <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
-                                            {this.state.opcion}
-                                        </h1>
                                         <h1 class="page-header-heading">
                                             <i class="fas fa-calendar-week page-header-heading-icon" />
                                             &nbsp;
-                                            <Link to="/empresas">Empresa</Link>{" "}
+                                            <Link to="/empresas">
+                                                Empresa
+                                            </Link>{" "}
                                             / Eventos
                                         </h1>
                                     </div>
@@ -110,9 +84,13 @@ export default class Eventos extends Component {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
-                                        <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
-                                            {this.state.opcion}
+                                        <h1 class="page-header-heading">
+                                            <i class="fas fa-calendar-week page-header-heading-icon" />
+                                            &nbsp;
+                                            <Link to="/empresas">
+                                                Empresa
+                                            </Link>{" "}
+                                            / Eventos
                                         </h1>
                                     </div>
                                 </div>
@@ -131,7 +109,7 @@ export default class Eventos extends Component {
                                         <tr>
                                             <td>
                                                 <Link
-                                                    to="/empresas/add/"
+                                                    to="/empresa/eventos/add"
                                                     className="btn-sm btn-dark button-add p-2"
                                                 >
                                                     Agregar Evento
@@ -142,124 +120,137 @@ export default class Eventos extends Component {
                                         ""
                                     )}
                                     <tr className="fila-head">
-                                        <th>NOMBRE</th>
-                                        <th>ID EVENTO</th>
-                                        <th>FECHA</th>
-                                        <th>PAÍS</th>
-                                        <th>APP</th>
-                                        <th>ESTADO</th>
+                                        <th className="text-center">NOMBRE</th>
+                                        <th className="text-center">
+                                            ID EVENTO
+                                        </th>
+                                        <th className="text-center">FECHA</th>
+                                        <th className="text-center">PAÍS</th>
+                                        <th className="text-center">APP</th>
+                                        <th className="text-center">ESTADO</th>
                                         <th class="text-center">ACCIONES</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    {this.state.eventos.map((e, index) => {
-                                        let linkEdit = "/evento/edit/" + e._id;
-                                        let linkShow = "/evento/show/" + e._id;
-                                        let linkEvento = "/evento/" + e._id;
-                                        console.log(
-                                            "el id del siguiente es este " +
-                                                e._id
-                                        );
-                                        return (
-                                            <tr key={index} id={e._id}>
-                                                <td className="text-center">
-                                                    {e.Nombre}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Correo}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Telefono}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Pais}
-                                                </td>
-                                                <td className="text-center">
-                                                    {" "}
-                                                </td>
-                                                {this.state.permisoUsuario.permisos.evento.includes(
-                                                    "show"
-                                                ) ? (
-                                                    <td className="columna-icono">
-                                                        <div className="text-center">
-                                                            <Link
-                                                                className="mr-2"
-                                                                to={linkShow}
-                                                            >
-                                                                <i
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="Ver"
-                                                                    className="fas fa-eye icono-ver"
-                                                                />
-                                                            </Link>
-                                                            {this.state.permisoUsuario.permisos.evento.includes(
-                                                                "edit"
-                                                            ) ? (
-                                                                <Link
-                                                                    className="mr-2"
-                                                                    to={
-                                                                        linkEdit
-                                                                    }
-                                                                >
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Editar"
-                                                                        className="fas fa-edit icono-ver"
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )}
-                                                            {this.state.permisoUsuario.permisos.evento.includes(
-                                                                "delete"
-                                                            ) ? (
-                                                                <Link className="mr-2">
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Eliminar"
-                                                                        className="fas fa-trash-alt icono-ver"
-                                                                        onClick={ev =>
-                                                                            this.modalDelete(
-                                                                                e._id,
-                                                                                ev
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )}
-                                                            {this.state.permisoUsuario.permisos.evento.includes(
-                                                                "evento"
-                                                            ) ? (
-                                                                <Link
-                                                                    className="mr-2"
-                                                                    to={
-                                                                        linkEvento
-                                                                    }
-                                                                >
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Evento"
-                                                                        className="fas fa-calendar-week icono-ver"
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )}
-                                                        </div>
+                                    {this.state.eventosEmpresa.map(
+                                        (e, index) => {
+                                            console.log(e);
+                                            let linkEdit =
+                                                "/evento/edit/" + e._id;
+                                            let linkShow =
+                                                "/evento/show/" + e._id;
+                                            let linkEvento = "/evento/" + e._id;
+                                            console.log(e);
+                                            console.log(
+                                                "el id del siguiente es este " +
+                                                    e._id
+                                            );
+                                            return (
+                                                <tr key={index} id={e._id}>
+                                                    <td className="text-center">
+                                                        {e.Nombre}
                                                     </td>
-                                                ) : (
-                                                    ""
-                                                )}
-                                            </tr>
-                                        );
-                                    })}
+                                                    <td className="text-center">
+                                                        {e.IDEvento}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.Fecha}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.Pais}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.Activo}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.App}
+                                                    </td>
+                                                    {this.state.permisoUsuario.permisos.evento.includes(
+                                                        "show"
+                                                    ) ? (
+                                                        <td className="columna-icono">
+                                                            <div className="text-center">
+                                                                <Link
+                                                                    className="mr-2"
+                                                                    to={
+                                                                        linkShow
+                                                                    }
+                                                                >
+                                                                    <i
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Ver"
+                                                                        className="fas fa-eye icono-ver"
+                                                                    />
+                                                                </Link>
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "edit"
+                                                                ) ? (
+                                                                    <Link
+                                                                        className="mr-2"
+                                                                        to={
+                                                                            linkEdit
+                                                                        }
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Editar"
+                                                                            className="fas fa-edit icono-ver"
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "delete"
+                                                                ) ? (
+                                                                    <Link className="mr-2">
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Eliminar"
+                                                                            className="fas fa-trash-alt icono-ver"
+                                                                            onClick={ev =>
+                                                                                this.modalDelete(
+                                                                                    e._id,
+                                                                                    ev
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "evento"
+                                                                ) ? (
+                                                                    <Link
+                                                                        className="mr-2"
+                                                                        to={
+                                                                            linkEvento
+                                                                        }
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Evento"
+                                                                            className="fas fa-calendar-week icono-ver"
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                    ) : (
+                                                        ""
+                                                    )}
+                                                </tr>
+                                            );
+                                        }
+                                    )}
                                 </tbody>
                             </table>
 

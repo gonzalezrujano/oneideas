@@ -61,5 +61,6 @@ Route::group(['prefix' => 'biblioteca'], function() {
 Route::group(['prefix' => 'eventos'], function() {
     //rutas de eventos
     Route::get('/{id}', 'EventoController@getEvento');
+    Route::post('/empresa', 'EventoController@getEventosEmpresa');
 });
 
