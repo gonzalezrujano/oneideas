@@ -98,6 +98,20 @@ export default class Add extends React.Component {
         axios.post("api/eventos/add",formData).then(res=>{
             $('button#save-evento').find('i.fa').remove();
             console.log(res);
+            if (res.data.code == 200){
+                console.log("estoy aca")
+                sweetalert(
+                    "Evento agregado correctamente",
+                    "success",
+                    "sweet"
+                );
+                setTimeout(()=>{
+                    this.props.history.push("/empresa/eventos/"+s.idEmpresa);
+                },2000);
+        
+            }else{
+
+            }
         });
     }
 
@@ -195,7 +209,7 @@ export default class Add extends React.Component {
                                         <Link to="/empresas">
                                             Empresa
                                         </Link>{" "}
-                                        /{" "}
+                                        {" "}
                                         <Link
                                             to={`/empresa/eventos/${
                                                 this.state.idEmpresa

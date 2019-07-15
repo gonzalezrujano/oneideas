@@ -61,7 +61,10 @@ Route::group(['prefix' => 'biblioteca'], function() {
 Route::group(['prefix' => 'eventos'], function() {
     //rutas de eventos
     Route::get('/menus','EventoController@getMenuAppInvitado');
+    Route::get('/one/{id}','EventoController@getEventoById');
     Route::post('/add','EventoController@addEvento');
+    Route::post('/delete','EventoController@deleteEvento');
+    Route::post('/edit','EventoController@editEvento');
     Route::get('/{id}', 'EventoController@getEvento');
     Route::post('/empresa', 'EventoController@getEventosEmpresa');
     

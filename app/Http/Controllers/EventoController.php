@@ -840,6 +840,148 @@ class EventoController extends Controller
             }
         }
 
+            //metodo para borrar
+    public function deleteEvento(Request $request){
+
+    
+
+            //capturo el valor del id
+            $input = $request->all();
+            $id = $input['id'];
+
+            //valido que venga el id sino mando un error
+            if($id){
+
+                //ubico el id en la bd
+                $registro = Evento::find($id);
+                $registro->Borrado = true;
+
+                //valido que de verdad sea borrado en caso de que no arrojo un error
+                if($registro->save()){
+
+                    return json_encode(['code' => 200]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        
+
+    }
+
+    public function getEventoById($id){
+        $registro = Evento::find($id);
+
+        if($registro){
+
+            $data['existe'] = true;
+            $data['paises'] = Pais::borrado(false)->get();
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['empresa'] = Empresa::find($registro->Empresa_id);
+            $data['evento'] = $registro;
+            $data['menusapp'] = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
+            $data['menuapp'] = $this->processGetMenuApp($registro->MenuApp);
+
+            return json_encode(['code' => 200,'evento'=>$data]);
+         
+
+        }else{
+            return json_encode(['code' => 500]);
+        }
+
+    }
+
+    public function editEvento(ValidateEvento $request){
+
+            //obtengo todos los datos del formulario
+            $input = $request->all();
+
+            //instancio los datos a editar
+            $registro = Evento::find($input['id-evento']);
+
+            //guardo la imagen en una variable
+            $image = $input['logo'];
+
+            //valido que la imagen este o no vacio, si esta vacia vuelvo a guardar la imagen actual sino la actualizo
+            if($image == 'undefined'){
+                $base64 = $registro->Logo;
+            }else{
+
+                //ubico la ruta de la imagen
+                $path = $image->getRealPath();
+                //obtengo la extension
+                $type = $image->getClientOriginalExtension();
+                //creo un nombre temporal
+                $name = time().'.'.$type;
+                //ruta imagen temporal
+                $pathImgTemporal = public_path('images/'.$name);
+                //proceso la imagen a 200x200
+                $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+                //obtengo la data de la imagen
+                $data = file_get_contents($pathImgTemporal);
+                //convierto a base64
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                //elimino imagen temporal
+                File::delete($pathImgTemporal);
+
+            }
+
+            $ubi = $input['ubicacion'];
+            $ubicacion = 'MANUAL';
+
+            if($ubi == 'g'){
+                $ubicacion = 'GPS';
+            }
+
+            $menusapp = [];
+
+            if($input['menuapp']){
+
+                //proceso los menus
+                $menusapp = $this->processMenuApp($input['menuapp']);
+            }
+
+            $data = [
+                'id'               => $input['id-evento'],
+                'nombre'           => $input['nombre'],
+                'fecha'            => $input['fecha'],
+                'hora'             => $input['hora'],
+                'estatus'          => $input['estatus'],
+                'licencias'        => $input['licencias'],
+                'pais'             => new ObjectID($input['pais']),
+                'latitud'          => $input['latitud'],
+                'longitud'         => $input['longitud'],
+                'ubicacion'        => $ubicacion,
+                'logo'             => $base64
+            ];
+
+            //procedo a guardarlos en la bd
+            $registro = Evento::find($data['id']);
+            $registro->Nombre                    = $data['nombre'];
+            $registro->Fecha                     = $data['fecha'];
+            $registro->Hora                      = $data['hora'];
+            $registro->Activo                    = (boolean) $data['estatus'];
+            $registro->Licencias                 = $data['licencias'];
+            $registro->Pais_id                   = $data['pais'];
+            $registro->Latitud                   = $data['latitud'];
+            $registro->Longitud                  = $data['longitud'];
+            $registro->Ubicacion                 = $data['ubicacion'];
+            $registro->MenuApp                   = $menusapp;
+            $registro->Logo                      = $data['logo'];
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->update()){
+
+                return response()->json(['code' => 200]);
+
+            }else{
+                return response()->json(['code' => 500]);
+            }
+        
+    }
 
     
     

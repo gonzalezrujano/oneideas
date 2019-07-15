@@ -23,7 +23,6 @@ export default class Eventos extends Component {
     }
 
     componentDidMount() {
-        console.log("que es lo que es CRACK");
         axios
             .post("api/eventos/empresa", {
                 idEmpresa: this.state.idEmpresa,
@@ -36,6 +35,56 @@ export default class Eventos extends Component {
                     isLoading: false
                 });
             });
+    }
+
+    modalDelete(id) {
+        Swal.fire({
+            text: "¿Está seguro que desea borrar el evento?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#343a40",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            target: document.getElementById("sweet")
+        }).then(result => {
+            if (result.value) {
+                axios.post("/api/eventos/delete", { id }).then(res => {
+                    if (res.data.code === 200) {
+                        sweetalert(
+                            "Item eliminado correctamente",
+                            "success",
+                            "sweet"
+                        );
+                        $("#" + id)
+                            .closest("tr")
+                            .remove();
+                        axios
+                            .post("api/eventos/empresa", {
+                                idEmpresa: this.state.idEmpresa,
+                                rol: this.state.permisoUsuario.nombre
+                            })
+                            .then(res => {
+                                this.setState({
+                                    eventosEmpresa: res.data.eventos,
+                                    isLoading: false
+                                });
+                            });
+                    } else if (res.data.code === 600) {
+                        sweetalert(
+                            "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                            "error",
+                            "sweet"
+                        );
+                    } else if (res.data.code == 500) {
+                        sweetalert(
+                            "Error al Eliminar. Consulte al Administrador",
+                            "error",
+                            "sweet"
+                        );
+                    }
+                });
+            }
+        });
     }
 
     render() {
@@ -140,15 +189,10 @@ export default class Eventos extends Component {
                                         (e, index) => {
                                             console.log(e);
                                             let linkEdit =
-                                                "/evento/edit/" + e._id;
+                                                "/eventos/edit/" + e._id;
                                             let linkShow =
-                                                "/evento/show/" + e._id;
-                                            let linkEvento = "/evento/" + e._id;
-                                            console.log(e);
-                                            console.log(
-                                                "el id del siguiente es este " +
-                                                    e._id
-                                            );
+                                                "/eventos/show/" + e._id;
+
                                             return (
                                                 <tr key={index} id={e._id}>
                                                     <td className="text-center">
@@ -221,25 +265,6 @@ export default class Eventos extends Component {
                                                                                     ev
                                                                                 )
                                                                             }
-                                                                        />
-                                                                    </Link>
-                                                                ) : (
-                                                                    ""
-                                                                )}
-                                                                {this.state.permisoUsuario.permisos.evento.includes(
-                                                                    "evento"
-                                                                ) ? (
-                                                                    <Link
-                                                                        className="mr-2"
-                                                                        to={
-                                                                            linkEvento
-                                                                        }
-                                                                    >
-                                                                        <i
-                                                                            data-toggle="tooltip"
-                                                                            data-placement="top"
-                                                                            title="Evento"
-                                                                            className="fas fa-calendar-week icono-ver"
                                                                         />
                                                                     </Link>
                                                                 ) : (
