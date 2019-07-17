@@ -19,8 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::group(['prefix' => 'usuarios'], function() {
+    Route::post('/add','UsuarioController@addUsuario');
+    Route::post('/delete','UsuarioController@deleteUsuario');
+    Route::post('/edit','UsuarioController@editUsuario');
+    Route::get('/infoEdit/{id}','UsuarioController@getInfoEdit');
     Route::post('/login', 'LoginController@login');
     Route::get('/','UsuarioController@getUsuarios');
+    Route::get('/selects','UsuarioController@getSelectUsuario');
     Route::get('/{id}', 'UsuarioController@getUsuario');
     Route::get('/permisos/{id}', 'UsuarioController@getPermisosUsuario');
    
@@ -49,6 +54,7 @@ Route::group(['prefix' => 'empresas'], function() {
     Route::get('/paises',"EmpresaController@getPaises");
     Route::post('/delete','EmpresaController@deleteEmpresa');
     Route::post('/update','EmpresaController@updateEmpresa');
+    Route::get('/eventos/{empresa}', 'EmpresaController@getEventosPorEmpresa');
 });
 
 Route::group(['prefix' => 'biblioteca'], function() {

@@ -544,5 +544,12 @@ class EmpresaController extends Controller
             
     
         }
+
+        public function getEventosPorEmpresa($empresa){
+            //cargo los eventos
+            $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
+            //devulevo un json con la data
+            return json_encode($resultado);
+        }
     
 }

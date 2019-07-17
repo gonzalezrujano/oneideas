@@ -42,7 +42,7 @@ export default class Usuarios extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/usuario/delete", { id }).then(res => {
+                axios.post("/api/usuarios/delete", { id }).then(res => {
                     if (res.data.code === 200) {
                         sweetalert(
                             "Item eliminado correctamente",
@@ -81,11 +81,7 @@ export default class Usuarios extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-calendar-week page-header-heading-icon" />
-                                            &nbsp;
-                                            <Link to="/empresas">
-                                                Empresa
-                                            </Link>{" "}
-                                            / Usuarios
+                                            &nbsp; Usuarios
                                         </h1>
                                     </div>
                                 </div>
@@ -116,11 +112,7 @@ export default class Usuarios extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-calendar-week page-header-heading-icon" />
-                                            &nbsp;
-                                            <Link to="/empresas">
-                                                Empresa
-                                            </Link>{" "}
-                                            / Usuarios
+                                            &nbsp; Usuarios
                                         </h1>
                                     </div>
                                 </div>
@@ -128,30 +120,25 @@ export default class Usuarios extends Component {
                         </header>
 
                         <div id="sweet" className="container-fluid">
+                            {this.state.permisoUsuario.permisos.usuario.includes(
+                                "add"
+                            ) ? (
+                                <div className="mb-4">
+                                    <Link
+                                        className="btn-sm btn-dark button-add p-2"
+                                        to={"/usuarios/add/"}
+                                    >
+                                        Agregar Usuario
+                                    </Link>
+                                </div>
+                            ) : (
+                                ""
+                            )}
                             <table
                                 className="table table-hover table-condensed table-dark-theme table-responsive-sm"
                                 id="dt-eventos"
                             >
                                 <thead>
-                                    {this.state.permisoUsuario.permisos.usuario.includes(
-                                        "add"
-                                    ) ? (
-                                        <tr>
-                                            <td>
-                                                <Link
-                                                    className="btn-sm btn-dark button-add p-2"
-                                                    to={
-                                                        "/eventos/add/" +
-                                                        this.state.idEmpresa
-                                                    }
-                                                >
-                                                    Agregar Evento
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        ""
-                                    )}
                                     <tr className="fila-head">
                                         <th className="text-center">NOMBRE</th>
                                         <th className="text-center">
@@ -171,8 +158,10 @@ export default class Usuarios extends Component {
                                 <tbody>
                                     {this.state.usuarios.map((e, index) => {
                                         console.log(e);
-                                        let linkEdit = "/usuario/edit/" + e._id;
-                                        let linkShow = "/usuario/show/" + e._id;
+                                        let linkEdit =
+                                            "/usuarios/edit/" + e._id;
+                                        let linkShow =
+                                            "/usuarios/show/" + e._id;
 
                                         return (
                                             <tr key={index} id={e._id}>
