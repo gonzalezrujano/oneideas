@@ -318,4 +318,42 @@ class UsuarioController extends Controller
         return json_encode(['code' => 300, 'data' => ""]);
     }
 
+    public function getUsuarios(){
+
+        //cargo los usuarios
+        $usuarios = Usuario::borrado(false)->get();
+
+        $usu = [];
+
+        //verifico que exista data sino lo devulevo vacio
+        if($usuarios){
+
+            foreach ($usuarios as $u) {
+
+                if($u->Evento_id){
+                    $evento = Evento::find($u->Evento_id)->Nombre;
+                }else{
+                    $evento = 'N/A';
+                }
+
+                //armo la data que se muestra en la tabla de inicio de la pagina de usuarios
+                $usu[] = [
+                    '_id'         => $u->_id,
+                    'Nombre'      => $u->Nombre,
+                    'Apellido'    => $u->Apellido,
+                    'Correo'      => $u->Correo,
+                    'Empresa'     => Empresa::find($u->Empresa_id)->Nombre,
+                    'Evento'      => $evento,
+                    'RolID'       => (String)$u->Rol_id,
+                    'Rol'         => Rol::find($u->Rol_id)->Nombre,
+                    'Activo'      => $u->Activo
+                ];
+            }
+
+            return json_encode(['code' => 200, 'data' => $usu]);
+        }else{
+            return json_encode(['code' => 400, 'data' => $rol]);
+        }
+    }
+
 }
