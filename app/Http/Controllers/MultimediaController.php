@@ -87,6 +87,7 @@ class MultimediaController extends Controller
 
         $evento = $input['evento'];
         $tool   = trim(ucwords($input['herramienta']));
+        
 
         $herra = Herramienta::borrado(false)->activo(true)->where('Nombre', $tool)->first();
 
