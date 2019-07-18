@@ -983,6 +983,49 @@ class EventoController extends Controller
         
     }
 
+    //metodo para cambiar la visualizacion o estado
+    public function addCola(Request $request){
+
+
+            //capturo el valor del id
+            $input = $request->all();
+            $evento = $input['evento'];
+            $title = $input['title'];
+            $estado = $input['estado'];
+            $inicio = $input['inicio'];
+            $fin = $input['fin'];
+            $parametro = $input['parametro'];
+
+            //valido que venga el id sino mando un error
+            if($evento){
+
+                //ubico el id en la bd
+                $evento = Evento::find($evento);
+
+                $envio = new Envio;
+                $envio->Evento = $input['evento'];
+                $envio->Tipo = $title;
+                $envio->Estado = $estado;
+                $envio->Inicio = $inicio;
+                $envio->Fin = $fin;
+                $envio->Parametro = $parametro;
+
+
+                if($envio->save()){                   
+                    $envios = Envio::get();
+                    return json_encode(['code' => 200,'envios'=>$envios]);
+                }else{
+                    return json_encode(['code' => 500]);
+                }
+
+            }else{
+
+                return json_encode(['code' => 600]);
+            }
+        
+
+    }
+
     
     
 

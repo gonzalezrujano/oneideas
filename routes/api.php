@@ -36,6 +36,7 @@ Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
     Route::post('/remove-envios', 'EventoController@quitarEnvios');
+    Route::post('/cola/add','EventoController@addCola');
 });
 
 
