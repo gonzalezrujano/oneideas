@@ -13,8 +13,8 @@ export default class AddEmpresas extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresasTabla: JSON.parse(localStorage.getItem("empresasTabla")),
-            paises : JSON.parse(localStorage.getItem("paises")),
-            estados : JSON.parse(localStorage.getItem("estados")),
+            paises : [],
+            estados : [],
             paisSeleccionado: "",
             estadoSeleccionado: "",
             identificacion:"",
@@ -167,7 +167,8 @@ export default class AddEmpresas extends Component {
 
 
     render() {
-        if (this.state.isLoading || !JSON.parse(localStorage.getItem("paises")) || !JSON.parse(localStorage.getItem("estados"))) {
+        console.log(this.state)
+        if (this.state.isLoading ) {
             this.getPaises();
             return (
                 <div>
