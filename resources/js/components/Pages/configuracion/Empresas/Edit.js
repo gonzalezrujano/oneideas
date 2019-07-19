@@ -36,17 +36,18 @@ export default class AddEmpresas extends Component {
         axios.get('api/empresas/paises/').then(res=>{
             let r = res.data.data
             console.log("hola que abajo")
-            console.log(res)
+            if(res.data.code == "200"){
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
                 paises:r.paises,
                 estados: r.estados
             })
+            }
         })
     }
 
-    async componentDidMount() {
+     componentDidMount() {
         console.log(this.props.match.params);
         let idEmpresa = this.props.match.params.id;
 
