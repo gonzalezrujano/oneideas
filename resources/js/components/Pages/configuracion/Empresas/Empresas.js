@@ -24,7 +24,7 @@ export default class Empresas extends Component {
 
     getEmpresasTabla() {
         axios
-            .post("api/empresas/tabla/", {
+            .post("api/empresas/tabla", {
                 rol: this.state.permisoUsuario.nombre,
                 id: this.state.usuario._id
             })
@@ -52,7 +52,7 @@ export default class Empresas extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/empresas/delete/", { id: id }).then(res => {
+                axios.post("/api/empresas/delete", { id: id }).then(res => {
                     console.log(res);
                     let r = res.data;
                     if (r.code === 200) {
@@ -66,7 +66,7 @@ export default class Empresas extends Component {
                             .closest("tr")
                             .remove();
                         axios
-                            .post("api/empresas/tabla/", {
+                            .post("api/empresas/tabla", {
                                 rol: this.state.permisoUsuario.nombre,
                                 id: this.state.usuario._id
                             })
