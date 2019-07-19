@@ -42,12 +42,19 @@ export default class AddEmpresas extends Component {
                 paises:r.paises,
                 estados: r.estados
             })
+            return ( {
+                paises:r.paises,
+                estados: r.estados
+            });
         })
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         console.log(this.props.match.params);
         let idEmpresa = this.props.match.params.id;
+        let prueba = await this.getPaises();
+        console.log("abajo es prueba")
+        console.log(prueba)
 
         axios.get(`api/empresas/${idEmpresa}`).then(res => {
             console.log(res)
