@@ -36,6 +36,19 @@ export default class Edit extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogo = this.handleLogo.bind(this);
         this.handleChangeMulti = this.handleChangeMulti.bind(this);
+        this.getPaises = this.getPaises.bind(this);
+    }
+
+    getPaises(){
+        axios.get('api/empresas/paises').then(res=>{
+            let r = res.data.data
+            localStorage.setItem("paises", JSON.stringify(r.paises));
+            localStorage.setItem("estados", JSON.stringify(r.estados));
+            this.setState({
+                paises:r.paises,
+                estados: r.estados
+            })
+        })
     }
 
     componentDidMount() {
@@ -217,7 +230,8 @@ export default class Edit extends React.Component {
 
 
     render() {
-        if (this.state.isLoading) {
+        if (this.state.isLoading || !JSON.parse(localStorage.getItem("paises")) || !JSON.parse(localStorage.getItem("estados"))) {
+            this.getPaises();
             return (
                 <div>
                     <Menu usuario={this.state.user} />

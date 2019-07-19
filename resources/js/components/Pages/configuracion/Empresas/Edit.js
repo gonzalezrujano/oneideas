@@ -29,6 +29,7 @@ export default class AddEmpresas extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.getPaises = this.getPaises.bind(this);
     }
 
     getPaises(){
@@ -38,8 +39,7 @@ export default class AddEmpresas extends Component {
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
                 paises:r.paises,
-                estados: r.estados,
-                isLoading:false
+                estados: r.estados
             })
         })
     }
@@ -164,7 +164,8 @@ export default class AddEmpresas extends Component {
 
 
     render() {
-        if (this.state.isLoading) {
+        if (this.state.isLoading || !JSON.parse(localStorage.getItem("paises")) || !JSON.parse(localStorage.getItem("estados"))) {
+            this.getPaises();
             return (
                 <div>
                     <Menu usuario={this.state.user} />
