@@ -11,6 +11,18 @@ import Multimedia from "../Pages/Multimedia";
 import Biblioteca from "../Pages/configuracion/Biblioteca/Biblioteca";
 import ViewEventoBiblioteca from "../Pages/configuracion/Biblioteca/Show";
 import AddEventoBiblioteca from "../Pages/configuracion/Biblioteca/Add";
+import Empresas from "../Pages/configuracion/Empresas/Empresas";
+import AddEmpresa from "../Pages/configuracion/Empresas/Add";
+import ShowEmpresas from "../Pages/configuracion/Empresas/Show";
+import EditEmpresas from "../Pages/configuracion/Empresas/Edit";
+import Eventos from "../Pages/configuracion/Eventos/Eventos";
+import EventosAdd from "../Pages/configuracion/Eventos/Add";
+import EventoEdit from "../Pages/configuracion/Eventos/Edit";
+import EventoShow from "../Pages/configuracion/Eventos/Show";
+import Usuarios from "../Pages/configuracion/Usuarios/Usuarios";
+import UsuariosAdd from "../Pages/configuracion/Usuarios/Add";
+import UsuariosEdit from "../Pages/configuracion/Usuarios/Edit";
+import UsuariosShow from "../Pages/configuracion/Usuarios/Show";
 
 function App() {
     return (
@@ -31,6 +43,34 @@ function App() {
                     exact
                     path="/biblioteca/evento/add-file/:id"
                     component={AddEventoBiblioteca}
+                />
+                <Route exact path="/empresas" component={Empresas} />
+                <Route exact path="/empresas/add" component={AddEmpresa} />
+                <Route
+                    exact
+                    path="/empresas/show/:id"
+                    component={ShowEmpresas}
+                />
+                <Route
+                    exact
+                    path="/empresas/edit/:id"
+                    component={EditEmpresas}
+                />
+                <Route exact path="/empresa/eventos/:id" component={Eventos} />
+                <Route exact path="/eventos/add/:id" component={EventosAdd} />
+                <Route exact path="/eventos/edit/:id" component={EventoEdit} />
+                <Route exact path="/eventos/show/:id" component={EventoShow} />
+                <Route exact path="/usuarios" component={Usuarios} />
+                <Route exact path="/usuarios/add" component={UsuariosAdd} />
+                <Route
+                    exact
+                    path="/usuarios/edit/:id"
+                    component={UsuariosEdit}
+                />
+                <Route
+                    exact
+                    path="/usuarios/show/:id"
+                    component={UsuariosShow}
                 />
             </Switch>
         </BrowserRouter>

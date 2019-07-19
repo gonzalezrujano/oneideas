@@ -19,9 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::group(['prefix' => 'usuarios'], function() {
+    Route::post('/add','UsuarioController@addUsuario');
+    Route::post('/delete','UsuarioController@deleteUsuario');
+    Route::post('/edit','UsuarioController@editUsuario');
+    Route::get('/infoEdit/{id}','UsuarioController@getInfoEdit');
     Route::post('/login', 'LoginController@login');
+    Route::get('/','UsuarioController@getUsuarios');
+    Route::get('/selects','UsuarioController@getSelectUsuario');
     Route::get('/{id}', 'UsuarioController@getUsuario');
     Route::get('/permisos/{id}', 'UsuarioController@getPermisosUsuario');
+   
 });
 
 
@@ -29,7 +36,7 @@ Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
     Route::post('/remove-envios', 'EventoController@quitarEnvios');
-    Route::get('/{id}', 'EventoController@getEvento');
+    Route::post('/cola/add','EventoController@addCola');
 });
 
 Route::group(['prefix' => 'multimedia'], function() {
@@ -41,6 +48,13 @@ Route::group(['prefix' => 'multimedia'], function() {
 Route::group(['prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
+    Route::post('/add','EmpresaController@addEmpresa');
+    Route::get('/{id}','EmpresaController@getEmpresa');
+    Route::post('/tabla',"EmpresaController@getEmpresasTabla");
+    Route::get('/paises',"EmpresaController@getPaises");
+    Route::post('/delete','EmpresaController@deleteEmpresa');
+    Route::post('/update','EmpresaController@updateEmpresa');
+    Route::get('/eventos/{empresa}', 'EmpresaController@getEventosPorEmpresa');
 });
 
 Route::group(['prefix' => 'biblioteca'], function() {
@@ -62,7 +76,18 @@ Route::group(['prefix' => 'agendas'], function() {
     Route::post('/delete', 'AgendaController@ajaxDelete');
     Route::post('/events', 'AgendaController@getEvents');
     Route::post('/datatable-get-agendas/{id}/{fecha}', 'AgendaController@datatable_get_agendas');
+});
 
+Route::group(['prefix' => 'eventos'], function() {
+    //rutas de eventos
+    Route::get('/menus','EventoController@getMenuAppInvitado');
+    Route::get('/one/{id}','EventoController@getEventoById');
+    Route::post('/add','EventoController@addEvento');
+    Route::post('/delete','EventoController@deleteEvento');
+    Route::post('/edit','EventoController@editEvento');
+    Route::get('/{id}', 'EventoController@getEvento');
+    Route::post('/empresa', 'EventoController@getEventosEmpresa');
+    
 });
 
 

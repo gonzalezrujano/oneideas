@@ -264,4 +264,221 @@ class EmpresaController extends Controller
             'empresas' => $empresas
         ]);
     }
+
+    public function getEmpresasTabla(Request $request){
+        //acorde al tipo de rol cargo empresas
+        $input = $request->all();
+            //Guardo el rol del usuario logeado
+        $rol = $input['rol'];
+            //guardo su id independiente de su rol
+        $id = $input['id'];
+
+        if($rol == 'ADMINISTRADOR'){
+
+            $emp = Empresa::borrado(false)->get();
+
+        }else if($rol == 'EMPRESA'){
+
+            $emp = Empresa::borrado(false)->where('_id',  $id  )->get();
+
+        }else if($rol == 'EVENTO'){
+
+            $emp = Empresa::borrado(false)->where('_id', $id  )->get();
+
+        }
+
+        $empresas = [];
+
+        //verifico que exista data sino lo devulevo vacio
+        if($emp){
+
+            foreach ($emp as $e) {
+
+                //armo la data que se muestra en la tabla de inicio de la pagina de empresas
+                $empresas[] = [
+                    '_id'    => $e->_id,
+                    'Cuit_rut' => strtoupper($e->Cuit_rut),
+                    'Nombre' => $e->Nombre,
+                    'Correo' => $e->Correo,
+                    'Telefono'  => $e->Telefono,
+                    'Pais' => Pais::find($e->Pais_id)->Nombre,
+                    'Activo' => $e->Activo
+                ];
+            }
+
+        }
+
+        return $empresas;
+    }
+    
+    public function deleteEmpresa(Request $request){
+        //capturo el valor del id
+        $input = $request->all();
+        $id = $input['id'];
+
+        //valido que venga el id sino mando un error
+        if($id){
+            //ubico el id en la bd
+            $registro = Empresa::find($id);
+            $registro->Borrado = true;
+
+            if($registro->save()){
+                return json_encode(['code' => 200]);
+            }else{
+                return json_encode(['code' => 500]);
+            }
+        }
+    }
+
+    public function getPaises(){
+            $select['paises'] = Pais::borrado(false)->get();
+            $select['estados'] = Estado::borrado(false)->get();
+   
+            return json_encode(['code'=>200,'data'=> $select]);
+        
+    }
+
+    public function addEmpresa(ValidateEmpresa $request){
+        $input = $request->all();
+
+            //guardo la imagen en una variable
+            $image = $input['logo'];
+            //ubico la ruta de la imagen
+            $path = $image->getRealPath();
+            //obtengo la extension
+            $type = $image->getClientOriginalExtension();
+            //creo un nombre temporal
+            $name = time().'.'.$type;
+            //ruta imagen temporal
+            $pathImgTemporal = public_path('images/'.$name);
+            //proceso la imagen a 200x200
+            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+            //obtengo la data de la imagen
+            $data = file_get_contents($pathImgTemporal);
+            //convierto a base64
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            //elimino imagen temporal
+            File::delete($pathImgTemporal);
+
+
+            //capturo los datos y los acomodo en un arreglo
+            $data = [
+                'identificacion'   => strtoupper($input['identificacion']),
+                'nombre'           => $input['nombre'],
+                'correo'           => $input['correo'],
+                'telefono'         => $input['telefono'],
+                'pais'             => new ObjectID($input['pais']),
+                'estatus'          => (boolean) $input['estatus'],
+                'logo'             => $base64,
+                'borrado'          => false
+            ];
+
+            //procedo a guardarlos en la bd
+            $registro                            = new Empresa;
+            $registro->Cuit_rut                  = $data['identificacion'];
+            $registro->Nombre                    = $data['nombre'];
+            $registro->Correo                    = $data['correo'];
+            $registro->Telefono                  = $data['telefono'];
+            $registro->Pais_id                   = $data['pais'];
+            $registro->Activo                    = $data['estatus'];
+            $registro->Logo                      = $data['logo'];
+            $registro->Borrado                   = $data['borrado'];
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->save()){
+                return response()->json(['code' => 200]);
+            }else{
+                return response()->json(['code' => 500]);
+            }
+    }
+
+    public function getEmpresa($id){
+        $data['existe'] = false;
+        $registro = Empresa::find($id);
+        if($registro){
+            $data['existe'] = true;
+            $data['paises'] = Pais::borrado(false)->get();
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['empresa'] = $registro;
+
+            return response()->json(['code' => 200,'data'=>$data]);
+        }else{
+            return response()->json(['code' => 500]);
+        }
+
+        
+    }
+
+        //metodo para actualizar las empresas
+        public function updateEmpresa(ValidateEmpresa $request){
+        //obtengo todos los datos del formulario
+        $input = $request->all();
+
+        //instancio los datos de la empresa a editar
+        $registro = Empresa::find($input['emp-id']);
+
+        //guardo la imagen en una variable
+        $image = $input['logo'];
+
+        //valido que la imagen este o no vacio, si esta vacia vuelvo a guardar la imagen actual sino la actualizo
+        if($image == 'undefined'){
+            $base64 = $registro->Logo;
+        }else{
+
+            //ubico la ruta de la imagen
+            $path = $image->getRealPath();
+            //obtengo la extension
+            $type = $image->getClientOriginalExtension();
+            //creo un nombre temporal
+            $name = time().'.'.$type;
+            //ruta imagen temporal
+            $pathImgTemporal = public_path('images/'.$name);
+            //proceso la imagen a 200x200
+            $img = Image::make($path)->crop( (int)round($input['w']),  (int)round($input['h']),  (int)round($input['x']),  (int)round($input['y']) )->fit(200,200)->save($pathImgTemporal);
+            //obtengo la data de la imagen
+            $data = file_get_contents($pathImgTemporal);
+            //convierto a base64
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            //elimino imagen temporal
+            File::delete($pathImgTemporal);
+
+        }
+
+        //capturo los datos y los acomodo en un arreglo
+        $data = [
+            'identificacion'   => strtoupper($input['identificacion']),
+            'nombre'           => $input['nombre'],
+            'correo'           => $input['correo'],
+            'telefono'         => $input['telefono'],
+            'pais'             => new ObjectID($input['pais']),
+            'estatus'          => $input['estatus'] == 0 ? false : true,
+            'logo'             => $base64
+        ];
+
+        //procedo a guardarlos en la bd
+        $registro->Cuit_rut                  = $data['identificacion'];
+        $registro->Nombre                    = $data['nombre'];
+        $registro->Correo                    = $data['correo'];
+        $registro->Telefono                  = $data['telefono'];
+        $registro->Pais_id                   = $data['pais'];
+        $registro->Activo                    = (boolean) $data['estatus'];
+        $registro->Logo                      = $data['logo'];
+
+        //verifico si fue exitoso el insert en la bd
+        if($registro->save()){
+            return response()->json(['code' => 200]);
+        }else{
+            return response()->json(['code' => 500]);
+        }
+            
+    
+        }
+
+        public function getEventosPorEmpresa($empresa){
+            //cargo los eventos
+            $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
+            //devulevo un json con la data
+            return json_encode($resultado);
+        }
+    
 }

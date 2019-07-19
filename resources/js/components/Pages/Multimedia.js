@@ -58,7 +58,133 @@ export default class Multimedia extends Component {
         this.handleThemeToggle2 = this.handleThemeToggle2.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
+        /*this.onConnect = this.onConnect.bind(this);
+        this.MQTTconnect = this.MQTTconnect.bind(this);*/
+        this.iniciarMQTT();
+        
     }
+
+    iniciarMQTT(){
+        var reconnectTimeout = 2000;
+        var host="mqtt.oneshow.com.ar"; //change this
+        var port=11344;
+        
+        function onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+    
+        console.log("Connected ");
+        //mqtt.subscribe("sensor1");
+        var message = new Paho.MQTT.Message("Hello World");
+        message.destinationName = "sensor1";
+        window.mqttCliente.send(message);
+      }
+      function MQTTconnect() {
+        console.log("connecting to "+ host +" "+ port);
+        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
+        //document.write("connecting to "+ host);
+        var options = {
+            timeout: 3,
+            onSuccess: onConnect,
+            useSSL:true
+         };
+         
+        window.mqttCliente.connect(options); //connect
+        }
+     
+MQTTconnect();
+
+    }
+    enviarComando(fechainicio,fechafin){
+       
+         var reconnectTimeout = 2000;
+        var host="mqtt.oneshow.com.ar"; //change this
+        var port=11344;
+        var self=this;
+        var envio=false;
+        function onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+    
+        console.log("Connected ");
+        var titleTool=self.state.titleTool;
+        // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
+        //message.destinationName = "/empresa/evento/Multimedia";
+       // window.mqttCliente.send(message);
+       // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
+        //message.destinationName = "sampletopic";
+        //window.mqttCliente.send(message);
+        if(self.state.hora){
+          var h = self.state.hora.getHours();
+          var m = self.state.hora.getMinutes();
+          var s = self.state.hora.getSeconds();
+          fechainicio=h+":"+m+":"+s;
+        }
+        if(self.state.hora2){
+          var h2 = self.state.hora2.getHours();
+          var m2 = self.state.hora2.getMinutes();
+          var s2 = self.state.hora2.getSeconds();
+          fechafin=h2+":"+m2+":"+s2;
+        }
+        var evento=self.state.evento.split("_")[0];
+        var topic="/"+self.state.empresa+"/"+evento;
+
+        if(fechainicio==""||fechainicio==undefined){
+            fechainicio=moment().format("hh:mm:ss");
+        }
+        if(fechafin==""||fechafin==undefined){
+            fechafin="99:99:99";
+        }
+        if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
+                
+                var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
+                message2.destinationName = topic;
+                window.mqttCliente.send(message2);
+                envio=true;
+        }
+        if(titleTool=='flash'){
+        
+                var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
+                message2.destinationName = topic;
+                window.mqttCliente.send(message2);
+                envio=true;
+        }
+        if(titleTool=='colores'){
+            if(self.state.color!=''){
+                var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
+                message2.destinationName = topic;
+                window.mqttCliente.send(message2);
+                envio=true;
+            }else{
+                swal.fire({
+                            title: '<i class="fas fa-exclamation-circle"></i>',
+                            text: 'Seleccione el color',
+                            confirmButtonColor: '#343a40',
+                            confirmButtonText: 'Ok',
+                            target: document.getElementById('sweet')
+                        });
+            }
+        }
+        if(envio){
+            self.ponerCola('ejecucion',fechainicio,fechafin);
+        }
+      }
+      function MQTTconnect() {
+        console.log("connecting to "+ host +" "+ port);
+        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
+        //document.write("connecting to "+ host);
+        var options = {
+            timeout: 3,
+            onSuccess: onConnect,
+            useSSL:true
+         };
+         
+        window.mqttCliente.connect(options); //connect
+        }
+     
+MQTTconnect();
+    }
+
+
+
 
     getEventos() {
         console.log(this.state.usuario._id);
@@ -103,94 +229,6 @@ export default class Multimedia extends Component {
             .catch(function(error) {});
     }
 
-    enviarComando(fechainicio,fechafin){
-       
-       var reconnectTimeout = 2000;
-       var host="mqtt.oneshow.com.ar"; //change this
-       var port=11344;
-       var self=this;
-       var envio=false;
-       function onConnect() {
-     // Once a connection has been made, make a subscription and send a message.
-   
-       console.log("Connected ");
-       var titleTool=self.state.titleTool;
-       // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
-       //message.destinationName = "/empresa/evento/Multimedia";
-      // window.mqttCliente.send(message);
-      // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
-       //message.destinationName = "sampletopic";
-       //window.mqttCliente.send(message);
-       if(self.state.hora){
-         var h = self.state.hora.getHours();
-         var m = self.state.hora.getMinutes();
-         var s = self.state.hora.getSeconds();
-         fechainicio=h+":"+m+":"+s;
-       }
-       if(self.state.hora2){
-         var h2 = self.state.hora2.getHours();
-         var m2 = self.state.hora2.getMinutes();
-         var s2 = self.state.hora2.getSeconds();
-         fechafin=h2+":"+m2+":"+s2;
-       }
-       var evento=self.state.evento.split("_")[0];
-       var topic="/"+self.state.empresa+"/"+evento;
-
-       if(fechainicio==""||fechainicio==undefined){
-           fechainicio=moment().format("hh:mm:ss");
-       }
-       if(fechafin==""||fechafin==undefined){
-           fechafin="99:99:99";
-       }
-       if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-               
-               var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
-               message2.destinationName = topic;
-               window.mqttCliente.send(message2);
-               envio=true;
-       }
-       if(titleTool=='flash'){
-       
-               var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
-               message2.destinationName = topic;
-               window.mqttCliente.send(message2);
-               envio=true;
-       }
-       if(titleTool=='colores'){
-           if(self.state.color!=''){
-               var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
-               message2.destinationName = topic;
-               window.mqttCliente.send(message2);
-               envio=true;
-           }else{
-               swal.fire({
-                           title: '<i class="fas fa-exclamation-circle"></i>',
-                           text: 'Seleccione el color',
-                           confirmButtonColor: '#343a40',
-                           confirmButtonText: 'Ok',
-                           target: document.getElementById('sweet')
-                       });
-           }
-       }
-       if(envio){
-           self.ponerCola('ejecucion',fechainicio,fechafin);
-       }
-     }
-        function MQTTconnect() {
-        console.log("connecting to "+ host +" "+ port);
-        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
-        //document.write("connecting to "+ host);
-        var options = {
-            timeout: 3,
-            onSuccess: onConnect,
-            useSSL:true
-            };
-            
-        window.mqttCliente.connect(options); //connect
-        }
-        
-        MQTTconnect();
-   }
 
 
     enviarComandoQuitar(title,parametro,fechainicio,fechafin){
@@ -356,6 +394,7 @@ export default class Multimedia extends Component {
        evento=evento.split("_")[0];
        axios.post('/api/multimedia/action-tool', {evento, herramienta} )
            .then(res => {
+               console.log(res)
                if(res){
 
                    let r = res.data;
@@ -504,26 +543,20 @@ export default class Multimedia extends Component {
         var momento = new Date(yyyy+'-'+mm+'-'+dd+' '+fin+window.app.gtm);
 
         setTimeout(self.statusEnvios, momento.getTime()-(new Date()).getTime());
-        axios.post('/ajax-set-envios', {evento,title,estado,inicio,fin,parametro} )
+        axios.post('/api/eventos/cola/add', {evento,title,estado,inicio,fin,parametro} )
             .then(res => {
                 if(res){
-
                     let r = res.data;
-
                     if(r.code === 200){
-
                         this.setState({
                             envios: r.envios,
                         });
                         this.getEnvios();
-
                     }else if(r.code === 500){
-
                         console.log(r.msj);
                         this.setState({
                             multimedias: [],
                         });
-
                     }
 
                 }

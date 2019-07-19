@@ -226,10 +226,10 @@ export default class Menu extends Component {
                                         {/*@if(Auth::user()->hasPermission('empresa', 'show'))*/}
                                         {permisos.empresa.includes("show") ? (
                                             <li className="sidebar-nav-link">
-                                                <a href="{{ route('configuracion.empresa') }}">
+                                                <Link to="/empresas">
                                                     <i className="fas fa-industry sidebar-nav-link-logo" />{" "}
                                                     Empresas
-                                                </a>
+                                                </Link>
                                             </li>
                                         ) : (
                                             ""
@@ -265,10 +265,10 @@ export default class Menu extends Component {
                                         {/*@if(Auth::user()->hasPermission('usuario', 'show'))*/}
                                         {permisos.usuario.includes("show") ? (
                                             <li className="sidebar-nav-link">
-                                                <a href="{{ route('configuracion.usuario') }}">
+                                                <Link to="/usuarios">
                                                     <i className="fas fa-user-cog sidebar-nav-link-logo" />{" "}
                                                     Usuarios
-                                                </a>
+                                                </Link>
                                             </li>
                                         ) : (
                                             ""
