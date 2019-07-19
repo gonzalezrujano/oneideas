@@ -30,6 +30,12 @@ export default class Empresas extends Component {
             })
             .then(res => {
                 console.log("esta es la respuesta");
+                console.log(
+                    "le envie " +
+                        this.state.permisoUsuario.nombre +
+                        " " +
+                        this.state.usuario._id
+                );
                 console.log(res);
                 localStorage.setItem("empresasTabla", JSON.stringify(res.data));
                 this.setState({
