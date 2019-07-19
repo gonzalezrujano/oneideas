@@ -101,6 +101,7 @@ export default class Empresas extends Component {
             this.getEmpresasTabla();
         } else {
             console.log("esta en local storage");
+            console.log(this.state.empresasTabla);
             this.state.isLoading = false;
         }
         console.log(this.state.empresasTabla);
