@@ -35,6 +35,7 @@ export default class AddEmpresas extends Component {
     getPaises(){
         axios.get('api/empresas/paises/').then(res=>{
             let r = res.data.data
+            console.log("hola que abajo")
             console.log(res)
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
@@ -42,19 +43,12 @@ export default class AddEmpresas extends Component {
                 paises:r.paises,
                 estados: r.estados
             })
-            return ( {
-                paises:r.paises,
-                estados: r.estados
-            });
         })
     }
 
     async componentDidMount() {
         console.log(this.props.match.params);
         let idEmpresa = this.props.match.params.id;
-        let prueba = await this.getPaises();
-        console.log("abajo es prueba")
-        console.log(prueba)
 
         axios.get(`api/empresas/${idEmpresa}`).then(res => {
             console.log(res)
