@@ -123,7 +123,7 @@ export default class AddEmpresas extends Component {
                 }).then((result) => {
                     if(result.value){
                         axios
-                        .post("api/empresas/tabla/", {
+                        .post("api/empresas/tabla", {
                             rol: this.state.permisoUsuario.nombre,
                             id: this.state.usuario._id
                         })
