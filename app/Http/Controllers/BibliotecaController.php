@@ -189,10 +189,7 @@ class BibliotecaController extends Controller
     }
 
     //metodo para borrar
-
-    public function ajaxDelete(Request $request){
-        //verifico que la respuesta venga por ajax
-        if($request->ajax()){
+    public function deleteFile(Request $request){
             //capturo el valor del id
             $input = $request->all();
             $id = $input['id'];
@@ -208,8 +205,8 @@ class BibliotecaController extends Controller
                 return json_encode(['code' => 500]);
             }
             return json_encode(['code' => 600]);
-        }
     }
+    
 
     //metodo para mandar la data de los eventos al datatables
     public function getBibliotecasRol(Request $request){
