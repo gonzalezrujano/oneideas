@@ -41,6 +41,7 @@ export default class Biblioteca extends Component {
             })
             .then(res => {
                 localStorage.setItem("eventos", JSON.stringify(res.data));
+                this.getEmpresas();
                 this.setState({
                     eventos: res.data
                 });
@@ -53,7 +54,6 @@ export default class Biblioteca extends Component {
             !JSON.parse(localStorage.getItem("eventos"))
         ) {
             console.log("no esta en local storage");
-            this.getEmpresas();
             this.getDataTables();
         } else {
             console.log("esta en local storage");
