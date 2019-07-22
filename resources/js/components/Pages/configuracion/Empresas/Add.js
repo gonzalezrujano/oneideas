@@ -15,8 +15,8 @@ export default class AddEmpresas extends Component {
             empresasTabla: JSON.parse(localStorage.getItem("empresasTabla")),
             paises : JSON.parse(localStorage.getItem("paises")),
             estados : JSON.parse(localStorage.getItem("estados")),
-            paisSeleccionado: JSON.parse(localStorage.getItem("paises"))[0]._id,
-            estadoSeleccionado: JSON.parse(localStorage.getItem("estados"))[0]._id,
+            paisSeleccionado: "",
+            estadoSeleccionado: "",
             identificacion:"",
             nombre:"",
             telefono:"",
@@ -39,6 +39,8 @@ export default class AddEmpresas extends Component {
             this.setState({
                 paises:r.paises,
                 estados: r.estados,
+                paisSeleccionado:r.paises[0]._id,
+                estadoSeleccionado: r.estados[0]._id,
                 isLoading:false
             })
         })
