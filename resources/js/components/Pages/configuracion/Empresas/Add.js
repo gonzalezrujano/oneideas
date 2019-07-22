@@ -34,7 +34,7 @@ export default class AddEmpresas extends Component {
     getPaises(){
         axios.get('api/empresas/paises').then(res=>{
             let r = res.data.data
-            console.log(r);
+            console.log(res)
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
