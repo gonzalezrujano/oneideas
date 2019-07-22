@@ -38,7 +38,7 @@ export default class Add extends React.Component {
 
     getPaises(){
         axios.get('api/empresas/paises').then(res=>{
-            let r = res.data.data
+            let r = res.data
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
