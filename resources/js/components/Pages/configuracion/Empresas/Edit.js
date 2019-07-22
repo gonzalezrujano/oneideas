@@ -146,11 +146,12 @@ export default class AddEmpresas extends Component {
                 }).then((result) => {
                     if(result.value){
                         axios
-                        .post("api/empresas/tabla/", {
+                        .post("api/empresas/tabla", {
                             rol: this.state.permisoUsuario.nombre,
                             id: this.state.usuario._id
                         })
                         .then(res => {
+                            console.log(res);
                             localStorage.setItem("empresasTabla", JSON.stringify(res.data));
                             this.props.history.push("/empresas");
                         });
