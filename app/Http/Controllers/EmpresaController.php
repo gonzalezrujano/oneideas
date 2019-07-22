@@ -331,9 +331,14 @@ class EmpresaController extends Controller
     }
 
     public function getPaises(){
-            $select['paises'] = Pais::borrado(false)->get();
-            $select['estados'] = Estado::borrado(false)->get();
-            return json_encode(['code'=>200,'data'=> $select]);
+        $pais = Pais::borrado(false)->get();
+        $estatus = Estado::borrado(false)->get();
+        //devuelvo un json con la data
+        return response()->json([
+            'code' => 200,
+            'paises' => $pais,
+            'estados' => $estatus
+        ]);
     }
 
     public function addEmpresa(ValidateEmpresa $request){
