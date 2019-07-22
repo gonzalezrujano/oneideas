@@ -48,6 +48,32 @@ export default class Add extends React.Component {
         })
     }
 
+    infoForm(){
+        console.log("estoy en infoform")
+        var optionSelectMultiple = {
+            placeholder: 'Seleccione',
+            selectAllText: 'Todos',
+            allSelected: 'Todos',
+            countSelected: '# de % opciones'
+        };
+        console.log($("#menuapp"))
+        $('#menuapp').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.menuAppInvitados);
+        $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
+        $('#fecha').datetimepicker({
+            format: 'DD/MM/YYYY',
+            startDate: this.state.fecha,
+            minDate: new Date()
+        });
+
+        $('#hora').datetimepicker({
+            format: 'LT'
+        });
+
+        $('#div-add-emp-img').hide();
+        console.log("estoy al final")
+
+    }
+
     componentDidMount() {
         axios
             .get("api/eventos/menus")
@@ -57,6 +83,7 @@ export default class Add extends React.Component {
                     menuAppInvitados: res.data.data,
                     isLoading: false
                 });
+                this.infoForm();
             });
     }
 
