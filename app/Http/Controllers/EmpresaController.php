@@ -330,17 +330,6 @@ class EmpresaController extends Controller
         }
     }
 
-    public function getPaises(){
-        $pais = Pais::borrado(false)->get();
-        $estatus = Estado::borrado(false)->get();
-        //devuelvo un json con la data
-        return response()->json([
-            'code' => 200,
-            'paises' => $pais,
-            'estados' => $estatus
-        ]);
-    }
-
     public function addEmpresa(ValidateEmpresa $request){
         $input = $request->all();
 
@@ -482,6 +471,17 @@ class EmpresaController extends Controller
             $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
             //devulevo un json con la data
             return json_encode($resultado);
+        }
+
+        public function getPaises(){
+            $pais = Pais::borrado(false)->get();
+            $estatus = Estado::borrado(false)->get();
+            //devuelvo un json con la data
+            return response()->json([
+                'code' => 200,
+                'paises' => $pais,
+                'estados' => $estatus
+            ]);
         }
     
 }

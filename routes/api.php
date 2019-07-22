@@ -49,12 +49,13 @@ Route::group(['prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
     Route::post('/add','EmpresaController@addEmpresa');
-    Route::get('/{id}','EmpresaController@getEmpresa');
     Route::post('/tabla',"EmpresaController@getEmpresasTabla");
     Route::get('/paises',"EmpresaController@getPaises");
     Route::post('/delete','EmpresaController@deleteEmpresa');
     Route::post('/update','EmpresaController@updateEmpresa');
     Route::get('/eventos/{empresa}', 'EmpresaController@getEventosPorEmpresa');
+    Route::get('/{id}','EmpresaController@getEmpresa');
+    
 });
 
 Route::group(['prefix' => 'biblioteca'], function() {
