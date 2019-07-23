@@ -62,7 +62,6 @@ export default class Add extends React.Component {
         $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
         $('#fecha').datetimepicker({
             format: 'DD/MM/YYYY',
-            startDate: this.state.fecha,
             minDate: new Date()
         });
 
@@ -132,8 +131,8 @@ export default class Add extends React.Component {
         var menu = $('#menuapp').multipleSelect('getSelects');
 
         formData.append("menuapp", menu);
-
-        $('button#save-evento').prepend('<i className="fa fa-spinner fa-spin"></i> ');
+        $('#save-evento').prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        console.log("#save-evento");
         axios.post("api/eventos/add",formData).then(res=>{
             $('button#save-evento').find('i.fa').remove();
             console.log(res);
@@ -145,6 +144,7 @@ export default class Add extends React.Component {
                     "sweet"
                 );
                 setTimeout(()=>{
+                    window.scrollTo(0, 0);
                     this.props.history.push("/empresa/eventos/"+s.idEmpresa);
                 },2000);
         
