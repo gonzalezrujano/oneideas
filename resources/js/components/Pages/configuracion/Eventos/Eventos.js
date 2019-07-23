@@ -55,9 +55,7 @@ export default class Eventos extends Component {
                             "success",
                             "sweet"
                         );
-                        $("#" + id)
-                            .closest("tr")
-                            .remove();
+                        $("#" + id).hide;
                         axios
                             .post("api/eventos/empresa", {
                                 idEmpresa: this.state.idEmpresa,

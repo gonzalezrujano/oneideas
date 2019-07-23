@@ -35,7 +35,6 @@ export default class Add extends React.Component {
         this.handleLogo = this.handleLogo.bind(this);
         this.handleChangeMulti = this.handleChangeMulti.bind(this);
         this.getPaises = this.getPaises.bind(this);
-        this.handleHoraFecha = this.handleHoraFecha.bind(this);
     }
 
     getPaises(){
@@ -113,16 +112,6 @@ export default class Add extends React.Component {
         console.log(this.state)
     }
 
-    handleHoraFecha(event){
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-          [name]: value
-        })
-        console.log(this.state)
-    }
-
     handleSubmit(e){
         e.preventDefault();
         let formData = new FormData();
@@ -135,8 +124,8 @@ export default class Add extends React.Component {
 
         formData.append("id-emp", s.idEmpresa);
         formData.append("nombre", s.nombre);
-        formData.append("fecha", s.fecha);
-        formData.append("hora", s.hora);
+        formData.append("fecha", $('#form-add-evento input[name=fecha]').val());
+        formData.append("hora", $('#form-add-evento input[name=hora]').val());
         formData.append("licencias", s.licencias);
         formData.append("pais", s.paisSeleccionado);
         formData.append("latitud", s.latitud);
@@ -145,6 +134,7 @@ export default class Add extends React.Component {
         formData.append("app", s.app);
         formData.append("estatus", s.estado);
         formData.append("logo", $('#form-add-evento input[name=logo]')[0].files[0] === undefined ? '' : $('#form-add-evento input[name=logo]')[0].files[0] );
+        console.log($('#form-add-evento input[name=logo]')[0].files[0])
         formData.append("x", $('#add-x').val());
         formData.append("y", $('#add-y').val());
         formData.append("w", $('#add-w').val());
@@ -315,14 +305,14 @@ export default class Add extends React.Component {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  value={this.state.fecha} onChange={this.handleHoraFecha}/>
+                                    <input type="text" className="form-control form-control-sm" id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  />
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Hora</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  value={this.state.hora} onChange={this.handleHoraFecha}/>
+                                    <input type="text" className="form-control form-control-sm" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  />
                                 </div>
                             </div>
 
@@ -433,7 +423,7 @@ export default class Add extends React.Component {
                             </div>
 
                             <div className="text-center btn-upload-image mb-5">
-                                <span className="btn btn-dark btn-file">Subir Imagen <input type="file" id="logo" name="logo" value={this.state.logo} onChange={this.handleLogo}/></span>
+                                <span className="btn btn-dark btn-file">Subir Imagen <input type="file" id="logo" name="logo" onChange={this.handleLogo}/></span>
                             </div>
 
                             <div id="div-add-emp-img" className="text-center area-cropper">
