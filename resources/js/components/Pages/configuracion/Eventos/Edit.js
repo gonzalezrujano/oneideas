@@ -101,8 +101,8 @@ export default class Edit extends React.Component {
         $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
         $('#fecha').datetimepicker({
             format: 'DD/MM/YYYY',
-            startDate: this.state.fecha,
-            minDate: new Date()
+            minDate: new Date(),
+            startDate: this.state.fecha
         });
 
         $('#hora').datetimepicker({
@@ -118,7 +118,7 @@ export default class Edit extends React.Component {
 
     handleChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.value;
         if(target.type === 'checkbox'){
             if(target.checked == "m"){
                 console.log("if")
@@ -146,8 +146,8 @@ export default class Edit extends React.Component {
         formData.append("id-evento", s.idEvento);
         formData.append("id-emp",s.idEmpresa)
         formData.append("nombre", s.nombre);
-        formData.append("fecha", s.fecha);
-        formData.append("hora", s.hora);
+        formData.append("fecha", $('#form-add-evento input[name=fecha]').val());
+        formData.append("hora", $('#form-add-evento input[name=hora]').val());
         formData.append("licencias", s.licencias);
         formData.append("pais", s.paisSeleccionado);
         formData.append("latitud", s.latitud);
@@ -294,7 +294,7 @@ export default class Edit extends React.Component {
                             </div>
                         </div>
                     </header>
-
+                    
                     <div id="sweet" className="container-fluid">
                     <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                         <li className="nav-item">
@@ -318,21 +318,21 @@ export default class Edit extends React.Component {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Nombre Evento</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" value={this.state.nombre} onChange={this.handleChange}id="nombre" name="nombre" placeholder="Ingrese el nombre del evento"  />
+                                    <input type="text" className="form-control form-control-sm" value={this.state.nombre} onChange={this.handleChange} id="nombre" name="nombre" placeholder="Ingrese el nombre del evento"  />
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                     <label className="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
                                     <div className="col-sm-4">
-                                        <input type="text" className="form-control form-control-sm" value={this.state.fecha} onChange={this.handleChange}  id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  />
+                                        <input type="text" className="form-control form-control-sm" id="fecha" name="fecha" value={this.state.fecha} placeholder="Ingrese la fecha del evento"  />
                                     </div>
                                 </div>
 
                                 <div className="form-group row">
                                     <label className="col-sm-2 col-form-label col-form-label-sm">Hora</label>
                                     <div className="col-sm-4">
-                                        <input type="text" className="form-control form-control-sm" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  value={this.state.hora} onChange={this.handleChange}/>
+                                        <input type="text" className="form-control form-control-sm" id="hora" name="hora"   value={this.state.hora} placeholder="Ingrese la hora del evento"  />
                                     </div>
                                 </div>
 
