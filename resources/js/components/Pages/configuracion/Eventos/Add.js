@@ -95,7 +95,15 @@ export default class Add extends React.Component {
     handleChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
+        if(target.type === 'checkbox'){
+            if(target.checked == "m"){
+                console.log("if")
+                value="MANUAL"
+            }else{
+                console.log("else")
+                value="GPS"
+            }
+        }
         const name = target.name;
         this.setState({
           [name]: value
@@ -155,8 +163,6 @@ export default class Add extends React.Component {
     }
 
     handleLogo(){
-        
-        
             let input = ($('#logo'))[0];
             var $image = $('#preview-add-emp');
             var oFReader = new FileReader();
@@ -215,7 +221,7 @@ export default class Add extends React.Component {
                                                     this.state.idEmpresa
                                                 }`}
                                             >
-                                                / Eventos
+                                                Eventos
                                             </Link>{" "}
                                             / Agregar Evento
                                         </h1>
@@ -344,18 +350,29 @@ export default class Add extends React.Component {
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Ubicación</label>
-                                <div className="col-sm-4">
-
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" value="g" id="customRadioInline1" name="ubicacion" className="custom-control-input" checked={this.state.ubicacion} onChange={this.handleChange}/>
-                                        <label className="custom-control-label" htmlFor="customRadioInline1">GPS</label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                        <input value="m" type="radio"  id="customRadioInline2" name="ubicacion" className="custom-control-input" checked={this.state.ubicacion} onChange={this.handleChange}/>
-                                        <label className="custom-control-label" htmlFor="customRadioInline2">Manual</label>
-                                    </div>
-
-                                </div>
+                                {this.state.ubicacion=='GPS' ? (
+                                            <div className="col-sm-4">
+                                            <div className="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" value="g" id="customRadioInline1" name="ubicacion" className="custom-control-input" onChange={this.handleChange} checked/>
+                                                <label className="custom-control-label" htmlFor="customRadioInline1">GPS</label>
+                                            </div>
+                                            <div className="custom-control custom-radio custom-control-inline">
+                                                <input type="radio"  value="m" id="customRadioInline2" name="ubicacion" className="custom-control-input" onChange={this.handleChange}/>
+                                                <label className="custom-control-label" htmlFor="customRadioInline2">Manual</label>
+                                            </div>
+                                            </div>
+                                        ) : (
+                                            <div className="col-sm-4">
+                                                <div className="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" value="g" id="customRadioInline1" name="ubicacion" className="custom-control-input" onChange={this.handleChange} />
+                                                    <label className="custom-control-label" htmlFor="customRadioInline1">GPS</label>
+                                                </div>
+                                                <div className="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio"  value="m" id="customRadioInline2" name="ubicacion" className="custom-control-input" onChange={this.handleChange} checked/>
+                                                    <label className="custom-control-label" htmlFor="customRadioInline2">Manual</label>
+                                                </div>
+                                            </div>
+                                        )}
                             </div>
 
                             <div className="form-group row">
