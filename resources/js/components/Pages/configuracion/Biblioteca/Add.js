@@ -21,11 +21,16 @@ export default class Add extends React.Component {
             estados: [],
             isLoading: true
         };
+        /** declaro las funciones que haran uso del state */
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.fileInput = React.createRef();
     }
 
+    /**
+     * Funcion que se llama al estar el componente pre cargado
+     * obtencio la informacion de los archivos añadidos
+     */
     componentDidMount() {
         this.state.eventoid = this.props.match.params.id;
         axios.get('api/biblioteca/evento/files/data-add').then(res => {
@@ -39,9 +44,10 @@ export default class Add extends React.Component {
             })
         });
     }
-
-
-
+    /**
+     * evento que  cambia a tiempo real el valor de las variables en el state asociada a los input
+     * @param {*} e 
+     */
     handleInputChange(e) {
         const target = event.target;
         const value = target.value;
@@ -57,6 +63,11 @@ export default class Add extends React.Component {
         }
     }
     
+    /**
+     * funcion que se dispara al dar click en guardar,
+     * se hace uso de la ruta api add/file
+     * @param {*} e 
+     */
   handleSubmit(e) {
     $('button#save-file').prepend('<i class="fa fa-spinner fa-spin"></i> ');
     e.preventDefault();

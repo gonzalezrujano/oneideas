@@ -21,6 +21,9 @@ export default class Biblioteca extends Component {
         };
     }
 
+    /**
+     * Metodo para obtener por api la informacion de todas las empresas
+     */
     getEmpresas() {
         axios.get("api/empresas").then(res => {
             let r = res.data;
@@ -33,6 +36,9 @@ export default class Biblioteca extends Component {
         });
     }
 
+    /**
+     * Traer por api toda la informacion de los eventos para llenar la info de la tabal
+     */
     getDataTables() {
         axios
             .post("api/biblioteca", {

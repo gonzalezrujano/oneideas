@@ -658,12 +658,19 @@ class EventoController extends Controller
         }
     }
 
+    /**
+     * metodo para obtener evento 
+     * por id
+     * */
     public function getEvento($id){
         $registro = Evento::find($id);
 
         return json_encode(['code' => 200,'evento'=>$registro]);
     }
 
+    /**
+     * metodo para obtener todos los eventos por el id de la empresa
+     */
     public function getEventosEmpresa(Request $request){
            //capturo el id de la empresa para buscar los eventos en base a ella
            $input = $request->all();
@@ -714,6 +721,9 @@ class EventoController extends Controller
            
     }
 
+    /**
+     * metodo para obtener todas las opciones de menu que tendra el evento
+     */
     public function getMenuAppInvitado(){
         $data = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
 
@@ -725,6 +735,10 @@ class EventoController extends Controller
         }
     }
 
+    /**
+     * metodo para agregar evento el validateRequest
+     * es el request que valida que toda la informacion agregada en el formulario este completa y confiable
+     */
     public function addEvento(ValidateEvento $request){
             $input = $request->all();
             //guardo la imagen en una variable
@@ -809,7 +823,9 @@ class EventoController extends Controller
             }
         }
 
-            //metodo para borrar
+    /**
+     * metodo para eliminar el evento por id
+     */
     public function deleteEvento(Request $request){
 
     
@@ -841,6 +857,9 @@ class EventoController extends Controller
 
     }
 
+    /**
+     * metodo para obtener la informacion del evento por id
+     */
     public function getEventoById($id){
         $registro = Evento::find($id);
 
@@ -863,6 +882,11 @@ class EventoController extends Controller
 
     }
 
+    /**
+     * meotodo para modificar informacion de un evento
+     * validate Evento el request valida que toda la informacion 
+     * sea correcta y viable
+     */
     public function editEvento(ValidateEvento $request){
 
             //obtengo todos los datos del formulario
@@ -952,7 +976,9 @@ class EventoController extends Controller
         
     }
 
-    //metodo para cambiar la visualizacion o estado
+    /**
+     * Metodo para agregar a la cola de multimedia de eventos
+     */
     public function addCola(Request $request){
 
 

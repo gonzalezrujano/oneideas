@@ -45,9 +45,10 @@ export default class Multimedia extends Component {
             isOpenHora2:false,
             isLoading: true
         };
-
+        /**
+         * Desclarando las funciones que daran uso al state del constructor de esta clase
+         */
         this.handleChange = this.handleChange.bind(this);
-        
         this.enviarComando = this.enviarComando.bind(this);
         this.enviarComandoQuitar = this.enviarComandoQuitar.bind(this);
         this.handleToggle2 = this.handleToggle2.bind(this);
@@ -60,58 +61,59 @@ export default class Multimedia extends Component {
         this.quitarCola = this.quitarCola.bind(this);
         /*this.onConnect = this.onConnect.bind(this);
         this.MQTTconnect = this.MQTTconnect.bind(this);*/
+        //LLAMO AL METODO INICIAR MQTT PARA CONECTAR CON EL MQTT
         this.iniciarMQTT();
         
     }
 
     iniciarMQTT(){
         var reconnectTimeout = 2000;
-        var host="mqtt.oneshow.com.ar"; //change this
+        //host y puerto del mqtt ONESHOW
+        var host="mqtt.oneshow.com.ar"; 
         var port=11344;
-        
+        /**
+         * funcion que sera llamada si se establece conexion con el mqtt
+         */
         function onConnect() {
-      // Once a connection has been made, make a subscription and send a message.
-    
-        console.log("Connected ");
-        //mqtt.subscribe("sensor1");
-        var message = new Paho.MQTT.Message("Hello World");
-        message.destinationName = "sensor1";
-        window.mqttCliente.send(message);
-      }
-      function MQTTconnect() {
-        console.log("connecting to "+ host +" "+ port);
-        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
-        //document.write("connecting to "+ host);
-        var options = {
-            timeout: 3,
-            onSuccess: onConnect,
-            useSSL:true
-         };
-         
-        window.mqttCliente.connect(options); //connect
+            console.log("Connected ");
+            var message = new Paho.MQTT.Message("Hello World");
+            message.destinationName = "sensor1";
+            window.mqttCliente.send(message);
+        }
+
+        function MQTTconnect() {
+            console.log("connecting to "+ host +" "+ port);
+            //creando instacia mqtt client
+            window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
+            var options = {
+                timeout: 3,
+                onSuccess: onConnect,
+                useSSL:true
+            };
+            
+            window.mqttCliente.connect(options); //connect
         }
      
-MQTTconnect();
+        MQTTconnect();
 
     }
+
+    /**
+     * Funcion para enviar comandos o acciones a la cola del evento
+     * @param {fecha de inicio del comando o accion} fechainicio 
+     * @param {fecha final del comando evento o accion} fechafin 
+     */
     enviarComando(fechainicio,fechafin){
        
          var reconnectTimeout = 2000;
-        var host="mqtt.oneshow.com.ar"; //change this
+        var host="mqtt.oneshow.com.ar"; 
         var port=11344;
         var self=this;
         var envio=false;
         function onConnect() {
-      // Once a connection has been made, make a subscription and send a message.
     
         console.log("Connected ");
         var titleTool=self.state.titleTool;
-        // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
-        //message.destinationName = "/empresa/evento/Multimedia";
-       // window.mqttCliente.send(message);
-       // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
-        //message.destinationName = "sampletopic";
-        //window.mqttCliente.send(message);
         if(self.state.hora){
           var h = self.state.hora.getHours();
           var m = self.state.hora.getMinutes();
@@ -180,12 +182,14 @@ MQTTconnect();
         window.mqttCliente.connect(options); //connect
         }
      
-MQTTconnect();
+        MQTTconnect();
     }
 
 
 
-
+/**
+ * evento que llama a la ruta api para obtener la informacion del evento
+ */
     getEventos() {
         console.log(this.state.usuario._id);
         Axios.get("/api/eventos/usuario/" + this.state.usuario._id).then(
@@ -202,6 +206,10 @@ MQTTconnect();
         );
     }
 
+    /**
+     * Obtener todos los elementos o acciones asociadas al evento
+     * @param {*} eventonew 
+     */
     getEnvios(eventonew) {
         let { evento } = this.state;
         evento = evento.split("_")[0];
@@ -230,24 +238,23 @@ MQTTconnect();
     }
 
 
-
+    /**
+     * Metodo para quitar un comando de las acciones asociadas a ella
+     * @param {titulo} title 
+     * @param {parametro} parametro 
+     * @param {fecha inicio de la accion} fechainicio 
+     * @param {fecha fin de la accion} fechafin 
+     */
     enviarComandoQuitar(title,parametro,fechainicio,fechafin){
        
         var reconnectTimeout = 2000;
-       var host="mqtt.oneshow.com.ar"; //change this
+       var host="mqtt.oneshow.com.ar";
        var port=11344;
        var self=this;
        function onConnect() {
-     // Once a connection has been made, make a subscription and send a message.
    
        console.log("Connected ");
        var titleTool=title;
-       // var message = new Paho.MQTT.Message("TTR,magnet:?xt=urn:btih:630fe8bec6fd0e785fe20a375daae1ba0bb96c59&dn=240192_splash.png&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com");
-       //message.destinationName = "/empresa/evento/Multimedia";
-      // window.mqttCliente.send(message);
-      // var message = new Paho.MQTT.Message("MUL,5cb841bba1dc000bd11b6ec4/5cbadeb1388f7c4c5e5910d2/IMAGEN0022.jpg..1,"+fechainicio+","+fechafin);
-       //message.destinationName = "sampletopic";
-       //window.mqttCliente.send(message);
        var evento=self.state.evento.split("_")[0];
        var topic="/"+self.state.empresa+"/"+evento;
        if(fechainicio==""){
@@ -291,6 +298,10 @@ MQTTconnect();
     MQTTconnect();
    }
 
+   /**
+    * metodo para cambiar el state de las variables usadas en los inputs
+    * @param {evento} e 
+    */
     handleChange(e) {
         console.log(e);
         if (e.target != undefined) {
@@ -334,6 +345,14 @@ MQTTconnect();
         }
     }
 
+    /**
+     * Metodo para eliminar de la cola de acciones de eventos
+     * @param {*} newestado 
+     * @param {*} tipo 
+     * @param {*} inicio 
+     * @param {*} fin 
+     * @param {*} id 
+     */
     quitarCola(newestado,tipo,inicio,fin,id){
         let {evento} = this.state;
         evento=evento.split("_")[0];
@@ -388,6 +407,10 @@ MQTTconnect();
             }).catch(function (error) {});
     }
 
+    /**
+     * metodo para obtener informacion api de las herramientas
+     * @param {nombre de herramienta que queremos informacion} herramienta 
+     */
     actionTool(herramienta){
         var self = this;
        let {evento} = this.state;
@@ -457,6 +480,10 @@ MQTTconnect();
 
    }
 
+   /**
+    * metodo para modificar la hora de inicio y ocultarla
+    * @param {*} isOpenHora 
+    */
    handleToggle(isOpenHora) {
     this.setState({ isOpenHora });
         if(isOpenHora){
@@ -466,6 +493,10 @@ MQTTconnect();
         }
     }
 
+    /**
+    * metodo para modificar la hora 2 de inicio y ocultarla
+    * @param {*} isOpenHora 
+    */
     handleToggle2(isOpenHora2) {
         this.setState({ isOpenHora2 });
         if(isOpenHora2){
@@ -475,6 +506,10 @@ MQTTconnect();
         }
     }
 
+    /**
+     * metodo para modificar hora selecionada
+     * @param {*} hora 
+     */
     handleSelect(hora){
         var hora2 = new Date(hora);
         hora2.setHours( hora.getHours() + 1 )
@@ -482,6 +517,10 @@ MQTTconnect();
             document.querySelector(".wrapper").style.display="block";
     }
 
+    /**
+     * metodo para modificar hora selecionada 2
+     * @param {*} hora 
+     */
     handleSelect2(hora2){
         var hora =new Date(hora2);
         hora.setHours( hora.getHours() - 1 );
@@ -489,16 +528,28 @@ MQTTconnect();
             document.querySelector(".wrapper").style.display="block";
     }
 
+    /**
+     * metodo para colocar hora de nuevo abierta
+     */
     handleThemeToggle() {
         this.setState({ isOpenHora: true });            
         document.querySelector(".wrapper").style.display="none";
     }
 
+    /**
+     * metodo para colocar hora de nuevo abierta 2
+     */
     handleThemeToggle2() {
         this.setState({ isOpenHora2: true });
         document.querySelector(".wrapper").style.display="none";
     } 
 
+    /**
+     * metodo para colocar en cola las acciones
+     * @param {*} newestado 
+     * @param {*} inicio 
+     * @param {*} fin 
+     */
     ponerCola(newestado,inicio,fin){
         let {evento} = this.state;
         evento=evento.split("_")[0];

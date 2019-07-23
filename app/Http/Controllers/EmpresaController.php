@@ -265,6 +265,10 @@ class EmpresaController extends Controller
         ]);
     }
 
+    /**
+     * Metodo que retorna las empresas con la informacion necesaria para llenar las tablas de la vista de 
+     * configuracion empresas
+     */
     public function getEmpresasTabla(Request $request){
         //acorde al tipo de rol cargo empresas
         $input = $request->all();
@@ -311,6 +315,10 @@ class EmpresaController extends Controller
         return $empresas;
     }
     
+    /**
+     * Metodo para eliminar una empresa
+     * $request recibe el id de la empresa a eliminar
+     */
     public function deleteEmpresa(Request $request){
         //capturo el valor del id
         $input = $request->all();
@@ -330,6 +338,11 @@ class EmpresaController extends Controller
         }
     }
 
+    /**
+     * metodo para agregar empresa
+     * ValidateEmpresa es un request que valida que la informacion enviada coincida con todos los parametros
+     * que debe tener una empresa
+     */
     public function addEmpresa(ValidateEmpresa $request){
         $input = $request->all();
 
@@ -384,6 +397,9 @@ class EmpresaController extends Controller
             }
     }
 
+    /**
+     * metodo que retorna toda la informacion de una empresa por id
+     */
     public function getEmpresa($id){
         $data['existe'] = false;
         $registro = Empresa::find($id);
@@ -401,7 +417,11 @@ class EmpresaController extends Controller
         
     }
 
-        //metodo para actualizar las empresas
+        /**
+         * Metodo para actuali ar empresa
+         * el request recibe toda la informacion necesaria para modificar la empresa ya 
+         * creada
+         */
         public function updateEmpresa(ValidateEmpresa $request){
         //obtengo todos los datos del formulario
         $input = $request->all();
@@ -466,6 +486,9 @@ class EmpresaController extends Controller
     
         }
 
+        /**
+         * metodo obtener todos los eventos por el id de la emrpesa
+         */
         public function getEventosPorEmpresa($empresa){
             //cargo los eventos
             $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
@@ -473,6 +496,9 @@ class EmpresaController extends Controller
             return json_encode($resultado);
         }
 
+        /**
+         * Metodo para retornar todos los paises para el formulario de add empresa
+         */
         public function getPaises(){
             $pais = Pais::borrado(false)->get();
             $estatus = Estado::borrado(false)->get();

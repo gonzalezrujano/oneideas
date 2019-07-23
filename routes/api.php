@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+/**
+ * Rutas API orientadas al controlador de USUARIOS UsuarioController
+ */
 Route::group(['prefix' => 'usuarios'], function() {
     Route::post('/add','UsuarioController@addUsuario');
     Route::post('/delete','UsuarioController@deleteUsuario');
@@ -31,7 +34,9 @@ Route::group(['prefix' => 'usuarios'], function() {
    
 });
 
-
+/**
+ * Rutas API orientadas al controlador de EVENTOS EventoController
+ */
 Route::group(['prefix' => 'eventos'], function() {
     Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
     Route::post('/envios', 'EventoController@getEnvios');
@@ -39,12 +44,19 @@ Route::group(['prefix' => 'eventos'], function() {
     Route::post('/cola/add','EventoController@addCola');
 });
 
+/**
+ * Rutas API orientadas al controlador de MULTIMEDIA MultimediaController
+ */
+
 Route::group(['prefix' => 'multimedia'], function() {
     //rutas de multimedia
     Route::post('/action-tool', 'MultimediaController@actionTool');
     //Route::post('/ajax-get-multimedia', 'MultimediaController@ajaxGetMultimedia');
 });
 
+/**
+ * Rutas API orientadas al controlador de EMPRESAS EmpresaController
+ */
 Route::group(['prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
@@ -58,6 +70,10 @@ Route::group(['prefix' => 'empresas'], function() {
     
 });
 
+
+/**
+ * Rutas API orientadas al controlador de BIBLIOTECA BibliotecaController
+ */
 Route::group(['prefix' => 'biblioteca'], function() {
     //rutas de empresas
     Route::post('/', 'BibliotecaController@getBibliotecasRol');
@@ -67,7 +83,9 @@ Route::group(['prefix' => 'biblioteca'], function() {
     Route::post('/evento/add-file','BibliotecaController@addFile');
 });
 
-
+/**
+ * Rutas API orientadas al controlador de AGENDENDA AgendaController
+ */
 Route::group(['prefix' => 'agendas'], function() {
     // Endpoints de agendas
     Route::post('/add', 'AgendaController@ajaxAdd');
@@ -78,6 +96,10 @@ Route::group(['prefix' => 'agendas'], function() {
     Route::post('/events', 'AgendaController@getEvents');
     Route::post('/datatable-get-agendas/{id}/{fecha}', 'AgendaController@datatable_get_agendas');
 });
+
+/**
+ * Rutas API orientadas al controlador de EVENTOS eventoController
+ */
 
 Route::group(['prefix' => 'eventos'], function() {
     //rutas de eventos
@@ -91,7 +113,10 @@ Route::group(['prefix' => 'eventos'], function() {
     
 });
 
-
+/**
+ * Rutas API orientadas al controlador de Menus(menugrastronomico) 
+ * (queda por restructurar)
+ */
 Route::group(['prefix' => 'menu'], function() {
     // Endpoints para el Menu Gastronimico Etapas
     Route::group(['prefix' => 'gastronomico'], function() {

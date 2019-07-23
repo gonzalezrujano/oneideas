@@ -261,6 +261,10 @@ class BibliotecaController extends Controller
         return $eventos;
     }
 
+    /**
+     * metodo para obtener todos los archivos asociados a un evento
+     * $request variable que recibe el id del evento
+     */
     public function getFilesEvento(Request $request){
 
         //capturo el id de la empresa para buscar los eventos en base a ella
@@ -298,7 +302,9 @@ class BibliotecaController extends Controller
     }
 
 
-
+/**
+ * Metodo para obtener toda la informacion del formulario para agregar un archivo multimedia
+ */
     public function getDataAdd(){
 
         $data['estados'] = Estado::borrado(false)->get();
@@ -311,7 +317,11 @@ class BibliotecaController extends Controller
         }
     }
 
-         //metodo para agregar archivo
+   /**
+    * Metodo para agregar un nuevo archivo
+    * ValidateArchivo es un request que valida si toda la informacion recibida cumple con todos los parametros
+    * $request recibe toda la informacion del archivo agregada en front end
+    */
     public function addFile(ValidateArchivo $request){
         $input = $request->all();
 

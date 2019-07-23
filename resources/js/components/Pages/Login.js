@@ -13,17 +13,30 @@ export default class Login extends Component {
             password: "",
             isLoading: false
         };
-
+        /**
+         * Desclarando las funciones que daran uso al state del constructor de esta clase
+         */
         this.handleLogin = this.handleLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
+    /**
+     * evento que captura todos los cambios en los input y modifica en tiempo real las variables
+     * en el state para posteriormente darle uso en otras funciones
+     * @param {*} e
+     */
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value
         });
     }
 
+    /**
+     * metodo que se acciona al dar click en login
+     * recibecomo parametros el evento click
+     * y se da uso de las variables en el state correo y password
+     * @param {*} e
+     */
     handleLogin(e) {
         let self = this;
 
