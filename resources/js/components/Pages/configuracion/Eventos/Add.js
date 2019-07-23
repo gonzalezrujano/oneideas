@@ -43,7 +43,8 @@ export default class Add extends React.Component {
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
                 paises:r.paises,
-                estados: r.estados
+                estados: r.estados,
+                isLoading: false
             })
         })
     }
@@ -78,10 +79,8 @@ export default class Add extends React.Component {
         axios
             .get("api/eventos/menus")
             .then(res => {
-                console.log(res);
                 this.setState({
-                    menuAppInvitados: res.data.data,
-                    isLoading: false
+                    menuAppInvitados: res.data.data
                 });
                 this.infoForm();
             });
