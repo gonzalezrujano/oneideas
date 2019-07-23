@@ -26,6 +26,7 @@ export default class Add extends React.Component {
             ubicacion:"",
             estado:"",
             app:"",
+            logo:"",
             menuAppSeleccionados: [],
             isLoading: true
         };
@@ -69,7 +70,6 @@ export default class Add extends React.Component {
             format: 'LT'
         });
 
-        $('#div-add-emp-img').hide();
         console.log("estoy al final")
 
     }
@@ -104,6 +104,15 @@ export default class Add extends React.Component {
                 value="GPS"
             }
         }
+        const name = target.name;
+        this.setState({
+          [name]: value
+        })
+    }
+
+    handleHoraFecha(event){
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
         this.setState({
           [name]: value
@@ -163,6 +172,7 @@ export default class Add extends React.Component {
     }
 
     handleLogo(){
+        console.log("handle logo")
             let input = ($('#logo'))[0];
             var $image = $('#preview-add-emp');
             var oFReader = new FileReader();
@@ -300,14 +310,14 @@ export default class Add extends React.Component {
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  value={this.state.fecha} onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="fecha" name="fecha" placeholder="Ingrese la fecha del evento"  value={this.state.fecha} onChange={this.handleHoraFecha}/>
                                 </div>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-sm-2 col-form-label col-form-label-sm">Hora</label>
                                 <div className="col-sm-4">
-                                    <input type="text" className="form-control form-control-sm" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  value={this.state.hora} onChange={this.handleChange}/>
+                                    <input type="text" className="form-control form-control-sm" id="hora" name="hora"  placeholder="Ingrese la hora del evento"  value={this.state.hora} onChange={this.handleHoraFecha}/>
                                 </div>
                             </div>
 
