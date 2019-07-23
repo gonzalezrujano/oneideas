@@ -35,6 +35,7 @@ export default class Add extends React.Component {
         this.handleLogo = this.handleLogo.bind(this);
         this.handleChangeMulti = this.handleChangeMulti.bind(this);
         this.getPaises = this.getPaises.bind(this);
+        this.handleHoraFecha = this.handleHoraFecha.bind(this);
     }
 
     getPaises(){
