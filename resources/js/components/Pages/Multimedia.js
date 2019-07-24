@@ -339,6 +339,9 @@ export default class Multimedia extends Component {
                 [e.target.name]: e.target.value
             });
         } else if (e.hex != undefined) {
+            var colorDiv = document.getElementById("recuadro-color");
+            colorDiv.style.backgroundColor=e.hex;
+            console.log(colorDiv)
             this.setState({
                 color: e.hex
             });

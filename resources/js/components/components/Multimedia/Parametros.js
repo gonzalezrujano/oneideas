@@ -427,8 +427,42 @@ const Parametros = (props) => {
                                 <form>
 
                                     <div className="form-row">
+                                        <div className="col-md-3 mb-4">
+                                            <label>Sector</label>
+                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
+                                                <option value="">Seleccione</option>
+                                                {
+                                                    sectores.map( (p, index) => {
+                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
 
-
+                                        <div className="offset-md-1 col-md-3 mb-4 form-group">
+                                            <div className="row">
+                                                <label className="label-color">Parametro color </label>
+                                            </div>
+                                            <div className="row">
+                                            <InputColor
+                                                initialHexColor="#5e72e4"
+                                                name="color" value={color} onChange={props.change}
+                                                placement="right"
+                                            />
+                                            {console.log(color)}
+                                            <div
+                                            id="recuadro-color"
+                                            style={{
+                                            height: 35,
+                                            width:100,
+                                            left: 20,
+                                            backgroundColor: color == {} ? color : '#5e72e4'
+                                            }}
+                                        />
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    <div className="form-row">
                                         <div className="col-md-3 mb-4">
                                             <label className="label-inicio">Hora Inicio </label>
                                             <a
@@ -451,9 +485,8 @@ const Parametros = (props) => {
                                         dateConfig={dateConfig}
                                         />
                                         </div>
-
                                         <div className="col-md-3 mb-4">
-                                            <label className="label-fin">H>Hora Fin </label>
+                                            <label className="label-fin">Hora Fin </label>
                                             <a
                                             className="select-btn sm boton-hora" 
                                             onClick={props.handleThemeToggle2}>
@@ -472,40 +505,10 @@ const Parametros = (props) => {
                                         cancelText="Cancelar"
                                         max={maxDate}
                                         dateConfig={dateConfig}
-                                        />
-                                            
+                                        />                                         
                                         </div>
-
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Sector</label>
-                                            <select className="form-control form-control-sm" name="sector" value={sector} onChange={props.change }>
-                                                <option value="">Seleccione</option>
-                                                {
-                                                    sectores.map( (p, index) => {
-                                                        return <option key={index} value={p._id} >{p.Nombre}</option>
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-
-
                                     </div>
 
-                                    <div className="form-row">
-
-                                        <div className="col-md-3 mb-4">
-                                            <label>Parametro color </label>
-                                             <InputColor
-                                                            initialHexColor="#5e72e4"
-                                                            name="color" value={color} onChange={props.change }
-                                                            placement="right"
-                                                          />
-                                                         
-
-                                        </div>
-
-                                    </div>
 
                                 </form>
 

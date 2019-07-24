@@ -13,9 +13,9 @@
 
 
 Route::middleware(['guest'])->group(function(){
-
+    Route::view('/{path?}', 'index');
     //ruta del login
-    Route::get('/', 'IndexController@index');
+    //Route::get('/', 'IndexController@index');
     /*Route::post('/ajax-post-login', 'LoginController@ajaxPostLogin');
 
     //rutas del recovery password
