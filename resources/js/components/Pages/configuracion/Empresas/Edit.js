@@ -163,6 +163,9 @@ export default class AddEmpresas extends Component {
             }else if(res.data.code === 500){
                 sweetalert('Error al agregar empresa. Consulte al Administrador.', 'error', 'sweet');
             }
+        }).catch(error => {
+            $('button#save-empresa').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
         })
     }
 

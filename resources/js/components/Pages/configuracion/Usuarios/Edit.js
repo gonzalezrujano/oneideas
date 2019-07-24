@@ -43,16 +43,17 @@ export default class Add extends Component {
     componentDidMount() {
         console.log(this.state.idUsuario)
         axios.get("api/usuarios/infoEdit/"+this.state.idUsuario).then(res => {
-            console.log(res)
-            //@if($usuario->Activo == $estado->Valor) selected='selected' @endif
             let r = res.data.data;
             let usuario = r.usuario;
-            console.log(r.eventos)
+            if (usuario.Activo){
+                this.setState({estado:"5b7e4c3b589bd25309f878ca"})
+            }else{
+                this.setState({estado:"5b7e4c90eaf5685309c47a4f"})
+            }
             this.setState({
                 empresas:r.empresas,
                 estados:r.estados,
                 paises:r.paises,
-                estados:r.estados,
                 eventos:r.eventos,
                 tiposDocumentos:r.tipodocumentos,
                 roles:r.roles,
@@ -84,10 +85,8 @@ export default class Add extends Component {
     }
 
     handleChangeEmpresa(event){
-        console.log("entre a este beta")
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
         const name = target.name;
         this.setState({
           [name]: value
@@ -155,6 +154,9 @@ export default class Add extends Component {
                 }else if(res.data.code === 500){
                     sweetalert('Error al Editar usuario. Consulte al Administrador.', 'error', 'sweet');
                 }
+        }).catch(error => {
+            $('button#save-usuario').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
         })
     }
 
@@ -354,9 +356,12 @@ export default class Add extends Component {
                                                     <option value="">Seleccione</option>
                                                     {this.state.estados.map(
                                                         (e, index) => {
-                                                            return (
-                                                                <option value={e._id} key={index}>{e.Nombre}</option>
-                                                            )
+                                                            
+                                                                return (
+                                                                    <option value={e._id} key={index}>{e.Nombre}</option>
+                                                                )
+                                                            
+                                                            
                                                         }
                                                     )}
                                                 </select>

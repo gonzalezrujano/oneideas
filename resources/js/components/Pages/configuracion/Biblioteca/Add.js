@@ -102,6 +102,9 @@ export default class Add extends React.Component {
         }else if(res.data.code === 500){
             sweetalert('Error al agregar archivo. Consulte al Administrador.', 'error', 'sweet');
         }
+    }).catch(error => {
+        $('button#save-file').find('i.fa').remove()
+        sweetalert(error.response.data, 'error', 'sweet');
     })
   }
 

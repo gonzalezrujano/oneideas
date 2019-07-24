@@ -45,11 +45,18 @@ export default class Usuarios extends Component {
                 axios.post("/api/usuarios/delete", { id }).then(res => {
                     if (res.data.code === 200) {
                         sweetalert(
-                            "Item eliminado correctamente",
+                            "usuario eliminado correctamente",
                             "success",
                             "sweet"
                         );
-                        $("#" + id).closest("tr");
+                        $("#" + id).hide();
+                        axios.get("api/usuarios").then(res => {
+                            console.log(res);
+                            this.setState({
+                                usuarios: res.data.data,
+                                isLoading: false
+                            });
+                        });
                     } else if (res.data.code === 600) {
                         sweetalert(
                             "Error en el Proceso de Eliminacion. Consulte al Administrador",

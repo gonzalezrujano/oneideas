@@ -138,6 +138,9 @@ export default class Add extends Component {
                 }else if(res.data.code === 500){
                     sweetalert('Error al agregar usuario. Consulte al Administrador.', 'error', 'sweet');
                 }
+        }).catch(error => {
+            $('button#save-usuario').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
         })
     }
 

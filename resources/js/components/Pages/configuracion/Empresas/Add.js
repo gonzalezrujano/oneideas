@@ -110,7 +110,7 @@ export default class AddEmpresas extends Component {
         formData.append("h", $('#emp-add-h').val());
         $('button#save-empresa').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios.post('api/empresas/add',formData).then(res=>{
-            $('button#save-empresa').find('i.fa').remove();
+            
             if(res.data.code === 200) {
 
                 Swal.fire({
@@ -139,6 +139,9 @@ export default class AddEmpresas extends Component {
             }else if(res.data.code === 500){
                 sweetalert('Error al agregar empresa. Consulte al Administrador.', 'error', 'sweet');
             }
+        }).catch(error => {
+            $('button#save-empresa').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
         })
     }
 

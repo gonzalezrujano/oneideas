@@ -188,7 +188,10 @@ export default class Edit extends React.Component {
             }else{
                 sweetalert('Error al editar el evento. Consulte al Administrador.', 'error', 'sweet');
             }
-        });
+        }).catch(error => {
+            $('#update-evento').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
+        })
     }
 
     handleLogo(){

@@ -146,7 +146,7 @@ export default class Add extends React.Component {
         $('#save-evento').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         console.log("#save-evento");
         axios.post("api/eventos/add",formData).then(res=>{
-            $('button#save-evento').find('i.fa').remove();
+            
             console.log(res);
             if (res.data.code == 200){
                 console.log("estoy aca")
@@ -163,7 +163,10 @@ export default class Add extends React.Component {
             }else{
 
             }
-        });
+        }).catch(error => {
+            $('button#save-evento').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
+        })
     }
 
     handleLogo(){
