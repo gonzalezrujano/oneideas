@@ -17,6 +17,7 @@ export default class Empresas extends Component {
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             user: this.props.location.state,
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
         this.modalDelete = this.modalDelete.bind(this);
@@ -27,6 +28,10 @@ export default class Empresas extends Component {
             .post("api/empresas/tabla", {
                 rol: this.state.permisoUsuario.nombre,
                 id: this.state.usuario._id
+            },{
+                headers: {
+                    Authorization: this.state.api_token
+                }
             })
             .then(res => {
                 console.log("esta es la respuesta");
@@ -58,7 +63,11 @@ export default class Empresas extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/empresas/delete", { id: id }).then(res => {
+                axios.post("/api/empresas/delete", { id: id },{
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }).then(res => {
                     console.log(res);
                     let r = res.data;
                     if (r.code === 200) {
@@ -75,6 +84,10 @@ export default class Empresas extends Component {
                             .post("api/empresas/tabla", {
                                 rol: this.state.permisoUsuario.nombre,
                                 id: this.state.usuario._id
+                            },{
+                                headers: {
+                                    Authorization: this.state.api_token
+                                }
                             })
                             .then(res => {
                                 localStorage.setItem(

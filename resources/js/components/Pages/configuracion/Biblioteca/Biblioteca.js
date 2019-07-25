@@ -17,6 +17,7 @@ export default class Biblioteca extends Component {
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             user: this.props.location.state,
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
     }
@@ -25,15 +26,21 @@ export default class Biblioteca extends Component {
      * Metodo para obtener por api la informacion de todas las empresas
      */
     getEmpresas() {
-        axios.get("api/empresas").then(res => {
-            let r = res.data;
-            console.log(r);
-            localStorage.setItem("empresas", JSON.stringify(r.empresas));
-            this.setState({
-                empresas: r.empresas,
-                isLoading: false
+        axios
+            .get("api/empresas", {
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
+            .then(res => {
+                let r = res.data;
+                console.log(r);
+                localStorage.setItem("empresas", JSON.stringify(r.empresas));
+                this.setState({
+                    empresas: r.empresas,
+                    isLoading: false
+                });
             });
-        });
     }
 
     /**
@@ -41,10 +48,18 @@ export default class Biblioteca extends Component {
      */
     getDataTables() {
         axios
-            .post("api/biblioteca", {
-                rol: this.state.permisoUsuario.nombre,
-                id: this.state.usuario._id
-            })
+            .post(
+                "api/biblioteca",
+                {
+                    rol: this.state.permisoUsuario.nombre,
+                    id: this.state.usuario._id
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }
+            )
             .then(res => {
                 localStorage.setItem("eventos", JSON.stringify(res.data));
                 this.getEmpresas();

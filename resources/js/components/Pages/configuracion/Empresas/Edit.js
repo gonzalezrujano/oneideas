@@ -25,6 +25,7 @@ export default class AddEmpresas extends Component {
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             infoEmpresa:null,
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
         this.handleChange = this.handleChange.bind(this);
@@ -33,7 +34,11 @@ export default class AddEmpresas extends Component {
     }
 
     getPaises(){
-        axios.get('api/empresas/paises/').then(res=>{
+        axios.get('api/empresas/paises/',{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             let r = res.data;
             console.log(r);
             console.log("hola que abajo")
@@ -52,7 +57,11 @@ export default class AddEmpresas extends Component {
         console.log(this.props.match.params);
         let idEmpresa = this.props.match.params.id;
 
-        axios.get(`api/empresas/${idEmpresa}`).then(res => {
+        axios.get(`api/empresas/${idEmpresa}`,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res => {
             console.log(res)
             let r = res.data;
             this.setState(() => ({
@@ -132,7 +141,11 @@ export default class AddEmpresas extends Component {
         formData.append("w", $('#emp-edit-w').val());
         formData.append("h", $('#emp-edit-h').val());
         $("#save-empresa").prepend("<i className='fa fa-spinner fa-spin'></i> ");
-        axios.post('api/empresas/update',formData).then(res=>{
+        axios.post('api/empresas/update',formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             $("save-empresa").find("i.fa").remove();
             if(res.data.code === 200) {
 
@@ -149,6 +162,10 @@ export default class AddEmpresas extends Component {
                         .post("api/empresas/tabla", {
                             rol: this.state.permisoUsuario.nombre,
                             id: this.state.usuario._id
+                        },{
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
                         })
                         .then(res => {
                             console.log(res);

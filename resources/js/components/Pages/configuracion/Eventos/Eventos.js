@@ -18,16 +18,25 @@ export default class Eventos extends Component {
             opcion: "Eventos",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
     }
 
     componentDidMount() {
         axios
-            .post("api/eventos/empresa", {
-                idEmpresa: this.state.idEmpresa,
-                rol: this.state.permisoUsuario.nombre
-            })
+            .post(
+                "api/eventos/empresa",
+                {
+                    idEmpresa: this.state.idEmpresa,
+                    rol: this.state.permisoUsuario.nombre
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }
+            )
             .then(res => {
                 console.log(res);
                 this.setState({
@@ -48,39 +57,57 @@ export default class Eventos extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/eventos/delete", { id }).then(res => {
-                    if (res.data.code === 200) {
-                        sweetalert(
-                            "Item eliminado correctamente",
-                            "success",
-                            "sweet"
-                        );
-                        $("#" + id).hide;
-                        axios
-                            .post("api/eventos/empresa", {
-                                idEmpresa: this.state.idEmpresa,
-                                rol: this.state.permisoUsuario.nombre
-                            })
-                            .then(res => {
-                                this.setState({
-                                    eventosEmpresa: res.data.eventos,
-                                    isLoading: false
+                axios
+                    .post(
+                        "/api/eventos/delete",
+                        { id },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data.code === 200) {
+                            sweetalert(
+                                "Item eliminado correctamente",
+                                "success",
+                                "sweet"
+                            );
+                            $("#" + id).hide;
+                            axios
+                                .post(
+                                    "api/eventos/empresa",
+                                    {
+                                        idEmpresa: this.state.idEmpresa,
+                                        rol: this.state.permisoUsuario.nombre
+                                    },
+                                    {
+                                        headers: {
+                                            Authorization: this.state.api_token
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    this.setState({
+                                        eventosEmpresa: res.data.eventos,
+                                        isLoading: false
+                                    });
                                 });
-                            });
-                    } else if (res.data.code === 600) {
-                        sweetalert(
-                            "Error en el Proceso de Eliminacion. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    } else if (res.data.code == 500) {
-                        sweetalert(
-                            "Error al Eliminar. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    }
-                });
+                        } else if (res.data.code === 600) {
+                            sweetalert(
+                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (res.data.code == 500) {
+                            sweetalert(
+                                "Error al Eliminar. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
             }
         });
     }

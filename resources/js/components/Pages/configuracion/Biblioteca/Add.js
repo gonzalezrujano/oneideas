@@ -16,6 +16,7 @@ export default class Add extends React.Component {
             evento: null,
             eventoid: null,
             archivos: [],
+            api_token: localStorage.getItem("api_token"),
             categorias: [],
             categoriaSeleccionada: "",
             estados: [],
@@ -33,7 +34,11 @@ export default class Add extends React.Component {
      */
     componentDidMount() {
         this.state.eventoid = this.props.match.params.id;
-        axios.get('api/biblioteca/evento/files/data-add').then(res => {
+        axios.get('api/biblioteca/evento/files/data-add',{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res => {
             console.log(res);
             this.setState({
                 isLoading : false,
@@ -78,7 +83,11 @@ export default class Add extends React.Component {
     formData.append("categoria",this.state.idCategoria);
     formData.append("archivo", (this.fileInput.current.files[0] === undefined) ? '' : this.fileInput.current.files[0] );
     console.log(formData);
-    axios.post('api/biblioteca/evento/add-file',formData).then(res=>{
+    axios.post('api/biblioteca/evento/add-file',formData,{
+        headers: {
+            Authorization: this.state.api_token
+        }
+    }).then(res=>{
         $('button#save-file').find('i.fa').remove()
         if(res.data.code === 200) {
 

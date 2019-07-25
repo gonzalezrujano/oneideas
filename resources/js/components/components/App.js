@@ -23,6 +23,7 @@ import Usuarios from "../Pages/configuracion/Usuarios/Usuarios";
 import UsuariosAdd from "../Pages/configuracion/Usuarios/Add";
 import UsuariosEdit from "../Pages/configuracion/Usuarios/Edit";
 import UsuariosShow from "../Pages/configuracion/Usuarios/Show";
+import Invitados from "../Pages/configuracion/Invitados/invitados";
 
 function App() {
     return (
@@ -72,6 +73,7 @@ function App() {
                     path="/usuarios/show/:id"
                     component={UsuariosShow}
                 />
+                <Route exact path="/invitados" component={Invitados} />
             </Switch>
         </BrowserRouter>
     );

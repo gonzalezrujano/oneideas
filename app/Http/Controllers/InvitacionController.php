@@ -219,4 +219,29 @@ class InvitacionController extends Controller
             return json_encode(['code' => 600]);
         }
     }
+
+    public function getInfo(Request $request){
+        //capturo el id de la empresa para buscar los eventos en base a ella
+        $input = $request->all();
+        $idevento = $input['evento'];
+        $invitaciones = Invitacion::borrado(false)->activo(true)->where(
+            'Evento_id', new ObjectID($idevento) )->get();
+        $archivos = [];
+        //verifico que exista data sino lo devulevo vacio
+        if($invitaciones){
+            foreach ($invitaciones as $f) {
+                //armo la data que se muestra en la tabla
+                $archivos[] = [
+                    '_id'         => $f->_id,
+                    'Tipo'        => $f->Modo,
+                    'SizeImagen'  => $f->SizeImg,
+                    'SizePdf'     => $f->SizePdf == '' ? '-' : $f->SizePdf,
+                    'Activo'      => $f->Activo
+                ];
+            }
+            return json_encode(['code' => 200,'data'=>$archivos]);
+        }
+        return json_encode(['code' => 500]);
+        
+    }
 }

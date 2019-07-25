@@ -17,18 +17,25 @@ export default class Usuarios extends Component {
             opcion: "Eventos",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
     }
 
     componentDidMount() {
-        axios.get("api/usuarios").then(res => {
-            console.log(res);
-            this.setState({
-                usuarios: res.data.data,
-                isLoading: false
+        axios
+            .get("api/usuarios", {
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    usuarios: res.data.data,
+                    isLoading: false
+                });
             });
-        });
     }
 
     modalDelete(id) {
@@ -42,35 +49,51 @@ export default class Usuarios extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/usuarios/delete", { id }).then(res => {
-                    if (res.data.code === 200) {
-                        sweetalert(
-                            "usuario eliminado correctamente",
-                            "success",
-                            "sweet"
-                        );
-                        $("#" + id).hide();
-                        axios.get("api/usuarios").then(res => {
-                            console.log(res);
-                            this.setState({
-                                usuarios: res.data.data,
-                                isLoading: false
-                            });
-                        });
-                    } else if (res.data.code === 600) {
-                        sweetalert(
-                            "Error en el Proceso de Eliminacion. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    } else if (res.data.code == 500) {
-                        sweetalert(
-                            "Error al Eliminar. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    }
-                });
+                axios
+                    .post(
+                        "/api/usuarios/delete",
+                        { id },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data.code === 200) {
+                            sweetalert(
+                                "usuario eliminado correctamente",
+                                "success",
+                                "sweet"
+                            );
+                            $("#" + id).hide();
+                            axios
+                                .get("api/usuarios", {
+                                    headers: {
+                                        Authorization: this.state.api_token
+                                    }
+                                })
+                                .then(res => {
+                                    console.log(res);
+                                    this.setState({
+                                        usuarios: res.data.data,
+                                        isLoading: false
+                                    });
+                                });
+                        } else if (res.data.code === 600) {
+                            sweetalert(
+                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (res.data.code == 500) {
+                            sweetalert(
+                                "Error al Eliminar. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
             }
         });
     }

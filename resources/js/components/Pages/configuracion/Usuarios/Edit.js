@@ -32,6 +32,7 @@ export default class Add extends Component {
             opcion: "Eventos",
             footer: "Footer",
             eventos: [],
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
         this.handleChange = this.handleChange.bind(this);
@@ -42,7 +43,11 @@ export default class Add extends Component {
 
     componentDidMount() {
         console.log(this.state.idUsuario)
-        axios.get("api/usuarios/infoEdit/"+this.state.idUsuario).then(res => {
+        axios.get("api/usuarios/infoEdit/"+this.state.idUsuario,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res => {
             let r = res.data.data;
             let usuario = r.usuario;
             if (usuario.Activo){
@@ -95,7 +100,11 @@ export default class Add extends Component {
 
         if(emp){
             console.log("ahora aqui")
-            axios.get("api/empresas/eventos/"+emp).then(res=>{
+            axios.get("api/empresas/eventos/"+emp,{
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            }).then(res=>{
                 let r = res.data;
                 $('#evento').empty();
 
@@ -130,7 +139,11 @@ export default class Add extends Component {
         formData.append("evento", this.state.evento);
         formData.append("estatus", this.state.estado);
         $('button#save-usuario').prepend('<i class="fa fa-spinner fa-spin"></i> ');
-        axios.post("/api/usuarios/edit",formData).then(res=>{
+        axios.post("/api/usuarios/edit",formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             $('button#save-usuario').find('i.fa').remove();
 
                 if(res.data.code === 200) {

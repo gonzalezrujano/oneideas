@@ -23,6 +23,7 @@ export default class AddEmpresas extends Component {
             correo:"",
             opcion: "Empresas",
             footer: "Footer",
+            api_token: localStorage.getItem("api_token"),
             eventos: JSON.parse(localStorage.getItem("eventos")),
             isLoading: true
         };
@@ -32,7 +33,11 @@ export default class AddEmpresas extends Component {
     }
 
     getPaises(){
-        axios.get('api/empresas/paises').then(res=>{
+        axios.get('api/empresas/paises',{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             let r = res.data
             console.log(res)
             localStorage.setItem("paises", JSON.stringify(r.paises));
@@ -109,7 +114,11 @@ export default class AddEmpresas extends Component {
         formData.append("w", $('#emp-add-w').val());
         formData.append("h", $('#emp-add-h').val());
         $('button#save-empresa').prepend('<i class="fa fa-spinner fa-spin"></i> ');
-        axios.post('api/empresas/add',formData).then(res=>{
+        axios.post('api/empresas/add',formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             
             if(res.data.code === 200) {
 
@@ -126,6 +135,10 @@ export default class AddEmpresas extends Component {
                         .post("api/empresas/tabla", {
                             rol: this.state.permisoUsuario.nombre,
                             id: this.state.usuario._id
+                        },{
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
                         })
                         .then(res => {
                             localStorage.setItem("empresasTabla", JSON.stringify(res.data));

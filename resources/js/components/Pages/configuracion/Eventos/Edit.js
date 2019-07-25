@@ -30,6 +30,7 @@ export default class Edit extends React.Component {
             menuAppSeleccionados: [],
             infoEvento:"",
             logo:"",
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
         this.handleChange = this.handleChange.bind(this);
@@ -40,7 +41,11 @@ export default class Edit extends React.Component {
     }
 
     getPaises(){
-        axios.get('api/empresas/paises').then(res=>{
+        axios.get('api/empresas/paises',{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             let r = res.data.data
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
@@ -59,7 +64,11 @@ export default class Edit extends React.Component {
                 this.setState({
                     menuAppInvitados: res.data.data
                 });
-                axios.get("api/eventos/one/"+this.state.idEvento).then(res=>{
+                axios.get("api/eventos/one/"+this.state.idEvento,{
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }).then(res=>{
                     console.log(res)
                     this.setState({
                         infoEvento:res.data.evento,
@@ -165,7 +174,11 @@ export default class Edit extends React.Component {
 
         formData.append("menuapp", menu);
         $('#update-evento').prepend('<i className="fa fa-spinner fa-spin"></i>');
-        axios.post("api/eventos/edit",formData).then(res=>{
+        axios.post("api/eventos/edit",formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             $('button#save-evento').find('i.fa').remove();
             console.log(res);
             if (res.data.code == 200){

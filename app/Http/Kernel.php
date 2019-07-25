@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         'check-change-password' => \App\Http\Middleware\CheckChangePassword::class,
+        'api_token' => \App\Http\Middleware\ApiMiddleware::class,
     ];
 
     /**

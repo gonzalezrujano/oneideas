@@ -27,6 +27,7 @@ export default class Add extends React.Component {
             estado:"",
             app:"",
             logo:"",
+            api_token: localStorage.getItem("api_token"),
             menuAppSeleccionados: [],
             isLoading: true
         };
@@ -38,7 +39,11 @@ export default class Add extends React.Component {
     }
 
     getPaises(){
-        axios.get('api/empresas/paises').then(res=>{
+        axios.get('api/empresas/paises',{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             let r = res.data
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
@@ -76,7 +81,11 @@ export default class Add extends React.Component {
 
     componentDidMount() {
         axios
-            .get("api/eventos/menus")
+            .get("api/eventos/menus",{
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
             .then(res => {
                 this.setState({
                     menuAppInvitados: res.data.data
@@ -145,7 +154,11 @@ export default class Add extends React.Component {
         formData.append("menuapp", menu);
         $('#save-evento').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         console.log("#save-evento");
-        axios.post("api/eventos/add",formData).then(res=>{
+        axios.post("api/eventos/add",formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
             
             console.log(res);
             if (res.data.code == 200){

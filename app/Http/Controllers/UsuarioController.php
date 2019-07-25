@@ -10,6 +10,7 @@ use App\Models\MongoDB\Provincia;
 use App\Models\MongoDB\Departamento;
 use App\Models\MongoDB\Localidad;
 use App\Models\MongoDB\Rol;
+use Illuminate\Support\Str;
 use App\Models\MongoDB\Sucursal;
 use App\Models\MongoDB\TipoDocumento;
 use App\Models\MongoDB\Usuario;
@@ -408,10 +409,11 @@ class UsuarioController extends Controller
             $registro->Activo              = $data['estatus'];
             $registro->CambioPassword      = $data['cambio-password'];
             $registro->Borrado             = $data['borrado'];
+            $registro->api_token           = Str::random(60);
 
             //verifico si fue exitoso el insert en la bd
             if($registro->save()){
-                return response()->json(['code' => 200]);
+                return response()->json(['code' => 200,'token'=>$registro->api_token]);
             }else{
                 return response()->json(['code' => 500]);
             }

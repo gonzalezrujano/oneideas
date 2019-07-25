@@ -11,9 +11,11 @@ export default class Welcome extends Component {
             password: "",
             opcion: "Dashboard",
             footer: "Footer",
-            user: this.props.location.state,
+            user: this.props.location.state.usuario,
+            api_token: this.props.location.state.api_token,
             isLoading: false
         };
+        localStorage.setItem("api_token", this.props.location.state.api_token);
     }
 
     componentWillMount() {

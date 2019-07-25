@@ -15,6 +15,7 @@ export default class Show extends React.Component {
             eventos: JSON.parse(localStorage.getItem("eventos")),
             evento: null,
             archivos: [],
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
         this.handleDelete = this.handleDelete.bind(this);
@@ -24,30 +25,44 @@ export default class Show extends React.Component {
         console.log(this.props.match.params);
         let idEvento = this.props.match.params.id;
 
-        axios.get(`api/eventos/${idEvento}`).then(res => {
-            let r = res.data;
-            this.setState(() => ({
-                evento: r.evento
-            }));
-            axios
-                .post("api/biblioteca/evento/files", { evento: idEvento })
-                .then(res => {
-                    console.log("abajo es archivos");
-                    console.log(res);
-                    if (res.data.code == "200") {
-                        this.setState({
-                            archivos: res.data.archivos,
-                            isLoading: false
-                        });
-                    } else if (res.data.code == "600") {
-                        console.log("entre a 600");
-                        this.setState({
-                            archivos: [],
-                            isLoading: false
-                        });
-                    }
-                });
-        });
+        axios
+            .get(`api/eventos/${idEvento}`, {
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
+            .then(res => {
+                let r = res.data;
+                this.setState(() => ({
+                    evento: r.evento
+                }));
+                axios
+                    .post(
+                        "api/biblioteca/evento/files",
+                        { evento: idEvento },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
+                    .then(res => {
+                        console.log("abajo es archivos");
+                        console.log(res);
+                        if (res.data.code == "200") {
+                            this.setState({
+                                archivos: res.data.archivos,
+                                isLoading: false
+                            });
+                        } else if (res.data.code == "600") {
+                            console.log("entre a 600");
+                            this.setState({
+                                archivos: [],
+                                isLoading: false
+                            });
+                        }
+                    });
+            });
     }
 
     handleDelete(id) {
@@ -63,9 +78,17 @@ export default class Show extends React.Component {
         }).then(result => {
             if (result.value) {
                 axios
-                    .post("/api/biblioteca/evento/files/delete", {
-                        id
-                    })
+                    .post(
+                        "/api/biblioteca/evento/files/delete",
+                        {
+                            id
+                        },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
                     .then(res => {
                         console.log(res.data);
                         if (res.data.code === 200) {

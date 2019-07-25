@@ -34,6 +34,7 @@ export default class Multimedia extends Component {
             multimedias: [],
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+            api_token: localStorage.getItem("api_token"),
             opcion: "Multimedia",
             footer: "Footer",
             zonaevento: "Etc/GMT+4",
@@ -192,7 +193,11 @@ export default class Multimedia extends Component {
  */
     getEventos() {
         console.log(this.state.usuario._id);
-        Axios.get("/api/eventos/usuario/" + this.state.usuario._id).then(
+        Axios.get("/api/eventos/usuario/" + this.state.usuario._id,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(
             res => {
                 let r = res.data.data;
                 localStorage.setItem("eventosUsuario", JSON.stringify(r));
@@ -217,7 +222,11 @@ export default class Multimedia extends Component {
             evento = eventonew;
         }
         axios
-            .post("/api/eventos/envios", { evento })
+            .post("/api/eventos/envios", { evento },{
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
             .then(res => {
                 if (res) {
                     let r = res.data;
@@ -383,7 +392,11 @@ export default class Multimedia extends Component {
         }
         this.enviarComandoQuitar(title,parametro,inicio,fin);
         document.getElementById(id).style.display="none";
-        axios.post('/api/eventos/remove-envios', {evento,title,estado,inicio,fin,parametro,id} )
+        axios.post('/api/eventos/remove-envios', {evento,title,estado,inicio,fin,parametro,id} ,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        })
             .then(res => {
                 if(res){
 
@@ -418,7 +431,11 @@ export default class Multimedia extends Component {
         var self = this;
        let {evento} = this.state;
        evento=evento.split("_")[0];
-       axios.post('/api/multimedia/action-tool', {evento, herramienta} )
+       axios.post('/api/multimedia/action-tool', {evento, herramienta} ,{
+        headers: {
+            Authorization: this.state.api_token
+        }
+    })
            .then(res => {
                console.log(res)
                if(res){
@@ -597,7 +614,11 @@ export default class Multimedia extends Component {
         var momento = new Date(yyyy+'-'+mm+'-'+dd+' '+fin+window.app.gtm);
 
         setTimeout(self.statusEnvios, momento.getTime()-(new Date()).getTime());
-        axios.post('/api/eventos/cola/add', {evento,title,estado,inicio,fin,parametro} )
+        axios.post('/api/eventos/cola/add', {evento,title,estado,inicio,fin,parametro} ,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        })
             .then(res => {
                 if(res){
                     let r = res.data;

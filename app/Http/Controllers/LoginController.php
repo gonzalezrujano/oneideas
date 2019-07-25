@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ValidateLogin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Str;
 use Hash;
 use MongoDB\BSON\ObjectId;
 
@@ -45,12 +46,23 @@ class LoginController extends Controller
                 if(Hash::check($credenciales['password'], $user->Password)){
 
                     $exito = Auth::guard('web')->login($user);
+                    $user->api_token = Str::random(60);
+                    $apitoken = $user->api_token;
+                    if ($user->update()){
+                        return response()->json([
+                            'code' => 200, 
+                            'msj' => 'exito' , 
+                            'api_token' => $apitoken,
+                            'usuario' => $user
+                        ]);
+                    }else{
+                        return response()->json([
+                            'code' => 404, 
+                            'msj' => 'error no esperado' 
+                        ]);
+                    }
 
-                    return response()->json([
-                        'code' => 200, 
-                        'msj' => 'exito' , 
-                        'usuario' => $user
-                    ]);
+                    
 
                 }
 

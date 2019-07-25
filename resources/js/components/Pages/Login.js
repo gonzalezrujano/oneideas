@@ -51,7 +51,7 @@ export default class Login extends Component {
         e.preventDefault();
 
         axios
-            .post("api/usuarios/login", { correo, password })
+            .post("api/login", { correo, password })
             .then(res => {
                 let r = res.data;
 
@@ -66,7 +66,7 @@ export default class Login extends Component {
                     localStorage.setItem("usuario", JSON.stringify(r.usuario));
                     this.props.history.push({
                         pathname: "/welcome",
-                        state: r.usuario
+                        state: { usuario: r.usuario, api_token: r.api_token }
                     });
                     //window.location.href = urlInicio;
                 } else if (r.code === 600) {
