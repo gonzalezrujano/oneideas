@@ -221,6 +221,56 @@ class InvitacionController extends Controller
     }
 
     public function getInfo(Request $request){
+         //capturo el id de la empresa para buscar los eventos en base a ella
+         $input = $request->all();
+         //almaceno los valores enviados por ajax
+         $empresa   = $input['empresa'];
+         //guardo el rol del usuario
+         $rol = $input['rol'];
+         $idUsuario = $input['id'];
+         //acorde al rol muestro los eventos
+         if($rol == 'ADMINISTRADOR'){
+             $eve = Evento::borrado(false);
+             //si contiene la empresa se la agrego al query de busqueda
+             if($empresa){
+                 $eve->where(function ($q) use ($empresa){
+                     $q->where('Empresa_id', new ObjectId($empresa) );
+                 });
+             }
+         }else if($rol == 'EMPRESA'){
+             $eve = Evento::borrado(false)->where('Empresa_id', new ObjectId($idUsuario));
+ 
+         }else if($rol == 'EVENTO'){
+             $eve = Evento::borrado(false)->where('_id',$idUsuario);
+         }
+         $eventos = [];
+         //extraigo el query con o sin los filtros
+         $ev = $eve->get();
+         //verifico que exista data sino lo devulevo vacio
+         if($ev){
+             foreach ($ev as $e) {
+                     $invitaciones = Invitacion::borrado(false)->activo(true)->where(
+                         'Evento_id', new ObjectId($e->_id))->get();
+                     //armo la data que se muestra en la tabla de inicio de la pagina de eventos
+                     $eventos[] = [
+                         '_id'       => $e->_id,
+                         'Empresa'   => Empresa::find($e->Empresa_id)->Nombre,
+                         'Evento'    => strtoupper($e->Nombre),
+                         'IDEvento'  => $e->IDEvento,
+                         'Fecha'     => $e->Fecha. ' '.$e->Hora,
+                         'App'       => $e->App,
+                         'Archivos'  => count($invitaciones)
+                     ];
+                 
+             }
+             return json_encode(['code' => 200,'data'=>$eventos]);
+         }
+         return json_encode(['code' => 500]);
+        
+    }
+
+    //metodo para mandar la data de los archivos del evento
+    public function getFiles(Request $request){
         //capturo el id de la empresa para buscar los eventos en base a ella
         $input = $request->all();
         $idevento = $input['evento'];
@@ -242,6 +292,88 @@ class InvitacionController extends Controller
             return json_encode(['code' => 200,'data'=>$archivos]);
         }
         return json_encode(['code' => 500]);
+    }
+
+    public function deleteFile(Request $request){
+            //capturo el valor del id
+            $input = $request->all();
+            $id = $input['id'];
+            //valido que venga el id sino mando un error
+            if($id){
+                //ubico el id en la bd
+                $registro = Invitacion::find($id);
+                //valido que de verdad sea borrado en caso de que no arrojo un error
+                if($registro->delete()){
+                    Storage::disk('public_oneshow')->delete($registro->PathImg);
+                    Storage::disk('public_oneshow')->delete($registro->PathPdf);
+                    return json_encode(['code' => 200]);
+                }
+                return json_encode(['code' => 500]);
+            }
+            return json_encode(['code' => 600]);
+        
+    }
+
+    public function addFile(ValidateArchivoInvitacion $request){
+        //verifico que la respuesta venga por ajax
+       
+            $input = $request->all();
+            $evento  = (string)$input['id-evento'];
+            $empresa = (string)Evento::find($evento)->Empresa_id;
+            $pathSave = 'Invitacion/'.$empresa.'/'.$evento.'/';
+            $archivoimg = $input['archivoimg'];
+            $fileDataImg = [
+                'extension' => $archivoimg->getClientOriginalExtension(),
+                'size'      => humanFileSize($archivoimg->getSize()),
+                'mime'      => $archivoimg->getMimeType()
+            ];
+            $nameImg = 'invitacion-img.'.$fileDataImg['extension'];
+            $archivopdf = $input['archivopdf'];
+            if($archivopdf){
+                $fileDataPdf = [
+                    'extension' => $archivopdf->getClientOriginalExtension(),
+                    'size'      => humanFileSize($archivopdf->getSize()),
+                    'mime'      => $archivopdf->getMimeType()
+                ];
+                $namePdf = 'invitacion-pdf.'.$fileDataPdf['extension'];
+                Storage::disk('public_oneshow')->put($pathSave.$namePdf, File::get($archivopdf));
+            }else{
+                $fileDataPdf = [
+                    'extension' => '',
+                    'size'      => '',
+                    'mime'      => ''
+                ];
+                $namePdf = '';
+            }
+            Storage::disk('public_oneshow')->put($pathSave.$nameImg, File::get($archivoimg));
+            //capturo los datos y los acomodo en un arreglo
+            $data = [
+                'id-evento'             => new ObjectID($input['id-evento']),
+                'modo'                  => $input['tipo'] == 'v' ? 'VERTICAL' : 'HORIZONTAL',
+                'pathimg'               => url('/').'/OneShow/'.$pathSave.$nameImg,
+                'sizeimg'               => $fileDataImg['size'],
+                'pathpdf'               => $archivopdf  ? url('/').'/OneShow/'.$pathSave.$namePdf : '',
+                'sizepdf'               => $fileDataPdf['size'],
+                'activo'           => true,
+                'borrado'          => false
+            ];
+            //procedo a guardarlos en la bd
+            $registro = new Invitacion();
+            $registro->Evento_id                 = $data['id-evento'];
+            $registro->Modo                      = $data['modo'];
+            $registro->PathImg                   = $data['pathimg'];
+            $registro->SizeImg                   = $data['sizeimg'];
+            $registro->PathPdf                   = $data['pathpdf'];
+            $registro->SizePdf                   = $data['sizepdf'];
+            $registro->Fecha                     = Carbon::now();
+            $registro->Activo                    = $data['activo'];
+            $registro->Borrado                   = $data['borrado'];
+
+            //verifico si fue exitoso el insert en la bd
+            if($registro->save()){
+                return response()->json(['code' => 200]);
+            }
+            return response()->json(['code' => 500]);
         
     }
 }

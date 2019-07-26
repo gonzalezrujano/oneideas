@@ -128,10 +128,10 @@ export default class Menu extends Component {
                                         {/*@if(true)*/}
                                         {true ? (
                                             <li className="sidebar-nav-link">
-                                                <a href="{{ route('invitados.invitacion') }}">
+                                                <Link to="/invitacion">
                                                     <i className="fas fa-envelope-open-text sidebar-nav-link-logo" />{" "}
                                                     Invitación
-                                                </a>
+                                                </Link>
                                             </li>
                                         ) : (
                                             ""

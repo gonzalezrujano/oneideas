@@ -101,6 +101,9 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
 
 Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() {
     Route::post('/get-info', 'InvitacionController@getInfo');
+    Route::post('/files', 'InvitacionController@getFiles');
+    Route::post('/file/delete', 'InvitacionController@deleteFile');
+    Route::post('/file/add', 'InvitacionController@addFile');
 });
 /**
  * Rutas API orientadas al controlador de Menus(menugrastronomico) 

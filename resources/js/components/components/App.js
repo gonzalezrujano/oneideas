@@ -23,7 +23,9 @@ import Usuarios from "../Pages/configuracion/Usuarios/Usuarios";
 import UsuariosAdd from "../Pages/configuracion/Usuarios/Add";
 import UsuariosEdit from "../Pages/configuracion/Usuarios/Edit";
 import UsuariosShow from "../Pages/configuracion/Usuarios/Show";
-import Invitados from "../Pages/configuracion/Invitados/invitados";
+import Invitacion from "../Pages/configuracion/Invitados/invitacion/invitacion";
+import InvitacionShow from "../Pages/configuracion/Invitados/invitacion/Show";
+import InvitacionAdd from "../Pages/configuracion/Invitados/invitacion/Add";
 
 function App() {
     return (
@@ -73,7 +75,13 @@ function App() {
                     path="/usuarios/show/:id"
                     component={UsuariosShow}
                 />
-                <Route exact path="/invitados" component={Invitados} />
+                <Route exact path="/invitacion" component={Invitacion} />
+                <Route
+                    exact
+                    path="/invitacion/show/:id"
+                    component={InvitacionShow}
+                />
+                <Route exact path="/invitacion/add" component={InvitacionAdd} />
             </Switch>
         </BrowserRouter>
     );
