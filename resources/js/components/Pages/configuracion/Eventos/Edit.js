@@ -58,7 +58,11 @@ export default class Edit extends React.Component {
 
     componentDidMount() {
         axios
-            .get("api/eventos/menus")
+            .get("api/eventos/menus",{
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
             .then(res => {
                 console.log(res);
                 this.setState({

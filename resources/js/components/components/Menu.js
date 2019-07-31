@@ -16,7 +16,11 @@ export default class Menu extends Component {
 
     getPermisos() {
         axios
-            .get("api/usuarios/permisos/" + this.state.usuario.Rol_id)
+            .get("api/usuarios/permisos/" + this.state.usuario.Rol_id, {
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
             .then(res => {
                 let r = res.data.data;
                 localStorage.setItem(
