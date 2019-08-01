@@ -46,7 +46,8 @@ export default class Edit extends React.Component {
                 Authorization: this.state.api_token
             }
         }).then(res=>{
-            let r = res.data.data
+            console.log(res);
+            let r = res.data;
             localStorage.setItem("paises", JSON.stringify(r.paises));
             localStorage.setItem("estados", JSON.stringify(r.estados));
             this.setState({
@@ -112,10 +113,16 @@ export default class Edit extends React.Component {
         console.log($("#menuapp"))
         $('#menuapp').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.menuAppInvitados);
         $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
+        var fecha = (this.state.fecha.split("/")).reverse();
+        fecha = fecha.toString();
+        fecha = fecha.replace(/,/g,"-");
+        console.log(fecha);
+        var ms = Date.parse(fecha);
+         fecha = new Date(ms);
+         console.log(fecha)
         $('#fecha').datetimepicker({
             format: 'DD/MM/YYYY',
-            minDate: new Date(),
-            startDate: this.state.fecha
+            minDate: fecha,
         });
 
         $('#hora').datetimepicker({
@@ -266,8 +273,7 @@ export default class Edit extends React.Component {
                                             &nbsp;
                                             <Link to="/empresas">
                                                 Empresa
-                                            </Link>{" "}
-                                            /{" "}
+                                            </Link>
                                             <Link
                                                 to={`/empresa/eventos/${
                                                     this.state.idEmpresa
@@ -275,7 +281,7 @@ export default class Edit extends React.Component {
                                             >
                                                 / Eventos
                                             </Link>{" "}
-                                            / Agregar Evento
+                                            / Editar Evento
                                         </h1>
                                     </div>
                                 </div>

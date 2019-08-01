@@ -123,8 +123,8 @@ export default class Eventos extends Component {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
-                                        <h1 class="page-header-heading">
-                                            <i class="fas fa-calendar-week page-header-heading-icon" />
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-calendar-week page-header-heading-icon" />
                                             &nbsp;
                                             <Link to="/empresas">
                                                 Empresa
@@ -139,7 +139,7 @@ export default class Eventos extends Component {
                             <div className="row">
                                 <div className="offset-6">
                                     <h3>
-                                        <i class="fa fa-spinner fa-spin" />{" "}
+                                        <i className="fa fa-spinner fa-spin" />{" "}
                                         Cagargando
                                     </h3>
                                 </div>
@@ -158,8 +158,8 @@ export default class Eventos extends Component {
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
-                                        <h1 class="page-header-heading">
-                                            <i class="fas fa-calendar-week page-header-heading-icon" />
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-calendar-week page-header-heading-icon" />
                                             &nbsp;
                                             <Link to="/empresas">
                                                 Empresa
@@ -173,7 +173,7 @@ export default class Eventos extends Component {
 
                         <div id="sweet" className="container-fluid">
                             <table
-                                class="table table-hover table-condensed table-dark-theme table-responsive-sm"
+                                className="table table-hover table-condensed table-dark-theme table-responsive-sm"
                                 id="dt-eventos"
                             >
                                 <thead>
@@ -205,7 +205,9 @@ export default class Eventos extends Component {
                                         <th className="text-center">PAÍS</th>
                                         <th className="text-center">APP</th>
                                         <th className="text-center">ESTADO</th>
-                                        <th class="text-center">ACCIONES</th>
+                                        <th className="text-center">
+                                            ACCIONES
+                                        </th>
                                     </tr>
                                 </thead>
 

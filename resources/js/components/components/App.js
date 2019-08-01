@@ -26,6 +26,8 @@ import UsuariosShow from "../Pages/configuracion/Usuarios/Show";
 import Invitacion from "../Pages/configuracion/Invitados/invitacion/invitacion";
 import InvitacionShow from "../Pages/configuracion/Invitados/invitacion/Show";
 import InvitacionAdd from "../Pages/configuracion/Invitados/invitacion/Add";
+import Invitados from "../Pages/configuracion/Invitados/invitados/Invitados";
+import InvitadosAdd from "../Pages/configuracion/Invitados/invitados/Add";
 
 function App() {
     return (
@@ -82,6 +84,8 @@ function App() {
                     component={InvitacionShow}
                 />
                 <Route exact path="/invitacion/add" component={InvitacionAdd} />
+                <Route exact path="/invitados" component={Invitados} />
+                <Route exact path="/invitados/add" component={InvitadosAdd} />
             </Switch>
         </BrowserRouter>
     );

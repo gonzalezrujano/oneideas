@@ -1,0 +1,311 @@
+import React, { Component } from "react";
+import axios from "axios";
+import Menu from "../../../../components/Menu";
+import Header from "../../../../components/Header";
+import { Link } from "react-router-dom";
+
+export default class Add extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            usuario: JSON.parse(localStorage.getItem("usuario")),
+            permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+            empresas: JSON.parse(localStorage.getItem("empresas")),
+            eventos:[],
+            evento:"",
+            nombre:"",
+            apellido:"",
+            correo:"",
+            telefono:"",
+            grupo:"",
+            etapasSeleccionadas:[],
+            etapas:[],
+            invitadosAdicionalesMayores:0,
+            invitadosAdicionalesMenores:0,
+            opcion: "Invitados",
+            footer: "Footer",
+            eventos: JSON.parse(localStorage.getItem("eventos")),
+            api_token: localStorage.getItem("api_token"),
+            isLoading: true
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeMulti = this.handleChangeMulti.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        
+    }
+
+    componentDidMount() {
+        axios.get("api/eventos",{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res => {
+            console.log(res)
+            this.setState({
+                eventos:res.data.eventos,
+                isLoading: false
+            });
+            this.infoForm();
+        });
+    }
+
+    infoForm(){
+        var optionSelectMultiple = {
+            placeholder: 'Seleccione',
+            selectAllText: 'Todos',
+            allSelected: 'Todos',
+            countSelected: '# de % opciones'
+        };
+        $('#acceso').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.accesoInvitados);
+    }
+
+    handleChange(event){
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        console.log(value)
+        const name = target.name;
+        this.setState({
+          [name]: value
+        })
+
+    }
+
+    handleChangeMulti(e){
+        
+        this.setState({etapasSeleccionadas: [...e.target.selectedOptions].map(o => o.value)});
+        console.log(this.state.etapasSeleccionadas);
+    }
+
+    handleSubmit(e){
+        e.preventDefault();
+        /*let formData = new FormData();
+
+        formData.append("tipo-documento", this.state.tipoDocumento);
+        formData.append("documento", this.state.documento);
+        formData.append("nombre", this.state.nombre);
+        formData.append("apellido", this.state.apellido);
+        formData.append("correo", this.state.correo);
+        formData.append("telefono", this.state.telefono);
+        formData.append("pais", this.state.pais);
+        formData.append("rol", this.state.rol);
+        formData.append("empresa", this.state.empresa);
+        formData.append("evento", this.state.evento);
+        formData.append("estatus", this.state.estado);
+        $('button#save-usuario').prepend('<i className="fa fa-spinner fa-spin"></i> ');
+        axios.post("/api/usuarios/add",formData,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
+            console.log(res)
+            $('button#save-usuario').find('i.fa').remove();
+
+                if(res.data.code === 200) {
+
+                    Swal.fire({
+                        text: "Usuario agregado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById('sweet')
+                    }).then((result) => {
+
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+                        this.props.history.push("/usuarios");
+                        }
+
+                    });
+
+                }else if(res.data.code === 500){
+                    sweetalert('Error al agregar usuario. Consulte al Administrador.', 'error', 'sweet');
+                }
+        }).catch(error => {
+            $('button#save-usuario').find('i.fa').remove();
+            sweetalert(error.response.data, 'error', 'sweet');
+        })*/
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (
+                <div>
+                    <Menu usuario={this.state.user} />
+                    <Header usuario={this.state.user} />
+                    <div className="content-wrapper">
+                        <header className="page-header">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-12">
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            &nbsp; Invitados
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+                        <div id="sweet" className="container-fluid">
+                            <div className="row">
+                                <div className="offset-6">
+                                    <h3>
+                                        <i className="fa fa-spinner fa-spin" />{" "}
+                                        Cagargando
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <Menu usuario={this.state.user} />
+                    <Header usuario={this.state.user} />
+                    <div className="content-wrapper">
+                        <header className="page-header">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-12">
+                                        <h1 className="page-header-heading">
+                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            &nbsp; 
+                                            <Link to="/invitados">
+                                            invitados{" "}
+                                            </Link>
+                                            / Agregar invitado
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
+
+                        <div id="sweet" className="container-fluid">
+                            <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li className="nav-item">
+                                    <a className="nav-link active" id="pills-datos-tab" data-toggle="pill" href="#pills-datos" role="tab" aria-controls="pills-datos" aria-selected="true">Datos</a>
+                                </li>
+
+                            </ul>
+
+                            <hr className="line-gray"/>
+
+                            <form id="form-add-usuario" className="form-change-password form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+                                <div className="tab-content" id="pills-tabContent">
+                                    <div className="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
+
+                                    <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Evento</label>
+                                            <div className="col-sm-4">
+                                                <select className="form-control form-control-sm" id="evento" name="evento" value={this.state.evento} onChange={this.handleChange} >
+                                                {this.state.eventos.map(
+                                                    (e, index) => {
+                                                        return (
+                                                            <option value={e._id} key={index}>{e.Nombre}</option>
+                                                        )
+                                                    }
+                                                )}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Nombre</label>
+                                            <div className="col-sm-4">
+                                                <input type="text" className="form-control form-control-sm" id="nombre" name="nombre" placeholder="Ingrese el nombre" value={this.state.nombre} onChange={this.handleChange} />
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Apellido</label>
+                                            <div className="col-sm-4">
+                                                <input type="text" className="form-control form-control-sm" id="apellido" name="apellido" placeholder="Ingrese el apellido" value={this.state.apellido} onChange={this.handleChange} />
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Correo</label>
+                                            <div className="col-sm-4">
+                                                <input type="text" className="form-control form-control-sm" id="correo" name="correo" placeholder="Ingrese el correo" value={this.state.correo} onChange={this.handleChange}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Teléfono</label>
+                                            <div className="col-sm-4">
+                                                <input type="text" className="form-control form-control-sm" id="telefono" name="telefono" placeholder="Ingrese el telefono" value={this.state.telefono} onChange={this.handleChange}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Grupo de invitados</label>
+                                            <div className="col-sm-4">
+                                                <select className="form-control form-control-sm" id="grupo" name="grupo" value={this.state.grupo} onChange={this.handleChange}>
+                                                    <option value="general">General</option>
+                                                    <option value="familiaNovia" >Familia novia</option>
+                                                    <option value="familiaNovio" >Familia novio</option>
+                                                    <option value="Mejoresamigos" >Mejores amigos</option>
+                                                    <option value="amigos" >Amigos</option>
+                                                    <option value="amigosNovio" >Amigos novio</option>
+                                                    <option value="amigosNovia" >Amigos novia</option>
+                                                    <option value="compañerosTrabajo" >Compañeros de trabajo</option>
+                                                    <option value="amigosFamilia" >Amigos de la familia</option>
+                                                    <option value="club" >Club</option>
+                                                    <option value="colegio" >Colegio</option>
+                                                    <option value="facultad" >Facultad</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Accesos de evento</label>
+                                            <div className="col-sm-4">
+                                                <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" value={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple">
+                                                {/*this.state.etapas.map(
+                                                    (e, index) => {
+                                                        return (
+                                                            <option value={e._id} key={index}>{e.Nombre}</option>
+                                                        )
+                                                    }
+                                                )*/}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales(+18)</label>
+                                            <div className="col-4">
+                                                <input className="form-control" type="number" name="invitadosAdicionalesMayores" value={this.state.invitadosAdicionalesMayores} id="invitadosAdicionalesMayores" onChange={this.handleChange} min="0"/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales menores de edad</label>
+                                            <div className="col-4">
+                                                <input className="form-control" type="number" name="invitadosAdicionalesMenores" value={this.state.invitadosAdicionalesMenores} id="invitadosAdicionalesMenores" onChange={this.handleChange} min="0"/>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div className="form-group row">
+                                    <div className="col-sm-4">
+                                        <button type="submit" id="save-usuario" className="btn btn-sm btn-dark mr-2">Guardar</button>
+
+                                        <Link to="/invitados"><button type="button" className="btn btn-sm btn-dark">Volver</button></Link>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+    }
+}

@@ -1017,8 +1017,15 @@ class EventoController extends Controller
 
                 return json_encode(['code' => 600]);
             }
-        
+    }
 
+    public function getEventos(){
+        $data = Evento::borrado(false)->get();
+        if($data){
+            return json_encode(['code' => 200,'eventos'=>$data]);
+        }else{
+            return json_encode(['code' => 500]);
+        }
     }
 
     

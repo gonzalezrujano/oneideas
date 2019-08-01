@@ -89,6 +89,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'agendas'], function() {
 
 Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     //rutas de eventos
+    Route::get('/', 'EventoController@getEventos');
     Route::get('/menus','EventoController@getMenuAppInvitado');
     Route::get('/one/{id}','EventoController@getEventoById');
     Route::post('/add','EventoController@addEvento');
@@ -96,6 +97,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     Route::post('/edit','EventoController@editEvento');
     Route::get('/{id}', 'EventoController@getEvento');
     Route::post('/empresa', 'EventoController@getEventosEmpresa');
+
     
 });
 
