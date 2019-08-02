@@ -107,6 +107,26 @@ Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() 
     Route::post('/file/delete', 'InvitacionController@deleteFile');
     Route::post('/file/add', 'InvitacionController@addFile');
 });
+
+/**
+ * Rutas API orientadas al controlador de Invitado InvitadoController
+ */
+Route::group(['middleware'=>'api_token','prefix' => 'invitados'], function() {
+    //rutas de empresas
+    Route::post('/', 'InvitadoController@addInvitado');
+});
+
+/**
+ * Rutas API orientadas al controlador de Invitado InvitadoController
+ */
+Route::group(['middleware'=>'api_token','prefix' => 'grupos'], function() {
+    //rutas de empresas
+    Route::post('/', 'GrupoController@addGrupo');
+    Route::get('/', 'GrupoController@getGrupos');
+    Route::post('/delete', 'GrupoController@deleteGrupo');
+    Route::post('/edit', 'GrupoController@setGrupo');
+    Route::get('/{id}', 'GrupoController@getGrupo');
+});
 /**
  * Rutas API orientadas al controlador de Menus(menugrastronomico) 
  * (queda por restructurar)
@@ -137,4 +157,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'menu'], function() {
         Route::post('/actualizar', 'MenugPlatosController@actualizar');
         Route::post('/eliminar/{id}', 'MenugPlatosController@eliminar');        
     });
+
+
+    
 });

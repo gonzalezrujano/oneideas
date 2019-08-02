@@ -43,9 +43,20 @@ export default class Add extends Component {
             console.log(res)
             this.setState({
                 eventos:res.data.eventos,
-                isLoading: false
             });
-            this.infoForm();
+            axios.get("api/grupos",{
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            }).then(res=>{
+                console.log(res);
+                this.setState({
+                    grupos: res.data.grupos,
+                    isLoading: false
+                });
+                this.infoForm();
+            })
+            
         });
     }
 
@@ -78,27 +89,22 @@ export default class Add extends Component {
 
     handleSubmit(e){
         e.preventDefault();
-        /*let formData = new FormData();
-
-        formData.append("tipo-documento", this.state.tipoDocumento);
-        formData.append("documento", this.state.documento);
+        let formData = new FormData()
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
-        formData.append("pais", this.state.pais);
-        formData.append("rol", this.state.rol);
-        formData.append("empresa", this.state.empresa);
-        formData.append("evento", this.state.evento);
-        formData.append("estatus", this.state.estado);
-        $('button#save-usuario').prepend('<i className="fa fa-spinner fa-spin"></i> ');
-        axios.post("/api/usuarios/add",formData,{
+        formData.append("grupo-id",this.state.grupo);
+        formData.append("invitados-adicionales-mayores",this.state.invitadosAdicionalesMayores);
+        formData.append("invitados-adicionales-menores",this.state.invitadosAdicionalesMenores);
+        $('#save-invitado').prepend('<i className="fa fa-spinner fa-spin"></i> ');
+        axios.post("api/invitados",formData,{
             headers: {
                 Authorization: this.state.api_token
             }
         }).then(res=>{
             console.log(res)
-            $('button#save-usuario').find('i.fa').remove();
+            $('#save-invitado').find('i.fa').remove();
 
                 if(res.data.code === 200) {
 
@@ -113,7 +119,7 @@ export default class Add extends Component {
 
                         if (result.value) {
                             window.scrollTo(0, 0);
-                        this.props.history.push("/usuarios");
+                        this.props.history.push("/invitados");
                         }
 
                     });
@@ -124,7 +130,7 @@ export default class Add extends Component {
         }).catch(error => {
             $('button#save-usuario').find('i.fa').remove();
             sweetalert(error.response.data, 'error', 'sweet');
-        })*/
+        })
     }
 
     render() {
@@ -243,18 +249,15 @@ export default class Add extends Component {
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Grupo de invitados</label>
                                             <div className="col-sm-4">
                                                 <select className="form-control form-control-sm" id="grupo" name="grupo" value={this.state.grupo} onChange={this.handleChange}>
-                                                    <option value="general">General</option>
-                                                    <option value="familiaNovia" >Familia novia</option>
-                                                    <option value="familiaNovio" >Familia novio</option>
-                                                    <option value="Mejoresamigos" >Mejores amigos</option>
-                                                    <option value="amigos" >Amigos</option>
-                                                    <option value="amigosNovio" >Amigos novio</option>
-                                                    <option value="amigosNovia" >Amigos novia</option>
-                                                    <option value="compañerosTrabajo" >Compañeros de trabajo</option>
-                                                    <option value="amigosFamilia" >Amigos de la familia</option>
-                                                    <option value="club" >Club</option>
-                                                    <option value="colegio" >Colegio</option>
-                                                    <option value="facultad" >Facultad</option>
+                                                    <option value="">-Seleccione-</option>
+                                                    {this.state.grupos.map((e, index) => {
+                                                        return (
+                                                            <option value={e._id} key={index}>{e.Nombre}</option>
+                                                        )
+                                                    
+                                                    }
+                                                    )
+                                                }
                                                 </select>
                                             </div>
                                         </div>
@@ -295,7 +298,7 @@ export default class Add extends Component {
 
                                 <div className="form-group row">
                                     <div className="col-sm-4">
-                                        <button type="submit" id="save-usuario" className="btn btn-sm btn-dark mr-2">Guardar</button>
+                                        <button type="submit" id="save-invitado" className="btn btn-sm btn-dark mr-2">Guardar</button>
 
                                         <Link to="/invitados"><button type="button" className="btn btn-sm btn-dark">Volver</button></Link>
                                     </div>

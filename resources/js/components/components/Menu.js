@@ -243,10 +243,24 @@ export default class Menu extends Component {
                                         {/*@if(Auth::user()->hasPermission('cliente', 'show'))*/}
                                         {permisos.cliente.includes("show") ? (
                                             <li className="sidebar-nav-link">
-                                                <a href="{{ route('configuracion.cliente') }}">
+                                                <Link to="/invitados">
                                                     <i className="fas fa-user-tie sidebar-nav-link-logo" />{" "}
                                                     Invitados
-                                                </a>
+                                                </Link>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {console.log(
+                                            this.state.permisosUsuario
+                                        )}
+                                        {this.state.permisosUsuario.nombre ==
+                                        "ADMINISTRADOR" ? (
+                                            <li className="sidebar-nav-link">
+                                                <Link to="/grupos">
+                                                    <i className="fas fa-users sidebar-nav-link-logo" />{" "}
+                                                    Grupos
+                                                </Link>
                                             </li>
                                         ) : (
                                             ""
