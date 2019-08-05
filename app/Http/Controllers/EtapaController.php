@@ -11,7 +11,7 @@ use DB, DataTables, Image, Storage, File, Auth, Mail, QrCode;
 
 //controlador encargado de los invitados
 
-class GrupoController extends Controller
+class EtapaController extends Controller
 {
   public function addEtapa(Request $request){
     $input = $request->all();
@@ -31,9 +31,11 @@ class GrupoController extends Controller
         $evento =  Evento::find($idEvento);
         if($evento){
             if($evento->etapas){
-                array_push($evento->etapas, new ObjectID($etapa->_id));
+                $etapas = $evento->etapas;
+                array_push($etapas, new ObjectID($etapa->_id));
+                $evento->etapas = $etapas; 
             }else{
-                $evento->etapas = [new ObjectID($etapa->_id)]
+                $evento->etapas = [new ObjectID($etapa->_id)];
             }
             if($evento->save()){
                 return response()->json(['code' => 200,'etapa'=>$etapa]);
@@ -49,12 +51,12 @@ class GrupoController extends Controller
   }
 
   public function getEtapasEvento($id){
-    $evento =  Evento::find($idEvento);
+    $evento =  Evento::find($id);
     $etapas = [];
     if($evento){
         if($evento->etapas){
             $arregloEtapas = $evento->etapas;
-            for($i = 0; $i < count($arregloEtapas); $id++){
+            for($i = 0; $i < count($arregloEtapas); $i++){
                 $etapa =  Etapa::find($arregloEtapas[$i]);
                 array_push($etapas,$etapa);
             }
@@ -101,7 +103,7 @@ class GrupoController extends Controller
     }
   }
 
-  public function deleteGrupo(Request $request){
+  public function deleteEtapa(Request $request){
       //capturo el valor del id
       $input = $request->all();
       $id = $input['id'];

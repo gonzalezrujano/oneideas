@@ -134,6 +134,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'grupos'], function() {
 Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
     //rutas de empresas
     Route::post('/', 'EtapaController@addEtapa');
+    Route::post('/delete', 'EtapaController@deleteEtapa');
     Route::get('/evento/{id}', 'EtapaController@getEtapasEvento');
 });
 /**

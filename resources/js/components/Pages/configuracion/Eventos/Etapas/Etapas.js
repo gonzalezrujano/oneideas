@@ -10,6 +10,7 @@ export default class Etapas extends Component {
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
+            idEvento: this.props.match.params.id,
             etapas: [],
             opcion: "Etapas",
             footer: "Footer",
@@ -20,8 +21,8 @@ export default class Etapas extends Component {
     }
 
     componentDidMount() {
-        /* axios
-            .get("api/etapas/" + this.state.idevento, {
+        axios
+            .get("api/etapas/evento/" + this.state.idEvento, {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
@@ -30,10 +31,7 @@ export default class Etapas extends Component {
                     etapas: res.data.etapas,
                     isLoading: false
                 });
-            });*/
-        this.setState({
-            isLoading: false
-        });
+            });
     }
 
     modalDelete(id) {
@@ -95,7 +93,7 @@ export default class Etapas extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-ticket-alt page-header-heading-icon" />
                                             &nbsp; Etapas
                                         </h1>
                                     </div>
@@ -127,7 +125,7 @@ export default class Etapas extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-ticket-alt page-header-heading-icon" />
                                             &nbsp; Etapas
                                         </h1>
                                     </div>
@@ -148,7 +146,10 @@ export default class Etapas extends Component {
                                                 <td>
                                                     <Link
                                                         className="btn-sm btn-dark button-add p-2"
-                                                        to={"/etapas/add/"}
+                                                        to={
+                                                            "/eventos/etapas/add/" +
+                                                            this.state.idEvento
+                                                        }
                                                     >
                                                         Agregar etapa
                                                     </Link>

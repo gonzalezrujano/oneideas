@@ -30,6 +30,7 @@ export default class Add extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeMulti = this.handleChangeMulti.bind(this);
+        this.handleEvento = this.handleEvento.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         
     }
@@ -52,9 +53,21 @@ export default class Add extends Component {
                 console.log(res);
                 this.setState({
                     grupos: res.data.grupos,
-                    isLoading: false
                 });
-                this.infoForm();
+                axios.get("api/etapas/evento/"+this.state.eventos[0]._id,{
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }).then(res=>{
+                    console.log(res)
+                    this.setState({
+                        etapas: res.data.etapas,
+                        isLoading: false
+                    });
+                    this.infoForm();
+                })
+                
+                
             })
             
         });
@@ -79,6 +92,26 @@ export default class Add extends Component {
           [name]: value
         })
 
+    }
+
+    handleEvento(event){
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        console.log(value)
+        const name = target.name;
+        this.setState({
+          [name]: value
+        })
+        axios.get("api/etapas/evento/"+value,{
+            headers: {
+                Authorization: this.state.api_token
+            }
+        }).then(res=>{
+            console.log(res);
+            this.setState({
+                etapas:res.data.etapas
+            })
+        })
     }
 
     handleChangeMulti(e){
@@ -204,7 +237,7 @@ export default class Add extends Component {
                                     <div className="form-group row">
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Evento</label>
                                             <div className="col-sm-4">
-                                                <select className="form-control form-control-sm" id="evento" name="evento" value={this.state.evento} onChange={this.handleChange} >
+                                                <select className="form-control form-control-sm" id="evento" name="evento" value={this.state.evento} onChange={this.handleEvento} >
                                                 {this.state.eventos.map(
                                                     (e, index) => {
                                                         return (
@@ -265,13 +298,13 @@ export default class Add extends Component {
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Accesos de evento</label>
                                             <div className="col-sm-4">
                                                 <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" value={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple">
-                                                {/*this.state.etapas.map(
+                                                {this.state.etapas.map(
                                                     (e, index) => {
                                                         return (
                                                             <option value={e._id} key={index}>{e.Nombre}</option>
                                                         )
                                                     }
-                                                )*/}
+                                                )}
                                                 </select>
                                             </div>
                                         </div>

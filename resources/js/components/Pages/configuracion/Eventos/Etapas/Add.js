@@ -16,26 +16,10 @@ export default class Add extends Component {
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
-            isLoading: true
+            isLoading: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        axios
-            .get("api/eventos", {
-                headers: {
-                    Authorization: this.state.api_token
-                }
-            })
-            .then(res => {
-                console.log(res);
-                this.setState({
-                    eventos: res.data.eventos,
-                    isLoading: false
-                });
-            });
     }
 
     handleChange(event) {
@@ -54,7 +38,8 @@ export default class Add extends Component {
         let formData = new FormData();
         formData.append("nombre-etapa", this.state.nombre);
         formData.append("id-evento", this.state.idEvento);
-        $("#save-etapa").prepend('<i className="fa fa-spinner fa-spin"></i> ');
+        $("#save-etapa").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        console.log($("#save-etapa"));
         axios
             .post("api/etapas", formData, {
                 headers: {
@@ -78,7 +63,9 @@ export default class Add extends Component {
                     }).then(result => {
                         if (result.value) {
                             window.scrollTo(0, 0);
-                            this.props.history.push("/etapas");
+                            this.props.history.push(
+                                "/eventos/etapas/" + this.state.idEvento
+                            );
                         }
                     });
                 } else if (res.data.code === 500) {
@@ -142,7 +129,14 @@ export default class Add extends Component {
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
                                             &nbsp;
-                                            <Link to="/etapas">invitados </Link>
+                                            <Link
+                                                to={
+                                                    "/eventos/etapas/" +
+                                                    this.state.idEvento
+                                                }
+                                            >
+                                                Eventos{" "}
+                                            </Link>
                                             / Agregar etapa
                                         </h1>
                                     </div>
