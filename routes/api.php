@@ -127,6 +127,15 @@ Route::group(['middleware'=>'api_token','prefix' => 'grupos'], function() {
     Route::post('/edit', 'GrupoController@setGrupo');
     Route::get('/{id}', 'GrupoController@getGrupo');
 });
+
+/**
+ * Rutas API orientadas al controlador de Invitado InvitadoController
+ */
+Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
+    //rutas de empresas
+    Route::post('/', 'EtapaController@addEtapa');
+    Route::get('/evento/{id}', 'EtapaController@getEtapasEvento');
+});
 /**
  * Rutas API orientadas al controlador de Menus(menugrastronomico) 
  * (queda por restructurar)

@@ -10,6 +10,7 @@ export default class Menu extends Component {
             url: "",
             usuario: this.props.usuario,
             permisosUsuario: {},
+            api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
     }

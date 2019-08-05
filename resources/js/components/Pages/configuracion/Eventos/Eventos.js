@@ -278,6 +278,26 @@ export default class Eventos extends Component {
                                                                     ""
                                                                 )}
                                                                 {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "edit"
+                                                                ) ? (
+                                                                    <Link
+                                                                        className="mr-2"
+                                                                        to={
+                                                                            "/eventos/etapas/" +
+                                                                            e._id
+                                                                        }
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Etapas"
+                                                                            className="fas fa-ticket-alt icono-ver"
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
                                                                     "delete"
                                                                 ) ? (
                                                                     <Link className="mr-2">

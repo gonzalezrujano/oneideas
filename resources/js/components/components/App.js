@@ -31,6 +31,9 @@ import InvitadosAdd from "../Pages/configuracion/Invitados/invitados/Add";
 import Grupos from "../Pages/configuracion/Grupos/Grupos";
 import GruposAdd from "../Pages/configuracion/Grupos/Add";
 import GruposEdit from "../Pages/configuracion/Grupos/Edit";
+import Etapas from "../Pages/configuracion/Eventos/Etapas/Etapas";
+import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
+import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 
 function App() {
     return (
@@ -68,6 +71,17 @@ function App() {
                 <Route exact path="/eventos/add/:id" component={EventosAdd} />
                 <Route exact path="/eventos/edit/:id" component={EventoEdit} />
                 <Route exact path="/eventos/show/:id" component={EventoShow} />
+                <Route exact path="/eventos/etapas/:id" component={Etapas} />
+                <Route
+                    exact
+                    path="/eventos/etapas/add/:id"
+                    component={EtapasAdd}
+                />
+                <Route
+                    exact
+                    path="/eventos/etapas/edit/:id"
+                    component={EtapasEdit}
+                />
                 <Route exact path="/usuarios" component={Usuarios} />
                 <Route exact path="/usuarios/add" component={UsuariosAdd} />
                 <Route

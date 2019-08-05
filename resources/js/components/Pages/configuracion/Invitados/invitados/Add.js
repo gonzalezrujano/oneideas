@@ -107,7 +107,6 @@ export default class Add extends Component {
             $('#save-invitado').find('i.fa').remove();
 
                 if(res.data.code === 200) {
-
                     Swal.fire({
                         text: "Usuario agregado exitosamente",
                         type: "success",
