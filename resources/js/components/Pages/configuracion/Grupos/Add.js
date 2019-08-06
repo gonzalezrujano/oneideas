@@ -100,14 +100,17 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header  usuario={this.state.user} history={this.props.history}    />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-users page-header-heading-icon" />
                                             &nbsp; Grupos
                                         </h1>
                                     </div>
@@ -131,17 +134,20 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header  usuario={this.state.user} history={this.props.history}    />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-users page-header-heading-icon" />
                                             &nbsp;
-                                            <Link to="/grupos">invitados </Link>
-                                            / Agregar grupo
+                                            <Link to="/grupos">Grupos </Link>/
+                                            Agregar grupo
                                         </h1>
                                     </div>
                                 </div>
