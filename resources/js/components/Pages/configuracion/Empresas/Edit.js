@@ -140,7 +140,7 @@ export default class AddEmpresas extends Component {
         formData.append("y", $('#emp-edit-y').val());
         formData.append("w", $('#emp-edit-w').val());
         formData.append("h", $('#emp-edit-h').val());
-        $("#save-empresa").prepend("<i className='fa fa-spinner fa-spin'></i> ");
+        $("#save-empresa").prepend("<i class='fa fa-spinner fa-spin'></i> ");
         axios.post('api/empresas/update',formData,{
             headers: {
                 Authorization: this.state.api_token
@@ -195,14 +195,14 @@ export default class AddEmpresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
                                         </h1>
                                     </div>
@@ -226,15 +226,19 @@ export default class AddEmpresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                        <Link to="/empresas">
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
+                                            </Link>
+                                            {" "}
+                                            / Editar Empresa
                                         </h1>
                                     </div>
                                 </div>

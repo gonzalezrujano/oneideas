@@ -5,6 +5,7 @@ use App\Http\Requests\ValidateEmpresa;
 use App\Models\MongoDB\Departamento;
 use App\Models\MongoDB\Localidad;
 use App\Models\MongoDB\MedioPago;
+use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\Pais;
 use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\Provincia;
@@ -283,11 +284,11 @@ class EmpresaController extends Controller
 
         }else if($rol == 'EMPRESA'){
 
-            $emp = Empresa::borrado(false)->where('_id',  $id  )->get();
+            $emp = Empresa::borrado(false)->where('_id',  new ObjectID($id)  )->get();
 
         }else if($rol == 'EVENTO'){
 
-            $emp = Empresa::borrado(false)->where('_id', $id  )->get();
+            $emp = Empresa::borrado(false)->where('_id', new ObjectID($id)  )->get();
 
         }
 
@@ -330,7 +331,16 @@ class EmpresaController extends Controller
             $registro = Empresa::find($id);
             $registro->Borrado = true;
 
+
             if($registro->save()){
+                $eventos = Evento::where('Empresa_id',  new ObjectID($id))->get();
+                
+                for($i = 0; $i < count($eventos); $i++){
+                    $idEvento = $eventos[$i]->_id;
+                    $evento = Evento::find($idEvento);
+                    $evento->Borrado = true;
+                    $evento->save();
+                }
                 return json_encode(['code' => 200]);
             }else{
                 return json_encode(['code' => 500]);

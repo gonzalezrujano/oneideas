@@ -23,30 +23,9 @@ export default class Biblioteca extends Component {
     }
 
     /**
-     * Metodo para obtener por api la informacion de todas las empresas
-     */
-    getEmpresas() {
-        axios
-            .get("api/empresas", {
-                headers: {
-                    Authorization: this.state.api_token
-                }
-            })
-            .then(res => {
-                let r = res.data;
-                console.log(r);
-                localStorage.setItem("empresas", JSON.stringify(r.empresas));
-                this.setState({
-                    empresas: r.empresas,
-                    isLoading: false
-                });
-            });
-    }
-
-    /**
      * Traer por api toda la informacion de los eventos para llenar la info de la tabal
      */
-    getDataTables() {
+    componentDidMount() {
         axios
             .post(
                 "api/biblioteca",
@@ -62,40 +41,46 @@ export default class Biblioteca extends Component {
             )
             .then(res => {
                 localStorage.setItem("eventos", JSON.stringify(res.data));
-                this.getEmpresas();
                 this.setState({
                     eventos: res.data
                 });
+                axios
+                    .get("api/empresas", {
+                        headers: {
+                            Authorization: this.state.api_token
+                        }
+                    })
+                    .then(res => {
+                        let r = res.data;
+                        console.log(r);
+                        localStorage.setItem(
+                            "empresas",
+                            JSON.stringify(r.empresas)
+                        );
+                        this.setState({
+                            empresas: r.empresas,
+                            isLoading: false
+                        });
+                    });
             });
     }
 
     render() {
-        if (
-            !JSON.parse(localStorage.getItem("empresas")) ||
-            !JSON.parse(localStorage.getItem("eventos"))
-        ) {
-            console.log("no esta en local storage");
-            this.getDataTables();
-        } else {
-            console.log("esta en local storage");
-            console.log(this.state.empresas);
-            console.log(this.state.eventos);
-            this.state.isLoading = false;
-        }
-        console.log(this.state.permisoUsuario);
-
         if (this.state.isLoading) {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            <i className="fas fa-book page-header-heading-icon" />
                                             {this.state.opcion}
                                         </h1>
                                     </div>
@@ -119,7 +104,10 @@ export default class Biblioteca extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -229,7 +217,18 @@ export default class Biblioteca extends Component {
                                                     {e.Fecha}
                                                 </td>
                                                 <td className="text-center">
-                                                    {e.app}
+                                                    {e.App ? (
+                                                        <i
+                                                            className="fa fa-check fa-lg icono-check"
+                                                            aria-hidden="true"
+                                                        />
+                                                    ) : (
+                                                        <i
+                                                            style="color: #d9534f"
+                                                            className="fa fa-times fa-lg"
+                                                            aria-hidden="true"
+                                                        />
+                                                    )}
                                                 </td>
                                                 <td className="text-center">
                                                     {e.Archivos}

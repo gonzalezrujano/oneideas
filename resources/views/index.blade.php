@@ -16,7 +16,12 @@
 
         <link rel="stylesheet" href="{{ asset('css/vendor.css') }}">
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
+        <style>
+            body {
+            overflow: scroll!important;
+            overflow-x: hidden!important;    
+            }
+        </style>
     </head>
     <body>
 

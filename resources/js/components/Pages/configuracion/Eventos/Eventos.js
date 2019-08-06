@@ -117,7 +117,10 @@ export default class Eventos extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -159,7 +162,7 @@ export default class Eventos extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             &nbsp;
                                             <Link to="/empresas">
                                                 Empresa
@@ -235,10 +238,29 @@ export default class Eventos extends Component {
                                                         {e.Pais}
                                                     </td>
                                                     <td className="text-center">
-                                                        {e.Activo}
+                                                        {e.Activo ? (
+                                                            <span className="badge badge-success badge-dt">
+                                                                activo
+                                                            </span>
+                                                        ) : (
+                                                            <span className="badge badge-danger badge-dt">
+                                                                inactivo
+                                                            </span>
+                                                        )}
                                                     </td>
                                                     <td className="text-center">
-                                                        {e.App}
+                                                        {e.App ? (
+                                                            <i
+                                                                className="fa fa-check fa-lg icono-check"
+                                                                aria-hidden="true"
+                                                            />
+                                                        ) : (
+                                                            <i
+                                                                style="color: #d9534f"
+                                                                className="fa fa-times fa-lg"
+                                                                aria-hidden="true"
+                                                            />
+                                                        )}
                                                     </td>
                                                     {this.state.permisoUsuario.permisos.evento.includes(
                                                         "show"
@@ -282,10 +304,18 @@ export default class Eventos extends Component {
                                                                 ) ? (
                                                                     <Link
                                                                         className="mr-2"
-                                                                        to={
-                                                                            "/eventos/etapas/" +
-                                                                            e._id
-                                                                        }
+                                                                        to={{
+                                                                            pathname:
+                                                                                "/eventos/etapas/" +
+                                                                                e._id,
+                                                                            state: {
+                                                                                link:
+                                                                                    "/empresa/eventos/" +
+                                                                                    this
+                                                                                        .state
+                                                                                        .idEmpresa
+                                                                            }
+                                                                        }}
                                                                     >
                                                                         <i
                                                                             data-toggle="tooltip"

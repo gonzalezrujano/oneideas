@@ -663,7 +663,7 @@ export default class Multimedia extends Component {
                     onChange={isFull => this.setState({ isFull })}
                 >
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">

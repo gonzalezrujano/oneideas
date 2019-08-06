@@ -30,7 +30,6 @@ export default class Usuarios extends Component {
                 }
             })
             .then(res => {
-                console.log(res);
                 this.setState({
                     usuarios: res.data.data,
                     isLoading: false
@@ -66,7 +65,6 @@ export default class Usuarios extends Component {
                                 "success",
                                 "sweet"
                             );
-                            $("#" + id).hide();
                             axios
                                 .get("api/usuarios", {
                                     headers: {
@@ -74,7 +72,6 @@ export default class Usuarios extends Component {
                                     }
                                 })
                                 .then(res => {
-                                    console.log(res);
                                     this.setState({
                                         usuarios: res.data.data,
                                         isLoading: false
@@ -103,14 +100,17 @@ export default class Usuarios extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-cog page-header-heading-icon" />
                                             &nbsp; Usuarios
                                         </h1>
                                     </div>
@@ -134,14 +134,17 @@ export default class Usuarios extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-cog page-header-heading-icon" />
                                             &nbsp; Usuarios
                                         </h1>
                                     </div>
@@ -187,7 +190,6 @@ export default class Usuarios extends Component {
 
                                 <tbody>
                                     {this.state.usuarios.map((e, index) => {
-                                        console.log(e);
                                         let linkEdit =
                                             "/usuarios/edit/" + e._id;
                                         let linkShow =
@@ -214,7 +216,15 @@ export default class Usuarios extends Component {
                                                     {e.Rol}
                                                 </td>
                                                 <td className="text-center">
-                                                    {e.Activo}
+                                                    {e.Activo ? (
+                                                        <span className="badge badge-success badge-dt">
+                                                            activo
+                                                        </span>
+                                                    ) : (
+                                                        <span className="badge badge-danger badge-dt">
+                                                            inactivo
+                                                        </span>
+                                                    )}
                                                 </td>
                                                 {this.state.permisoUsuario.permisos.usuario.includes(
                                                     "show"

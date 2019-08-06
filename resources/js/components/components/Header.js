@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import logo from "../../../../public/images/logo-oneshow.png";
+import { Link } from "react-router-dom";
 
 export default class Header extends Component {
     constructor(props) {
@@ -8,8 +9,24 @@ export default class Header extends Component {
         this.state = {
             url: "",
             usuario: this.props.usuario,
+            api_token: localStorage.getItem("api_token"),
             isLoading: false
         };
+        this.handleLogut = this.handleLogut.bind(this);
+    }
+
+    handleLogut(e) {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("api_token", this.state.api_token);
+        $("#logout").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        axios.post("api/logout", formData).then(res => {
+            if (res.data.code == "200") {
+                console.log(this.props);
+                localStorage.clear();
+                this.props.history.push("/");
+            }
+        });
     }
 
     handleClick() {
@@ -75,20 +92,23 @@ export default class Header extends Component {
                                         className="dropdown-menu dropdown-menu-right dropdown-menu-sm-right"
                                         aria-labelledby="navbarDropdownMenuLink"
                                     >
-                                        <a
+                                        <Link
                                             className="dropdown-item"
-                                            href="{{ route('change-password') }}"
+                                            to="/cambiar-password"
                                         >
                                             <i className="fas fa-key" />
                                             &nbsp;Cambiar Contraseña
-                                        </a>
-                                        <a
-                                            className="dropdown-item"
-                                            href="{{ route('logout') }}"
+                                        </Link>
+                                        <Link
+                                            className="dropdown-item logout"
+                                            style={{
+                                                color: "#ccc"
+                                            }}
+                                            onClick={this.handleLogut}
                                         >
                                             <i className="fas fa-sign-out-alt" />
                                             &nbsp;Salir
-                                        </a>
+                                        </Link>
                                     </div>
                                 </li>
                             </ul>

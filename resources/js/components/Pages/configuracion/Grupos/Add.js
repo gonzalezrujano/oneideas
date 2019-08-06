@@ -100,7 +100,7 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header  usuario={this.state.user} history={this.props.history}    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -131,7 +131,7 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header  usuario={this.state.user} history={this.props.history}    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">

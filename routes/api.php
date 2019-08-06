@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 
 
 Route::post('/login', 'LoginController@login');
+Route::post('/logout', 'LoginController@logout');
 /**
  * Rutas API orientadas al controlador de USUARIOS UsuarioController
  */

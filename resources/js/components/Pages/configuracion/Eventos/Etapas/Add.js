@@ -12,6 +12,7 @@ export default class Add extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             nombre: "",
             idEvento: this.props.match.params.id,
+            eventoLink: this.props.location.state.link,
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -63,9 +64,11 @@ export default class Add extends Component {
                     }).then(result => {
                         if (result.value) {
                             window.scrollTo(0, 0);
-                            this.props.history.push(
-                                "/eventos/etapas/" + this.state.idEvento
-                            );
+                            this.props.history.push({
+                                pathname:
+                                    "/eventos/etapas/" + this.state.idEvento,
+                                state: { link: this.state.eventoLink }
+                            });
                         }
                     });
                 } else if (res.data.code === 500) {
@@ -89,7 +92,10 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -120,7 +126,10 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">

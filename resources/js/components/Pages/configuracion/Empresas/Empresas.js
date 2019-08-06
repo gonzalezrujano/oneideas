@@ -23,25 +23,21 @@ export default class Empresas extends Component {
         this.modalDelete = this.modalDelete.bind(this);
     }
 
-    getEmpresasTabla() {
+    componentDidMount() {
         axios
-            .post("api/empresas/tabla", {
-                rol: this.state.permisoUsuario.nombre,
-                id: this.state.usuario._id
-            },{
-                headers: {
-                    Authorization: this.state.api_token
+            .post(
+                "api/empresas/tabla",
+                {
+                    rol: this.state.permisoUsuario.nombre,
+                    id: this.state.usuario._id
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
                 }
-            })
+            )
             .then(res => {
-                console.log("esta es la respuesta");
-                console.log(
-                    "le envie " +
-                        this.state.permisoUsuario.nombre +
-                        " " +
-                        this.state.usuario._id
-                );
-                console.log(res);
                 localStorage.setItem("empresasTabla", JSON.stringify(res.data));
                 this.setState({
                     empresasTabla: res.data,
@@ -63,79 +59,79 @@ export default class Empresas extends Component {
             target: document.getElementById("sweet")
         }).then(result => {
             if (result.value) {
-                axios.post("/api/empresas/delete", { id: id },{
-                    headers: {
-                        Authorization: this.state.api_token
-                    }
-                }).then(res => {
-                    console.log(res);
-                    let r = res.data;
-                    if (r.code === 200) {
-                        sweetalert(
-                            "Item eliminado correctamente",
-                            "success",
-                            "sweet"
-                        );
-                        console.log("voy a eliminar este id" + id);
-                        $("#" + id)
-                            .closest("tr")
-                            .remove();
-                        axios
-                            .post("api/empresas/tabla", {
-                                rol: this.state.permisoUsuario.nombre,
-                                id: this.state.usuario._id
-                            },{
-                                headers: {
-                                    Authorization: this.state.api_token
-                                }
-                            })
-                            .then(res => {
-                                localStorage.setItem(
-                                    "empresasTabla",
-                                    JSON.stringify(res.data)
-                                );
-                                this.props.history.push("/empresas");
-                            });
-                    } else if (r.code === 600) {
-                        sweetalert(
-                            "Error en el Proceso de Eliminacion. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    } else if (r.code == 500) {
-                        sweetalert(
-                            "Error al Eliminar. Consulte al Administrador",
-                            "error",
-                            "sweet"
-                        );
-                    }
-                });
+                axios
+                    .post(
+                        "/api/empresas/delete",
+                        { id: id },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
+                    .then(res => {
+                        console.log(res);
+                        let r = res.data;
+                        if (r.code === 200) {
+                            sweetalert(
+                                "Item eliminado correctamente",
+                                "success",
+                                "sweet"
+                            );
+
+                            axios
+                                .post(
+                                    "api/empresas/tabla",
+                                    {
+                                        rol: this.state.permisoUsuario.nombre,
+                                        id: this.state.usuario._id
+                                    },
+                                    {
+                                        headers: {
+                                            Authorization: this.state.api_token
+                                        }
+                                    }
+                                )
+                                .then(res => {
+                                    localStorage.setItem(
+                                        "empresasTabla",
+                                        JSON.stringify(res.data)
+                                    );
+                                    this.setState({
+                                        empresasTabla: res.data
+                                    });
+                                });
+                        } else if (r.code === 600) {
+                            sweetalert(
+                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (r.code == 500) {
+                            sweetalert(
+                                "Error al Eliminar. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
             }
         });
     }
 
     render() {
-        if (!JSON.parse(localStorage.getItem("empresasTabla"))) {
-            console.log("no esta en local storage");
-            this.getEmpresasTabla();
-        } else {
-            console.log("esta en local storage");
-            console.log(this.state.empresasTabla);
-            this.state.isLoading = false;
-        }
-        console.log(this.state.empresasTabla);
         if (this.state.isLoading) {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
                                         </h1>
                                     </div>
@@ -160,14 +156,14 @@ export default class Empresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
                                         </h1>
                                     </div>
@@ -235,7 +231,15 @@ export default class Empresas extends Component {
                                                         {e.Pais}
                                                     </td>
                                                     <td className="text-center">
-                                                        {" "}
+                                                        {e.Activo ? (
+                                                            <span className="badge badge-success badge-dt">
+                                                                activo
+                                                            </span>
+                                                        ) : (
+                                                            <span className="badge badge-danger badge-dt">
+                                                                inactivo
+                                                            </span>
+                                                        )}
                                                     </td>
                                                     {this.state.permisoUsuario.permisos.empresa.includes(
                                                         "show"

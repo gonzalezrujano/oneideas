@@ -368,10 +368,11 @@ class UsuarioController extends Controller
             $dni = formatDni($input['documento']);
 
             $event = $input['evento'];
-
+            
             if($event){
                 $e = new ObjectID($event);
             }else{
+
                 $e = null;
             }
 

@@ -172,14 +172,14 @@ export default class AddEmpresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
                                         </h1>
                                     </div>
@@ -190,7 +190,7 @@ export default class AddEmpresas extends Component {
                             <div className="row">
                                 <div className="offset-6">
                                     <h3>
-                                        <i className="fa fa-spinner fa-spin" />{" "}
+                                        <i className="fas fa-industry fa-spin" />{" "}
                                         Cagargando
                                     </h3>
                                 </div>
@@ -203,15 +203,19 @@ export default class AddEmpresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-tachometer-alt page-header-heading-icon" />
+                                        <Link to="/empresas">
+                                            <i className="fas fa-industry page-header-heading-icon" />
                                             {this.state.opcion}
+                                            </Link>
+                                            {" "}
+                                            / Agregar Empresa
                                         </h1>
                                     </div>
                                 </div>

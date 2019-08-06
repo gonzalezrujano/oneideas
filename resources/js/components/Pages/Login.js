@@ -4,6 +4,8 @@ import axios from "axios";
 import swal from "sweetalert2";
 import logoOneShow from "../../../../public/images/logo-oneshow.png";
 
+import "./css/Login.css";
+
 export default class Login extends Component {
     constructor() {
         super();
@@ -99,6 +101,7 @@ export default class Login extends Component {
     }
 
     render() {
+        console.log("estoy en login");
         let correo = this.state.correo;
         let password = this.state.password;
         let url = this.state.url;

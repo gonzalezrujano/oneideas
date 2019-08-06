@@ -27,6 +27,7 @@ export default class Add extends Component {
             estado:"",
             correo:"",
             telefono:"",
+            evento:"",
             rol:"",
             opcion: "Eventos",
             footer: "Footer",
@@ -46,7 +47,6 @@ export default class Add extends Component {
                 Authorization: this.state.api_token
             }
         }).then(res => {
-            console.log(res)
             let r = res.data.data;
             this.setState({
                 empresas:r.empresas,
@@ -63,7 +63,6 @@ export default class Add extends Component {
     handleChange(event){
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
         const name = target.name;
         this.setState({
           [name]: value
@@ -72,10 +71,9 @@ export default class Add extends Component {
     }
 
     handleChangeEmpresa(event){
-        console.log("entre a este beta")
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
+       
         const name = target.name;
         this.setState({
           [name]: value
@@ -83,7 +81,6 @@ export default class Add extends Component {
         var emp = value;
 
         if(emp){
-            console.log("ahora aqui")
             axios.get("api/empresas/eventos/"+emp,{
                 headers: {
                     Authorization: this.state.api_token
@@ -95,7 +92,6 @@ export default class Add extends Component {
                     var select = '<option value="">Seleccione</option>';
 
                     r.map((e ,index) =>{
-                        console.log(value)
                         select +='<option value="'+e._id+'" key="'+index+'">'+e.Nombre+'</option>';
                     });
 
@@ -163,14 +159,14 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header  usuario={this.state.user} history={this.props.history}    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-cog page-header-heading-icon" />
                                             &nbsp; Agregar Usuario
                                         </h1>
                                     </div>
@@ -194,14 +190,14 @@ export default class Add extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header  usuario={this.state.user} history={this.props.history}    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-cog page-header-heading-icon" />
                                             &nbsp; 
                                             <Link to="/usuarios">
                                             Usuarios{" "}

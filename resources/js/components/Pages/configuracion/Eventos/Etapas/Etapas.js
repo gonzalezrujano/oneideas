@@ -11,6 +11,7 @@ export default class Etapas extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             idEvento: this.props.match.params.id,
+            eventoLink: this.props.location.state.link,
             etapas: [],
             opcion: "Etapas",
             footer: "Footer",
@@ -86,7 +87,10 @@ export default class Etapas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -118,7 +122,10 @@ export default class Etapas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -126,7 +133,12 @@ export default class Etapas extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                            &nbsp; Etapas
+                                            <Link to="/empresas">Empresas</Link>{" "}
+                                            /{" "}
+                                            <Link to={this.state.eventoLink}>
+                                                Eventos
+                                            </Link>{" "}
+                                            / &nbsp; Etapas
                                         </h1>
                                     </div>
                                 </div>
@@ -146,10 +158,13 @@ export default class Etapas extends Component {
                                                 <td>
                                                     <Link
                                                         className="btn-sm btn-dark button-add p-2"
-                                                        to={
-                                                            "/eventos/etapas/add/" +
-                                                            this.state.idEvento
-                                                        }
+                                                        to={{
+                                                            pathname:"/eventos/etapas/add/" +
+                                                            this.state.idEvento,
+                                                            state:{
+                                                                link:this.state.eventoLink
+                                                            }
+                                                        }}
                                                     >
                                                         Agregar etapa
                                                     </Link>
