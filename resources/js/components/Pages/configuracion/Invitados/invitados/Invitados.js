@@ -39,7 +39,11 @@ export default class Invitados extends Component {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
-                console.log(res.data);
+                console.log(res);
+                /*this.setState({
+                    invitados: res.data.invitados,
+                    isLoading: false
+                });*/
                 this.setState({ isLoading: false });
             });
     }
@@ -122,7 +126,7 @@ export default class Invitados extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-users page-header-heading-icon" />
                                             &nbsp; Invitados
                                         </h1>
                                     </div>

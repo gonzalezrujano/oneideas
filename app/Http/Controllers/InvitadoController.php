@@ -196,8 +196,9 @@ class InvitadoController extends Controller
           if($data[$i]->Grupo_id != "no aplica"){
             $invitadoId= $data[$i]->_id;
             $invitado = Invitado::find($invitadoId);
-            $invitado->borrado = true;
+            $invitado->Borrado = true;
             if($invitado->save()){
+              return $invitado;
               continue;
             }
           }
