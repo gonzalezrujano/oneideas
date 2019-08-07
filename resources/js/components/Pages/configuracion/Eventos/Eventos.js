@@ -14,6 +14,7 @@ export default class Eventos extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
             idEmpresa: this.props.match.params.id,
+            empresa: "",
             eventosEmpresa: [],
             opcion: "Eventos",
             footer: "Footer",
@@ -41,6 +42,7 @@ export default class Eventos extends Component {
                 console.log(res);
                 this.setState({
                     eventosEmpresa: res.data.eventos,
+                    empresa: res.data.empresa,
                     isLoading: false
                 });
             });
@@ -166,6 +168,9 @@ export default class Eventos extends Component {
                                             &nbsp;
                                             <Link to="/empresas">
                                                 Empresa
+                                                {" " +
+                                                    "/ " +
+                                                    this.state.empresa.Nombre}
                                             </Link>{" "}
                                             / Eventos
                                         </h1>
@@ -313,7 +318,11 @@ export default class Eventos extends Component {
                                                                                     "/empresa/eventos/" +
                                                                                     this
                                                                                         .state
-                                                                                        .idEmpresa
+                                                                                        .idEmpresa,
+                                                                                nombreEmpresa: this
+                                                                                    .state
+                                                                                    .empresa
+                                                                                    .Nombre
                                                                             }
                                                                         }}
                                                                     >

@@ -675,7 +675,7 @@ class EventoController extends Controller
            //capturo el id de la empresa para buscar los eventos en base a ella
            $input = $request->all();
            $id_emp = $input['idEmpresa'];
-   
+           $empresa = Empresa::find($id_emp);
            //guardo el rol del usuario
            $rol = $input['rol'];
    
@@ -712,7 +712,7 @@ class EventoController extends Controller
                        'Activo'    => $e->Activo
                    ];
                }
-               return json_encode(['code' => 200,'eventos'=>$eventos]);
+               return json_encode(['code' => 200,'eventos'=>$eventos,'empresa'=>$empresa]);
            }else{
                 
            return json_encode(['code' => 500]);

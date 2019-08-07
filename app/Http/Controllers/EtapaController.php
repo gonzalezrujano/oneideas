@@ -61,7 +61,7 @@ class EtapaController extends Controller
                 array_push($etapas,$etapa);
             }
         }
-        return response()->json(['code' => 200,'etapas'=>$etapas]);
+        return response()->json(['code' => 200,'etapas'=>$etapas,'evento'=>$evento]);
     }
     return response()->json(['code' => 500]);
     
@@ -86,7 +86,7 @@ class EtapaController extends Controller
     ]);
   }
 
-  public function setGrupo(Request $request){
+  public function setEtapa(Request $request){
     //capturo el valor del id
     $input = $request->all();
     $id = $input['id'];

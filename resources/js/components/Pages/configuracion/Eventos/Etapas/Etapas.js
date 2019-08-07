@@ -12,6 +12,8 @@ export default class Etapas extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             idEvento: this.props.match.params.id,
             eventoLink: this.props.location.state.link,
+            nombreEmpresa: this.props.location.state.nombreEmpresa,
+            evento: "",
             etapas: [],
             opcion: "Etapas",
             footer: "Footer",
@@ -30,6 +32,7 @@ export default class Etapas extends Component {
                 console.log(res);
                 this.setState({
                     etapas: res.data.etapas,
+                    evento: res.data.evento,
                     isLoading: false
                 });
             });
@@ -133,10 +136,15 @@ export default class Etapas extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                            <Link to="/empresas">Empresas</Link>{" "}
-                                            /{" "}
+                                            <Link to="/empresas">
+                                                Empresas /
+                                                {" " + this.state.nombreEmpresa}
+                                            </Link>
+                                            {" / "}
                                             <Link to={this.state.eventoLink}>
                                                 Eventos
+                                                {" / " +
+                                                    this.state.evento.Nombre}
                                             </Link>{" "}
                                             / &nbsp; Etapas
                                         </h1>
@@ -159,10 +167,16 @@ export default class Etapas extends Component {
                                                     <Link
                                                         className="btn-sm btn-dark button-add p-2"
                                                         to={{
-                                                            pathname:"/eventos/etapas/add/" +
-                                                            this.state.idEvento,
-                                                            state:{
-                                                                link:this.state.eventoLink
+                                                            pathname:
+                                                                "/eventos/etapas/add/" +
+                                                                this.state
+                                                                    .idEvento,
+                                                            state: {
+                                                                link: this.state
+                                                                    .eventoLink,
+                                                                nombreEmpresa: this
+                                                                    .state
+                                                                    .nombreEmpresa
                                                             }
                                                         }}
                                                     >
@@ -198,10 +212,22 @@ export default class Etapas extends Component {
                                                             ) ? (
                                                                 <Link
                                                                     className="mr-2"
-                                                                    to={
-                                                                        "/etapas/edit/" +
-                                                                        e._id
-                                                                    }
+                                                                    to={{
+                                                                        pathname:
+                                                                            "/eventos/etapas/edit/" +
+                                                                            e._id,
+                                                                        state: {
+                                                                            link: this
+                                                                                .state
+                                                                                .eventoLink,
+                                                                            nombreEmpresa: this
+                                                                                .state
+                                                                                .nombreEmpresa,
+                                                                            idEvento: this
+                                                                                .state
+                                                                                .idEvento
+                                                                        }
+                                                                    }}
                                                                 >
                                                                     <i
                                                                         data-toggle="tooltip"

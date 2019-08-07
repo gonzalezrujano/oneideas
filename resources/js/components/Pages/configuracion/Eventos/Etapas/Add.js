@@ -12,15 +12,33 @@ export default class Add extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             nombre: "",
             idEvento: this.props.match.params.id,
+            evento: "",
             eventoLink: this.props.location.state.link,
+            nombreEmpresa: this.props.location.state.nombreEmpresa,
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
-            isLoading: false
+            isLoading: true
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        axios
+            .get("api/eventos/one/" + this.state.idEvento, {
+                headers: {
+                    Authorization: this.state.api_token
+                }
+            })
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    evento: res.data.evento.evento,
+                    isLoading: false
+                });
+            });
     }
 
     handleChange(event) {
@@ -144,7 +162,9 @@ export default class Add extends Component {
                                                     this.state.idEvento
                                                 }
                                             >
-                                                Eventos{" "}
+                                                Eventos
+                                                {" /" +
+                                                    this.state.evento.Nombre}
                                             </Link>
                                             / Agregar etapa
                                         </h1>
@@ -221,7 +241,18 @@ export default class Add extends Component {
                                             Guardar
                                         </button>
 
-                                        <Link to="/etapas">
+                                        <Link
+                                            to={{
+                                                pathname:
+                                                    "/eventos/etapas/" +
+                                                    this.state.idEvento,
+                                                state: {
+                                                    link: this.state.eventoLink,
+                                                    nombreEmpresa: this.state
+                                                        .nombreEmpresa
+                                                }
+                                            }}
+                                        >
                                             <button
                                                 type="button"
                                                 className="btn btn-sm btn-dark"

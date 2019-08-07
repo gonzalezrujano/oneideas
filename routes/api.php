@@ -21,15 +21,6 @@ Route::group(['middleware'=>'api_token','prefix' => 'usuarios'], function() {
    
 });
 
-/**
- * Rutas API orientadas al controlador de EVENTOS EventoController
- */
-Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
-    Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
-    Route::post('/envios', 'EventoController@getEnvios');
-    Route::post('/remove-envios', 'EventoController@quitarEnvios');
-    Route::post('/cola/add','EventoController@addCola');
-});
 
 /**
  * Rutas API orientadas al controlador de MULTIMEDIA MultimediaController
@@ -99,6 +90,10 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     Route::get('/{id}', 'EventoController@getEvento');
     Route::post('/empresa', 'EventoController@getEventosEmpresa');
 
+    Route::get('/usuario/{id}', 'EventoController@getEventosUsuario');
+    Route::post('/envios', 'EventoController@getEnvios');
+    Route::post('/remove-envios', 'EventoController@quitarEnvios');
+    Route::post('/cola/add','EventoController@addCola');
     
 });
 
@@ -115,6 +110,9 @@ Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() 
 Route::group(['middleware'=>'api_token','prefix' => 'invitados'], function() {
     //rutas de empresas
     Route::post('/', 'InvitadoController@addInvitado');
+    Route::post('/delete','InvitadoConrroller@deleteInvitado');
+    Route::get('/','InvitadoController@getInvitados');
+    Route::get('/eliminar-todos','InvitadoController@eliminarTodos');
 });
 
 /**
@@ -127,6 +125,9 @@ Route::group(['middleware'=>'api_token','prefix' => 'grupos'], function() {
     Route::post('/delete', 'GrupoController@deleteGrupo');
     Route::post('/edit', 'GrupoController@setGrupo');
     Route::get('/{id}', 'GrupoController@getGrupo');
+
+
+    
 });
 
 /**
@@ -136,7 +137,9 @@ Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
     //rutas de empresas
     Route::post('/', 'EtapaController@addEtapa');
     Route::post('/delete', 'EtapaController@deleteEtapa');
+    Route::post('/edit','EtapaController@setEtapa');
     Route::get('/evento/{id}', 'EtapaController@getEtapasEvento');
+    Route::get('/{id}', 'EtapaController@getEtapa');
 });
 /**
  * Rutas API orientadas al controlador de Menus(menugrastronomico) 

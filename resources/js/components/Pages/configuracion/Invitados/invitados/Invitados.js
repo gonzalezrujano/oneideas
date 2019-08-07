@@ -11,9 +11,7 @@ export default class Invitados extends Component {
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            empresas: [],
-            infoEmpresas: [],
-            empresa: "",
+            invitados: [],
             opcion: "Invitacion",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -25,35 +23,24 @@ export default class Invitados extends Component {
     }
 
     componentDidMount() {
-        axios
-            .get("api/empresas", {
+        /*axios
+            .get("api/invitados", {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
                 console.log(res);
                 this.setState({
-                    empresas: res.data.empresas,
+                    invitados: res.data.invitados,
                     isLoading: false
                 });
-                axios
-                    .post(
-                        "api/invitaciones/get-info",
-                        {
-                            empresa: "",
-                            rol: this.state.permisoUsuario.nombre,
-                            id: this.state.usuario._id
-                        },
-                        {
-                            headers: { Authorization: this.state.api_token }
-                        }
-                    )
-                    .then(res => {
-                        console.log(res);
-                        this.setState({
-                            infoEmpresas: res.data.data,
-                            isLoadingEmpresa: false
-                        });
-                    });
+            });*/
+        axios
+            .get("api/invitados/eliminar-todos", {
+                headers: { Authorization: this.state.api_token }
+            })
+            .then(res => {
+                console.log(res.data);
+                this.setState({ isLoading: false });
             });
     }
 
@@ -90,7 +77,10 @@ export default class Invitados extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header  usuario={this.state.user} history={this.props.history}    />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -122,7 +112,10 @@ export default class Invitados extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header  usuario={this.state.user} history={this.props.history}    />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -174,7 +167,7 @@ export default class Invitados extends Component {
                                                 GRUPO
                                             </th>
                                             <th className="text-center">
-                                                ETAPA
+                                                ETAPAS
                                             </th>
                                             <th className="text-center">
                                                 UBICACIÓN
@@ -192,43 +185,35 @@ export default class Invitados extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {/*this.state.isLoadingEmpresa ? (
-                                        <div className="text-center">
-                                            <h3>
-                                                <i className="fa fa-spinner fa-spin" />{" "}
-                                                Cagargando
-                                            </h3>
-                                        </div>
-                                    ) : (
-                                        this.state.infoEmpresas.map(
+                                        {console.log(this.state.invitados)}
+                                        {/*this.state.invitados.map(
                                             (e, index) => {
                                                 return (
                                                     <tr key={index} id={e._id}>
                                                         <td className="text-center">
-                                                            {e.Empresa}
+                                                            {e.Nombre}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Evento}
+                                                            {e.Apellido}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Fecha}
-                                                        </td>
-                                                        <td className="text-center">
-                                                            {e.App ? (
-                                                                <i
-                                                                    className="fa fa-check fa-lg icono-check"
-                                                                    aria-hidden="true"
-                                                                />
+                                                            {e.EsInvitadoAdicional ? (
+                                                                <span className="badge badge-success badge-dt">
+                                                                    INVITADO
+                                                                    ADICIONAL
+                                                                </span>
                                                             ) : (
-                                                                <i
-                                                                    style="color: #d9534f"
-                                                                    className="fa fa-times fa-lg"
-                                                                    aria-hidden="true"
-                                                                />
+                                                                <span className="badge badge-success badge-dt">
+                                                                    INVITADO
+                                                                    DIRECTO
+                                                                </span>
                                                             )}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Archivos}
+                                                            {e.Grupo_id}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            {e.Etapas}
                                                         </td>
                                                         <td className="text-center">
                                                             <div className="text-center">
@@ -247,10 +232,30 @@ export default class Invitados extends Component {
                                                                 </Link>
                                                             </div>
                                                         </td>
+                                                        <td className="text-center">
+                                                            {"No disponible"}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            {e.Correo}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            {e.Confirmacion ? (
+                                                                <i
+                                                                    className="fa fa-check fa-lg icono-check"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            ) : (
+                                                                <i
+                                                                    style="color: #d9534f"
+                                                                    className="fa fa-times fa-lg"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            )}
+                                                        </td>
+                                                        <td>{""}</td>
                                                     </tr>
                                                 );
                                             }
-                                        )
                                         )*/}
                                     </tbody>
                                 </table>

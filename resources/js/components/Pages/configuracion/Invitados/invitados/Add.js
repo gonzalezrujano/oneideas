@@ -44,6 +44,7 @@ export default class Add extends Component {
             console.log(res)
             this.setState({
                 eventos:res.data.eventos,
+                evento:res.data.eventos[0]._id
             });
             axios.get("api/grupos",{
                 headers: {
@@ -64,7 +65,6 @@ export default class Add extends Component {
                         etapas: res.data.etapas,
                         isLoading: false
                     });
-                    this.infoForm();
                 })
                 
                 
@@ -73,15 +73,6 @@ export default class Add extends Component {
         });
     }
 
-    infoForm(){
-        var optionSelectMultiple = {
-            placeholder: 'Seleccione',
-            selectAllText: 'Todos',
-            allSelected: 'Todos',
-            countSelected: '# de % opciones'
-        };
-        $('#acceso').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.accesoInvitados);
-    }
 
     handleChange(event){
         const target = event.target;
@@ -115,22 +106,25 @@ export default class Add extends Component {
     }
 
     handleChangeMulti(e){
-        
         this.setState({etapasSeleccionadas: [...e.target.selectedOptions].map(o => o.value)});
         console.log(this.state.etapasSeleccionadas);
     }
 
     handleSubmit(e){
         e.preventDefault();
+        console.log(this.state.grupo);
+        console.log(this.state.evento);
         let formData = new FormData()
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
         formData.append("grupo-id",this.state.grupo);
+        formData.append("evento-id",this.state.evento);
+        formData.append("etapas",this.state.etapasSeleccionadas);
         formData.append("invitados-adicionales-mayores",this.state.invitadosAdicionalesMayores);
         formData.append("invitados-adicionales-menores",this.state.invitadosAdicionalesMenores);
-        $('#save-invitado').prepend('<i className="fa fa-spinner fa-spin"></i> ');
+        $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios.post("api/invitados",formData,{
             headers: {
                 Authorization: this.state.api_token

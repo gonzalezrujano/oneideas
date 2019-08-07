@@ -5,6 +5,7 @@ import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 
 import "../../css/configuracion/Biblioteca.css";
+import "./css/Eventos.css";
 
 export default class Edit extends React.Component {
     constructor(props) {

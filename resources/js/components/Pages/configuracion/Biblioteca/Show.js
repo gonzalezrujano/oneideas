@@ -33,9 +33,9 @@ export default class Show extends React.Component {
             })
             .then(res => {
                 let r = res.data;
-                this.setState(() => ({
+                this.setState({
                     evento: r.evento
-                }));
+                });
                 axios
                     .post(
                         "api/biblioteca/evento/files",
@@ -148,8 +148,7 @@ export default class Show extends React.Component {
                                             &nbsp;
                                             <Link to="/biblioteca">
                                                 Biblioteca
-                                            </Link>{" "}
-                                            / Ver Archivos
+                                            </Link>
                                         </h1>
                                     </div>
                                 </div>
@@ -187,6 +186,9 @@ export default class Show extends React.Component {
                                             &nbsp;
                                             <Link to="/biblioteca">
                                                 Biblioteca
+                                                {" " +
+                                                    "/ " +
+                                                    this.state.evento.Nombre}
                                             </Link>{" "}
                                             / Ver Archivos
                                         </h1>
