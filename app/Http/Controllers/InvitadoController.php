@@ -198,7 +198,6 @@ class InvitadoController extends Controller
             $invitado = Invitado::find($invitadoId);
             $invitado->Borrado = true;
             if($invitado->save()){
-              return $invitado;
               continue;
             }
           }
