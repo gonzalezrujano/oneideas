@@ -4,13 +4,14 @@ import Menu from "../../../../components/Menu";
 import Header from "../../../../components/Header";
 import { Link } from "react-router-dom";
 
-export default class Add extends Component {
+export default class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
+            idInvitado: this.props.match.params.id,
             eventos:[],
             evento:"",
             nombre:"",
@@ -20,8 +21,6 @@ export default class Add extends Component {
             grupo:"",
             etapasSeleccionadas:[],
             etapas:[],
-            invitadosAdicionalesMayores:0,
-            invitadosAdicionalesMenores:0,
             opcion: "Invitados",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -43,8 +42,7 @@ export default class Add extends Component {
         }).then(res => {
             console.log(res)
             this.setState({
-                eventos:res.data.eventos,
-                evento:res.data.eventos[0]._id
+                eventos:res.data.eventos
             });
             axios.get("api/grupos",{
                 headers: {
@@ -55,19 +53,38 @@ export default class Add extends Component {
                 this.setState({
                     grupos: res.data.grupos,
                 });
-                axios.get("api/etapas/evento/"+this.state.eventos[0]._id,{
-                    headers: {
-                        Authorization: this.state.api_token
-                    }
-                }).then(res=>{
-                    console.log(res)
-                    this.setState({
-                        etapas: res.data.etapas,
-                        isLoading: false
-                    });
-                })
                 
-                
+                    axios.get("api/invitados/"+this.state.idInvitado,{
+                        headers: {
+                            Authorization: this.state.api_token
+                        }
+                    }).then(res=>{
+                        let r = res.data.invitado;
+                        var etapas;
+                        for(var i=0;i<r.Etapas;i++){
+                            etapas.push(r.Etapas[i].$oid)
+                        }
+                        axios.get("api/etapas/evento/"+r.Evento_id,{
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }).then(res=>{
+                            console.log(res);
+                            this.setState({
+                                etapas:res.data.etapas
+                            })
+                        })
+                        this.setState({
+                            nombre : r.Nombre,
+                            apellido: r.Apellido,
+                            grupo:r.Grupo_id,
+                            evento: r.Evento_id,
+                            correo: r.Correo,
+                            etapasSeleccionadas: etapas,
+                            telefono: r.Telefono,
+                            isLoading: false
+                        });
+                    })
             })
             
         });
@@ -115,6 +132,7 @@ export default class Add extends Component {
         console.log(this.state.grupo);
         console.log(this.state.evento);
         let formData = new FormData()
+        formData.append("id",this.state.idInvitado);
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
@@ -122,10 +140,8 @@ export default class Add extends Component {
         formData.append("grupo-id",this.state.grupo);
         formData.append("evento-id",this.state.evento);
         formData.append("etapas",this.state.etapasSeleccionadas);
-        formData.append("invitados-adicionales-mayores",this.state.invitadosAdicionalesMayores);
-        formData.append("invitados-adicionales-menores",this.state.invitadosAdicionalesMenores);
         $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
-        axios.post("api/invitados",formData,{
+        axios.post("api/invitados/edit",formData,{
             headers: {
                 Authorization: this.state.api_token
             }
@@ -151,7 +167,7 @@ export default class Add extends Component {
                     });
 
                 }else if(res.data.code === 500){
-                    sweetalert('Error al agregar Invitado. Consulte al Administrador.', 'error', 'sweet');
+                    sweetalert('Error al modifcar invitado. Consulte al Administrador.', 'error', 'sweet');
                 }
         }).catch(error => {
             $('button#save-usuario').find('i.fa').remove();
@@ -207,7 +223,7 @@ export default class Add extends Component {
                                             <Link to="/invitados">
                                             invitados{" "}
                                             </Link>
-                                            / Agregar invitado
+                                            / Editar invitado
                                         </h1>
                                     </div>
                                 </div>
@@ -231,9 +247,10 @@ export default class Add extends Component {
                                     <div className="form-group row">
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Evento</label>
                                             <div className="col-sm-4">
-                                                <select className="form-control form-control-sm" id="evento" name="evento" value={this.state.evento} onChange={this.handleEvento} >
+                                                <select className="form-control form-control-sm" id="evento" name="evento" defaultValue={this.state.evento} onChange={this.handleEvento} >
                                                 {this.state.eventos.map(
                                                     (e, index) => {
+                                                        
                                                         return (
                                                             <option value={e._id} key={index}>{e.Nombre}</option>
                                                         )
@@ -274,9 +291,11 @@ export default class Add extends Component {
                                         <div className="form-group row">
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Grupo de invitados</label>
                                             <div className="col-sm-4">
-                                                <select className="form-control form-control-sm" id="grupo" name="grupo" value={this.state.grupo} onChange={this.handleChange}>
+                                                <select className="form-control form-control-sm" id="grupo" name="grupo" defaultValue={this.state.grupo} onChange={this.handleChange}>
                                                     <option value="">-Seleccione-</option>
                                                     {this.state.grupos.map((e, index) => {
+                                                        
+                                                        
                                                         return (
                                                             <option value={e._id} key={index}>{e.Nombre}</option>
                                                         )
@@ -291,31 +310,21 @@ export default class Add extends Component {
                                         <div className="form-group row">
                                             <label className="col-sm-4 col-form-label col-form-label-sm">Accesos de evento</label>
                                             <div className="col-sm-4">
-                                                <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" value={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple">
-                                                {this.state.etapas.map(
-                                                    (e, index) => {
+                                                <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" defaultValue={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple" >
+                                                {this.state.etapas.map((e, index) => {
+                                                        
+                                                        
                                                         return (
                                                             <option value={e._id} key={index}>{e.Nombre}</option>
                                                         )
+                                                    
                                                     }
-                                                )}
+                                                    )
+                                                }
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div className="form-group row">
-                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales mayores de edad</label>
-                                            <div className="col-4">
-                                                <input className="form-control" type="number" name="invitadosAdicionalesMayores" value={this.state.invitadosAdicionalesMayores} id="invitadosAdicionalesMayores" onChange={this.handleChange} min="0"/>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group row">
-                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales menores de edad</label>
-                                            <div className="col-4">
-                                                <input className="form-control" type="number" name="invitadosAdicionalesMenores" value={this.state.invitadosAdicionalesMenores} id="invitadosAdicionalesMenores" onChange={this.handleChange} min="0"/>
-                                            </div>
-                                        </div>
 
 
                                     </div>

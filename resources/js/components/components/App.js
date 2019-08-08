@@ -28,6 +28,8 @@ import InvitacionShow from "../Pages/configuracion/Invitados/invitacion/Show";
 import InvitacionAdd from "../Pages/configuracion/Invitados/invitacion/Add";
 import Invitados from "../Pages/configuracion/Invitados/invitados/Invitados";
 import InvitadosAdd from "../Pages/configuracion/Invitados/invitados/Add";
+import InvitadosShow from "../Pages/configuracion/Invitados/invitados/Show";
+import InvitadosEdit from "../Pages/configuracion/Invitados/invitados/Edit";
 import Grupos from "../Pages/configuracion/Grupos/Grupos";
 import GruposAdd from "../Pages/configuracion/Grupos/Add";
 import GruposEdit from "../Pages/configuracion/Grupos/Edit";
@@ -103,6 +105,16 @@ function App() {
                 <Route exact path="/invitacion/add" component={InvitacionAdd} />
                 <Route exact path="/invitados" component={Invitados} />
                 <Route exact path="/invitados/add" component={InvitadosAdd} />
+                <Route
+                    exact
+                    path="/invitados/edit/:id"
+                    component={InvitadosEdit}
+                />
+                <Route
+                    exact
+                    path="/invitados/show/:id"
+                    component={InvitadosShow}
+                />
                 <Route exact path="/grupos" component={Grupos} />
                 <Route exact path="/grupos/add" component={GruposAdd} />
                 <Route exact path="/grupos/edit/:id" component={GruposEdit} />

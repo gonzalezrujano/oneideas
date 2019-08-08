@@ -137,7 +137,14 @@ class InvitadoController extends Controller
   }
 
   public function getInvitado($id){
+    $registro = Invitado::find($id);
+    //valido que de verdad sea borrado en caso de que no arrojo un error
+    if($registro){
 
+        return json_encode(['code' => 200,'invitado'=>$registro]);
+    }else{
+        return json_encode(['code' => 500]);
+    }
   }
 
   public function getInvitados(){
@@ -161,7 +168,53 @@ class InvitadoController extends Controller
   }
 
   public function setInvitado(Request $request){
+    $input = $request->all();
+    $etapas = [];
+    $id = $input['id'];
+    if($id){
+      if($input['etapas']){
+        //proceso las etapas
+        $etapas = $this->processEtapas($input['etapas']);
+      }
+      $registro = Invitado::find($id);
+      if($registro){
+        $grupoId = "no aplica";
+        if($input['grupo-id'] != "no aplica"){
+          $grupoId = new ObjectID($input['grupo-id']);
+        }
+          $data = [
+            'nombre'              => strtoupper($input['nombre']),
+            'apellido'            => strtoupper($input['apellido']),
+            'correo'              => strtoupper($input['correo']),
+            'telefono'            => strtoupper($input['telefono']),
+            'Grupo_id'            => $grupoId,
+            'Evento_id'           => new ObjectID($input['evento-id']),
+            'Etapas'              => $etapas,
+            'esInvitadoAdicional'     => (boolean) false,
+            'esMenorDeEdad'       => (boolean) false,
+            'confirmacion'       => (boolean) false,
+            'borrado'             => false
+          ];
+          $registro->Nombre              = $data['nombre'];
+          $registro->Apellido            = $data['apellido'];
+          $registro->Correo              = $data['correo'];
+          $registro->Telefono            = $data['telefono'];
+          $registro->Grupo_id            = $data['Grupo_id'];
+          $registro->Evento_id           = $data['Evento_id'];
+          $registro->Etapas              = $data['Etapas'];
+          $registro->EsInvitadoAdicional = $data['esInvitadoAdicional'];
+          $registro->EsMenorDeEdad       = $data['esMenorDeEdad'];
+          $registro->Confirmacion        = $data['confirmacion'];
+          $registro->Borrado             = $data['borrado'];
 
+          if($registro->save()){
+            return json_encode(['code' => 200,'invitados'=>$registro]);
+          }
+          return json_encode(['code' => 400]);
+      }
+      return json_encode(['code' => 500]);
+    }
+    return json_encode(['code' => 600]);
   }
 
   public function deleteInvitado(request $request){

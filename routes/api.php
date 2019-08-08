@@ -110,9 +110,11 @@ Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() 
 Route::group(['middleware'=>'api_token','prefix' => 'invitados'], function() {
     //rutas de empresas
     Route::post('/', 'InvitadoController@addInvitado');
+    Route::post('/edit', 'InvitadoController@setInvitado');
     Route::post('/delete','InvitadoConrroller@deleteInvitado');
     Route::get('/','InvitadoController@getInvitados');
     Route::get('/eliminar-todos','InvitadoController@eliminarTodos');
+    Route::get('/{id}','InvitadoController@getInvitado');
 });
 
 /**

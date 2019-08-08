@@ -23,7 +23,7 @@ export default class Invitados extends Component {
     }
 
     componentDidMount() {
-        /*axios
+        axios
             .get("api/invitados", {
                 headers: { Authorization: this.state.api_token }
             })
@@ -33,8 +33,8 @@ export default class Invitados extends Component {
                     invitados: res.data.invitados,
                     isLoading: false
                 });
-            });*/
-        axios
+            });
+        /* axios
             .get("api/invitados/eliminar-todos", {
                 headers: { Authorization: this.state.api_token }
             })
@@ -43,9 +43,9 @@ export default class Invitados extends Component {
                 /*this.setState({
                     invitados: res.data.invitados,
                     isLoading: false
-                });*/
+                });
                 this.setState({ isLoading: false });
-            });
+            });*/
     }
 
     handleChange(event) {
@@ -136,27 +136,25 @@ export default class Invitados extends Component {
 
                         <div id="sweet" className="container-fluid">
                             <div className="row mb-4">
+                                {this.state.permisoUsuario.permisos.evento.includes(
+                                    "add"
+                                ) ? (
+                                    <div className="m-2">
+                                        <Link
+                                            className="btn-sm btn-dark button-add p-2"
+                                            to={"/invitados/add/"}
+                                        >
+                                            Agregar Invitado
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    ""
+                                )}
                                 <table
                                     className="table table-hover table-condensed table-dark-theme table-responsive-sm"
                                     id="dt-eventos"
                                 >
                                     <thead>
-                                        {this.state.permisoUsuario.permisos.evento.includes(
-                                            "add"
-                                        ) ? (
-                                            <tr>
-                                                <td>
-                                                    <Link
-                                                        className="btn-sm btn-dark button-add p-2"
-                                                        to={"/invitados/add/"}
-                                                    >
-                                                        Agregar Invitado
-                                                    </Link>
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            ""
-                                        )}
                                         <tr className="fila-head">
                                             <th className="text-center">
                                                 NOMBRE
@@ -165,7 +163,7 @@ export default class Invitados extends Component {
                                                 APELLIDO
                                             </th>
                                             <th className="text-center">
-                                                TIPO
+                                                INVITADO
                                             </th>
                                             <th className="text-center">
                                                 GRUPO
@@ -190,7 +188,7 @@ export default class Invitados extends Component {
 
                                     <tbody>
                                         {console.log(this.state.invitados)}
-                                        {/*this.state.invitados.map(
+                                        {this.state.invitados.map(
                                             (e, index) => {
                                                 return (
                                                     <tr key={index} id={e._id}>
@@ -202,13 +200,11 @@ export default class Invitados extends Component {
                                                         </td>
                                                         <td className="text-center">
                                                             {e.EsInvitadoAdicional ? (
-                                                                <span className="badge badge-success badge-dt">
-                                                                    INVITADO
+                                                                <span>
                                                                     ADICIONAL
                                                                 </span>
                                                             ) : (
-                                                                <span className="badge badge-success badge-dt">
-                                                                    INVITADO
+                                                                <span>
                                                                     DIRECTO
                                                                 </span>
                                                             )}
@@ -217,27 +213,10 @@ export default class Invitados extends Component {
                                                             {e.Grupo_id}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Etapas}
+                                                            {e.Etapas.length}
                                                         </td>
-                                                        <td className="text-center">
-                                                            <div className="text-center">
-                                                                <Link
-                                                                    to={
-                                                                        `/invitacion/show/` +
-                                                                        e._id
-                                                                    }
-                                                                >
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Ver"
-                                                                        className="fas fa-eye icono-ver"
-                                                                    />
-                                                                </Link>
-                                                            </div>
-                                                        </td>
-                                                        <td className="text-center">
-                                                            {"No disponible"}
+                                                        <td>
+                                                            {"NO DISPONIBLE"}
                                                         </td>
                                                         <td className="text-center">
                                                             {e.Correo}
@@ -250,17 +229,93 @@ export default class Invitados extends Component {
                                                                 />
                                                             ) : (
                                                                 <i
-                                                                    style="color: #d9534f"
-                                                                    className="fa fa-times fa-lg"
+                                                                    className="fa fa-times fa-lg boton-negado"
                                                                     aria-hidden="true"
                                                                 />
                                                             )}
                                                         </td>
-                                                        <td>{""}</td>
+                                                        <td className="text-center">
+                                                            <div className="text-center">
+                                                                <Link
+                                                                    to={
+                                                                        `/invitados/show/` +
+                                                                        e._id
+                                                                    }
+                                                                    className="mr-2"
+                                                                >
+                                                                    <i
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Ver"
+                                                                        className="fas fa-eye icono-ver"
+                                                                    />
+                                                                </Link>
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "edit"
+                                                                ) ? (
+                                                                    <Link
+                                                                        className="mr-2"
+                                                                        to={
+                                                                            "/invitados/edit/" +
+                                                                            e._id
+                                                                        }
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Editar"
+                                                                            className="fas fa-edit icono-ver"
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "edit"
+                                                                ) ? (
+                                                                    <a
+                                                                        className="mr-2"
+                                                                        onClick={
+                                                                            this
+                                                                                .handleMail
+                                                                        }
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Enviar Mail"
+                                                                            className="fas fa-envelope icono-ver"
+                                                                        />
+                                                                    </a>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "delete"
+                                                                ) ? (
+                                                                    <Link className="mr-2">
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Eliminar"
+                                                                            className="fas fa-trash-alt icono-ver"
+                                                                            onClick={ev =>
+                                                                                this.modalDelete(
+                                                                                    e._id,
+                                                                                    ev
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 );
                                             }
-                                        )*/}
+                                        )}
                                     </tbody>
                                 </table>
 

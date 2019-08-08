@@ -261,8 +261,7 @@ export default class Eventos extends Component {
                                                             />
                                                         ) : (
                                                             <i
-                                                                style="color: #d9534f"
-                                                                className="fa fa-times fa-lg"
+                                                                className="fa fa-times fa-lg boton-negado"
                                                                 aria-hidden="true"
                                                             />
                                                         )}
