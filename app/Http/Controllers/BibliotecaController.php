@@ -250,6 +250,7 @@ class BibliotecaController extends Controller
                 $eventos[] = [
                     '_id'       => $e->_id,
                     'Empresa'   => Empresa::find($e->Empresa_id)->Nombre,
+                    'Empresa_id' => strtolower($e->Empresa_id),
                     'Evento'    => strtoupper($e->Nombre),
                     'IDEvento'  => $e->IDEvento,
                     'Fecha'     => $e->Fecha. ' '.$e->Hora,

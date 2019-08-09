@@ -882,6 +882,28 @@ class EventoController extends Controller
 
     }
 
+    public function getEventoByIdRol($id){
+        $registro = Evento::find($id);
+
+        if($registro){
+
+            $data['existe'] = true;
+            $data['paises'] = Pais::borrado(false)->get();
+            $data['estados'] = Estado::borrado(false)->get();
+            $data['empresa'] = Empresa::find($registro->Empresa_id);
+            $data['evento'] = $registro;
+            $data['menusapp'] = MenuAppInvitado::borrado(false)->activo(true)->orderBy('Nombre', 'asc')->get();
+            $data['menuapp'] = $this->processGetMenuApp($registro->MenuApp);
+
+            return json_encode(['code' => 200,'evento'=>$data]);
+         
+
+        }else{
+            return json_encode(['code' => 500]);
+        }
+
+    }
+
     /**
      * meotodo para modificar informacion de un evento
      * validate Evento el request valida que toda la informacion 

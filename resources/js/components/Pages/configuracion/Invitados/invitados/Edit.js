@@ -60,10 +60,15 @@ export default class Edit extends Component {
                         }
                     }).then(res=>{
                         let r = res.data.invitado;
-                        var etapas;
-                        for(var i=0;i<r.Etapas;i++){
+                        console.log(r.Etapas)
+                        var etapas = [];
+                        for(var i=0;i<r.Etapas.length;i++){
+                            console.log("estoy aqui en "+i)
+                            console.log(r.Etapas[i])
+                            console.log(r.Etapas[i].$oid)
                             etapas.push(r.Etapas[i].$oid)
                         }
+                        console.log(etapas)
                         axios.get("api/etapas/evento/"+r.Evento_id,{
                             headers: {
                                 Authorization: this.state.api_token
@@ -151,7 +156,7 @@ export default class Edit extends Component {
 
                 if(res.data.code === 200) {
                     Swal.fire({
-                        text: "Invitado agregado exitosamente",
+                        text: "Invitado Modificado exitosamente",
                         type: "success",
                         showCancelButton: false,
                         confirmButtonColor: "#343a40",
@@ -187,7 +192,7 @@ export default class Edit extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-friends page-header-heading-icon" />
                                             &nbsp; Invitados
                                         </h1>
                                     </div>
@@ -218,7 +223,7 @@ export default class Edit extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-friends page-header-heading-icon" />
                                             &nbsp; 
                                             <Link to="/invitados">
                                             invitados{" "}

@@ -171,7 +171,7 @@ export default class Add extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-friends page-header-heading-icon" />
                                             &nbsp; Invitados
                                         </h1>
                                     </div>
@@ -202,7 +202,7 @@ export default class Add extends Component {
                                 <div className="row">
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
+                                            <i className="fas fa-user-friends page-header-heading-icon" />
                                             &nbsp; 
                                             <Link to="/invitados">
                                             invitados{" "}

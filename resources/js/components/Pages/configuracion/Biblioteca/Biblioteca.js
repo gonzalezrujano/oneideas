@@ -14,12 +14,15 @@ export default class Biblioteca extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
             opcion: "Biblioteca",
+            empresa: "",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             user: this.props.location.state,
             api_token: localStorage.getItem("api_token"),
-            isLoading: true
+            isLoading: true,
+            isLoadingEmpresa: false
         };
+        this.handleFiltro = this.handleFiltro.bind(this);
     }
 
     /**
@@ -42,7 +45,8 @@ export default class Biblioteca extends Component {
             .then(res => {
                 localStorage.setItem("eventos", JSON.stringify(res.data));
                 this.setState({
-                    eventos: res.data
+                    eventos: res.data,
+                    eventosCompletos: res.data
                 });
                 axios
                     .get("api/empresas", {
@@ -63,6 +67,36 @@ export default class Biblioteca extends Component {
                         });
                     });
             });
+    }
+
+    handleFiltro(event) {
+        const target = event.target;
+        const value =
+            target.type === "checkbox" ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value,
+            isLoadingEmpresa: true
+        });
+        if (value == "todas") {
+            this.setState({
+                isLoadingEmpresa: false,
+                eventos: this.state.eventosCompletos
+            });
+        } else {
+            console.log(this.state.eventosCompletos);
+            console.log(value);
+            var eventos = [];
+            for (var j = 0; j < this.state.eventosCompletos.length; j++) {
+                if (this.state.eventosCompletos[j].Empresa_id == value) {
+                    eventos.push(this.state.eventosCompletos[j]);
+                }
+            }
+            this.setState({
+                eventos,
+                isLoadingEmpresa: false
+            });
+        }
     }
 
     render() {
@@ -132,9 +166,11 @@ export default class Biblioteca extends Component {
                                     <select
                                         className="form-control form-control-sm my-1 mr-sm-2 col-2"
                                         id="pro-find-empresa"
-                                        name="pro-find-empresa"
+                                        name="empresa"
+                                        onChange={this.handleFiltro}
+                                        value={this.state.empresa}
                                     >
-                                        <option value="">Todas</option>
+                                        <option value="todas">Todas</option>
                                         {this.state.empresas.map((e, index) => {
                                             return (
                                                 <option
@@ -150,7 +186,9 @@ export default class Biblioteca extends Component {
                                     <select
                                         className="form-control form-control-sm my-1 mr-sm-2 col-2"
                                         id="pro-find-empresa"
-                                        name="pro-find-empresa"
+                                        name="empresa"
+                                        value={this.state.empresa}
+                                        onChange={this.handleFiltro}
                                         disabled
                                     />
                                 )}
@@ -201,57 +239,64 @@ export default class Biblioteca extends Component {
                                 </thead>
 
                                 <tbody>
-                                    {this.state.eventos.map((e, index) => {
-                                        console.log(e);
-                                        let link =
-                                            "/biblioteca/evento/" + e._id;
-                                        return (
-                                            <tr key={index}>
-                                                <td className="text-center">
-                                                    {e.Empresa}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Evento}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Fecha}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.App ? (
-                                                        <i
-                                                            className="fa fa-check fa-lg icono-check"
-                                                            aria-hidden="true"
-                                                        />
-                                                    ) : (
-                                                        <i
-                                                            style="color: #d9534f"
-                                                            className="fa fa-times fa-lg"
-                                                            aria-hidden="true"
-                                                        />
-                                                    )}
-                                                </td>
-                                                <td className="text-center">
-                                                    {e.Archivos}
-                                                </td>
-                                                {this.state.permisoUsuario.permisos.biblioteca.includes(
-                                                    "show"
-                                                ) ? (
-                                                    <td className="columna-icono">
-                                                        <Link to={link}>
-                                                            <i
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="Ver"
-                                                                className="fas fa-eye icono-ver"
-                                                            />
-                                                        </Link>
+                                    {this.state.isLoadingEmpresa ? (
+                                        <h3>
+                                            <i class="fa fa-spinner fa-spin" />{" "}
+                                            Cagargando
+                                        </h3>
+                                    ) : (
+                                        this.state.eventos.map((e, index) => {
+                                            console.log(e);
+                                            let link =
+                                                "/biblioteca/evento/" + e._id;
+                                            return (
+                                                <tr key={index}>
+                                                    <td className="text-center">
+                                                        {e.Empresa}
                                                     </td>
-                                                ) : (
-                                                    ""
-                                                )}
-                                            </tr>
-                                        );
-                                    })}
+                                                    <td className="text-center">
+                                                        {e.Evento}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.Fecha}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.App ? (
+                                                            <i
+                                                                className="fa fa-check fa-lg icono-check"
+                                                                aria-hidden="true"
+                                                            />
+                                                        ) : (
+                                                            <i
+                                                                style="color: #d9534f"
+                                                                className="fa fa-times fa-lg"
+                                                                aria-hidden="true"
+                                                            />
+                                                        )}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {e.Archivos}
+                                                    </td>
+                                                    {this.state.permisoUsuario.permisos.biblioteca.includes(
+                                                        "show"
+                                                    ) ? (
+                                                        <td className="columna-icono">
+                                                            <Link to={link}>
+                                                                <i
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="Ver"
+                                                                    className="fas fa-eye icono-ver"
+                                                                />
+                                                            </Link>
+                                                        </td>
+                                                    ) : (
+                                                        ""
+                                                    )}
+                                                </tr>
+                                            );
+                                        })
+                                    )}
                                 </tbody>
                             </table>
                         </div>

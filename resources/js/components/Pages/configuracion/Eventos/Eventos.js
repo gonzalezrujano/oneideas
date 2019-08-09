@@ -25,27 +25,46 @@ export default class Eventos extends Component {
     }
 
     componentDidMount() {
-        axios
-            .post(
-                "api/eventos/empresa",
-                {
-                    idEmpresa: this.state.idEmpresa,
-                    rol: this.state.permisoUsuario.nombre
-                },
-                {
+        if (this.state.permisoUsuario.nombre == "EVENTO") {
+            axios
+                .get("api/eventos/one/" + this.state.usuario.Evento_id, {
                     headers: {
                         Authorization: this.state.api_token
                     }
-                }
-            )
-            .then(res => {
-                console.log(res);
-                this.setState({
-                    eventosEmpresa: res.data.eventos,
-                    empresa: res.data.empresa,
-                    isLoading: false
+                })
+                .then(res => {
+                    console.log(res);
+                    var eventosArray = [];
+                    eventosArray.push(res.data.evento.evento);
+                    this.setState({
+                        eventosEmpresa: eventosArray,
+                        empresa: res.data.evento.empresa,
+                        isLoading: false
+                    });
                 });
-            });
+        } else {
+            axios
+                .post(
+                    "api/eventos/empresa",
+                    {
+                        idEmpresa: this.state.idEmpresa,
+                        rol: this.state.permisoUsuario.nombre
+                    },
+                    {
+                        headers: {
+                            Authorization: this.state.api_token
+                        }
+                    }
+                )
+                .then(res => {
+                    console.log(res);
+                    this.setState({
+                        eventosEmpresa: res.data.eventos,
+                        empresa: res.data.empresa,
+                        isLoading: false
+                    });
+                });
+        }
     }
 
     modalDelete(id) {

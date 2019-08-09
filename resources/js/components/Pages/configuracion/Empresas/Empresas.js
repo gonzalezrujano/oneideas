@@ -24,12 +24,22 @@ export default class Empresas extends Component {
     }
 
     componentDidMount() {
+        var rol = this.state.permisoUsuario.nombre;
+        var id;
+        if (this.state.permisoUsuario.nombre == "ADMINISTRADOR") {
+            id = this.state.usuario._id;
+        } else if (
+            this.state.permisoUsuario.nombre == "EMPRESA" ||
+            this.state.permisoUsuario.nombre == "EVENTO"
+        ) {
+            id = this.state.usuario.Empresa_id;
+        }
         axios
             .post(
                 "api/empresas/tabla",
                 {
-                    rol: this.state.permisoUsuario.nombre,
-                    id: this.state.usuario._id
+                    rol,
+                    id
                 },
                 {
                     headers: {
@@ -38,6 +48,7 @@ export default class Empresas extends Component {
                 }
             )
             .then(res => {
+                console.log(res);
                 localStorage.setItem("empresasTabla", JSON.stringify(res.data));
                 this.setState({
                     empresasTabla: res.data,
@@ -124,7 +135,10 @@ export default class Empresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">
@@ -156,7 +170,10 @@ export default class Empresas extends Component {
             return (
                 <div>
                     <Menu usuario={this.state.user} />
-                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
+                    <Header
+                        usuario={this.state.user}
+                        history={this.props.history}
+                    />
                     <div className="content-wrapper">
                         <header className="page-header">
                             <div className="container-fluid">

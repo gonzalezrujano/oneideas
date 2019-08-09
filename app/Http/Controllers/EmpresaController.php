@@ -277,15 +277,12 @@ class EmpresaController extends Controller
         $rol = $input['rol'];
             //guardo su id independiente de su rol
         $id = $input['id'];
-
         if($rol == 'ADMINISTRADOR'){
-
             $emp = Empresa::borrado(false)->get();
-
         }else if($rol == 'EMPRESA'){
-
+            
             $emp = Empresa::borrado(false)->where('_id',  new ObjectID($id)  )->get();
-
+         
         }else if($rol == 'EVENTO'){
 
             $emp = Empresa::borrado(false)->where('_id', new ObjectID($id)  )->get();

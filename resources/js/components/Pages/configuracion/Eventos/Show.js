@@ -13,8 +13,8 @@ export default class Show extends React.Component {
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            paises: JSON.parse(localStorage.getItem("paises")),
-            estados: JSON.parse(localStorage.getItem("estados")),
+            paises: [],
+            estados: [],
             menuAppInvitados:[],
             idEvento: this.props.match.params.id,
             nombre:"",
@@ -33,27 +33,7 @@ export default class Show extends React.Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleLogo = this.handleLogo.bind(this);
-        this.handleChangeMulti = this.handleChangeMulti.bind(this);
-        this.getPaises = this.getPaises.bind(this);
-    }
 
-    getPaises(){
-        axios.get('api/empresas/paises',{
-            headers: {
-                Authorization: this.state.api_token
-            }
-        }).then(res=>{
-            let r = res.data.data
-            localStorage.setItem("paises", JSON.stringify(r.paises));
-            localStorage.setItem("estados", JSON.stringify(r.estados));
-            this.setState({
-                paises:r.paises,
-                estados: r.estados
-            })
-        })
     }
 
     componentDidMount() {
@@ -64,7 +44,6 @@ export default class Show extends React.Component {
                 }
             })
             .then(res => {
-                console.log(res);
                 this.setState({
                     menuAppInvitados: res.data.data
                 });
@@ -73,7 +52,6 @@ export default class Show extends React.Component {
                         Authorization: this.state.api_token
                     }
                 }).then(res=>{
-
                     console.log(res)
                     this.setState({
                         infoEvento:res.data.evento,
@@ -81,8 +59,10 @@ export default class Show extends React.Component {
                         fecha:res.data.evento.evento.Fecha,
                         hora:res.data.evento.evento.Hora,
                         licencias:res.data.evento.evento.Licencias,
+                        paises:res.data.evento.paises,
+                        estados:res.data.evento.estados,
                         paisSeleccionado:res.data.evento.Pais_id,
-                        latitud:res.data.evento.Latitud,
+                        latitud:res.data.evento.evento.Latitud,
                         longitud:res.data.evento.evento.Longitud,
                         ubicacion:res.data.evento.evento.Ubicacion,
                         estado:res.data.evento.evento.Activo,
@@ -90,189 +70,87 @@ export default class Show extends React.Component {
                         logo:res.data.evento.evento.Logo,
                         isLoading:false
                     })
+                    console.log(this.state)
+                    this.infoForm()
                 })
             });
-    }
+        }
 
-    handleChangeMulti(e){
-        
-        this.setState({menuAppSeleccionados: [...e.target.selectedOptions].map(o => o.value)});
-        console.log(this.state.menuAppSeleccionados);
-    }
-
-    multiSelectPick(){
-        var optionSelectMultiple = {
-            placeholder: 'Seleccione',
-            selectAllText: 'Todos',
-            allSelected: 'Todos',
-            countSelected: '# de % opciones'
-        };
-        $('#menuapp').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.menuAppInvitados);
-        $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
-        $('#fecha').datetimepicker({
-            format: 'DD/MM/YYYY',
-            minDate: new Date()
-        });
-
-        $('#hora').datetimepicker({
-            format: 'LT'
-        });
-
-        $('#div-edit-emp-img-preview').show();
-        $('#div-edit-emp-img-new').hide();
-
-    }
-
-
-    handleChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
-        const name = target.name;
-        this.setState({
-          [name]: value
-        })
-    }
-
-    handleSubmit(e){
-        e.preventDefault();
-        let formData = new FormData();
-        let s = this.state
-
-        let ubicacion = $('input[name=ubicacion]:checked', '#form-add-evento').val();
-        console.log(s.ubicacion)
-        console.log(ubicacion)
-
-        formData.append("id-emp", s.idEmpresa);
-        formData.append("nombre", s.nombre);
-        formData.append("fecha", s.fecha);
-        formData.append("hora", s.hora);
-        formData.append("licencias", s.licencias);
-        formData.append("pais", s.paisSeleccionado);
-        formData.append("latitud", s.latitud);
-        formData.append("longitud", s.longitud);
-        formData.append("ubicacion",  ubicacion === undefined ? '' : ubicacion);
-        formData.append("app", s.app);
-        formData.append("estatus", s.estado);
-        formData.append("logo", $('#form-add-evento input[name=logo]')[0].files[0] === undefined ? '' : $('#form-add-evento input[name=logo]')[0].files[0] );
-        formData.append("x", $('#add-x').val());
-        formData.append("y", $('#add-y').val());
-        formData.append("w", $('#add-w').val());
-        formData.append("h", $('#add-h').val());
-
-        var menu = $('#menuapp').multipleSelect('getSelects');
-
-        formData.append("menuapp", menu);
-
-        $('button#save-evento').prepend('<i className="fa fa-spinner fa-spin"></i> ');
-        axios.post("api/eventos/add",formData,{
-            headers: {
-                Authorization: this.state.api_token
-            }
-        }).then(res=>{
-            $('button#save-evento').find('i.fa').remove();
-            console.log(res);
-            if (res.data.code == 200){
-                console.log("estoy aca")
-                swal({
-                    title: "Evento agregado satisfactoriamente",
-                    icon: "success",
-                    buttons: true
-                  })
-                  .then((result) => {
-                    if (result) {
-                        this.props.history.push("/empresa/eventos/"+s.idEmpresa);
-                    } 
-                  });
-            }else{
-
-            }
-        });
-    }
-
-    handleLogo(){
-            let input = ($('#logo'))[0];
-            var $image =$('#preview-emp-logo-edit-new');
-            var oFReader = new FileReader();
-    
-            oFReader.readAsDataURL(input.files[0]);
-            oFReader.onload = function (oFREvent) {
-    
-                // Destroy the old cropper instance
-                $image.cropper('destroy');
-    
-                // Replace url
-                $image.attr('src', this.result);
-    
-                // Start cropper
-                $image.cropper({
-                    viewMode: 1,
-                    minContainerWidth: 200,
-                    minContainerHeight: 200,
-                    autoCropArea: 1,
-                    crop: function(event) {
-    
-                        $('#add-x').val(event.detail.x);
-                        $('#add-y').val(event.detail.y);
-                        $('#add-w').val(event.detail.width);
-                        $('#add-h').val(event.detail.height);
-                    }
-                });
-    
-    
+        infoForm(){
+            var optionSelectMultiple = {
+                placeholder: 'Seleccione',
+                selectAllText: 'Todos',
+                allSelected: 'Todos',
+                countSelected: '# de % opciones'
             };
-
-            $('#div-edit-emp-img-new').show();
-                $('#div-edit-emp-img-preview').hide();
-        
-    }
+            $('#menuapp').multipleSelect(optionSelectMultiple).multipleSelect('setSelects', this.state.menuAppInvitados);
+            $('#licencias').inputmask({"mask": "9999999", greedy: false, "placeholder": ""});
+            var fecha = (this.state.fecha.split("/")).reverse();
+            fecha = fecha.toString();
+            fecha = fecha.replace(/,/g,"-");
+            var ms = Date.parse(fecha);
+             fecha = new Date(ms);
+            $('#fecha').datetimepicker({
+                format: 'DD/MM/YYYY',
+                minDate: fecha,
+            });
+    
+            $('#hora').datetimepicker({
+                format: 'LT'
+            });
+    
+            $('#div-edit-emp-img-preview').show();
+            $('#div-edit-emp-img-new').hide();
+        }
 
 
     render() {
-        if (this.state.isLoading || !JSON.parse(localStorage.getItem("paises")) || !JSON.parse(localStorage.getItem("estados"))) {
-            this.getPaises();
+        if (this.state.isLoading) {
             return (
                 <div>
-                    <Menu usuario={this.state.user} />
-                    <Header  usuario={this.state.user} history={this.props.history}    />
-                    <div className="content-wrapper">
-                        <header className="page-header">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-sm-12 col-md-12">
-                                        <h1 className="page-header-heading">
-                                            <i className="fas fa-calendar-week page-header-heading-icon" />
-                                            &nbsp;
-                                            <Link to="/empresas">
-                                                Empresa
-                                            </Link>{" "}
-                                            /{" "}
-                                            <Link
-                                                to={`/empresa/eventos/${
-                                                    this.state.idEmpresa
-                                                }`}
-                                            >
-                                                / Eventos
-                                            </Link>{" "}
-                                            / Agregar Evento
-                                        </h1>
-                                    </div>
+                <Menu usuario={this.state.usuario} />
+                <Header  usuario={this.state.usuario} history={this.props.history}    />
+                <div className="content-wrapper">
+                    <header className="page-header">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-sm-12 col-md-12">
+                                    <h1 className="page-header-heading">
+                                        <i className="fas fa-user-friends page-header-heading-icon" />
+                                        &nbsp;
+                                        <Link to="/empresas">
+                                            Empresa
+                                        </Link>{" "}
+                                        {" "}
+                                        <Link
+                                            to={`/empresa/eventos/${
+                                                this.state.idEmpresa
+                                            }`}
+                                        >
+                                            / Eventos
+                                        </Link>{" "}
+                                        / Mostrar Evento
+                                    </h1>
                                 </div>
                             </div>
-                        </header>
-
-                        <div id="sweet" className="container-fluid">
-                            <h3>
-                                <i className="fa fa-spinner fa-spin" /> Cargando
-                                espere
-                            </h3>
                         </div>
-                    </div>
+                    </header>
+                    <div id="sweet" className="container-fluid">
+                            <div className="row">
+                                <div className="offset-6">
+                                    <h3>
+                                        <i className="fa fa-spinner fa-spin" />{" "}
+                                        Cagargando
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                   
                 </div>
+            </div>
             );
         }else{
-            console.log("ok entre en el else")
-            return (
+            return(
                 <div>
                 <Menu usuario={this.state.user} />
                 <Header  usuario={this.state.user} history={this.props.history}    />
@@ -498,7 +376,8 @@ export default class Show extends React.Component {
                     </div>
                 </div>
             </div>
-            );
+            
+            )
         }
     }
 }
