@@ -1,7 +1,8 @@
 import {
   FETCHED_MEDIA_EVENTS,
   FETCHED_MEDIA_SECTOR,
-  FETCHED_MEDIA_JOBS
+  FETCHED_MEDIA_JOBS,
+  FETCHED_MEDIA_TOOLS
 } from './types';
 import axios from 'axios';
 
@@ -39,6 +40,38 @@ export function getJobs (eventId, apiToken) {
   }
 }
 
+export function getTool (eventId, herramienta, apiToken) {
+  return dispatch => {
+    return axios.post('/api/multimedia/action-tool', { 
+      evento: eventId, 
+      herramienta
+    } , {
+      headers: {
+          Authorization: apiToken
+      }
+    })
+    .then(res => {
+      const { code, tool, biblioteca, msj } = res.data;
+
+      if(code === 200){
+        
+        let payload = {
+          isTool: true,
+          titleTool: herramienta,
+          bibliotecas: (tool == 'Video' || tool == 'Imagen' || tool == 'Audio') ? biblioteca : []
+        };
+
+        dispatch(saveTool(payload));
+          
+      } else {
+        dispatch({ isTool: false, titleTool: '' });
+      }
+
+      return { code, msj };
+    }, err => dispatch({ isTool: false, titleTool: '' }));
+  }
+}
+
 export function saveEventos (eventos) {
   return {
     type: FETCHED_MEDIA_EVENTS,
@@ -58,4 +91,11 @@ export function saveJobs (jobs) {
     type: FETCHED_MEDIA_JOBS,
     payload: jobs
   };
+}
+
+export function saveTool (tools) {
+  return {
+    type: FETCHED_MEDIA_TOOLS,
+    payload: tools
+  }
 }

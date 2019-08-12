@@ -10,7 +10,7 @@ import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
-import { getEventos, getJobs } from './../../redux/actions/multimedia';
+import { getEventos, getJobs, getTool } from './../../redux/actions/multimedia';
 
 class Multimedia extends Component {
     constructor() {
@@ -63,6 +63,7 @@ class Multimedia extends Component {
         this.ponerCola = this.ponerCola.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
+        this.actionTool = this.actionTool.bind(this);
         /*this.onConnect = this.onConnect.bind(this);
         this.MQTTconnect = this.MQTTconnect.bind(this);*/
         //LLAMO AL METODO INICIAR MQTT PARA CONECTAR CON EL MQTT
@@ -420,76 +421,21 @@ class Multimedia extends Component {
      * @param {nombre de herramienta que queremos informacion} herramienta 
      */
     actionTool(herramienta){
-      var self = this;
       let {evento} = this.state;
       evento=evento.split("_")[0];
 
-      axios.post('/api/multimedia/action-tool', {evento, herramienta} ,{
-        headers: {
-            Authorization: this.state.api_token
-        }
-      })
-           .then(res => {
-               console.log(res)
-               if(res){
-
-                   let r = res.data;
-
-                   if(r.code === 200){
-
-                       if(r.tool == 'Video' || r.tool == 'Imagen' || r.tool == 'Audio'){
-
-                           self.setState({
-                               istool: true,
-                               titleTool: herramienta,
-                               bibliotecas: r.biblioteca
-                           });
-
-                       } else {
-
-                           self.setState({
-                               istool: true,
-                               titleTool: herramienta
-                           });
-                      }
-
-                   }else if(r.code === 500){
-
-                       self.setState({
-                           istool: false,
-                           titleTool: ''
-                       });
-
-                   }else if(r.code === 700){
-
-                       swal.fire({
-                           title: '<i class="fas fa-exclamation-circle"></i>',
-                           text: r.msj,
-                           confirmButtonColor: '#343a40',
-                           confirmButtonText: 'Ok',
-                           target: document.getElementById('sweet')
-                       });
-
-                       self.setState({
-                           istool: false,
-                           titleTool: ''
-                       });
-                   }
-
-               }
-
-           }).catch(function (error) {
-
-               console.log(error);
-
-               self.setState({
-                   istool: false,
-                   titleTool: ''
-               });
-
-       });
-
-
+      this.props.getTool(evento, herramienta, this.state.api_token)
+        .then(({ code, msj }) => {
+          if (code && code === 700) {
+            swal.fire({
+              title: '<i class="fas fa-exclamation-circle"></i>',
+              text: msj,
+              confirmButtonColor: '#343a40',
+              confirmButtonText: 'Ok',
+              target: document.getElementById('sweet')
+            });
+          }
+        })
    }
 
    /**
@@ -565,7 +511,7 @@ class Multimedia extends Component {
     ponerCola(newestado,inicio,fin){
         let {evento} = this.state;
         evento=evento.split("_")[0];
-        var title=this.state.titleTool;
+        var title=this.props.tool.titleTool;
         var parametro='';
         var self=this;
         if(self.state.hora){
@@ -734,10 +680,10 @@ class Multimedia extends Component {
                           handleSelect2={this.handleSelect2} 
                           isOpenHora2={this.state.isOpenHora2} 
                           hora2={this.state.hora2} 
-                          istool={this.state.istool} 
-                          title={this.state.titleTool} 
+                          istool={this.props.tool.isTool} 
+                          title={this.props.tool.titleTool} 
                           sectores={this.props.sectores} 
-                          bibliotecas={this.state.bibliotecas} 
+                          bibliotecas={this.props.tool.bibliotecas} 
                           sector={this.state.sector} 
                           fechainicio={this.state.fechainicio} 
                           fechafin={this.state.fechafin} 
@@ -765,12 +711,14 @@ class Multimedia extends Component {
 const mapStateToProps = state => ({
   eventos: state.multimedia.eventos,
   sectores: state.multimedia.sectores,
-  envios: state.multimedia.jobs
+  envios: state.multimedia.jobs,
+  tool: state.multimedia.tool
 });
 
 const mapDispatchToProps = dispatch => ({
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
-  getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken))
+  getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
+  getTool: (eventId, tool, apiToken) => dispatch(getTool(eventId, tool, apiToken))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multimedia);
