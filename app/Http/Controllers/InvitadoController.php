@@ -53,6 +53,7 @@ class InvitadoController extends Controller
     $invitado->EsInvitadoAdicional = $data['esInvitadoAdicional'];
     $invitado->EsMenorDeEdad       = $data['esMenorDeEdad'];
     $invitado->Confirmacion        = $data['confirmacion'];
+    $invitado->linkConfirmacion    = Str::random(40);
     $invitado->Borrado             = $data['borrado'];
 
     //verifico si fue exitoso el insert en la bd
@@ -275,6 +276,55 @@ class InvitadoController extends Controller
 
         //devuelvo el resultado en formato json
         return $result;
+    }
+
+    public function mailConfirmacion(Request $request){
+      $input = $request->all();
+      $idConfirmacion = $input['idConfirmacion'];
+      if($idConfirmacion){
+        $invitado = Invitado::borrado(false)->where('linkConfirmacion', $idConfirmacion)->get();
+        return json_encode(['code' => 200,'data'=>$invitado]);
+      }
+    }
+
+    public function confirmacionDatos(Resquest $request){
+      $input = $request->all();
+    $etapas = [];
+    $id = $input['id'];
+    if($id){
+      if($input['etapas']){
+        //proceso las etapas
+        $etapas = $this->processEtapas($input['etapas']);
+      }
+      $registro = Invitado::find($id);
+      if($registro){
+        $grupoId = "no aplica";
+        if($input['grupo-id'] != "no aplica"){
+          $grupoId = new ObjectID($input['grupo-id']);
+        }
+          $data = [
+            'nombre'              => strtoupper($input['nombre']),
+            'apellido'            => strtoupper($input['apellido']),
+            'correo'              => strtoupper($input['correo']),
+            'telefono'            => strtoupper($input['telefono']),
+            'confirmacion'       => (boolean) true,
+            'borrado'             => false
+          ];
+          $registro->Nombre              = $data['nombre'];
+          $registro->Apellido            = $data['apellido'];
+          $registro->Correo              = $data['correo'];
+          $registro->Telefono            = $data['telefono'];
+          $registro->Confirmacion        = $data['confirmacion'];
+          $registro->Borrado             = $data['borrado'];
+
+          if($registro->save()){
+            return json_encode(['code' => 200,'invitados'=>$registro]);
+          }
+          return json_encode(['code' => 400]);
+      }
+      return json_encode(['code' => 500]);
+    }
+    return json_encode(['code' => 600]);
     }
 
 }

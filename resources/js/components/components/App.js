@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { Provider } from 'react-redux';
-import store from './../../redux';
+import { Provider } from "react-redux";
+import store from "./../../redux";
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
@@ -37,93 +37,131 @@ import GruposEdit from "../Pages/configuracion/Grupos/Edit";
 import Etapas from "../Pages/configuracion/Eventos/Etapas/Etapas";
 import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
 import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
+import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
 
-function App () {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-          <Switch>
-              {/**A continuacion se presentan todas las rutas registradas del front end
+function App() {
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <Switch>
+                    {/**A continuacion se presentan todas las rutas registradas del front end
               asi como sus respectivos componentes renderi ados en cada una */}
-              <Route exact path="/" component={Login} />
-              <Route exact path="/welcome" component={Welcome} />
-              <Route exact path="/multimedia" component={Multimedia} />
-              <Route exact path="/biblioteca" component={Biblioteca} />
-              <Route
-                  exact
-                  path="/biblioteca/evento/:id"
-                  component={ViewEventoBiblioteca}
-              />
-              <Route
-                  exact
-                  path="/biblioteca/evento/add-file/:id"
-                  component={AddEventoBiblioteca}
-              />
-              <Route exact path="/empresas" component={Empresas} />
-              <Route exact path="/empresas/add" component={AddEmpresa} />
-              <Route
-                  exact
-                  path="/empresas/show/:id"
-                  component={ShowEmpresas}
-              />
-              <Route
-                  exact
-                  path="/empresas/edit/:id"
-                  component={EditEmpresas}
-              />
-              <Route exact path="/empresa/eventos/:id" component={Eventos} />
-              <Route exact path="/eventos/add/:id" component={EventosAdd} />
-              <Route exact path="/eventos/edit/:id" component={EventoEdit} />
-              <Route exact path="/eventos/show/:id" component={EventoShow} />
-              <Route exact path="/eventos/etapas/:id" component={Etapas} />
-              <Route
-                  exact
-                  path="/eventos/etapas/add/:id"
-                  component={EtapasAdd}
-              />
-              <Route
-                  exact
-                  path="/eventos/etapas/edit/:id"
-                  component={EtapasEdit}
-              />
-              <Route exact path="/usuarios" component={Usuarios} />
-              <Route exact path="/usuarios/add" component={UsuariosAdd} />
-              <Route
-                  exact
-                  path="/usuarios/edit/:id"
-                  component={UsuariosEdit}
-              />
-              <Route
-                  exact
-                  path="/usuarios/show/:id"
-                  component={UsuariosShow}
-              />
-              <Route exact path="/invitacion" component={Invitacion} />
-              <Route
-                  exact
-                  path="/invitacion/show/:id"
-                  component={InvitacionShow}
-              />
-              <Route exact path="/invitacion/add" component={InvitacionAdd} />
-              <Route exact path="/invitados" component={Invitados} />
-              <Route exact path="/invitados/add" component={InvitadosAdd} />
-              <Route
-                  exact
-                  path="/invitados/edit/:id"
-                  component={InvitadosEdit}
-              />
-              <Route
-                  exact
-                  path="/invitados/show/:id"
-                  component={InvitadosShow}
-              />
-              <Route exact path="/grupos" component={Grupos} />
-              <Route exact path="/grupos/add" component={GruposAdd} />
-              <Route exact path="/grupos/edit/:id" component={GruposEdit} />
-          </Switch>
-      </BrowserRouter>
-    </Provider>
-  );
+                    <Route exact path="/" component={Login} />
+                    <Route exact path="/welcome" component={Welcome} />
+                    <Route exact path="/multimedia" component={Multimedia} />
+                    <Route exact path="/biblioteca" component={Biblioteca} />
+                    <Route
+                        exact
+                        path="/biblioteca/evento/:id"
+                        component={ViewEventoBiblioteca}
+                    />
+                    <Route
+                        exact
+                        path="/biblioteca/evento/add-file/:id"
+                        component={AddEventoBiblioteca}
+                    />
+                    <Route exact path="/empresas" component={Empresas} />
+                    <Route exact path="/empresas/add" component={AddEmpresa} />
+                    <Route
+                        exact
+                        path="/empresas/show/:id"
+                        component={ShowEmpresas}
+                    />
+                    <Route
+                        exact
+                        path="/empresas/edit/:id"
+                        component={EditEmpresas}
+                    />
+                    <Route
+                        exact
+                        path="/empresa/eventos/:id"
+                        component={Eventos}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/add/:id"
+                        component={EventosAdd}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/edit/:id"
+                        component={EventoEdit}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/show/:id"
+                        component={EventoShow}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/etapas/:id"
+                        component={Etapas}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/etapas/add/:id"
+                        component={EtapasAdd}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/etapas/edit/:id"
+                        component={EtapasEdit}
+                    />
+                    <Route exact path="/usuarios" component={Usuarios} />
+                    <Route exact path="/usuarios/add" component={UsuariosAdd} />
+                    <Route
+                        exact
+                        path="/usuarios/edit/:id"
+                        component={UsuariosEdit}
+                    />
+                    <Route
+                        exact
+                        path="/usuarios/show/:id"
+                        component={UsuariosShow}
+                    />
+                    <Route exact path="/invitacion" component={Invitacion} />
+                    <Route
+                        exact
+                        path="/invitacion/show/:id"
+                        component={InvitacionShow}
+                    />
+                    <Route
+                        exact
+                        path="/invitacion/add"
+                        component={InvitacionAdd}
+                    />
+                    <Route exact path="/invitados" component={Invitados} />
+                    <Route
+                        exact
+                        path="/invitados/add"
+                        component={InvitadosAdd}
+                    />
+                    <Route
+                        exact
+                        path="/invitados/edit/:id"
+                        component={InvitadosEdit}
+                    />
+                    <Route
+                        exact
+                        path="/invitados/show/:id"
+                        component={InvitadosShow}
+                    />
+                    <Route exact path="/grupos" component={Grupos} />
+                    <Route exact path="/grupos/add" component={GruposAdd} />
+                    <Route
+                        exact
+                        path="/grupos/edit/:id"
+                        component={GruposEdit}
+                    />
+                    <Route
+                        exact
+                        path="/mail/:id"
+                        component={MailConfirmation}
+                    />
+                </Switch>
+            </BrowserRouter>
+        </Provider>
+    );
 }
 
 export default App;

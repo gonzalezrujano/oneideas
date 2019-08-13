@@ -12,19 +12,10 @@
 */
 
 
-Route::middleware(['guest'])->group(function(){
+
     Route::view('/{path?}', 'index');
-    //ruta del login
-    //Route::get('/', 'IndexController@index');
-    /*Route::post('/ajax-post-login', 'LoginController@ajaxPostLogin');
+    Route::view('/mail/{id}', 'index');
 
-    //rutas del recovery password
-    Route::get('/recovery-password', 'RecoveryPasswordController@index')->name('recovery-password');
-    Route::post('/ajax-send-token-password', 'RecoveryPasswordController@ajaxSendTokenPassword')->name('ajax-send-token-password');
-    Route::get('/form-reset-password/{token}', 'RecoveryPasswordController@formResetPassword')->name('form-reset-password');
-    Route::post('/ajax-reset-password', 'RecoveryPasswordController@ajaxResetPassword')->name('ajax-reset-password');*/
-
-});
 /*
 Route::middleware(['auth', 'prevent-back-history'])->group(function(){
 

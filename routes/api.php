@@ -143,6 +143,17 @@ Route::group(['middleware'=>'api_token','prefix' => 'mail'], function() {
 /**
  * Rutas API orientadas al controlador de Invitado InvitadoController
  */
+Route::group(['prefix' => 'mail-confirmacion'], function() {
+    //rutas de empresas
+    Route::post('/', 'InvitadoController@mailConfirmacion');  
+    Route::post('/datos','InvitadoController@confirmacionDatos');
+});
+
+
+
+/**
+ * Rutas API orientadas al controlador de Invitado InvitadoController
+ */
 Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
     //rutas de empresas
     Route::post('/', 'EtapaController@addEtapa');
