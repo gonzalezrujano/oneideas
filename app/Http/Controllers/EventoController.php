@@ -700,7 +700,7 @@ class EventoController extends Controller
            if($eve){
    
                foreach ($eve as $e) {
-   
+
                    //armo la data que se muestra en la tabla de inicio de la pagina de eventos
                    $eventos[] = [
                        '_id'       => $e->_id,
@@ -711,6 +711,7 @@ class EventoController extends Controller
                        'App'       => $e->App,
                        'Activo'    => $e->Activo
                    ];
+                   
                }
                return json_encode(['code' => 200,'eventos'=>$eventos,'empresa'=>$empresa]);
            }else{
@@ -862,7 +863,7 @@ class EventoController extends Controller
      */
     public function getEventoById($id){
         $registro = Evento::find($id);
-
+        $registro->Pais = Pais::find($registro->Pais_id)->Nombre;
         if($registro){
 
             $data['existe'] = true;

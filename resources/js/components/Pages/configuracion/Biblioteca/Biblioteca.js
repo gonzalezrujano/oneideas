@@ -29,12 +29,21 @@ export default class Biblioteca extends Component {
      * Traer por api toda la informacion de los eventos para llenar la info de la tabal
      */
     componentDidMount() {
+        var rol = this.state.permisoUsuario.nombre;
+        var id;
+        if (this.state.permisoUsuario.nombre == "ADMINISTRADOR") {
+            id = this.state.usuario._id;
+        } else if (this.state.permisoUsuario.nombre == "EMPRESA") {
+            id = this.state.usuario.Empresa_id;
+        } else {
+            id = this.state.usuario.Evento_id;
+        }
         axios
             .post(
                 "api/biblioteca",
                 {
-                    rol: this.state.permisoUsuario.nombre,
-                    id: this.state.usuario._id
+                    rol,
+                    id
                 },
                 {
                     headers: {
@@ -43,6 +52,7 @@ export default class Biblioteca extends Component {
                 }
             )
             .then(res => {
+                console.log(res);
                 localStorage.setItem("eventos", JSON.stringify(res.data));
                 this.setState({
                     eventos: res.data,
@@ -126,7 +136,7 @@ export default class Biblioteca extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i class="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>
@@ -187,10 +197,22 @@ export default class Biblioteca extends Component {
                                         className="form-control form-control-sm my-1 mr-sm-2 col-2"
                                         id="pro-find-empresa"
                                         name="empresa"
-                                        value={this.state.empresa}
                                         onChange={this.handleFiltro}
+                                        value={this.state.usuario.Empresa_id}
                                         disabled
-                                    />
+                                    >
+                                        <option value="todas">Todas</option>
+                                        {this.state.empresas.map((e, index) => {
+                                            return (
+                                                <option
+                                                    value={e._id}
+                                                    key={index}
+                                                >
+                                                    {e.Nombre}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
                                 )}
 
                                 <button

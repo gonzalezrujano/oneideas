@@ -160,8 +160,9 @@ export default class Etapas extends Component {
                                     id="dt-eventos"
                                 >
                                     <thead>
-                                        {this.state.permisoUsuario.nombre ==
-                                        "ADMINISTRADOR" ? (
+                                        {this.state.permisoUsuario.permisos.evento.includes(
+                                            "add"
+                                        ) ? (
                                             <tr>
                                                 <td>
                                                     <Link
