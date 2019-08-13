@@ -100,6 +100,7 @@ export default class Header extends Component {
                                             &nbsp;Cambiar Contraseña
                                         </Link>
                                         <Link
+                                            to="/"
                                             className="dropdown-item logout"
                                             style={{
                                                 color: "#ccc"

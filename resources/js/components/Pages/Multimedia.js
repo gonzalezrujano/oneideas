@@ -9,8 +9,10 @@ import Ejecucion from "../components/Multimedia/Ejecucion";
 import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
+import { connect } from 'react-redux';
+import { getEventos, getJobs, getTool } from './../../redux/actions/multimedia';
 
-export default class Multimedia extends Component {
+class Multimedia extends Component {
     constructor() {
         super();
         this.state = {
@@ -60,11 +62,22 @@ export default class Multimedia extends Component {
         this.handleThemeToggle2 = this.handleThemeToggle2.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
+        this.getEnvios = this.getEnvios.bind(this);
+        this.actionTool = this.actionTool.bind(this);
         /*this.onConnect = this.onConnect.bind(this);
         this.MQTTconnect = this.MQTTconnect.bind(this);*/
         //LLAMO AL METODO INICIAR MQTT PARA CONECTAR CON EL MQTT
         this.iniciarMQTT();
         
+    }
+
+    componentDidMount () {
+      const { usuario, api_token } = this.state;
+
+      this.setState({ isLoading: true });
+
+      this.props.getEvents(usuario._id, api_token)
+        .then(() => this.setState({ isLoading: false }));
     }
 
     iniciarMQTT(){
@@ -217,33 +230,22 @@ export default class Multimedia extends Component {
      */
     getEnvios(eventonew) {
         let { evento } = this.state;
+        
         evento = evento.split("_")[0];
         if (eventonew) {
             evento = eventonew;
         }
-        axios
-            .post("/api/eventos/envios", { evento },{
-                headers: {
-                    Authorization: this.state.api_token
-                }
-            })
-            .then(res => {
-                if (res) {
-                    let r = res.data;
 
-                    if (r.code === 200) {
-                        this.setState({
-                            envios: r.envios
-                        });
-                    } else if (r.code === 500) {
-                        console.log(r.msj);
-                        this.setState({
-                            multimedias: []
-                        });
-                    }
-                }
-            })
-            .catch(function(error) {});
+        this.props.getEnvios(evento, this.state.api_token)
+          .then(code => {
+            if (code === 500)
+              this.setState({
+                multimedias: []
+              });
+          })
+          .catch(err => {
+
+          })
     }
 
 
@@ -312,36 +314,27 @@ export default class Multimedia extends Component {
     * @param {evento} e 
     */
     handleChange(e) {
-        console.log(e);
         if (e.target != undefined) {
             if (e.target.name == "evento") {
-                var eventos = this.state.eventos;
-                var gtm = this.state.zonaevento;
-                for (var i = eventos.length - 1; i >= 0; i--) {
-                    if (eventos[i]._id == e.target.value.split("_")[0]) {
-                        console.log(eventos[i].Pais);
-                        gtm = eventos[i].Pais.GTM;
-                        var t = parseInt(gtm.substring(2, 3));
-                        var signo = gtm.substring(0, 1);
-                        if (signo == "+") {
-                            signo = "-";
-                        } else {
-                            signo = "+";
-                        }
-                        gtm = "Etc/GMT" + signo + t;
-                    }
-                }
+                const eventId = e.target.value.split('_')[0];
+                const companyId = e.target.value.split('_')[1];
+                const event = this.props.eventos.find(event => event._id === eventId);
+                const t = parseInt(event.Pais.GTM.substring(2, 3));
+                const signo = event.Pais.GTM.substring(0, 1) === '+' ? '-':'+';
+                const gtm = "Etc/GMT" + signo + t;
+                
                 this.setState({
                     multimedia: "",
                     multimedias: [],
                     bibliotecas: [],
-                    evento: e.target.value.split("_")[0],
-                    empresa: e.target.value.split("_")[1],
+                    evento: eventId,
+                    empresa: companyId,
                     istool: false,
                     titleTool: "",
                     zonaevento: gtm
                 });
-                this.getEnvios(e.target.value.split("_")[0]);
+
+                this.getEnvios(eventId);
             }
 
             this.setState({
@@ -428,76 +421,21 @@ export default class Multimedia extends Component {
      * @param {nombre de herramienta que queremos informacion} herramienta 
      */
     actionTool(herramienta){
-        var self = this;
-       let {evento} = this.state;
-       evento=evento.split("_")[0];
-       axios.post('/api/multimedia/action-tool', {evento, herramienta} ,{
-        headers: {
-            Authorization: this.state.api_token
-        }
-    })
-           .then(res => {
-               console.log(res)
-               if(res){
+      let {evento} = this.state;
+      evento=evento.split("_")[0];
 
-                   let r = res.data;
-
-                   if(r.code === 200){
-
-                       if(r.tool == 'Video' || r.tool == 'Imagen' || r.tool == 'Audio'){
-
-                           self.setState({
-                               istool: true,
-                               titleTool: herramienta,
-                               bibliotecas: r.biblioteca
-                           });
-
-                       }else{
-
-                           self.setState({
-                               istool: true,
-                               titleTool: herramienta
-                           });
-                       }
-
-
-                   }else if(r.code === 500){
-
-                       self.setState({
-                           istool: false,
-                           titleTool: ''
-                       });
-
-                   }else if(r.code === 700){
-
-                       swal.fire({
-                           title: '<i class="fas fa-exclamation-circle"></i>',
-                           text: r.msj,
-                           confirmButtonColor: '#343a40',
-                           confirmButtonText: 'Ok',
-                           target: document.getElementById('sweet')
-                       });
-
-                       self.setState({
-                           istool: false,
-                           titleTool: ''
-                       });
-                   }
-
-               }
-
-           }).catch(function (error) {
-
-               console.log(error);
-
-               self.setState({
-                   istool: false,
-                   titleTool: ''
-               });
-
-       });
-
-
+      this.props.getTool(evento, herramienta, this.state.api_token)
+        .then(({ code, msj }) => {
+          if (code && code === 700) {
+            swal.fire({
+              title: '<i class="fas fa-exclamation-circle"></i>',
+              text: msj,
+              confirmButtonColor: '#343a40',
+              confirmButtonText: 'Ok',
+              target: document.getElementById('sweet')
+            });
+          }
+        })
    }
 
    /**
@@ -573,7 +511,7 @@ export default class Multimedia extends Component {
     ponerCola(newestado,inicio,fin){
         let {evento} = this.state;
         evento=evento.split("_")[0];
-        var title=this.state.titleTool;
+        var title=this.props.tool.titleTool;
         var parametro='';
         var self=this;
         if(self.state.hora){
@@ -641,144 +579,146 @@ export default class Multimedia extends Component {
 
 
 
-    render() {
-        if (!JSON.parse(localStorage.getItem("eventosUsuario"))) {
-            this.getEventos();
-        } else {
-            this.state.eventos = JSON.parse(
-                localStorage.getItem("eventosUsuario")
-            ).eventos;
-            this.state.sectores = JSON.parse(
-                localStorage.getItem("eventosUsuario")
-            ).sectores;
-            this.state.isLoading = false;
-        }
+  render() {
+    if (this.state.isLoading)
+      return null;
+  
+    return (
+      <Fullscreen
+        enabled={this.state.isFull}
+        onChange={isFull => this.setState({ isFull })}
+      >
+        <Menu usuario={this.state.user} />
+        <Header usuario={this.state.user} history={this.props.history} />
+        <div className="content-wrapper">
+          <header className="page-header">
+              <div className="container-fluid">
+                  <div className="row">
+                      <div className="col-sm-12 col-md-12">
+                          <div className="d-flex">
+                              <div className="my-2">
+                                  <h1 className="page-header-heading">
+                                      <div>
+                                          <i className="fas fa-compact-disc page-header-heading-icon" />
+                                          Multimedia
+                                          {this.state.evento !== "" && 
+                                            <React.Fragment>
+                                              <i className="fas fa-clock mr-2 ml-4" />
+                                              <Clock
+                                                  format={
+                                                      "HH:mm:ss A"
+                                                  }
+                                                  ticking={true}
+                                                  timezone={
+                                                      this.state
+                                                          .zonaevento
+                                                  }
+                                              />
+                                            </React.Fragment>
+                                          }
+                                      </div>
+                                  </h1>
+                              </div>
+                              <form className="form-inline ml-5">
+                                  <i className="fas fa-calendar-week fa-lg mr-3" />
+                                  <select
+                                      className="form-control form-control-sm form-select-event"
+                                      name="evento"
+                                      value={this.state.evento}
+                                      onChange={this.handleChange}
+                                  >
+                                      <option value="">
+                                          Seleccione evento
+                                      </option>
+                                      {this.props.eventos.map(p => (
+                                          <option key={p._id} value={`${p._id}_${p.Empresa_id}`}>
+                                            {p.Nombre}
+                                          </option>
+                                      ))}
+                                  </select>
+                              </form>
 
-        if (this.state.isLoading) {
-            return "";
-        } else {
-            return (
-                <Fullscreen
-                    enabled={this.state.isFull}
-                    onChange={isFull => this.setState({ isFull })}
-                >
-                    <Menu usuario={this.state.user} />
-                    <Header                     usuario={this.state.user}                     history={this.props.history}                 />
-                    <div className="content-wrapper">
-                        <header className="page-header">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-sm-12 col-md-12">
-                                        <div className="d-flex">
-                                            <div className="my-2">
-                                                <h1 className="page-header-heading">
-                                                    {this.state.evento == "" ? (
-                                                        <div>
-                                                            <i className="fas fa-compact-disc page-header-heading-icon" />
-                                                            Multimedia
-                                                        </div>
-                                                    ) : (
-                                                        <div>
-                                                            <i className="fas fa-compact-disc page-header-heading-icon" />
-                                                            Multimedia
-                                                            <i className="fas fa-clock mr-2 ml-4" />
-                                                            <Clock
-                                                                format={
-                                                                    "HH:mm:ss A"
-                                                                }
-                                                                ticking={true}
-                                                                timezone={
-                                                                    this.state
-                                                                        .zonaevento
-                                                                }
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </h1>
-                                            </div>
-
-                                            <form className="form-inline ml-5">
-                                                <i className="fas fa-calendar-week fa-lg mr-3" />
-                                                <select
-                                                    className="form-control form-control-sm form-select-event"
-                                                    name="evento"
-                                                    value={this.state.evento}
-                                                    onChange={this.handleChange}
-                                                >
-                                                    <option value="">
-                                                        Seleccione evento
-                                                    </option>
-                                                    {this.state.eventos.map(
-                                                        (p, index) => {
-                                                            return (
-                                                                <option
-                                                                    key={index}
-                                                                    value={
-                                                                        p._id +
-                                                                        "_" +
-                                                                        p.Empresa_id
-                                                                    }
-                                                                >
-                                                                    {p.Nombre}
-                                                                </option>
-                                                            );
-                                                        }
-                                                    )}
-                                                </select>
-                                            </form>
-
-                                            <div className="ml-auto">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-sm btn-dark ml-4"
-                                                    onClick={this.goFull}
-                                                >
-                                                    <i className="fas fa-arrows-alt" />
-                                                    &nbsp;Fullscreen
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-
-                        <div id="sweet" className="container-fluid">
-                            
-                                    {this.state.evento == '' ?(
-                                        <EmptyMultimedia/>
-                                    ):(
-                                        <div>
-                                            {console.log(this.state.envios)}
-                                            {console.log(this.state.evento)}
-                                        <Ejecucion envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)} />
-
-                                        <Cola envios={this.state.envios} evento={this.state.evento} sincola={this.quitarCola.bind(this)}/>
-
-                                        <div className="container-fluid container-tools">
-
-                                            <div className="row">
-
-                                                <Herramientas action={this.actionTool.bind(this)} />
-
-                                                <Parametros handleToggle={this.handleToggle} handleSelect={this.handleSelect} isOpenHora={this.state.isOpenHora} hora={this.state.hora} handleToggle2={this.handleToggle2} handleSelect2={this.handleSelect2} isOpenHora2={this.state.isOpenHora2} hora2={this.state.hora2} istool={this.state.istool} title={this.state.titleTool} sectores={this.state.sectores} bibliotecas={this.state.bibliotecas} sector={this.state.sector} fechainicio={this.state.fechainicio} fechafin={this.state.fechafin} archivo={this.state.archivo} change={this.handleChange}  handleThemeToggle={this.handleThemeToggle} handleThemeToggle2={this.handleThemeToggle2} enviar={this.enviarComando.bind(this)} cola={this.ponerCola.bind(this)} />
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    )}
-                                
-
-                            {/**esto de abajo es de php, es el texto que cambia con el menu */}
-                            <footer className="content-wrapper-footer">
-                                <span>{this.state.footer}</span>
-                            </footer>
-                        </div>
+                              <div className="ml-auto">
+                                  <button
+                                      type="button"
+                                      className="btn btn-sm btn-dark ml-4"
+                                      onClick={this.goFull}
+                                  >
+                                      <i className="fas fa-arrows-alt" />
+                                      &nbsp;Fullscreen
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </header>
+          <div id="sweet" className="container-fluid">
+            {this.state.evento == '' ?(
+                <EmptyMultimedia/>
+            ):(
+              <div>
+                <Ejecucion
+                  envios={this.props.envios} 
+                  evento={this.state.evento} 
+                  sincola={this.quitarCola.bind(this)}
+                />
+                <Cola
+                  envios={this.props.envios} 
+                  evento={this.state.evento} 
+                  sincola={this.quitarCola.bind(this)}
+                />
+                <div className="container-fluid container-tools">
+                    <div className="row">
+                        <Herramientas action={this.actionTool.bind(this)} />
+                        <Parametros 
+                          handleToggle={this.handleToggle} 
+                          handleSelect={this.handleSelect} 
+                          isOpenHora={this.state.isOpenHora} 
+                          hora={this.state.hora} 
+                          handleToggle2={this.handleToggle2} 
+                          handleSelect2={this.handleSelect2} 
+                          isOpenHora2={this.state.isOpenHora2} 
+                          hora2={this.state.hora2} 
+                          istool={this.props.tool.isTool} 
+                          title={this.props.tool.titleTool} 
+                          sectores={this.props.sectores} 
+                          bibliotecas={this.props.tool.bibliotecas} 
+                          sector={this.state.sector} 
+                          fechainicio={this.state.fechainicio} 
+                          fechafin={this.state.fechafin} 
+                          archivo={this.state.archivo} 
+                          change={this.handleChange} 
+                          handleThemeToggle={this.handleThemeToggle} 
+                          handleThemeToggle2={this.handleThemeToggle2} 
+                          enviar={this.enviarComando.bind(this)} 
+                          cola={this.ponerCola.bind(this)} />
                     </div>
-                </Fullscreen>
-            );
-        }
+                </div>
+              </div>
+            )}
+            {/**esto de abajo es de php, es el texto que cambia con el menu */}
+            <footer className="content-wrapper-footer">
+                <span>{this.state.footer}</span>
+            </footer>
+          </div>
+        </div>
+      </Fullscreen>
+    );
     }
 }
+
+const mapStateToProps = state => ({
+  eventos: state.multimedia.eventos,
+  sectores: state.multimedia.sectores,
+  envios: state.multimedia.jobs,
+  tool: state.multimedia.tool
+});
+
+const mapDispatchToProps = dispatch => ({
+  getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
+  getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
+  getTool: (eventId, tool, apiToken) => dispatch(getTool(eventId, tool, apiToken))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Multimedia);
