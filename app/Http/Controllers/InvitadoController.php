@@ -287,44 +287,37 @@ class InvitadoController extends Controller
       }
     }
 
-    public function confirmacionDatos(Resquest $request){
+    public function confirmacionDatos(Request $request){
       $input = $request->all();
-    $etapas = [];
-    $id = $input['id'];
-    if($id){
-      if($input['etapas']){
-        //proceso las etapas
-        $etapas = $this->processEtapas($input['etapas']);
-      }
-      $registro = Invitado::find($id);
-      if($registro){
-        $grupoId = "no aplica";
-        if($input['grupo-id'] != "no aplica"){
-          $grupoId = new ObjectID($input['grupo-id']);
-        }
-          $data = [
-            'nombre'              => strtoupper($input['nombre']),
-            'apellido'            => strtoupper($input['apellido']),
-            'correo'              => strtoupper($input['correo']),
-            'telefono'            => strtoupper($input['telefono']),
-            'confirmacion'       => (boolean) true,
-            'borrado'             => false
-          ];
-          $registro->Nombre              = $data['nombre'];
-          $registro->Apellido            = $data['apellido'];
-          $registro->Correo              = $data['correo'];
-          $registro->Telefono            = $data['telefono'];
-          $registro->Confirmacion        = $data['confirmacion'];
-          $registro->Borrado             = $data['borrado'];
+      $id = $input['id'];
+      if($id){
+        $registro = Invitado::find($id);
+        if($registro){
+            $data = [
+              'nombre'              => strtoupper($input['nombre']),
+              'apellido'            => strtoupper($input['apellido']),
+              'correo'              => strtoupper($input['correo']),
+              'telefono'            => strtoupper($input['telefono']),
+              'confirmacion'       => (boolean) true
+            ];
 
-          if($registro->save()){
-            return json_encode(['code' => 200,'invitados'=>$registro]);
-          }
-          return json_encode(['code' => 400]);
+            $registro->Nombre              = $data['nombre'];
+            $registro->Apellido            = $data['apellido'];
+            $registro->Correo              = $data['correo'];
+            $registro->linkConfirmacion    = "usado";
+            $registro->Telefono            = $data['telefono'];
+            $registro->Confirmacion        = $data['confirmacion'];
+
+            if($registro->save()){
+              return json_encode(['code' => 200,'invitado'=>$registro]);
+            }
+            return json_encode(['code' => 400]);
+        }
+        return json_encode(['code' => 500]);
       }
-      return json_encode(['code' => 500]);
+      return json_encode(['code' => 600]);
     }
-    return json_encode(['code' => 600]);
-    }
+
+   
 
 }

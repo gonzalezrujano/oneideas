@@ -84,7 +84,7 @@ class Multimedia extends Component {
         var reconnectTimeout = 2000;
         //host y puerto del mqtt ONESHOW
         var host="mqtt.oneshow.com.ar"; 
-        var port=11344;
+        var port=11273;
         /**
          * funcion que sera llamada si se establece conexion con el mqtt
          */

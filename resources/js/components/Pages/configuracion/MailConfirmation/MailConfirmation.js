@@ -52,8 +52,6 @@ export default class Edit extends Component {
 
     handleSubmit(e){
         e.preventDefault();
-        console.log(this.state.grupo);
-        console.log(this.state.evento);
         let formData = new FormData()
         formData.append("id",this.state.idInvitado);
         formData.append("nombre", this.state.nombre);
@@ -61,24 +59,32 @@ export default class Edit extends Component {
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
         $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
-        axios.post("api/confirmacion-mail/datos",formData).then(res=>{
-            $('#save-invitado').find('i.fa').remove();
+        axios.post("api/mail-confirmacion/datos",formData).then(res=>{
+            console.log(res)
                 if(res.data.code === 200) {
-                    Swal.fire({
-                        text: "Datos confirmados exitosamente",
-                        type: "success",
-                        showCancelButton: false,
-                        confirmButtonColor: "#343a40",
-                        confirmButtonText: "OK",
-                        target: document.getElementById('sweet')
-                    }).then((result) => {
-
-                        if (result.value) {
-                            window.scrollTo(0, 0);
-                        this.props.history.push("/");
+                    axios.post("api/mail-confirmacion/datos-listos",formData).then(res=>{
+                        if (res.data.code === 200){
+                            $('#save-invitado').find('i.fa').remove();
+                            Swal.fire({
+                                text: "Datos confirmados exitosamente",
+                                type: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#343a40",
+                                confirmButtonText: "OK",
+                                target: document.getElementById('sweet')
+                            }).then((result) => {
+                                if (result.value) {
+                                    window.scrollTo(0, 0);
+                                    location.href="http://www.oneshow.com.ar";
+                                    
+                                }
+                            });
                         }
-
-                    });
+                        else if(res.data.code === 500){
+                            sweetalert('Error al confirmar datos.', 'error', 'sweet');
+                        }
+                    })
+                    
 
                 }else if(res.data.code === 500){
                     sweetalert('Error al confirmar datos.', 'error', 'sweet');
