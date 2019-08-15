@@ -319,6 +319,46 @@ Importante y como recomendación si realizan cambios a su archivo .env posterior
 
 Probamos nuestro Dashboard.
 
+## Monta un servidor MQTT local (Opcional)
+### Paso 1
+Descarga e instala Mosquitto Broker desde la página oficial de Eclipse: https://mosquitto.org/download/
+
+### Paso 2
+Busca la carpeta en la cual fue instalada Mosquitto y ejecuta la línea de comandos allí. Dicho directorio debe contener, entre otros, los siguientes archivos:
+
+- mosquitto.exe
+- monquitto.conf
+
+### Paso 3
+Abre el archivo mosquitto.conf con tu editor de texto de preferencia y pega al final del archivo las siguientes líneas
+
+    port 1883
+    protocol mqtt
+    socket_domain ipv4
+
+    listener 9001
+    protocol websockets
+    socket_domain ipv4
+
+Esto es para decirle a mosquitto que escuche en dos puertos, el 1883 para conexiones bajo el protocolo mqtt puro, y el puerto 9001 para conexiones realizadas a traves del navegador por WebSockets. Lo que se tiene entendido hasta ahora es que los navegadores web solo se pueden conectar al broker mediante websockets.
+
+### Paso 4
+Abre la línea de comandos y ejecuta el siguiente comando: 
+    
+    mosquitto -c ./mosquitto.conf -v
+
+- mosquitto: El ejecutable de mosquitto.
+- Parámetro -c: Indica que se va a cargar la configuración del servidor desde un archivo.
+- Parámetro -v: Hace logs de todas las acciones que ejecuta el servidor cuando clientes se conectan, suscriben, publican, etc.
+
+### Paso 5 (opcional)
+Luego del paso anterior el servidor debería ejecutarse correctamente y ya sería posible, conectarse al servidor con un cliente como [Paho](https://www.eclipse.org/paho/clients/js/) desde javascript.
+
+### Paso 6 (opcional)
+También puedes descargar [MQTTLens](https://chrome.google.com/webstore/detail/mqttlens/hemojaaeigabkbcookmlgmdigohjobjm) como cliente para ver todo lo que sucede con el servidor.
+
+### NOTA
+Desde el proyecto ONEShow, es posible que cause errores el envío de mensajes mediante el objeto "Paho.MQTT.Message", si esto sucede, utilice el método "client.send" haciendo uso de los parámetros "topic", "payload", etc. como se muestra en la documentación de Paho de la clase [Client](https://www.eclipse.org/paho/files/jsdoc/Paho.MQTT.Client.html)
 
 ## Documentación
 
