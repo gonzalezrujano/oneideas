@@ -76,6 +76,53 @@ export default class Invitados extends Component {
             });
     }
 
+    handleDelete(id) {
+        Swal.fire({
+            text: "¿Está seguro que desea borrar el grupo?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#343a40",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            target: document.getElementById("sweet")
+        }).then(result => {
+            if (result.value) {
+                axios
+                    .post(
+                        "/api/invitados/delete",
+                        { id },
+                        {
+                            headers: {
+                                Authorization: this.state.api_token
+                            }
+                        }
+                    )
+                    .then(res => {
+                        if (res.data.code === 200) {
+                            sweetalert(
+                                "Item eliminado correctamente",
+                                "success",
+                                "sweet"
+                            );
+                            $("#" + id).hide();
+                        } else if (res.data.code === 600) {
+                            sweetalert(
+                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (res.data.code == 500) {
+                            sweetalert(
+                                "Error al Eliminar. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
+            }
+        });
+    }
+
     render() {
         if (this.state.isLoading) {
             return (

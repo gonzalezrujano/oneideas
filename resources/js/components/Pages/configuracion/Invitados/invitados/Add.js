@@ -131,8 +131,9 @@ export default class Add extends Component {
             }
         }).then(res=>{
             console.log(res);
-            let link = res.data.invitado.linkConfirmacion;
+            let link = res.data.link-confirmacion;
                 if(res.data.code === 200) {
+                    console.log(res)
                     let formMail = new FormData();
                     formMail.append("nombre", this.state.nombre);
                     formMail.append("correo", this.state.correo);
@@ -155,14 +156,12 @@ export default class Add extends Component {
                             confirmButtonText: "OK",
                             target: document.getElementById('sweet')
                         }).then((result) => {
-    
                             if (result.value) {
                                 window.scrollTo(0, 0);
                                 this.props.history.push("/invitados");
                             }
-    
                         });
-                    })
+                    });
                 }else if(res.data.code === 500){
                     sweetalert('Error al agregar Invitado. Consulte al Administrador.', 'error', 'sweet');
                 }

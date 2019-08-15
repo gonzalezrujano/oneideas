@@ -13,7 +13,7 @@ class MailController extends Controller
 {
     public function sendMailInvitados(Request $request){
         $input = $request->all();
-        $input['link'] = "https://consola.oneshow.com.ar/mail/".$input['link'];
+        $input['link'] = "http://localhost:8000/".$input['link'];
         $input['nombre_evento'] = Evento::find($input['nombre_evento'])->Nombre;
         Mail::to($input['correo'])->send(new CorreoDeInvitacion($input));
         return json_encode(['code' => 200,'mensaje'=>"Invitacion enviada"]);
