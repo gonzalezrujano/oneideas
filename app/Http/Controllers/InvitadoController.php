@@ -368,7 +368,7 @@ class InvitadoController extends Controller
                 //ubico el id en la bd
                 $registro = Invitado::find($id);
                 $registro->borrado = true;
-                $registro->Borrado = true;
+                
 
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->save()){
@@ -392,6 +392,7 @@ class InvitadoController extends Controller
             $invitadoId= $data[$i]->_id;
             $invitado = Invitado::find($invitadoId);
             $invitado->Borrado = true;
+            $registro->borrado = true;
             if($invitado->save()){
               continue;
             }

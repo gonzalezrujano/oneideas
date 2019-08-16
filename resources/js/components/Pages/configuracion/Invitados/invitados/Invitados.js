@@ -23,7 +23,7 @@ export default class Invitados extends Component {
     }
 
     componentDidMount() {
-        axios
+        /* axios
             .get("api/invitados", {
                 headers: { Authorization: this.state.api_token }
             })
@@ -33,19 +33,17 @@ export default class Invitados extends Component {
                     invitados: res.data.invitados,
                     isLoading: false
                 });
-            });
-        /* axios
+            });*/
+        axios
             .get("api/invitados/eliminar-todos", {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
                 console.log(res);
-                /*this.setState({
-                    invitados: res.data.invitados,
+                this.setState({
                     isLoading: false
                 });
-                this.setState({ isLoading: false });
-            });*/
+            });
     }
 
     handleChange(event) {
@@ -235,7 +233,7 @@ export default class Invitados extends Component {
 
                                     <tbody>
                                         {console.log(this.state.invitados)}
-                                        {this.state.invitados.map(
+                                        {/*this.state.invitados.map(
                                             (e, index) => {
                                                 return (
                                                     <tr key={index} id={e._id}>
@@ -260,7 +258,7 @@ export default class Invitados extends Component {
                                                             {e.Grupo_id}
                                                         </td>
                                                         <td className="text-center">
-                                                            {/*e.Etapas.length*/}
+                                                            {e.Etapas.length}
                                                         </td>
                                                         <td>
                                                             {"NO DISPONIBLE"}
@@ -362,7 +360,7 @@ export default class Invitados extends Component {
                                                     </tr>
                                                 );
                                             }
-                                        )}
+                                        )*/}
                                     </tbody>
                                 </table>
 
