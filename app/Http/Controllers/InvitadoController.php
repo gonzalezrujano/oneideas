@@ -299,7 +299,7 @@ class InvitadoController extends Controller
   }
 
   public function getInvitados(){
-      $data = DB::table('Invitados')->where("Correo",$input['correo'])->get();
+      $data = DB::table('Invitados')->get();
       if($data){
 
           return json_encode(['code' => 200,'invitados'=>$data]);
@@ -368,6 +368,7 @@ class InvitadoController extends Controller
                 //ubico el id en la bd
                 $registro = Invitado::find($id);
                 $registro->borrado = true;
+                $registro->Borrado = true;
 
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->save()){
