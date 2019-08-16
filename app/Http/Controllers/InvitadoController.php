@@ -392,7 +392,7 @@ class InvitadoController extends Controller
             $invitadoId= $data[$i]->_id;
             $invitado = Invitado::find($invitadoId);
             $invitado->Borrado = true;
-            $registro->borrado = true;
+            $invitado->borrado = true;
             if($invitado->save()){
               continue;
             }
