@@ -130,43 +130,27 @@ export default class Add extends Component {
                 Authorization: this.state.api_token
             }
         }).then(res=>{
-            console.log(res);
-            let link = res.data.link-confirmacion;
                 if(res.data.code === 200) {
-                    console.log(res)
-                    let formMail = new FormData();
-                    formMail.append("nombre", this.state.nombre);
-                    formMail.append("correo", this.state.correo);
-                    formMail.append("nombre_evento",this.state.evento);
-                    formMail.append("cantidad_mayores",this.state.invitadosAdicionalesMayores);
-                    formMail.append("cantidad_menores",this.state.invitadosAdicionalesMenores);
-                    formMail.append("link",link);
-                    axios.post("api/mail/confirmacion-invitacion",formMail,{
-                        headers: {
-                            Authorization: this.state.api_token
+                    Swal.fire({
+                        text: "Invitado agregado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById('sweet')
+                    }).then((result) => {
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+                            this.props.history.push("/invitados");
                         }
-                    }).then(res=>{
-                        $('#save-invitado').find('i.fa').remove();
-                        console.log(res)
-                        Swal.fire({
-                            text: "Invitado agregado exitosamente",
-                            type: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#343a40",
-                            confirmButtonText: "OK",
-                            target: document.getElementById('sweet')
-                        }).then((result) => {
-                            if (result.value) {
-                                window.scrollTo(0, 0);
-                                this.props.history.push("/invitados");
-                            }
-                        });
-                    });
+                    }); 
                 }else if(res.data.code === 500){
-                    sweetalert('Error al agregar Invitado. Consulte al Administrador.', 'error', 'sweet');
+                    $('button#save-usuario').find('i.fa').remove();
+                    sweetalert(res.data.mensaje, 'error', 'sweet');
                 }
         }).catch(error => {
             $('button#save-usuario').find('i.fa').remove();
+            
             sweetalert(error.response.data, 'error', 'sweet');
         })
     }

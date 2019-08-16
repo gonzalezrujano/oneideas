@@ -29,7 +29,7 @@ class InvitadoController extends Controller
     $grupoId = "no aplica";
 
     if($input['grupo-id']){
-      $grupoId = new ObjectID($input['grupo-id']);
+      $grupoId = ($input['grupo-id']);
     }
 
     $existeInvitado = DB::table('Invitados')->where("Correo",$input['correo'])->get();
@@ -68,8 +68,8 @@ class InvitadoController extends Controller
         }
 
         $dataEnventoInvitado = [
-          'Evento_id'=>new ObjectID($idInvitado),
-          'Invitado_id'=>new ObjectID($idInvitado),
+          'Evento_id'=>($idEvento),
+          'Invitado_id'=>($idInvitado),
           'Grupo_id'=>  $grupoId,
           'CantidadInvitadosMayores'=>$invitadosAdicionalesMayores,
           'CantidadInvitadosMenores'=>$invitadosAdicionalesMenores,
@@ -94,7 +94,7 @@ class InvitadoController extends Controller
 
           for($i = 0; $i<$invitadosAdicionalesMayores;$i++){
             $dataAdicional = [
-              'idInvitadoSolicitante'=> new ObjectID($idInvitado),
+              'idInvitadoSolicitante'=> ($idInvitado),
               'nombre'              => strtoupper($input['nombre']),
               'apellido'            => strtoupper("INVITADO ADICIONAL MAYOR DE EDAD"),
               'correo'              => strtoupper("vacio"),
@@ -117,7 +117,7 @@ class InvitadoController extends Controller
             if($invitadoAdicional->save()){
               $eventoInvitado = new EventoInvitado;
               $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
-              $eventoInvitado->Invitado_id = new ObjectID($invitadoAdicional->_id);
+              $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
               $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
               $eventoInvitado->CantidadInvitadosMayores = 0;
               $eventoInvitado->CantidadInvitadosMenores = 0;
@@ -133,7 +133,7 @@ class InvitadoController extends Controller
           for($i = 0; $i<$invitadosAdicionalesMenores;$i++){
 
             $dataAdicional = [
-              'idInvitadoSolicitante'=> new ObjectID($idInvitado),
+              'idInvitadoSolicitante'=> ($idInvitado),
               'nombre'              => strtoupper($input['nombre']),
               'apellido'            => strtoupper("INVITADO ADICIONAL MENOR DE EDAD"),
               'correo'              => strtoupper("vacio"),
@@ -156,7 +156,7 @@ class InvitadoController extends Controller
             if($invitadoAdicional->save()){
               $eventoInvitado = new EventoInvitado;
               $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
-              $eventoInvitado->Invitado_id = new ObjectID($invitadoAdicional->_id);
+              $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
               $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
               $eventoInvitado->CantidadInvitadosMayores = 0;
               $eventoInvitado->CantidadInvitadosMenores = 0;
@@ -169,120 +169,128 @@ class InvitadoController extends Controller
 
           }
         }
-        return response()->json(['code' => 200,'invitado'=>$invitado,'invitados-adicionales'=>$invitadosAdicionalesArreglo,'link-confirmacion'=>$linkConfirmacion]);
+        return response()->json(['code' => 200,'invitado'=>$invitado,'invitados-adicionales'=>$invitadosAdicionalesArreglo,'link'=>$linkConfirmacion]);
     }
   }else{
     $invitado = $existeInvitado[0];
+    $idInvitado = strval($invitado['_id']);
     $idEvento = $input['evento-id'];
-    $idInvitado = $invitado['_id'];
-    $invitadosAdicionalesArreglo = [];
-    $invitadosAdicionalesMayores = $input['invitados-adicionales-mayores'];
-    $invitadosAdicionalesMenores = $input['invitados-adicionales-menores'];
-    $etapas = [];
-    if($input['etapas']){
-      //proceso las etapas
-      $etapas = $this->processEtapas($input['etapas']);
-    }
-    $dataEnventoInvitado = [
-      'Evento_id'=>new ObjectID($idInvitado),
-      'Invitado_id'=>new ObjectID($idInvitado),
-      'Grupo_id'=>  $grupoId,
-      'CantidadInvitadosMayores'=>$invitadosAdicionalesMayores,
-      'CantidadInvitadosMenores'=>$invitadosAdicionalesMenores,
-      'Etapas'              => $etapas,
-      'Confirmado'  => (boolean) false,
-      'borrado' => (boolean) false
-    ];
-    $eventoInvitado = new EventoInvitado;
-    $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
-    $eventoInvitado->Invitado_id = $dataEnventoInvitado['Invitado_id'];
-    $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
-    $eventoInvitado->CantidadInvitadosMayores = $dataEnventoInvitado['CantidadInvitadosMayores'];
-    $eventoInvitado->CantidadInvitadosMenores = $dataEnventoInvitado['CantidadInvitadosMenores'];
-    $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
-    $eventoInvitado->Confirmado = $dataEnventoInvitado['Confirmado'];
-    $eventoInvitado->LinkDatos  = Str::random(40);
-    $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
-    $eventoInvitado->save();
-
-    $linkConfirmacion = $eventoInvitado->LinkDatos;
-
-    for($i = 0; $i<$invitadosAdicionalesMayores;$i++){
-      $dataAdicional = [
-        'idInvitadoSolicitante'=> new ObjectID($idInvitado),
-        'nombre'              => strtoupper($input['nombre']),
-        'apellido'            => strtoupper("INVITADO ADICIONAL MAYOR DE EDAD"),
-        'correo'              => strtoupper("vacio"),
-        'telefono'            => strtoupper("vacio"),
-        'esInvitadoAdicional'     => (boolean) true,
-        'esMenorDeEdad'       => (boolean) false,
-        'borrado'             => false
+    $existaInvitadoEvento = false;
+    $eventoInvitado = EventoInvitado::where("Evento_id",($idEvento))->where("Invitado_id",$idInvitado)->get();
+    if(count($eventoInvitado) == 0){
+      $invitadosAdicionalesArreglo = [];
+      $invitadosAdicionalesMayores = $input['invitados-adicionales-mayores'];
+      $invitadosAdicionalesMenores = $input['invitados-adicionales-menores'];
+      $etapas = [];
+      if($input['etapas']){
+        //proceso las etapas
+        $etapas = $this->processEtapas($input['etapas']);
+      }
+      $dataEnventoInvitado = [
+        'Evento_id'=>($idEvento),
+        'Invitado_id'=>($idInvitado),
+        'Grupo_id'=>  $grupoId,
+        'CantidadInvitadosMayores'=>$invitadosAdicionalesMayores,
+        'CantidadInvitadosMenores'=>$invitadosAdicionalesMenores,
+        'Etapas'              => $etapas,
+        'Confirmado'  => (boolean) false,
+        'borrado' => (boolean) false
       ];
+      $eventoInvitado = new EventoInvitado;
+      $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
+      $eventoInvitado->Invitado_id = $dataEnventoInvitado['Invitado_id'];
+      $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
+      $eventoInvitado->CantidadInvitadosMayores = $dataEnventoInvitado['CantidadInvitadosMayores'];
+      $eventoInvitado->CantidadInvitadosMenores = $dataEnventoInvitado['CantidadInvitadosMenores'];
+      $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
+      $eventoInvitado->Confirmado = $dataEnventoInvitado['Confirmado'];
+      $eventoInvitado->LinkDatos  = Str::random(40);
+      $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
+      $eventoInvitado->save();
   
-      $invitadoAdicional = new Invitado;
-      $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
-      $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
-      $invitadoAdicional->Correo              = $dataAdicional['correo'];
-      $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
-      $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
-      $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
-      $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
-      $invitadoAdicional->borrado             = $dataAdicional['borrado'];
-
-      if($invitadoAdicional->save()){
-        $eventoInvitado = new EventoInvitado;
-        $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
-        $eventoInvitado->Invitado_id = new ObjectID($invitadoAdicional->_id);
-        $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
-        $eventoInvitado->CantidadInvitadosMayores = 0;
-        $eventoInvitado->CantidadInvitadosMenores = 0;
-        $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
-        $eventoInvitado->Confirmado = (boolean)false;
-        $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
-        $eventoInvitado->save();
-        array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+      $linkConfirmacion = $eventoInvitado->LinkDatos;
+  
+      for($i = 0; $i<$invitadosAdicionalesMayores;$i++){
+        $dataAdicional = [
+          'idInvitadoSolicitante'=> ($idInvitado),
+          'nombre'              => strtoupper($input['nombre']),
+          'apellido'            => strtoupper("INVITADO ADICIONAL MAYOR DE EDAD"),
+          'correo'              => strtoupper("vacio"),
+          'telefono'            => strtoupper("vacio"),
+          'esInvitadoAdicional'     => (boolean) true,
+          'esMenorDeEdad'       => (boolean) false,
+          'borrado'             => false
+        ];
+    
+        $invitadoAdicional = new Invitado;
+        $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
+        $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
+        $invitadoAdicional->Correo              = $dataAdicional['correo'];
+        $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
+        $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
+        $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
+        $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
+        $invitadoAdicional->borrado             = $dataAdicional['borrado'];
+  
+        if($invitadoAdicional->save()){
+          $eventoInvitado = new EventoInvitado;
+          $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
+          $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
+          $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
+          $eventoInvitado->CantidadInvitadosMayores = 0;
+          $eventoInvitado->CantidadInvitadosMenores = 0;
+          $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
+          $eventoInvitado->Confirmado = (boolean)false;
+          $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
+          $eventoInvitado->save();
+          array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+        }
+  
       }
-
-    }
-
-    for($i = 0; $i<$invitadosAdicionalesMenores;$i++){
-
-      $dataAdicional = [
-        'idInvitadoSolicitante'=> new ObjectID($idInvitado),
-        'nombre'              => strtoupper($input['nombre']),
-        'apellido'            => strtoupper("INVITADO ADICIONAL MENOR DE EDAD"),
-        'correo'              => strtoupper("vacio"),
-        'telefono'            => strtoupper("vacio"),
-        'esInvitadoAdicional'     => (boolean) true,
-        'esMenorDeEdad'       => (boolean) true,
-        'borrado'             => false
-      ];
-
-      $invitadoAdicional = new Invitado;
-      $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
-      $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
-      $invitadoAdicional->Correo              = $dataAdicional['correo'];
-      $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
-      $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
-      $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
-      $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
-      $invitadoAdicional->borrado             = $dataAdicional['borrado'];
-
-      if($invitadoAdicional->save()){
-        $eventoInvitado = new EventoInvitado;
-        $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
-        $eventoInvitado->Invitado_id = new ObjectID($invitadoAdicional->_id);
-        $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
-        $eventoInvitado->CantidadInvitadosMayores = 0;
-        $eventoInvitado->CantidadInvitadosMenores = 0;
-        $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
-        $eventoInvitado->Confirmado = (boolean)false;
-        $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
-        $eventoInvitado->save();
-        array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+  
+      for($i = 0; $i<$invitadosAdicionalesMenores;$i++){
+  
+        $dataAdicional = [
+          'idInvitadoSolicitante'=> ($idInvitado),
+          'nombre'              => strtoupper($input['nombre']),
+          'apellido'            => strtoupper("INVITADO ADICIONAL MENOR DE EDAD"),
+          'correo'              => strtoupper("vacio"),
+          'telefono'            => strtoupper("vacio"),
+          'esInvitadoAdicional'     => (boolean) true,
+          'esMenorDeEdad'       => (boolean) true,
+          'borrado'             => false
+        ];
+  
+        $invitadoAdicional = new Invitado;
+        $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
+        $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
+        $invitadoAdicional->Correo              = $dataAdicional['correo'];
+        $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
+        $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
+        $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
+        $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
+        $invitadoAdicional->borrado             = $dataAdicional['borrado'];
+  
+        if($invitadoAdicional->save()){
+          $eventoInvitado = new EventoInvitado;
+          $eventoInvitado->Evento_id = $dataEnventoInvitado['Evento_id'];
+          $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
+          $eventoInvitado->Grupo_id = $dataEnventoInvitado['Grupo_id'];
+          $eventoInvitado->CantidadInvitadosMayores = 0;
+          $eventoInvitado->CantidadInvitadosMenores = 0;
+          $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
+          $eventoInvitado->Confirmado = (boolean)false;
+          $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
+          $eventoInvitado->save();
+          array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+        }
       }
+      return response()->json(['code' => 200,'mensaje'=>"correo ya registrado",'invitado'=>$invitado,'invitados-adicionales'=>$invitadosAdicionalesArreglo,'link'=>$linkConfirmacion]);
+    }else{
+      return response()->json(['code'=>500,'mensaje'=>'Este invitado ya esta asociado al evento']);
     }
-    return response()->json(['code' => 200,'mensaje'=>"correo ya registrado",'invitado'=>$invitado,'invitados-adicionales'=>$invitadosAdicionalesArreglo,'link-confirmacion'=>$linkConfirmacion]);
+    
+  
   }
 }
 
@@ -299,10 +307,33 @@ class InvitadoController extends Controller
   }
 
   public function getInvitados(){
-      $data = DB::table('Invitados')->get();
+      $data = EventoInvitado::where("borrado",false)->get();
+      $registroInvitados = [];
       if($data){
+          for($i=0; $i<count($data);$i++){
+            $idInvitado = $data[$i]->Invitado_id;
+            $dataInvitado = Invitado::find($idInvitado);
+            if($data[$i]->Grupo_id == "no aplica"){
+              $grupo = "no aplica";
+            }else{
+              $grupo = Grupo::find($data[$i]->Grupo_id)->Nombre;
+            }
+              $datos = [
+                '_id' => $data[$i]->_id,
+                'Nombre' => $dataInvitado->Nombre,
+                'Apellido' => $dataInvitado->Apellido,
+                'esInvitadoAdicional' => $dataInvitado->esInvitadoAdicional,
+                'Grupo' => $grupo,
+                'Etapas' => count($data[$i]->Etapas),
+                'Evento' => Evento::find($data[$i]->Evento_id)->Nombre,//esto se debe cambiar en el futuro
+                'Correo'  => $dataInvitado->Correo,
+                'Link'    => $data[$i]->LinkDatos,
+                'Confirmado' => $data[$i]->Confirmado,
+              ];
+              array_push($registroInvitados,$datos);
+          }
 
-          return json_encode(['code' => 200,'invitados'=>$data]);
+          return json_encode(['code' => 200,'invitados'=>$registroInvitados]);
       }else{
           return json_encode(['code' => 500]);
       }
@@ -367,6 +398,7 @@ class InvitadoController extends Controller
             if($id){
                 //ubico el id en la bd
                 $registro = Invitado::find($id);
+
                 $registro->borrado = true;
                 
 

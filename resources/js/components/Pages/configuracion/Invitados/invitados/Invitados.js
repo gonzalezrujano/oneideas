@@ -20,10 +20,12 @@ export default class Invitados extends Component {
             isLoadingEmpresa: true
         };
         this.handleChange = this.handleChange.bind(this);
+        this.modalDelete = this.modalDelete.bind(this);
+        this.handleMail = this.handleMail.bind(this);
     }
 
     componentDidMount() {
-        /* axios
+        axios
             .get("api/invitados", {
                 headers: { Authorization: this.state.api_token }
             })
@@ -33,8 +35,8 @@ export default class Invitados extends Component {
                     invitados: res.data.invitados,
                     isLoading: false
                 });
-            });*/
-        axios
+            });
+        /*axios
             .get("api/invitados/eliminar-todos", {
                 headers: { Authorization: this.state.api_token }
             })
@@ -43,7 +45,7 @@ export default class Invitados extends Component {
                 this.setState({
                     isLoading: false
                 });
-            });
+            });*/
     }
 
     handleChange(event) {
@@ -74,7 +76,54 @@ export default class Invitados extends Component {
             });
     }
 
-    handleDelete(id) {
+    handleMail(link) {
+        Swal.fire({
+            text: "¿Deseas enviar el correo de confirmacion de asistencia?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#343a40",
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+            target: document.getElementById("sweet")
+        }).then(result => {
+            if (result.value) {
+                Swal.showLoading();
+                let formMail = new FormData();
+                formMail.append("link", link);
+                axios
+                    .post("api/mail/confirmacion-invitacion", formMail, {
+                        headers: {
+                            Authorization: this.state.api_token
+                        }
+                    })
+                    .then(res => {
+                        console.log(res);
+                        Swal.close();
+                        if (res.data.code === 200) {
+                            sweetalert(
+                                "correo enviado correctamente",
+                                "success",
+                                "sweet"
+                            );
+                        } else if (res.data.code === 600) {
+                            sweetalert(
+                                "Error al enviar el correo. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        } else if (res.data.code == 500) {
+                            sweetalert(
+                                "Error al enviar el correo. Consulte al Administrador",
+                                "error",
+                                "sweet"
+                            );
+                        }
+                    });
+            }
+        });
+    }
+
+    modalDelete(id) {
         Swal.fire({
             text: "¿Está seguro que desea borrar el grupo?",
             type: "warning",
@@ -217,7 +266,7 @@ export default class Invitados extends Component {
                                                 ETAPAS
                                             </th>
                                             <th className="text-center">
-                                                UBICACIÓN
+                                                EVENTO
                                             </th>
                                             <th className="text-center">
                                                 MAIL
@@ -232,8 +281,7 @@ export default class Invitados extends Component {
                                     </thead>
 
                                     <tbody>
-                                        {console.log(this.state.invitados)}
-                                        {/*this.state.invitados.map(
+                                        {this.state.invitados.map(
                                             (e, index) => {
                                                 return (
                                                     <tr key={index} id={e._id}>
@@ -244,7 +292,7 @@ export default class Invitados extends Component {
                                                             {e.Apellido}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.EsInvitadoAdicional ? (
+                                                            {e.esInvitadoAdicional ? (
                                                                 <span>
                                                                     ADICIONAL
                                                                 </span>
@@ -255,14 +303,12 @@ export default class Invitados extends Component {
                                                             )}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Grupo_id}
+                                                            {e.Grupo}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Etapas.length}
+                                                            {e.Etapas}
                                                         </td>
-                                                        <td>
-                                                            {"NO DISPONIBLE"}
-                                                        </td>
+                                                        <td>{e.Evento}</td>
                                                         <td className="text-center">
                                                             {e.Correo}
                                                         </td>
@@ -320,9 +366,11 @@ export default class Invitados extends Component {
                                                                 ) ? (
                                                                     <a
                                                                         className="mr-2"
-                                                                        onClick={
-                                                                            this
-                                                                                .handleMail
+                                                                        onClick={ev =>
+                                                                            this.handleMail(
+                                                                                e.Link,
+                                                                                ev
+                                                                            )
                                                                         }
                                                                     >
                                                                         <i
@@ -360,7 +408,7 @@ export default class Invitados extends Component {
                                                     </tr>
                                                 );
                                             }
-                                        )*/}
+                                        )}
                                     </tbody>
                                 </table>
 
