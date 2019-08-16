@@ -260,7 +260,7 @@ export default class Invitados extends Component {
                                                             {e.Grupo_id}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Etapas.length}
+                                                            {/*e.Etapas.length*/}
                                                         </td>
                                                         <td>
                                                             {"NO DISPONIBLE"}
