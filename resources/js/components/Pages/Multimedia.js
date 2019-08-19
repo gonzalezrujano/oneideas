@@ -42,10 +42,10 @@ class Multimedia extends Component {
             zonaevento: "Etc/GMT+4",
             isFull: false,
             istool: false,
-            hora:new Date(),
-            hora2:new Date(),
-            isOpenHora:false,
-            isOpenHora2:false,
+            startTime: new Date(),
+            endTime: new Date(),
+            isOpenStartTime: false,
+            isOpenEndTime: false,
             isLoading: true
         };
         /**
@@ -54,12 +54,11 @@ class Multimedia extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.enviarComando = this.enviarComando.bind(this);
         this.enviarComandoQuitar = this.enviarComandoQuitar.bind(this);
-        this.handleToggle2 = this.handleToggle2.bind(this);
-        this.handleToggle = this.handleToggle.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.handleSelect2 = this.handleSelect2.bind(this);
-        this.handleThemeToggle = this.handleThemeToggle.bind(this);
-        this.handleThemeToggle2 = this.handleThemeToggle2.bind(this);
+        this.handleStartTime = this.handleStartTime.bind(this);
+        this.handleEndTime = this.handleEndTime.bind(this);
+        this.openStartTime = this.openStartTime.bind(this);
+        this.openEndTime = this.openEndTime.bind(this);
+        this.hideTimes = this.hideTimes.bind(this);
         this.ponerCola = this.ponerCola.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
@@ -67,49 +66,30 @@ class Multimedia extends Component {
         /*this.onConnect = this.onConnect.bind(this);
         this.MQTTconnect = this.MQTTconnect.bind(this);*/
         //LLAMO AL METODO INICIAR MQTT PARA CONECTAR CON EL MQTT
-        this.iniciarMQTT();
-        
+        // this.iniciarMQTT();
+        this.mqttHost = 'localhost';
+        this.mqttPort = 9001;
+        this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, 'client-1');
     }
 
     componentDidMount () {
+      // Fetching event
       const { usuario, api_token } = this.state;
 
       this.setState({ isLoading: true });
 
       this.props.getEvents(usuario._id, api_token)
         .then(() => this.setState({ isLoading: false }));
+
+      // Subscribing to broker
+      this.mqttClient.connect({
+        timeout: 3,
+        onSuccess: () => console.log('Connected!!')
+      })
     }
 
-    iniciarMQTT(){
-        var reconnectTimeout = 2000;
-        //host y puerto del mqtt ONESHOW
-        var host="mqtt.oneshow.com.ar"; 
-        var port=11273;
-        /**
-         * funcion que sera llamada si se establece conexion con el mqtt
-         */
-        function onConnect() {
-            console.log("Connected ");
-            var message = new Paho.MQTT.Message("Hello World");
-            message.destinationName = "sensor1";
-            window.mqttCliente.send(message);
-        }
-
-        function MQTTconnect() {
-            console.log("connecting to "+ host +" "+ port);
-            //creando instacia mqtt client
-            window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
-            var options = {
-                timeout: 3,
-                onSuccess: onConnect,
-                useSSL:true
-            };
-            
-            window.mqttCliente.connect(options); //connect
-        }
-     
-        MQTTconnect();
-
+    componentWillUnmount () {
+      this.mqttClient.disconnect();
     }
 
     /**
@@ -117,86 +97,67 @@ class Multimedia extends Component {
      * @param {fecha de inicio del comando o accion} fechainicio 
      * @param {fecha final del comando evento o accion} fechafin 
      */
-    enviarComando(fechainicio,fechafin){
-       
-         var reconnectTimeout = 2000;
-        var host="mqtt.oneshow.com.ar"; 
-        var port=11344;
-        var self=this;
-        var envio=false;
-        function onConnect() {
-    
-        console.log("Connected ");
-        var titleTool=self.state.titleTool;
-        if(self.state.hora){
-          var h = self.state.hora.getHours();
-          var m = self.state.hora.getMinutes();
-          var s = self.state.hora.getSeconds();
-          fechainicio=h+":"+m+":"+s;
-        }
-        if(self.state.hora2){
-          var h2 = self.state.hora2.getHours();
-          var m2 = self.state.hora2.getMinutes();
-          var s2 = self.state.hora2.getSeconds();
-          fechafin=h2+":"+m2+":"+s2;
-        }
-        var evento=self.state.evento.split("_")[0];
-        var topic="/"+self.state.empresa+"/"+evento;
-
-        if(fechainicio==""||fechainicio==undefined){
-            fechainicio=moment().format("hh:mm:ss");
-        }
-        if(fechafin==""||fechafin==undefined){
-            fechafin="99:99:99";
-        }
-        if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
-                
-                var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+self.state.archivo+"..1,"+fechainicio+","+fechafin);
-                message2.destinationName = topic;
-                window.mqttCliente.send(message2);
-                envio=true;
-        }
-        if(titleTool=='flash'){
+    enviarComando () {
+      const { titleTool, startTime, endTime, color } = this.state;
+      let envio = false;
         
-                var message2 = new Paho.MQTT.Message("FLH,"+self.state.flash2+","+fechainicio+","+fechafin);
-                message2.destinationName = topic;
-                window.mqttCliente.send(message2);
-                envio=true;
-        }
-        if(titleTool=='colores'){
-            if(self.state.color!=''){
-                var message2 = new Paho.MQTT.Message("COL,"+self.state.color+"+10,"+fechainicio+","+fechafin);
-                message2.destinationName = topic;
-                window.mqttCliente.send(message2);
-                envio=true;
-            }else{
-                swal.fire({
-                            title: '<i class="fas fa-exclamation-circle"></i>',
-                            text: 'Seleccione el color',
-                            confirmButtonColor: '#343a40',
-                            confirmButtonText: 'Ok',
-                            target: document.getElementById('sweet')
-                        });
-            }
-        }
-        if(envio){
-            self.ponerCola('ejecucion',fechainicio,fechafin);
+      if (this.state.hora) {
+        let h = this.state.hora.getHours();
+        let m = this.state.hora.getMinutes();
+        let s = this.state.hora.getSeconds();
+        
+        fechainicio=`${h}:${m}:${s}`;
+      }
+      
+      if (this.state.hora2) {
+        let h = this.state.hora2.getHours();
+        let m = this.state.hora2.getMinutes();
+        let s = this.state.hora2.getSeconds();
+        
+        fechafin = `${h}:${m}:${s}`;
+      }
+
+      let evento = this.state.evento.split("_")[0];
+      let topic = "/"+this.state.empresa+"/"+evento;
+
+      if(fechainicio == "" || fechainicio == undefined) {
+        fechainicio=moment().format("hh:mm:ss");
+      }
+      
+      if (fechafin == "" || fechafin == undefined) {
+          fechafin="99:99:99";
+      }
+      
+      if (titleTool =='imagen' || titleTool=='video' || titleTool=='audio') {      
+        let message = new Paho.MQTT.Message("MUL,"+this.state.empresa+"/"+evento+"/"+this.state.archivo+"..1,"+fechainicio+","+fechafin);
+        message.destinationName = topic;
+        this.mqttClient.send(message);
+        envio=true;
+      }
+      if (titleTool == 'flash') {
+        let message = new Paho.MQTT.Message("FLH,"+this.state.flash2+","+fechainicio+","+fechafin);
+        this.mqttClient.send(topic, message);
+        envio=true;
+      }
+      if (titleTool == 'colores') {
+        if (this.state.color != '') {
+          let message = `COL,${color},${startTime.getTime()},${endTime.getTime()}`;
+          this.mqttClient.send(topic, message);
+          envio=true;
+        } else {
+          swal.fire({
+            title: '<i class="fas fa-exclamation-circle"></i>',
+            text: 'Seleccione el color',
+            confirmButtonColor: '#343a40',
+            confirmButtonText: 'Ok',
+            target: document.getElementById('sweet')
+          });
         }
       }
-      function MQTTconnect() {
-        console.log("connecting to "+ host +" "+ port);
-        window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
-        //document.write("connecting to "+ host);
-        var options = {
-            timeout: 3,
-            onSuccess: onConnect,
-            useSSL:true
-         };
-         
-        window.mqttCliente.connect(options); //connect
-        }
-     
-        MQTTconnect();
+
+      if (envio) {
+          this.ponerCola('ejecucion', fechainicio, fechafin);
+      }
     }
 
 
@@ -434,56 +395,40 @@ class Multimedia extends Component {
               confirmButtonText: 'Ok',
               target: document.getElementById('sweet')
             });
+          } else {
+            this.setState({ titleTool: herramienta }, () => console.log(this.state));
           }
         })
    }
 
-   /**
-    * metodo para modificar la hora de inicio y ocultarla
-    * @param {*} isOpenHora 
-    */
-   handleToggle(isOpenHora) {
-    this.setState({ isOpenHora });
-        if(isOpenHora){
-            document.querySelector(".wrapper").style.display="none";
-        }else{
-            document.querySelector(".wrapper").style.display="block";    
-        }
+    openStartTime () {
+      this.setState({ isOpenStartTime: true }, () => {
+        document.querySelector(".wrapper").style.display="none";
+      });
     }
 
-    /**
-    * metodo para modificar la hora 2 de inicio y ocultarla
-    * @param {*} isOpenHora 
-    */
-    handleToggle2(isOpenHora2) {
-        this.setState({ isOpenHora2 });
-        if(isOpenHora2){
-            document.querySelector(".wrapper").style.display="none";
-        }else{
-            document.querySelector(".wrapper").style.display="block";    
-        }
+    handleStartTime (time) {
+      this.setState({startTime: new Date(time), isOpenStartTime: false}, () => {
+        document.querySelector('.wrapper').style.display = 'block';
+      });
+    }
+    
+    handleEndTime (time) {
+      this.setState({endTime: new Date(time), isOpenEndTime: false}, () => {
+        document.querySelector('.wrapper').style.display = 'block';
+      });
+    };
+
+    openEndTime () {
+      this.setState({ isOpenEndTime: true }, () => {
+        document.querySelector(".wrapper").style.display="none";
+      });
     }
 
-    /**
-     * metodo para modificar hora selecionada
-     * @param {*} hora 
-     */
-    handleSelect(hora){
-        var hora2 = new Date(hora);
-        hora2.setHours( hora.getHours() + 1 )
-            this.setState({ hora,hora2, isOpenHora: false });
-            document.querySelector(".wrapper").style.display="block";
-    }
-
-    /**
-     * metodo para modificar hora selecionada 2
-     * @param {*} hora 
-     */
-    handleSelect2(hora2){
-        var hora =new Date(hora2);
-        hora.setHours( hora.getHours() - 1 );
-            this.setState({ hora, hora2, isOpenHora2: false });
-            document.querySelector(".wrapper").style.display="block";
+    hideTimes () {
+      this.setState({ isOpenStartTime: false, isOpenEndTime: false }, () => {
+        document.querySelector(".wrapper").style.display="block";
+      });
     }
 
     /**
@@ -508,7 +453,7 @@ class Multimedia extends Component {
      * @param {*} inicio 
      * @param {*} fin 
      */
-    ponerCola(newestado,inicio,fin){
+    ponerCola (newestado,inicio,fin) {
         let {evento} = this.state;
         evento=evento.split("_")[0];
         var title=this.props.tool.titleTool;
@@ -672,14 +617,13 @@ class Multimedia extends Component {
                     <div className="row">
                         <Herramientas action={this.actionTool.bind(this)} />
                         <Parametros 
-                          handleToggle={this.handleToggle} 
-                          handleSelect={this.handleSelect} 
-                          isOpenHora={this.state.isOpenHora} 
-                          hora={this.state.hora} 
-                          handleToggle2={this.handleToggle2} 
-                          handleSelect2={this.handleSelect2} 
-                          isOpenHora2={this.state.isOpenHora2} 
-                          hora2={this.state.hora2} 
+                          hideTimes={this.hideTimes}
+                          handleStartTime={this.handleStartTime} 
+                          handleEndTime={this.handleEndTime} 
+                          isOpenStartTime={this.state.isOpenStartTime} 
+                          isOpenEndTime={this.state.isOpenEndTime} 
+                          startTime={this.state.startTime} 
+                          endTime={this.state.endTime}
                           istool={this.props.tool.isTool} 
                           title={this.props.tool.titleTool} 
                           sectores={this.props.sectores} 
@@ -689,8 +633,8 @@ class Multimedia extends Component {
                           fechafin={this.state.fechafin} 
                           archivo={this.state.archivo} 
                           change={this.handleChange} 
-                          handleThemeToggle={this.handleThemeToggle} 
-                          handleThemeToggle2={this.handleThemeToggle2} 
+                          openStartTime={this.openStartTime}
+                          openEndTime={this.openEndTime}
                           enviar={this.enviarComando.bind(this)} 
                           cola={this.ponerCola.bind(this)} />
                     </div>
