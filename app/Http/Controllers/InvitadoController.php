@@ -95,8 +95,8 @@ class InvitadoController extends Controller
           for($i = 0; $i<$invitadosAdicionalesMayores;$i++){
             $dataAdicional = [
               'idInvitadoSolicitante'=> ($idInvitado),
-              'nombre'              => strtoupper($input['nombre']),
-              'apellido'            => strtoupper("INVITADO ADICIONAL MAYOR DE EDAD"),
+              'nombre'              => strtoupper("ADICIONAL"),
+              'apellido'            => strtoupper($eventoInvitado->Apellido),
               'correo'              => strtoupper("vacio"),
               'telefono'            => strtoupper("vacio"),
               'esInvitadoAdicional'     => (boolean) true,
@@ -134,8 +134,8 @@ class InvitadoController extends Controller
 
             $dataAdicional = [
               'idInvitadoSolicitante'=> ($idInvitado),
-              'nombre'              => strtoupper($input['nombre']),
-              'apellido'            => strtoupper("INVITADO ADICIONAL MENOR DE EDAD"),
+              'nombre'              => strtoupper("ADICIONAL"),
+              'apellido'            => strtoupper($eventoInvitado->Apellido),
               'correo'              => strtoupper("vacio"),
               'telefono'            => strtoupper("vacio"),
               'esInvitadoAdicional'     => (boolean) true,
@@ -213,8 +213,8 @@ class InvitadoController extends Controller
       for($i = 0; $i<$invitadosAdicionalesMayores;$i++){
         $dataAdicional = [
           'idInvitadoSolicitante'=> ($idInvitado),
-          'nombre'              => strtoupper($input['nombre']),
-          'apellido'            => strtoupper("INVITADO ADICIONAL MAYOR DE EDAD"),
+          'nombre'              => strtoupper("ADICIONAL"),
+          'apellido'            => strtoupper($invitado['Apellido']),
           'correo'              => strtoupper("vacio"),
           'telefono'            => strtoupper("vacio"),
           'esInvitadoAdicional'     => (boolean) true,
@@ -252,8 +252,8 @@ class InvitadoController extends Controller
   
         $dataAdicional = [
           'idInvitadoSolicitante'=> ($idInvitado),
-          'nombre'              => strtoupper($input['nombre']),
-          'apellido'            => strtoupper("INVITADO ADICIONAL MENOR DE EDAD"),
+          'nombre'              => strtoupper("ADICIONAL"),
+          'apellido'            => strtoupper($invitado['Apellido']),
           'correo'              => strtoupper("vacio"),
           'telefono'            => strtoupper("vacio"),
           'esInvitadoAdicional'     => (boolean) true,
@@ -295,12 +295,29 @@ class InvitadoController extends Controller
 }
 
 
-  public function getInvitado($id){
-    $registro = Invitado::find($id);
-    //valido que de verdad sea borrado en caso de que no arrojo un error
-    if($registro){
-
-        return json_encode(['code' => 200,'invitado'=>$registro]);
+  public function getInvitado(Request $request){
+    $input = $request->all();
+    $idInvitado = $request['invitado_id'];
+    $idEvento = $request['evento_id'];
+    $registroInvitado = Invitado::find($idInvitado);
+    $registroEventoInvitado = EventoInvitado::where("borrado",false)->where("Evento_id",$idEvento)->where("Invitado_id",$idInvitado)->get();
+    if($registroInvitado && $registroEventoInvitado){
+    $registroEventoInvitado = $registroEventoInvitado[0];
+        $data = [
+          "id"=>$registroEventoInvitado->_id,
+          "evento_id"=>$request['evento_id'],
+          "invitado_id"=>$request['invitado_id'],
+          "nombre"=>$registroInvitado->Nombre,
+          "apellido"=>$registroInvitado->Apellido,
+          "correo"=>$registroInvitado->Correo,
+          "telefono"=>$registroInvitado->Telefono,
+          "etapas"=>$registroEventoInvitado->Etapas,
+          "grupo_id"=>$registroEventoInvitado->Grupo_id,
+          "cantidad_menores"=>$registroEventoInvitado->CantidadInvitadosMenores,
+          "cantidad_mayores"=>$registroEventoInvitado->CantidadInvitadosMayores
+        ];
+        //valido que de verdad sea borrado en caso de que no arrojo un error
+        return json_encode(['code' => 200,'invitado'=>$data]);
     }else{
         return json_encode(['code' => 500]);
     }
@@ -326,6 +343,8 @@ class InvitadoController extends Controller
                 'Grupo' => $grupo,
                 'Etapas' => count($data[$i]->Etapas),
                 'Evento' => Evento::find($data[$i]->Evento_id)->Nombre,//esto se debe cambiar en el futuro
+                'Evento_id'=>$data[$i]->Evento_id,
+                'Invitado_id'=>$data[$i]->Invitado_id,
                 'Correo'  => $dataInvitado->Correo,
                 'Link'    => $data[$i]->LinkDatos,
                 'Confirmado' => $data[$i]->Confirmado,
@@ -342,45 +361,45 @@ class InvitadoController extends Controller
   public function setInvitado(Request $request){
     $input = $request->all();
     $etapas = [];
-    $id = $input['id'];
+    $id = $input['eventoInvitado_id'];
     if($id){
       if($input['etapas']){
         //proceso las etapas
         $etapas = $this->processEtapas($input['etapas']);
       }
-      $registro = Invitado::find($id);
-      if($registro){
+      $eventoInvitado = EventoInvitado::find($id);
+      if($eventoInvitado){
+        $invitado = Invitado::find($input['invitado_id']);
+
         $grupoId = "no aplica";
-        if($input['grupo-id'] != "no aplica"){
-          $grupoId = new ObjectID($input['grupo-id']);
+        if($input['grupo_id'] != "no aplica"){
+          $grupoId = ($input['grupo_id']);
         }
           $data = [
             'nombre'              => strtoupper($input['nombre']),
             'apellido'            => strtoupper($input['apellido']),
-            'correo'              => strtoupper($input['correo']),
-            'telefono'            => strtoupper($input['telefono']),
+            'correo'              => $input['correo'],
+            'telefono'            => $input['telefono'],
             'Grupo_id'            => $grupoId,
-            'Evento_id'           => new ObjectID($input['evento-id']),
+            'Evento_id'           => ($input['evento_id']),
             'Etapas'              => $etapas,
-            'esInvitadoAdicional'     => (boolean) false,
-            'esMenorDeEdad'       => (boolean) false,
-            'confirmacion'       => (boolean) false,
-            'borrado'             => false
           ];
-          $registro->Nombre              = $data['nombre'];
-          $registro->Apellido            = $data['apellido'];
-          $registro->Correo              = $data['correo'];
-          $registro->Telefono            = $data['telefono'];
-          $registro->Grupo_id            = $data['Grupo_id'];
-          $registro->Evento_id           = $data['Evento_id'];
-          $registro->Etapas              = $data['Etapas'];
-          $registro->EsInvitadoAdicional = $data['esInvitadoAdicional'];
-          $registro->EsMenorDeEdad       = $data['esMenorDeEdad'];
-          $registro->Confirmacion        = $data['confirmacion'];
-          $registro->Borrado             = $data['borrado'];
-
-          if($registro->save()){
-            return json_encode(['code' => 200,'invitados'=>$registro]);
+          $invitado->Nombre              = $data['nombre'];
+          $invitado->Apellido            = $data['apellido'];
+          $invitado->Correo              = $data['correo'];
+          $invitado->Telefono            = $data['telefono'];
+          
+          $eventoInvitado->Grupo_id      = $data['Grupo_id'];
+          $eventoInvitado->Etapas        = $data['Etapas'];
+          if($eventoInvitado->Evento_id != $data['Evento_id']){
+            $eventoInvitadoVerificacion = EventoInvitado::where("borrado",false)->where("Invitado_id",$input['invitado_id'])->where("Evento_id",$data['Evento_id'])->get();
+            if(count($eventoInvitadoVerificacion)>0){
+              return json_encode(['code' => 500,'mensaje'=>'no puede usar este evento, ya que dicho invitado ya se encuentra invitado']);
+            }
+          }
+          $eventoInvitado->Evento_id     = $data['Evento_id'];
+          if($invitado->save() && $eventoInvitado->save()){
+            return json_encode(['code' => 200,'invitados'=>$invitado,'eventoInvitado'=>$eventoInvitado]);
           }
           return json_encode(['code' => 400]);
       }

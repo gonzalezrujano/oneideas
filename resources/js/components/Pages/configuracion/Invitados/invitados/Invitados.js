@@ -346,10 +346,16 @@ export default class Invitados extends Component {
                                                                 ) ? (
                                                                     <Link
                                                                         className="mr-2"
-                                                                        to={
-                                                                            "/invitados/edit/" +
-                                                                            e._id
-                                                                        }
+                                                                        to={{
+                                                                            pathname:
+                                                                                "/invitados/edit/",
+                                                                            state: {
+                                                                                evento_id:
+                                                                                    e.Evento_id,
+                                                                                invitado_id:
+                                                                                    e.Invitado_id
+                                                                            }
+                                                                        }}
                                                                     >
                                                                         <i
                                                                             data-toggle="tooltip"

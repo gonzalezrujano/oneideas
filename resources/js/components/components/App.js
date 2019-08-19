@@ -138,12 +138,12 @@ function App() {
                     />
                     <Route
                         exact
-                        path="/invitados/edit/:id"
+                        path="/invitados/edit/"
                         component={InvitadosEdit}
                     />
                     <Route
                         exact
-                        path="/invitados/show/:id"
+                        path="/invitados/show/"
                         component={InvitadosShow}
                     />
                     <Route exact path="/grupos" component={Grupos} />

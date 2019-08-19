@@ -67,12 +67,13 @@
                                                                             <tbody>
                                                                                 <tr>
                                                                                     <td class="esd-block-text es-m-txt-c" align="center">
-                                                                                        <h2>Hola {{ $input['nombre']}} que tal!<br></h2>
+                                                                                        <h2>Hola {{ $input['nombre']}}<br></h2>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td class="esd-block-text es-m-txt-c es-p15t" align="center">
-                                                                                        <p>Has sido invitado al evento {{ $input['nombre_evento'] }} con {{ $input['cantidad_mayores'] }} invitados adicionales mayores de edad y {{ $input['cantidad_menores'] }} invitados adicionales menores de edad.Por favor confirma tu asistencia , verifica bien tus datos para poder tener acceso al evento y lo que ONESHOW tiene para ofrecerte.Confirma dando click en el botón de abajo.</p>
+                                                                                        <p>Has sido invitado al evento {{ $input['nombre_evento'] }} con {{ $input['cantidad_mayores'] }} invitado(s) adicional(es) mayor(es) de edad y {{ $input['cantidad_menores'] }} invitado(s) adicional(es) menor(es) de edad.Por favor confirma tu asistencia , verifica bien tus datos para poder tener acceso al evento.</p>
+                                                                                        <p>Confirma dando click en el botón de abajo.</p>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
@@ -107,11 +108,6 @@
                                                                     <td class="esd-container-frame" align="center" width="560" valign="top">
                                                                         <table width="100%" cellspacing="0" cellpadding="0">
                                                                             <tbody>
-                                                                                <tr>
-                                                                                    <td class="esd-block-text es-p5b" align="center">
-                                                                                        <h3 style="line-height: 150%;">Ve nuestras Redes sociales</h3>
-                                                                                    </td>
-                                                                                </tr>
                                                                                 <tr>
                                                                                     <td class="esd-block-social es-p10t es-p10b" align="center">
                                                                                         <table class="es-table-not-adapt es-social" cellspacing="0" cellpadding="0">

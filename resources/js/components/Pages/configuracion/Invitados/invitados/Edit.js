@@ -11,7 +11,8 @@ export default class Edit extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
-            idInvitado: this.props.match.params.id,
+            idInvitado: this.props.location.state.invitado_id,
+            idEvento: this.props.location.state.evento_id,
             eventos:[],
             evento:"",
             nombre:"",
@@ -19,6 +20,7 @@ export default class Edit extends Component {
             correo:"",
             telefono:"",
             grupo:"",
+            idEventoInvitado:"",
             etapasSeleccionadas:[],
             etapas:[],
             opcion: "Invitados",
@@ -53,23 +55,24 @@ export default class Edit extends Component {
                 this.setState({
                     grupos: res.data.grupos,
                 });
-                
-                    axios.get("api/invitados/"+this.state.idInvitado,{
+                    axios.post("api/invitados/one",{
+                        invitado_id:this.state.idInvitado,
+                        evento_id:this.state.idEvento
+                    },{
                         headers: {
                             Authorization: this.state.api_token
                         }
                     }).then(res=>{
                         let r = res.data.invitado;
-                        console.log(r.Etapas)
+                        console.log(r.etapas)
                         var etapas = [];
-                        for(var i=0;i<r.Etapas.length;i++){
+                        for(var i=0;i<r.etapas.length;i++){
                             console.log("estoy aqui en "+i)
-                            console.log(r.Etapas[i])
-                            console.log(r.Etapas[i].$oid)
-                            etapas.push(r.Etapas[i].$oid)
+                            console.log(r.etapas[i])
+                            console.log(r.etapas[i].$oid)
+                            etapas.push(r.etapas[i].$oid)
                         }
-                        console.log(etapas)
-                        axios.get("api/etapas/evento/"+r.Evento_id,{
+                        axios.get("api/etapas/evento/"+r.evento_id,{
                             headers: {
                                 Authorization: this.state.api_token
                             }
@@ -80,13 +83,14 @@ export default class Edit extends Component {
                             })
                         })
                         this.setState({
-                            nombre : r.Nombre,
-                            apellido: r.Apellido,
-                            grupo:r.Grupo_id,
-                            evento: r.Evento_id,
-                            correo: r.Correo,
+                            nombre : r.nombre,
+                            apellido: r.apellido,
+                            grupo:r.grupo_id,
+                            evento: r.evento_id,
+                            correo: r.correo,
                             etapasSeleccionadas: etapas,
-                            telefono: r.Telefono,
+                            telefono: r.telefono,
+                            idEventoInvitado: r.id,
                             isLoading: false
                         });
                     })
@@ -137,13 +141,14 @@ export default class Edit extends Component {
         console.log(this.state.grupo);
         console.log(this.state.evento);
         let formData = new FormData()
-        formData.append("id",this.state.idInvitado);
+        formData.append("invitado_id",this.state.idInvitado);
+        formData.append("eventoInvitado_id",this.state.idEventoInvitado);
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
-        formData.append("grupo-id",this.state.grupo);
-        formData.append("evento-id",this.state.evento);
+        formData.append("grupo_id",this.state.grupo);
+        formData.append("evento_id",this.state.evento);
         formData.append("etapas",this.state.etapasSeleccionadas);
         $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios.post("api/invitados/edit",formData,{
@@ -313,7 +318,7 @@ export default class Edit extends Component {
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Accesos de evento</label>
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Etapas del Evento</label>
                                             <div className="col-sm-4">
                                                 <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" defaultValue={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple" >
                                                 {this.state.etapas.map((e, index) => {

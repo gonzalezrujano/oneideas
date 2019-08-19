@@ -285,7 +285,7 @@ export default class Add extends Component {
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Accesos de evento</label>
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Etapas del Evento</label>
                                             <div className="col-sm-4">
                                                 <select className="form-control form-control-sm" id="etapasSeleccionadas" name="etapasSeleccionadas" value={this.state.etapasSeleccionadas} onChange={this.handleChangeMulti} multiple="multiple">
                                                 {this.state.etapas.map(
@@ -300,14 +300,18 @@ export default class Add extends Component {
                                         </div>
 
                                         <div className="form-group row">
-                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales mayores de edad</label>
+                                        <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales:</label>
+                                        </div>
+
+                                        <div className="form-group row">
+                                            <label htmlFor="example-number-input" className="col-4 col-form-label">Mayores</label>
                                             <div className="col-4">
                                                 <input className="form-control" type="number" name="invitadosAdicionalesMayores" value={this.state.invitadosAdicionalesMayores} id="invitadosAdicionalesMayores" onChange={this.handleChange} min="0"/>
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label htmlFor="example-number-input" className="col-4 col-form-label">invitados adicionales menores de edad</label>
+                                            <label htmlFor="example-number-input" className="col-4 col-form-label">Menores(12 años)</label>
                                             <div className="col-4">
                                                 <input className="form-control" type="number" name="invitadosAdicionalesMenores" value={this.state.invitadosAdicionalesMenores} id="invitadosAdicionalesMenores" onChange={this.handleChange} min="0"/>
                                             </div>
