@@ -1002,7 +1002,7 @@ class EventoController extends Controller
     /**
      * Metodo para agregar a la cola de multimedia de eventos
      */
-    public function addCola(Request $request){
+    public function addCola (Request $request) {
 
 
             //capturo el valor del id
@@ -1036,7 +1036,7 @@ class EventoController extends Controller
                     return json_encode(['code' => 500]);
                 }
 
-            }else{
+            } else {
 
                 return json_encode(['code' => 600]);
             }
