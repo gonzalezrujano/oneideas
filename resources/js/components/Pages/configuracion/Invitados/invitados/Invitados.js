@@ -328,10 +328,16 @@ export default class Invitados extends Component {
                                                         <td className="text-center">
                                                             <div className="text-center">
                                                                 <Link
-                                                                    to={
-                                                                        `/invitados/show/` +
-                                                                        e._id
-                                                                    }
+                                                                    to={{
+                                                                        pathname:
+                                                                            "/invitados/show/",
+                                                                        state: {
+                                                                            evento_id:
+                                                                                e.Evento_id,
+                                                                            invitado_id:
+                                                                                e.Invitado_id
+                                                                        }
+                                                                    }}
                                                                     className="mr-2"
                                                                 >
                                                                     <i

@@ -11,7 +11,8 @@ export default class Show extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             empresas: JSON.parse(localStorage.getItem("empresas")),
-            idInvitado: this.props.match.params.id,
+            idInvitado: this.props.location.state.invitado_id,
+            idEvento: this.props.location.state.evento_id,
             eventos:[],
             evento:"",
             nombre:"",
@@ -51,18 +52,24 @@ export default class Show extends Component {
                 this.setState({
                     grupos: res.data.grupos,
                 });
-                
-                    axios.get("api/invitados/"+this.state.idInvitado,{
+                    axios.post("api/invitados/one",{
+                        invitado_id:this.state.idInvitado,
+                        evento_id:this.state.idEvento
+                    },{
                         headers: {
                             Authorization: this.state.api_token
                         }
                     }).then(res=>{
                         let r = res.data.invitado;
-                        var etapas;
-                        for(var i=0;i<r.Etapas;i++){
-                            etapas.push(r.Etapas[i].$oid)
+                        console.log(r.etapas)
+                        var etapas = [];
+                        for(var i=0;i<r.etapas.length;i++){
+                            console.log("estoy aqui en "+i)
+                            console.log(r.etapas[i])
+                            console.log(r.etapas[i].$oid)
+                            etapas.push(r.etapas[i].$oid)
                         }
-                        axios.get("api/etapas/evento/"+r.Evento_id,{
+                        axios.get("api/etapas/evento/"+r.evento_id,{
                             headers: {
                                 Authorization: this.state.api_token
                             }
@@ -73,13 +80,14 @@ export default class Show extends Component {
                             })
                         })
                         this.setState({
-                            nombre : r.Nombre,
-                            apellido: r.Apellido,
-                            grupo:r.Grupo_id,
-                            evento: r.Evento_id,
-                            correo: r.Correo,
+                            nombre : r.nombre,
+                            apellido: r.apellido,
+                            grupo:r.grupo_id,
+                            evento: r.evento_id,
+                            correo: r.correo,
                             etapasSeleccionadas: etapas,
-                            telefono: r.Telefono,
+                            telefono: r.telefono,
+                            idEventoInvitado: r.id,
                             isLoading: false
                         });
                     })
