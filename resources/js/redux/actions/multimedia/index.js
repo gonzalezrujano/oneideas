@@ -40,14 +40,16 @@ export function getJobs (eventId, apiToken) {
   }
 }
 
-export function getTool (eventId, herramienta, apiToken) {
-  return dispatch => {
+export function getTool (eventId, herramienta) {
+  return (dispatch, getState) => {
+    const { auth } = getState();
+
     return axios.post('/api/multimedia/action-tool', { 
       evento: eventId, 
       herramienta
     } , {
       headers: {
-          Authorization: apiToken
+          Authorization: localStorage.getItem("api_token")
       }
     })
     .then(res => {
@@ -64,11 +66,11 @@ export function getTool (eventId, herramienta, apiToken) {
         dispatch(saveTool(payload));
           
       } else {
-        dispatch({ isTool: false, titleTool: '' });
+        dispatch(saveTool({ isTool: false, titleTool: '' }));
       }
 
       return { code, msj };
-    }, err => dispatch({ isTool: false, titleTool: '' }));
+    }, err => dispatch(saveTool({ isTool: false, titleTool: '' })));
   }
 }
 
