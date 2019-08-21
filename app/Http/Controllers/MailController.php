@@ -14,7 +14,7 @@ class MailController extends Controller
 {
     public function sendMailInvitados(Request $request){
         $input = $request->all();
-        $link = "https://consola.oneshow.com.ar/".$input['link'];
+        $link = "https://consola.oneshow.com.ar/mail/".$input['link'];
         $eventoInvitado = EventoInvitado::where('LinkDatos',$input['link'])->get();
         if($eventoInvitado){
             $eventoInvitado = $eventoInvitado[0];
@@ -35,7 +35,7 @@ class MailController extends Controller
 
     public function datosListos(Request $request){
         $input = $request->all();
-        $id = Invitado::find($input['id'])->Evento_id ;
+        $id = EventoInvitado::find($input['id_evento_invitado'])->Evento_id;
         $input['nombre_evento'] = Evento::find($id)->Nombre;
         Mail::to($input['correo'])->send(new ConfirmacionDatos($input));
         return json_encode(['code' => 200,'mensaje'=>"Invitacion enviada"]);

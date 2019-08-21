@@ -96,7 +96,7 @@ class InvitadoController extends Controller
             $dataAdicional = [
               'idInvitadoSolicitante'=> ($idInvitado),
               'nombre'              => strtoupper("ADICIONAL"),
-              'apellido'            => strtoupper($eventoInvitado->Apellido),
+              'apellido'            => strtoupper($input['apellido']),
               'correo'              => strtoupper("vacio"),
               'telefono'            => strtoupper("vacio"),
               'esInvitadoAdicional'     => (boolean) true,
@@ -135,7 +135,7 @@ class InvitadoController extends Controller
             $dataAdicional = [
               'idInvitadoSolicitante'=> ($idInvitado),
               'nombre'              => strtoupper("ADICIONAL"),
-              'apellido'            => strtoupper($eventoInvitado->Apellido),
+              'apellido'            => strtoupper($input['apellido']),
               'correo'              => strtoupper("vacio"),
               'telefono'            => strtoupper("vacio"),
               'esInvitadoAdicional'     => (boolean) true,
@@ -399,7 +399,83 @@ class InvitadoController extends Controller
           }
           $eventoInvitado->Evento_id     = $data['Evento_id'];
           if($invitado->save() && $eventoInvitado->save()){
-            return json_encode(['code' => 200,'invitados'=>$invitado,'eventoInvitado'=>$eventoInvitado]);
+            $adicionalesMayores = $input['adicionales_mayores'];
+            $adicionalesMenores = $input['adicionales_menores'];
+            $invitadosAdicionalesArreglo = [];
+            for($i = 0; $i<$adicionalesMayores;$i++){
+              $dataAdicional = [
+                'idInvitadoSolicitante'=> ($invitado->_id),
+                'nombre'              => strtoupper("ADICIONAL"),
+                'apellido'            => strtoupper($invitado['Apellido']),
+                'correo'              => strtoupper("vacio"),
+                'telefono'            => strtoupper("vacio"),
+                'esInvitadoAdicional'     => (boolean) true,
+                'esMenorDeEdad'       => (boolean) false,
+                'borrado'             => false
+              ];
+          
+              $invitadoAdicional = new Invitado;
+              $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
+              $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
+              $invitadoAdicional->Correo              = $dataAdicional['correo'];
+              $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
+              $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
+              $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
+              $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
+              $invitadoAdicional->borrado             = $dataAdicional['borrado'];
+        
+              if($invitadoAdicional->save()){
+                $eventoInvitado = new EventoInvitado;
+                $eventoInvitado->Evento_id = $data['Evento_id'];
+                $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
+                $eventoInvitado->Grupo_id = $data['Grupo_id'];
+                $eventoInvitado->CantidadInvitadosMayores = 0;
+                $eventoInvitado->CantidadInvitadosMenores = 0;
+                $eventoInvitado->Etapas = $data['Etapas'];
+                $eventoInvitado->Confirmado = (boolean)false;
+                $eventoInvitado->borrado = (boolean)false;
+                $eventoInvitado->save();
+                array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+              }
+            }
+
+            for($i = 0; $i<$adicionalesMenores;$i++){
+              $dataAdicional = [
+                'idInvitadoSolicitante'=> ($invitado->_id),
+                'nombre'              => strtoupper("ADICIONAL"),
+                'apellido'            => strtoupper($invitado['Apellido']),
+                'correo'              => strtoupper("vacio"),
+                'telefono'            => strtoupper("vacio"),
+                'esInvitadoAdicional'     => (boolean) true,
+                'esMenorDeEdad'       => (boolean) true,
+                'borrado'             => false
+              ];
+          
+              $invitadoAdicional = new Invitado;
+              $invitadoAdicional->Nombre              = $dataAdicional['nombre'];
+              $invitadoAdicional->Apellido            = $dataAdicional['apellido'];
+              $invitadoAdicional->Correo              = $dataAdicional['correo'];
+              $invitadoAdicional->Telefono            = $dataAdicional['telefono'];
+              $invitadoAdicional->EsInvitadoAdicional = $dataAdicional['esInvitadoAdicional'];
+              $invitadoAdicional->EsMenorDeEdad       = $dataAdicional['esMenorDeEdad'];
+              $invitadoAdicional->InvitadoSolicitante_id = $dataAdicional['idInvitadoSolicitante'];
+              $invitadoAdicional->borrado             = $dataAdicional['borrado'];
+        
+              if($invitadoAdicional->save()){
+                $eventoInvitado = new EventoInvitado;
+                $eventoInvitado->Evento_id = $data['Evento_id'];
+                $eventoInvitado->Invitado_id = ($invitadoAdicional->_id);
+                $eventoInvitado->Grupo_id = $data['Grupo_id'];
+                $eventoInvitado->CantidadInvitadosMayores = 0;
+                $eventoInvitado->CantidadInvitadosMenores = 0;
+                $eventoInvitado->Etapas = $data['Etapas'];
+                $eventoInvitado->Confirmado = (boolean)false;
+                $eventoInvitado->borrado = (boolean)false;
+                $eventoInvitado->save();
+                array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
+              }
+            }
+            return json_encode(['code' => 200,'invitados'=>$invitado,'eventoInvitado'=>$eventoInvitado,'invitadosAdicionales'=>$invitadosAdicionalesArreglo]);
           }
           return json_encode(['code' => 400]);
       }
@@ -409,29 +485,23 @@ class InvitadoController extends Controller
   }
 
   public function deleteInvitado(request $request){
-  
             $input = $request->all();
             $id = $input['id'];
-
             //valido que venga el id sino mando un error
             if($id){
                 //ubico el id en la bd
-                $registro = Invitado::find($id);
-
+                $registro = EventoInvitado::find($id);
                 $registro->borrado = true;
-                
-
+                $invitado = Invitado::find($registro->Invitado_id);
+                $invitado->borrado = true;
                 //valido que de verdad sea borrado en caso de que no arrojo un error
-                if($registro->save()){
-
+                if($registro->save() && $invitado->save()){
                     return json_encode(['code' => 200]);
                 }else{
                     return json_encode(['code' => 500]);
                 }
-
             }else{
-
-                return json_encode(['code' => 600]);
+              return json_encode(['code' => 600]);
             }
   }
 
@@ -475,7 +545,35 @@ class InvitadoController extends Controller
       $input = $request->all();
       $idConfirmacion = $input['idConfirmacion'];
       if($idConfirmacion){
-        $invitado = Invitado::borrado(false)->where('linkConfirmacion', $idConfirmacion)->get();
+        $eventoInvitado = EventoInvitado::where("borrado",false)->where('LinkDatos', $idConfirmacion)->get();
+        if(count($eventoInvitado)){
+          $eventoInvitado = $eventoInvitado[0];
+          $registroInvitado = Invitado::find($eventoInvitado['Invitado_id']);
+          if($registroInvitado){
+              if($eventoInvitado['Grupo_id'] == "no aplica"){
+                $grupo = "no aplica";
+              }else{
+                $grupo = Grupo::find($eventoInvitado['Grupo_id'])->Nombre;
+              }
+              $data = [
+                "id"=>$eventoInvitado["_id"],
+                "invitado_id"=>$eventoInvitado['Invitado_id'],
+                "nombre"=>$registroInvitado->Nombre,
+                "apellido"=>$registroInvitado->Apellido,
+                "correo"=>$registroInvitado->Correo,
+                "telefono"=>$registroInvitado->Telefono,
+                "grupo"=>$grupo,
+                "evento"=>Evento::find($eventoInvitado['Evento_id'])->Nombre
+              ];
+              $dataAdicional = [];
+              $invitadosAdicionales = Invitado::where("borrado",false)->where('InvitadoSolicitante_id', $eventoInvitado['Invitado_id'])->get();
+              if(count($invitadosAdicionales)>0){
+                $dataAdicional = $invitadosAdicionales;
+              }
+              //valido que de verdad sea borrado en caso de que no arrojo un error
+              return json_encode(['code' => 200,'invitado'=>$data,'adicionales'=>$dataAdicional]);
+          }
+        }
         return json_encode(['code' => 200,'data'=>$invitado]);
       }
     }
@@ -490,16 +588,13 @@ class InvitadoController extends Controller
               'nombre'              => strtoupper($input['nombre']),
               'apellido'            => strtoupper($input['apellido']),
               'correo'              => strtoupper($input['correo']),
-              'telefono'            => strtoupper($input['telefono']),
-              'confirmacion'       => (boolean) true
+              'telefono'            => strtoupper($input['telefono'])
             ];
 
             $registro->Nombre              = $data['nombre'];
             $registro->Apellido            = $data['apellido'];
             $registro->Correo              = $data['correo'];
-            $registro->linkConfirmacion    = "usado";
             $registro->Telefono            = $data['telefono'];
-            $registro->Confirmacion        = $data['confirmacion'];
 
             if($registro->save()){
               return json_encode(['code' => 200,'invitado'=>$registro]);

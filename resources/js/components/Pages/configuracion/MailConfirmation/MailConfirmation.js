@@ -14,10 +14,14 @@ export default class Edit extends Component {
             apellido:"",
             correo:"",
             telefono:"",
+            id:"",
+            idInvitado:"",
+            adicionales:[],
             footer: "Footer",
             isLoading: true
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeAdicional = this.handleChangeAdicional.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this); 
     }
 
@@ -26,15 +30,20 @@ export default class Edit extends Component {
            idConfirmacion: this.state.idConfirmacion
         }).then(res => {
             console.log(res);
-            let r = res.data.data[0];
+            let r = res.data;
+            
             this.setState({
-                nombre: r.Nombre,
-                apellido:r.Apellido,
-                correo: r.Correo,
-                telefono:r.Telefono,
-                idInvitado: r._id,
-                isLoading:false
+                id:r.invitado.id,
+                idInvitado:r.invitado.invitado_id,
+                nombre: r.invitado.nombre,
+                apellido: r.invitado.apellido,
+                correo:r.invitado.correo,
+                telefono:r.invitado.telefono,
+                grupo:r.invitado.grupo,
+                evento:r.invitado.evento,
+                adicionales: r.adicionales
             });
+            this.setState({isLoading:false})
         });
     }
 
@@ -47,13 +56,44 @@ export default class Edit extends Component {
         this.setState({
           [name]: value
         })
+    }
 
+    handleChangeAdicional(event){
+        const target = event.target;
+        const value = target.value;
+        console.log(value)
+        const arrayName = target.name.split("-");
+        const name = arrayName[0];
+        const index = arrayName[1];
+        var adicionalesPrueba = this.state.adicionales;
+        if(name=="Nombre"){
+            adicionalesPrueba[index].Nombre = value;
+            this.setState({
+                adicionales: adicionalesPrueba
+            })
+        }else if(name=="Apellido"){
+            adicionalesPrueba[index].Apellido = value;
+            this.setState({
+                adicionales: adicionalesPrueba
+            })
+        }else if(name=="Correo"){
+            adicionalesPrueba[index].Correo = value;
+            this.setState({
+                adicionales: adicionalesPrueba
+            })
+        }else if(name == "Telefono"){
+            adicionalesPrueba[index].Telefono = value;
+            this.setState({
+                adicionales: adicionalesPrueba
+            })
+        }
     }
 
     handleSubmit(e){
         e.preventDefault();
         let formData = new FormData()
         formData.append("id",this.state.idInvitado);
+        formData.append("id_evento_invitado",this.state.id);
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
@@ -113,6 +153,7 @@ export default class Edit extends Component {
                 </div>
             );
         } else {
+            console.log(this.state)
             return (
                 <div>
                     <img className="logo-inside" src={logo} />
@@ -167,6 +208,48 @@ export default class Edit extends Component {
                                         
                                     </div>
                                 </div>
+                                {/*(this.state.adicionales.length)?(
+                                    <div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Teléfono</label>
+                                        </div>
+                                        <div className="row">
+                                                {(this.state.adicionales.map((e,index)=>{
+                                                    console.log(e);
+                                                        return (
+                                                            <div key={e._id}>
+                                                            <div className="form-group row" >
+                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Nombre</label>
+                                                                <div className="col-sm-4">
+                                                                    <input type="text" className="form-control form-control-sm" id="nombre" name={`Nombre-${index}`} placeholder="Ingrese el nombre" value={this.state.adicionales[index].Nombre} onChange={this.handleChangeAdicional} />
+                                                                </div>
+                                                            </div>
+                
+                                                            <div className="form-group row" >
+                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Apellido</label>
+                                                                <div className="col-sm-4">
+                                                                    <input type="text" className="form-control form-control-sm" id="apellido" name={`Apellido-${index}`} placeholder="Ingrese el apellido" value={this.state.adicionales[index].Apellido} onChange={this.handleChangeAdicional} />
+                                                                </div>
+                                                            </div>
+                
+                                                            <div className="form-group row">
+                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Correo</label>
+                                                                <div className="col-sm-4">
+                                                                    <input type="text" className="form-control form-control-sm" id="correo" name={`Correo-${index}`} placeholder="Ingrese el correo" value={this.state.adicionales[index].Correo} onChange={this.handleChangeAdicional} disabled/>
+                                                                </div>
+                                                            </div>
+                
+                                                        </div>
+                                                        )
+                                                    })
+                                                )}
+                                        </div>
+                                    </div>
+                                ):(
+                                    ""
+                                )*/}
+
+                                
 
                             </form>
                         </div>

@@ -21,6 +21,10 @@ export default class Edit extends Component {
             telefono:"",
             grupo:"",
             idEventoInvitado:"",
+            cantidadMayores:0,
+            cantidadMenores:0,
+            adicionalMayores:0,
+            adicionalMenores:0,
             etapasSeleccionadas:[],
             etapas:[],
             opcion: "Invitados",
@@ -33,7 +37,7 @@ export default class Edit extends Component {
         this.handleChangeMulti = this.handleChangeMulti.bind(this);
         this.handleEvento = this.handleEvento.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
+        this.handleSumarInvitado = this.handleSumarInvitado.bind(this);
     }
 
     componentDidMount() {
@@ -64,12 +68,9 @@ export default class Edit extends Component {
                         }
                     }).then(res=>{
                         let r = res.data.invitado;
-                        console.log(r.etapas)
                         var etapas = [];
                         for(var i=0;i<r.etapas.length;i++){
-                            console.log("estoy aqui en "+i)
-                            console.log(r.etapas[i])
-                            console.log(r.etapas[i].$oid)
+                            
                             etapas.push(r.etapas[i].$oid)
                         }
                         axios.get("api/etapas/evento/"+r.evento_id,{
@@ -91,6 +92,8 @@ export default class Edit extends Component {
                             etapasSeleccionadas: etapas,
                             telefono: r.telefono,
                             idEventoInvitado: r.id,
+                            cantidadMayores:parseInt(r.cantidad_mayores, 10),
+                            cantidadMayores:parseInt(r.cantidad_menores,10),
                             isLoading: false
                         });
                     })
@@ -114,7 +117,7 @@ export default class Edit extends Component {
     handleEvento(event){
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        console.log(value)
+      
         const name = target.name;
         this.setState({
           [name]: value
@@ -124,7 +127,6 @@ export default class Edit extends Component {
                 Authorization: this.state.api_token
             }
         }).then(res=>{
-            console.log(res);
             this.setState({
                 etapas:res.data.etapas
             })
@@ -135,6 +137,35 @@ export default class Edit extends Component {
         this.setState({etapasSeleccionadas: [...e.target.selectedOptions].map(o => o.value)});
         console.log(this.state.etapasSeleccionadas);
     }
+
+    handleSumarInvitado(tipo){
+        if(tipo == "mayores"){
+            this.setState({
+                cantidadMayores: this.state.cantidadMayores+1,
+                adicionalMayores: this.state.adicionalMayores+1,
+            })
+        }else{
+            this.setState({
+                cantidadMenores: this.state.cantidadMenores+1,
+                adicionalMenores: this.state.adicionalMenores+1,
+            })
+        }
+    }
+
+    handleQuitarInvitado(tipo){
+        if(tipo == "mayores"){
+            this.setState({
+                cantidadMayores: this.state.cantidadMayores-1,
+                adicionalMayores: this.state.adicionalMayores-1,
+            })
+        }else{
+            this.setState({
+                cantidadMenores: this.state.cantidadMenores-1,
+                adicionalMenores: this.state.adicionalMenores-1,
+            })
+        }
+    }
+
 
     handleSubmit(e){
         e.preventDefault();
@@ -150,6 +181,8 @@ export default class Edit extends Component {
         formData.append("grupo_id",this.state.grupo);
         formData.append("evento_id",this.state.evento);
         formData.append("etapas",this.state.etapasSeleccionadas);
+        formData.append("adicionales_mayores",this.state.adicionalMayores);
+        formData.append("adicionales_menores",this.state.adicionalMenores);
         $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios.post("api/invitados/edit",formData,{
             headers: {
@@ -304,12 +337,9 @@ export default class Edit extends Component {
                                                 <select className="form-control form-control-sm" id="grupo" name="grupo" defaultValue={this.state.grupo} onChange={this.handleChange}>
                                                     <option value="">-Seleccione-</option>
                                                     {this.state.grupos.map((e, index) => {
-                                                        
-                                                        
                                                         return (
                                                             <option value={e._id} key={index}>{e.Nombre}</option>
                                                         )
-                                                    
                                                     }
                                                     )
                                                 }
@@ -333,6 +363,38 @@ export default class Edit extends Component {
                                                 }
                                                 </select>
                                             </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Invitados Adicionales</label>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Mayores</label>
+                                            <div className="col-sm-1">
+                                                {this.state.cantidadMayores}
+                                            </div>
+                                            <div className="col-sm-2">
+                                                <a onClick={ev =>this.handleSumarInvitado("mayores",ev)} className="btn btn-sm btn-dark">Agrega otro invitado</a>
+                                            </div>
+                                            {(this.state.adicionalMayores>0)?(
+                                                <div className="offset-sm-1 col-sm-2">
+                                                <a onClick={ev =>this.handleQuitarInvitado("mayores",ev)} className="btn btn-sm btn-dark">Quitar invitado</a>
+                                            </div>
+                                            ):""}
+                                            
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Menores(12 años)</label>
+                                            <div className="col-sm-1">
+                                                {this.state.cantidadMenores}
+                                            </div>
+                                            <div className="col-sm-2">
+                                                <a onClick={ev =>this.handleSumarInvitado("menores",ev)} className="btn btn-sm btn-dark">Agrega otro invitado</a>
+                                            </div>
+                                            {(this.state.adicionalMenores>0)?(
+                                                <div className="offset-sm-1 col-sm-2">
+                                                <a onClick={ev =>this.handleQuitarInvitado("menores",ev)} className="btn btn-sm btn-dark">Quitar invitado</a>
+                                            </div>
+                                            ):""}
                                         </div>
 
 

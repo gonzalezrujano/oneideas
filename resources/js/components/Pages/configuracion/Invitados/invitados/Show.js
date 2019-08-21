@@ -248,7 +248,22 @@ export default class Show extends Component {
                                                 </select>
                                             </div>
                                         </div>
-
+                                        
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Invitados Adicionales</label>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Mayores</label>
+                                            <div className="col-sm-1">
+                                                {this.state.cantidadMayores}
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
+                                            <label className="col-sm-4 col-form-label col-form-label-sm">Menores(12 años)</label>
+                                            <div className="col-sm-1">
+                                                {this.state.cantidadMenores}
+                                            </div>
+                                        </div>
 
 
                                     </div>
