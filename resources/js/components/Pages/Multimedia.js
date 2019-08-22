@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Menu from "../components/Menu";
 import Header from "../components/Header";
-import Axios from "axios";
 import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
@@ -10,7 +9,7 @@ import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
-import { getEventos, getJobs } from './../../redux/actions/multimedia';
+import { getEventos, getJobs, createJob } from './../../redux/actions/multimedia';
 import uuidv4 from 'uuid/v4';
 
 class Multimedia extends Component {
@@ -98,6 +97,7 @@ class Multimedia extends Component {
 
       const topic = `/${empresa}/${evento}`;
       let message = '';
+      let payload = '';
 
       if (titleTool === 'colores' && !color)
         return console.log('Select a color');
@@ -105,18 +105,32 @@ class Multimedia extends Component {
       switch (titleTool) {
         case 'colores': 
           message = `COL,${color},${startTime.getTime()},${endTime.getTime()}`;
+          payload = color;
           break;
         case 'flash':
           message = `FLH,${flash2},${startTime.getTime()},${endTime.getTime()}`;
+          payload = flash2;
+          break;
         default:
-          message = `MUL,${empresa},${evento},${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          message = `MUL,${archivo},${empresa},${evento},${startTime.getTime()},${endTime.getTime()}`;
+          payload = archivo;
           break;
       }
 
       this.mqttClient.send(topic, message);
 
-      // if (envio) 
-      //   this.ponerCola('ejecucion', fechainicio, fechafin);
+      const job = {
+        eventId: evento,
+        type: titleTool,
+        status: 'ejecucion',
+        startTime: startTime.getTime(),
+        endTime: endTime.getTime(),
+        payload
+      }
+
+      this.props.createJob(job, this.state.api_token)
+        .then(() => console.log('Done it'))
+        .catch(e => console.log(e))
     }
 
     /**
@@ -331,84 +345,7 @@ class Multimedia extends Component {
         document.querySelector(".wrapper").style.display="none";
     } 
 
-    /**
-     * metodo para colocar en cola las acciones
-     * @param {*} newestado 
-     * @param {*} inicio 
-     * @param {*} fin 
-     */
-    ponerCola (newestado,inicio,fin) {
-        let {evento} = this.state;
-        evento=evento.split("_")[0];
-        var title=this.props.tool.titleTool;
-        var parametro='';
-        var self=this;
-        if(self.state.hora){
-          var h = self.state.hora.getHours();
-          var m = self.state.hora.getMinutes();
-          var s = self.state.hora.getSeconds();
-          inicio=h+":"+m+":"+s;
-        }
-        if(self.state.hora2){
-          var h2 = self.state.hora2.getHours();
-          var m2 = self.state.hora2.getMinutes();
-          var s2 = self.state.hora2.getSeconds();
-          fin=h2+":"+m2+":"+s2;
-        }
-        var estado='cola';
-        if(newestado!=undefined&&newestado!=null&&newestado!=""){
-            estado=newestado;
-        }
-        if(inicio==""){
-            inicio=moment().format("hh:mm:ss");
-        }
-        if(fin==""){
-            fin="99:99:99";
-        }
-        if(title=='imagen'||title=='video'||title=='audio'){
-        parametro=this.state.archivo;
-        }
-        if(title=='flash'){
-        parametro=this.state.flash2;
-        }
-        if(title=='colores'){
-        parametro=this.state.color;
-        }
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; 
-        var yyyy = today.getFullYear();
-        var momento = new Date(yyyy+'-'+mm+'-'+dd+' '+fin+window.app.gtm);
-
-        setTimeout(self.statusEnvios, momento.getTime()-(new Date()).getTime());
-        axios.post('/api/eventos/cola/add', {evento,title,estado,inicio,fin,parametro} ,{
-            headers: {
-                Authorization: this.state.api_token
-            }
-        })
-            .then(res => {
-                if(res){
-                    let r = res.data;
-                    if(r.code === 200){
-                        this.setState({
-                            envios: r.envios,
-                        });
-                        this.getEnvios();
-                    }else if(r.code === 500){
-                        console.log(r.msj);
-                        this.setState({
-                            multimedias: [],
-                        });
-                    }
-
-                }
-
-            }).catch(function (error) {});
-    }
-
-
-
-  render() {
+  render () {
     if (this.state.isLoading)
       return null;
   
@@ -544,6 +481,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
   getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
+  createJob: (eventId, job, apiToken) => dispatch(createJob(eventId, job, apiToken))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Multimedia);

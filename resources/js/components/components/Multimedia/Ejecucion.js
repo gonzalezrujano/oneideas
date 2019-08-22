@@ -17,21 +17,20 @@ const Ejecucion = props => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.envios.map((e, index) => {
-                        if (e.Estado != "ejecucion") {
-                            return false;
-                        }
-                        var evento = props.evento.split("_")[0];
-                        if (e.Evento != evento) {
-                            return false;
-                        }
+                    {props.envios.map(e => {
+                        if (e.status != "ejecucion")
+                            return null;
+
+                        if (e.eventId != props.evento)
+                            return null;
+
                         return (
-                            <tr key={index} id={e._id}>
-                                <td>{e.Tipo}</td>
-                                <td>{e.Inicio}</td>
-                                <td>{e.Fin}</td>
+                            <tr key={e.id} id={e.id}>
+                                <td>{e.type}</td>
+                                <td>{e.startTime}</td>
+                                <td>{e.endTime}</td>
                                 <td>Grada, Campo</td>
-                                <td>{e.Parametro}</td>
+                                <td>{e.payload}</td>
                                 <td>
                                     <i
                                         className="fa fa-trash"
@@ -39,10 +38,10 @@ const Ejecucion = props => {
                                         onClick={ev =>
                                             props.sincola(
                                                 "ejecucion",
-                                                e.Tipo,
-                                                e.inicio,
-                                                e.fin,
-                                                e._id
+                                                e.type,
+                                                e.startTime,
+                                                e.endTime,
+                                                e.id
                                             )
                                         }
                                     />

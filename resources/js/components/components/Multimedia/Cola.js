@@ -3,7 +3,6 @@ import React from "react";
 import "./css/Cola.css";
 
 const Cola = props => {
-    console.log(props.envios);
     return (
         <div>
             <table className="table table-dark-theme-console fixed_header">
@@ -19,13 +18,12 @@ const Cola = props => {
                 </thead>
                 <tbody>
                     {props.envios.map((e, index) => {
-                        if (e.Estado != "cola") {
-                            return false;
-                        }
-                        var evento = props.evento.split("_")[0];
-                        if (e.Evento != evento) {
-                            return false;
-                        }
+                        if (e.status != "cola")
+                            return null;
+
+                        if (e.eventId != props.evento)
+                            return null;
+                        
                         return (
                             <tr key={index} id={e._id}>
                                 <td>{e.Tipo}</td>
