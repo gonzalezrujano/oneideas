@@ -53,13 +53,9 @@ class Multimedia extends Component {
         this.openStartTime = this.openStartTime.bind(this);
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
-        this.ponerCola = this.ponerCola.bind(this);
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
-        /*this.onConnect = this.onConnect.bind(this);
-        this.MQTTconnect = this.MQTTconnect.bind(this);*/
-        //LLAMO AL METODO INICIAR MQTT PARA CONECTAR CON EL MQTT
-        // this.iniciarMQTT();
+
         this.mqttHost = 'localhost';
         this.mqttPort = 9001;
         this.mqttClientId = uuidv4();
@@ -127,6 +123,8 @@ class Multimedia extends Component {
         endTime: endTime.getTime(),
         payload
       }
+
+      console.log('apiToken', this.state.api_token);
 
       this.props.createJob(job, this.state.api_token)
         .then(() => console.log('Done it'))
@@ -459,7 +457,7 @@ class Multimedia extends Component {
                       openStartTime={this.openStartTime}
                       openEndTime={this.openEndTime}
                       enviar={this.enviarComando.bind(this)} 
-                      cola={this.ponerCola.bind(this)} />
+                    />
                   </div>
                 </div>
               </div>

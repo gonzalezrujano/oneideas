@@ -3,6 +3,7 @@ import {
   FETCHED_MEDIA_SECTOR,
   FETCHED_MEDIA_JOBS,
   CREATE_NEW_JOB,
+  REMOVE_JOB,
   FETCHED_MEDIA_TOOLS
 } from './types';
 import axios from 'axios';
@@ -86,6 +87,22 @@ export function createJob (job, apiToken) {
   }
 }
 
+export function deleteJob (jobId) {
+  return dispatch => {
+    return axios.post('/api/eventos/remove-envios', { id : jobId } ,{
+      headers: {
+          Authorization: localStorage.getItem("api_token")
+      }
+    })
+    .then(res => {
+      if (res.data.code === 200)
+        return dispatch(removeJob(jobId));
+
+      return Promise.reject({});
+    });
+  }
+}
+
 export function getTool (eventId, herramienta) {
   return (dispatch, getState) => {
     const { auth } = getState();
@@ -138,6 +155,13 @@ export function addJob (job) {
   return {
     type: CREATE_NEW_JOB,
     payload: job
+  }
+}
+
+export function removeJob (id) {
+  return {
+    type: REMOVE_JOB,
+    payload: { id }
   }
 }
 

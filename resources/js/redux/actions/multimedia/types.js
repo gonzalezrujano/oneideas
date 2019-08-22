@@ -6,5 +6,7 @@ export const FETCHED_MEDIA_JOBS = 'FETCHED_MEDIA_JOBS';
 
 export const CREATE_NEW_JOB = 'CREATE_NEW_JOB';
 
+export const REMOVE_JOB = 'REMOVE_JOB';
+
 export const FETCHED_MEDIA_TOOLS = 'FETCHED_MEDIA_TOOLS';
 
