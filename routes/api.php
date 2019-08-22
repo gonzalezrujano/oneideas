@@ -112,7 +112,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'invitados'], function() {
     Route::post('/', 'InvitadoController@addInvitado');
     Route::post('/edit', 'InvitadoController@setInvitado');
     Route::post('/delete','InvitadoController@deleteInvitado');
-    Route::get('/','InvitadoController@getInvitados');
+    Route::post('/all','InvitadoController@getInvitados');
     Route::get('/eliminar-todos','InvitadoController@eliminarTodos');
     Route::post('/one','InvitadoController@getInvitado');
 });
