@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\Grupo;
 use App\Models\MongoDB\Invitado;
 use App\Models\MongoDB\EventoInvitado;
@@ -50,7 +51,7 @@ class InvitadoController extends Controller
       $invitado->Correo              = $data['correo'];
       $invitado->Telefono            = $data['telefono'];
       $invitado->EsMenorDeEdad       = $data['esMenorDeEdad'];
-      $invitado->esInvitadoAdicional       = $data['esInvitadoAdicional'];
+      $invitado->EsInvitadoAdicional       = $data['esInvitadoAdicional'];
       $invitado->borrado             = $data['borrado'];
 
       //verifico si fue exitoso el insert en la bd
@@ -323,10 +324,19 @@ class InvitadoController extends Controller
     }
   }
 
-  public function getInvitados(){
+  public function getInvitados(Request $request){
       $data = EventoInvitado::where("borrado",false)->get();
+      $input = $request->all();
       $registroInvitados = [];
+      $eventosParaEmpresa = [];
+      $id = $input['id'];
+      $rol= $input['rol'];
+      $empresas = Empresa::where("Borrado",false)->get();
+
+      $eventos = Evento::where("Borrado",false)->get();
       if($data){
+        if($rol == 'ADMINISTRADOR'){
+          
           for($i=0; $i<count($data);$i++){
             $idInvitado = $data[$i]->Invitado_id;
             $dataInvitado = Invitado::find($idInvitado);
@@ -339,11 +349,12 @@ class InvitadoController extends Controller
                 '_id' => $data[$i]->_id,
                 'Nombre' => $dataInvitado->Nombre,
                 'Apellido' => $dataInvitado->Apellido,
-                'esInvitadoAdicional' => $dataInvitado->esInvitadoAdicional,
+                'esInvitadoAdicional' => $dataInvitado->EsInvitadoAdicional,
                 'Grupo' => $grupo,
                 'Etapas' => count($data[$i]->Etapas),
                 'Evento' => Evento::find($data[$i]->Evento_id)->Nombre,//esto se debe cambiar en el futuro
                 'Evento_id'=>$data[$i]->Evento_id,
+                'Empresa_id'=>Evento::find($data[$i]->Evento_id)->Empresa_id,
                 'Invitado_id'=>$data[$i]->Invitado_id,
                 'Correo'  => $dataInvitado->Correo,
                 'Link'    => $data[$i]->LinkDatos,
@@ -351,11 +362,77 @@ class InvitadoController extends Controller
               ];
               array_push($registroInvitados,$datos);
           }
+          return json_encode(['code' => 200,'invitados'=>$registroInvitados,'empresas'=>$empresas,'eventos'=>$eventos]);
+        }else if($rol == 'EMPRESA'){
+            $empresa = Empresa::find($id);
+            for($i=0; $i<count($data);$i++){
+              $idInvitado = $data[$i]->Invitado_id;
+              $dataInvitado = Invitado::find($idInvitado);
+              if($data[$i]->Grupo_id == "no aplica"){
+                $grupo = "no aplica";
+              }else{
+                $grupo = Grupo::find($data[$i]->Grupo_id)->Nombre;
+              }
+                $datos = [
+                  '_id' => $data[$i]->_id,
+                  'Nombre' => $dataInvitado->Nombre,
+                  'Apellido' => $dataInvitado->Apellido,
+                  'esInvitadoAdicional' => $dataInvitado->EsInvitadoAdicional,
+                  'Grupo' => $grupo,
+                  'Etapas' => count($data[$i]->Etapas),
+                  'Evento' => Evento::find($data[$i]->Evento_id)->Nombre,//esto se debe cambiar en el futuro
+                  'Evento_id'=>$data[$i]->Evento_id,
+                  'Empresa_id'=>$id,
+                  'Invitado_id'=>$data[$i]->Invitado_id,
+                  'Correo'  => $dataInvitado->Correo,
+                  'Link'    => $data[$i]->LinkDatos,
+                  'Confirmado' => $data[$i]->Confirmado,
+                ];
+                $evento = Evento::find($data[$i]->Evento_id);
+                $empresa_id = $evento->Empresa_id;
+                if($empresa_id == $id){
+                  
+                  array_push($eventosParaEmpresa,$evento);
+                  array_push($registroInvitados,$datos);
+                }  
+            }
+            return json_encode(['code' => 200,'invitados'=>$registroInvitados,'empresas'=>$empresas,'eventos'=>$eventos]);
+        }else if($rol == 'EVENTO'){
+          $evento = Evento::find($id);
+          $empresa = Empresa::find($evento->Empresa_id);
+          for($i=0; $i<count($data);$i++){
+            $idInvitado = $data[$i]->Invitado_id;
+            $dataInvitado = Invitado::find($idInvitado);
+            if($data[$i]->Grupo_id == "no aplica"){
+              $grupo = "no aplica";
+            }else{
+              $grupo = Grupo::find($data[$i]->Grupo_id)->Nombre;
+            }
+              $datos = [
+                '_id' => $data[$i]->_id,
+                'Nombre' => $dataInvitado->Nombre,
+                'Apellido' => $dataInvitado->Apellido,
+                'esInvitadoAdicional' => $dataInvitado->EsInvitadoAdicional,
+                'Grupo' => $grupo,
+                'Etapas' => count($data[$i]->Etapas),
+                'Evento' => Evento::find($data[$i]->Evento_id)->Nombre,//esto se debe cambiar en el futuro
+                'Evento_id'=>$data[$i]->Evento_id,
+                'Empresa_id'=>$evento->Empresa_id,
+                'Invitado_id'=>$data[$i]->Invitado_id,
+                'Correo'  => $dataInvitado->Correo,
+                'Link'    => $data[$i]->LinkDatos,
+                'Confirmado' => $data[$i]->Confirmado,
+              ];
 
-          return json_encode(['code' => 200,'invitados'=>$registroInvitados]);
+              if($data[$i]->Evento_id == $id){
+                array_push($registroInvitados,$datos);
+              }  
+          }
+          return json_encode(['code' => 200,'invitados'=>$registroInvitados,'empresas'=>$empresas,'eventos'=>$eventos]);
+        }
       }else{
           return json_encode(['code' => 500]);
-      }
+      } 
   }
 
   public function setInvitado(Request $request){
@@ -580,6 +657,8 @@ class InvitadoController extends Controller
 
     public function confirmacionDatos(Request $request){
       $input = $request->all();
+      $cantidadAdicionales = $input['cantidad_adicionales'];
+      $invitadosAdicionales = [];
       $id = $input['id'];
       if($id){
         $registro = Invitado::find($id);
@@ -597,7 +676,31 @@ class InvitadoController extends Controller
             $registro->Telefono            = $data['telefono'];
 
             if($registro->save()){
-              return json_encode(['code' => 200,'invitado'=>$registro]);
+              if($cantidadAdicionales>0){
+                for($i=0;$i<$cantidadAdicionales;$i++){
+                  $registroAdicional = Invitado::find($input["id_invitado_adicional_".$i]);
+
+                  $data = [
+                    'nombre'              => strtoupper($input['nombre_adicional_'.$i]),
+                    'apellido'            => strtoupper($input['apellido_adicional_'.$i]),
+                    'correo'              => strtoupper($input['correo_adicional_'.$i]),
+                    'telefono'            => strtoupper($input['telefono_adicional_'.$i])
+                  ];
+      
+                  $registroAdicional->Nombre              = $data['nombre'];
+                  $registroAdicional->Apellido            = $data['apellido'];
+                  $registroAdicional->Correo              = $data['correo'];
+                  $registroAdicional->Telefono            = $data['telefono'];
+                  $registroAdicional->EsInvitadoAdicional            = true;
+
+                  if($registroAdicional->save()){
+                    array_push($invitadosAdicionales,$registroAdicional);
+                    continue;
+                  }
+                  break;
+                }
+              }
+              return json_encode(['code' => 200,'invitado'=>$registro,'adicionales'=>$invitadosAdicionales]);
             }
             return json_encode(['code' => 400]);
         }

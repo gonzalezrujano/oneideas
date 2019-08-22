@@ -23,6 +23,9 @@ export default class Edit extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeAdicional = this.handleChangeAdicional.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this); 
+        this.generarCamposAdicionales = this.generarCamposAdicionales.bind(this);
+        this.calcularMayores = this.calcularMayores.bind(this);
+        this.calcularMenores = this.calcularMenores.bind(this);
     }
 
     componentDidMount() {
@@ -31,7 +34,6 @@ export default class Edit extends Component {
         }).then(res => {
             console.log(res);
             let r = res.data;
-            
             this.setState({
                 id:r.invitado.id,
                 idInvitado:r.invitado.invitado_id,
@@ -41,7 +43,9 @@ export default class Edit extends Component {
                 telefono:r.invitado.telefono,
                 grupo:r.invitado.grupo,
                 evento:r.invitado.evento,
-                adicionales: r.adicionales
+                adicionales: r.adicionales,
+                cantidadAdicionales:0,
+                cargadoAdicionales:false
             });
             this.setState({isLoading:false})
         });
@@ -61,32 +65,9 @@ export default class Edit extends Component {
     handleChangeAdicional(event){
         const target = event.target;
         const value = target.value;
-        console.log(value)
-        const arrayName = target.name.split("-");
-        const name = arrayName[0];
-        const index = arrayName[1];
-        var adicionalesPrueba = this.state.adicionales;
-        if(name=="Nombre"){
-            adicionalesPrueba[index].Nombre = value;
-            this.setState({
-                adicionales: adicionalesPrueba
-            })
-        }else if(name=="Apellido"){
-            adicionalesPrueba[index].Apellido = value;
-            this.setState({
-                adicionales: adicionalesPrueba
-            })
-        }else if(name=="Correo"){
-            adicionalesPrueba[index].Correo = value;
-            this.setState({
-                adicionales: adicionalesPrueba
-            })
-        }else if(name == "Telefono"){
-            adicionalesPrueba[index].Telefono = value;
-            this.setState({
-                adicionales: adicionalesPrueba
-            })
-        }
+        const name = target.name;
+        this.state[name] =  value
+        this.setState({...this.state})
     }
 
     handleSubmit(e){
@@ -98,6 +79,18 @@ export default class Edit extends Component {
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
         formData.append("telefono", this.state.telefono);
+        if(this.state.cantidadAdicionales>0){
+            formData.append("cantidad_adicionales",this.state.cantidadAdicionales);
+            
+            for(var i=0;i<this.state.cantidadAdicionales;i++){
+                
+                formData.append("id_invitado_adicional_"+i,this.state["id_invitado_adicional_"+i]);
+                formData.append("nombre_adicional_"+i, this.state["nombre_adicional_"+i]);
+                formData.append("apellido_adicional_"+i, this.state["apellido_adicional_"+i]);
+                formData.append("correo_adicional_"+i, this.state["correo_adicional_"+i]);
+                formData.append("telefono_adicional_"+i, this.state["telefono_adicional_"+i]);
+            }
+        }
         $('#save-invitado').prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios.post("api/mail-confirmacion/datos",formData).then(res=>{
             console.log(res)
@@ -135,6 +128,80 @@ export default class Edit extends Component {
         })
     }
 
+    generarCamposAdicionales(){
+        var retorno = [];
+        this.state.cantidadAdicionales = this.state.adicionales.length;
+        this.state.adicionales.map((e,index)=>{
+            if(!this.state.hasOwnProperty("nombre_adicional_"+index)){
+                this.state["id_invitado_adicional_"+index]=e._id;
+                this.state["nombre_adicional_"+index] = e.Nombre;
+                this.state["apellido_adicional_"+index] = e.Apellido;
+                this.state["correo_adicional_"+index] = e.Correo;
+                this.state["telefono_adicional_"+index] = e.Telefono;
+            }
+            retorno.push(
+                <div key={e._id}>
+                    <h3>Invitado Adicional {index+1}</h3>
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">Nombre</label>
+                        <div className="col-sm-4">
+                            <input type="text" className="form-control form-control-sm" id="nombre" name={`nombre_adicional_${index}`} placeholder="Ingrese el nombre" value={this.state["nombre_adicional_"+index]} onChange={this.handleChangeAdicional} />
+                        </div>
+                    </div>
+
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">Apellido</label>
+                        <div className="col-sm-4">
+                            <input type="text" className="form-control form-control-sm" id="apellido" name={`apellido_adicional_${index}`} placeholder="Ingrese el apellido" value={this.state["apellido_adicional_"+index]}  onChange={this.handleChangeAdicional} />
+                        </div>
+                    </div>
+
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">Correo</label>
+                        <div className="col-sm-4">
+                            <input type="text" className="form-control form-control-sm" id="correo" name={`correo_adicional_${index}`} placeholder="Ingrese el correo" value={this.state["correo_adicional_"+index]}  onChange={this.handleChangeAdicional} />
+                        </div>
+                    </div>
+
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
+                        <div className="col-sm-4">
+                            <input type="text" className="form-control form-control-sm" id="telefono" name={`telefono_adicional_${index}`} placeholder="Ingrese el télefono" value={this.state["telefono_adicional_"+index]}  onChange={this.handleChangeAdicional}/>
+                        </div>
+                    </div>
+                    <hr align="left" noshade="noshade" size="2" width="50%" />
+                </div>
+                
+            );
+            
+        })
+        return retorno;
+    }
+
+    calcularMayores(){
+        var cantidad = 0;
+        if(this.state.adicionales.length){
+            for (var i=0; i<this.state.adicionales.length;i++){
+                if(!this.state.adicionales[i].EsMenorDeEdad){
+                    cantidad++;
+                }
+            }
+        }
+        return cantidad;
+    }
+
+    calcularMenores(){
+        var cantidad = 0;
+        if(this.state.adicionales.length){
+            for (var i=0; i<this.state.adicionales.length;i++){
+                if(this.state.adicionales[i].EsMenorDeEdad){
+                    cantidad++;
+                }
+            }
+        }
+        return cantidad;
+    }
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -153,7 +220,6 @@ export default class Edit extends Component {
                 </div>
             );
         } else {
-            console.log(this.state)
             return (
                 <div>
                     <img className="logo-inside" src={logo} />
@@ -170,30 +236,33 @@ export default class Edit extends Component {
                             <form id="form-add-usuario" className="form-change-password form" encType="multipart/form-data" onSubmit={this.handleSubmit}>
                                 <div className="tab-content" id="pills-tabContent">
                                     <div className="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
-
+                                        <div className="alert alert-info" role="alert">
+                                            Recuerda que tienes {this.calcularMayores()} invitados adicionales mayores de edad y {this.calcularMenores()} menores de dad
+                                        </div>
+                                        <h3>Tus Datos personales</h3>
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Nombre</label>
+                                            <label className="col-sm-2 col-form-label col-form-label-sm">Nombre</label>
                                             <div className="col-sm-4">
                                                 <input type="text" className="form-control form-control-sm" id="nombre" name="nombre" placeholder="Ingrese el nombre" value={this.state.nombre} onChange={this.handleChange} />
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Apellido</label>
+                                            <label className="col-sm-2 col-form-label col-form-label-sm">Apellido</label>
                                             <div className="col-sm-4">
                                                 <input type="text" className="form-control form-control-sm" id="apellido" name="apellido" placeholder="Ingrese el apellido" value={this.state.apellido} onChange={this.handleChange} />
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Correo</label>
+                                            <label className="col-sm-2 col-form-label col-form-label-sm">Correo</label>
                                             <div className="col-sm-4">
                                                 <input type="text" className="form-control form-control-sm" id="correo" name="correo" placeholder="Ingrese el correo" value={this.state.correo} onChange={this.handleChange} disabled/>
                                             </div>
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Teléfono</label>
+                                            <label className="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
                                             <div className="col-sm-4">
                                                 <input type="text" className="form-control form-control-sm" id="telefono" name="telefono" placeholder="Ingrese el telefono" value={this.state.telefono} onChange={this.handleChange}/>
                                             </div>
@@ -201,6 +270,12 @@ export default class Edit extends Component {
                                     </div>
 
                                 </div>
+                                <hr align="left" noshade="noshade" size="2" width="50%" />
+                                {(this.state.adicionales.length )?(
+                                    this.generarCamposAdicionales()
+                                ):(
+                                    ""
+                                )}
 
                                 <div className="form-group row">
                                     <div className="col-sm-4">
@@ -208,49 +283,6 @@ export default class Edit extends Component {
                                         
                                     </div>
                                 </div>
-                                {/*(this.state.adicionales.length)?(
-                                    <div>
-                                        <div className="form-group row">
-                                            <label className="col-sm-4 col-form-label col-form-label-sm">Teléfono</label>
-                                        </div>
-                                        <div className="row">
-                                                {(this.state.adicionales.map((e,index)=>{
-                                                    console.log(e);
-                                                        return (
-                                                            <div key={e._id}>
-                                                            <div className="form-group row" >
-                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Nombre</label>
-                                                                <div className="col-sm-4">
-                                                                    <input type="text" className="form-control form-control-sm" id="nombre" name={`Nombre-${index}`} placeholder="Ingrese el nombre" value={this.state.adicionales[index].Nombre} onChange={this.handleChangeAdicional} />
-                                                                </div>
-                                                            </div>
-                
-                                                            <div className="form-group row" >
-                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Apellido</label>
-                                                                <div className="col-sm-4">
-                                                                    <input type="text" className="form-control form-control-sm" id="apellido" name={`Apellido-${index}`} placeholder="Ingrese el apellido" value={this.state.adicionales[index].Apellido} onChange={this.handleChangeAdicional} />
-                                                                </div>
-                                                            </div>
-                
-                                                            <div className="form-group row">
-                                                                <label className="col-sm-4 col-form-label col-form-label-sm">Correo</label>
-                                                                <div className="col-sm-4">
-                                                                    <input type="text" className="form-control form-control-sm" id="correo" name={`Correo-${index}`} placeholder="Ingrese el correo" value={this.state.adicionales[index].Correo} onChange={this.handleChangeAdicional} disabled/>
-                                                                </div>
-                                                            </div>
-                
-                                                        </div>
-                                                        )
-                                                    })
-                                                )}
-                                        </div>
-                                    </div>
-                                ):(
-                                    ""
-                                )*/}
-
-                                
-
                             </form>
                         </div>
                     

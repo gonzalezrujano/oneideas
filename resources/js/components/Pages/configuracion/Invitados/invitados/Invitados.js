@@ -14,6 +14,10 @@ export default class Invitados extends Component {
             invitados: [],
             opcion: "Invitacion",
             footer: "Footer",
+            empresa: "",
+            empresas: [],
+            eventos: [],
+            evento: "",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
             isLoading: true,
@@ -22,30 +26,72 @@ export default class Invitados extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.modalDelete = this.modalDelete.bind(this);
         this.handleMail = this.handleMail.bind(this);
+        this.handleFiltro = this.handleFiltro.bind(this);
     }
 
     componentDidMount() {
+        var rol = this.state.permisoUsuario.nombre;
+        var id;
+        if (this.state.permisoUsuario.nombre == "ADMINISTRADOR") {
+            id = this.state.usuario._id;
+        } else if (this.state.permisoUsuario.nombre == "EMPRESA") {
+            id = this.state.usuario.Empresa_id;
+        } else {
+            id = this.state.usuario.Evento_id;
+        }
         axios
-            .get("api/invitados", {
-                headers: { Authorization: this.state.api_token }
-            })
+            .post(
+                "api/invitados/all",
+                {
+                    id,
+                    rol
+                },
+                {
+                    headers: { Authorization: this.state.api_token }
+                }
+            )
             .then(res => {
                 console.log(res);
                 this.setState({
                     invitados: res.data.invitados,
+                    invitadosCompletos: res.data.invitados,
+                    empresas: res.data.empresas,
+                    eventos: res.data.eventos,
                     isLoading: false
                 });
+                console.log(this.state);
             });
-        /*axios
-            .get("api/invitados/eliminar-todos", {
-                headers: { Authorization: this.state.api_token }
-            })
-            .then(res => {
-                console.log(res);
-                this.setState({
-                    isLoading: false
-                });
-            });*/
+    }
+
+    handleFiltro(event) {
+        const target = event.target;
+        const value =
+            target.type === "checkbox" ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value,
+            isLoadingEmpresa: true
+        });
+        if (value == "todas") {
+            this.setState({
+                isLoadingEmpresa: false,
+                invitados: this.state.invitadosCompletos
+            });
+        } else {
+            console.log(this.state.invitadosCompletos);
+            console.log(value);
+            var invitados = [];
+            for (var j = 0; j < this.state.invitadosCompletos.length; j++) {
+                console.log(this.state.invitadosCompletos[j].Empresa_id.$oid);
+                console.log(value);
+                if (this.state.invitadosCompletos[j].Empresa_id.$oid == value) {
+                    invitados.push(this.state.invitadosCompletos[j]);
+                }
+            }
+            this.setState({
+                invitados
+            });
+        }
     }
 
     handleChange(event) {
@@ -230,6 +276,52 @@ export default class Invitados extends Component {
 
                         <div id="sweet" className="container-fluid">
                             <div className="row mb-4">
+                                <label className="my-1 mr-2 form-control-sm">
+                                    <strong>Empresa</strong>
+                                </label>
+                                {this.state.permisoUsuario.nombre ==
+                                "ADMINISTRADOR" ? (
+                                    <select
+                                        className="form-control form-control-sm my-1 mr-sm-2 col-2"
+                                        id="pro-find-empresa"
+                                        name="empresa"
+                                        onChange={this.handleFiltro}
+                                        value={this.state.empresa}
+                                    >
+                                        <option value="todas">Todas</option>
+                                        {this.state.empresas.map((e, index) => {
+                                            return (
+                                                <option
+                                                    value={e._id}
+                                                    key={index}
+                                                >
+                                                    {e.Nombre}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                ) : (
+                                    <select
+                                        className="form-control form-control-sm my-1 mr-sm-2 col-2"
+                                        id="pro-find-empresa"
+                                        name="empresa"
+                                        onChange={this.handleFiltro}
+                                        value={this.state.usuario.Empresa_id}
+                                        disabled
+                                    >
+                                        <option value="todas">Todas</option>
+                                        {this.state.empresas.map((e, index) => {
+                                            return (
+                                                <option
+                                                    value={e._id}
+                                                    key={index}
+                                                >
+                                                    {e.Nombre}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
+                                )}
                                 {this.state.permisoUsuario.permisos.evento.includes(
                                     "add"
                                 ) ? (
