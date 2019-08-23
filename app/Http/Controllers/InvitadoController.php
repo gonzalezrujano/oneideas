@@ -87,6 +87,7 @@ class InvitadoController extends Controller
         $eventoInvitado->CantidadInvitadosMenores = $dataEnventoInvitado['CantidadInvitadosMenores'];
         $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
         $eventoInvitado->Confirmado = $dataEnventoInvitado['Confirmado'];
+        $eventoInvitado->Enviado = (boolean) false;
         $eventoInvitado->LinkDatos  = Str::random(40);
         $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
         $linkConfirmacion = $eventoInvitado->LinkDatos;
@@ -124,6 +125,7 @@ class InvitadoController extends Controller
               $eventoInvitado->CantidadInvitadosMenores = 0;
               $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
               $eventoInvitado->Confirmado = (boolean)false;
+              $eventoInvitado->Enviado = (boolean) false;
               $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
               $eventoInvitado->save();
               array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
@@ -163,6 +165,7 @@ class InvitadoController extends Controller
               $eventoInvitado->CantidadInvitadosMenores = 0;
               $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
               $eventoInvitado->Confirmado = (boolean)false;
+              $eventoInvitado->Enviado = (boolean) false;
               $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
               $eventoInvitado->save();
               array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
@@ -205,6 +208,7 @@ class InvitadoController extends Controller
       $eventoInvitado->CantidadInvitadosMenores = $dataEnventoInvitado['CantidadInvitadosMenores'];
       $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
       $eventoInvitado->Confirmado = $dataEnventoInvitado['Confirmado'];
+      $eventoInvitado->Enviado = (boolean) false;
       $eventoInvitado->LinkDatos  = Str::random(40);
       $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
       $eventoInvitado->save();
@@ -242,6 +246,7 @@ class InvitadoController extends Controller
           $eventoInvitado->CantidadInvitadosMenores = 0;
           $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
           $eventoInvitado->Confirmado = (boolean)false;
+          $eventoInvitado->Enviado = (boolean) false;
           $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
           $eventoInvitado->save();
           array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
@@ -281,6 +286,7 @@ class InvitadoController extends Controller
           $eventoInvitado->CantidadInvitadosMenores = 0;
           $eventoInvitado->Etapas = $dataEnventoInvitado['Etapas'];
           $eventoInvitado->Confirmado = (boolean)false;
+          $eventoInvitado->Enviado = (boolean) false;
           $eventoInvitado->borrado = $dataEnventoInvitado['borrado'];
           $eventoInvitado->save();
           array_push($invitadosAdicionalesArreglo, $invitadoAdicional);
@@ -359,6 +365,7 @@ class InvitadoController extends Controller
                 'Correo'  => $dataInvitado->Correo,
                 'Link'    => $data[$i]->LinkDatos,
                 'Confirmado' => $data[$i]->Confirmado,
+                'Enviado' => $data[$i]->Enviado
               ];
               array_push($registroInvitados,$datos);
           }
@@ -387,6 +394,7 @@ class InvitadoController extends Controller
                   'Correo'  => $dataInvitado->Correo,
                   'Link'    => $data[$i]->LinkDatos,
                   'Confirmado' => $data[$i]->Confirmado,
+                  'Enviado' => $data[$i]->Enviado
                 ];
                 $evento = Evento::find($data[$i]->Evento_id);
                 $empresa_id = $evento->Empresa_id;
@@ -422,6 +430,7 @@ class InvitadoController extends Controller
                 'Correo'  => $dataInvitado->Correo,
                 'Link'    => $data[$i]->LinkDatos,
                 'Confirmado' => $data[$i]->Confirmado,
+                'Enviado' => $data[$i]->Enviado
               ];
 
               if($data[$i]->Evento_id == $id){

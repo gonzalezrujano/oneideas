@@ -123,6 +123,8 @@ export default class Invitados extends Component {
     }
 
     handleMail(link) {
+        var index = link[1];
+        link = link[0];
         Swal.fire({
             text: "¿Deseas enviar el correo de confirmacion de asistencia?",
             type: "warning",
@@ -146,6 +148,33 @@ export default class Invitados extends Component {
                         console.log(res);
                         Swal.close();
                         if (res.data.code === 200) {
+                            for (
+                                var i = 0;
+                                i < this.state.invitados.length;
+                                i++
+                            ) {
+                                if (this.state.invitados[i]._id == index) {
+                                    this.state.invitados[i].Enviado = true;
+                                    break;
+                                }
+                            }
+                            for (
+                                var i = 0;
+                                i < this.state.invitadosCompletos.length;
+                                i++
+                            ) {
+                                if (
+                                    this.state.invitadosCompletos[i]._id ==
+                                    index
+                                ) {
+                                    this.state.invitadosCompletos[
+                                        i
+                                    ].Enviado = true;
+                                    break;
+                                }
+                            }
+                            this.setState({ ...this.state });
+
                             sweetalert(
                                 "correo enviado correctamente",
                                 "success",
@@ -406,15 +435,30 @@ export default class Invitados extends Component {
                                                         </td>
                                                         <td className="text-center">
                                                             {e.Confirmado ? (
-                                                                <i
-                                                                aria-hidden="true"
-                                                                className="fas fa-envelope icono-ver"
-                                                            />
+                                                                <div>
+                                                                    <i
+                                                                        className="fa fa-check fa-lg icono-check mr-1"
+                                                                        aria-hidden="true"
+                                                                    />
+                                                                    <i
+                                                                        className="fa fa-check fa-lg icono-check"
+                                                                        aria-hidden="true"
+                                                                    />
+                                                                </div>
                                                             ) : (
-                                                                <i
-                                                                    className="fa fa-times fa-lg boton-negado"
-                                                                    aria-hidden="true"
-                                                                />
+                                                                <div>
+                                                                    {e.Enviado ? (
+                                                                        <i
+                                                                            aria-hidden="true"
+                                                                            className="fas fa-envelope icono-ver"
+                                                                        />
+                                                                    ) : (
+                                                                        <i
+                                                                            className="fa fa-times fa-lg boton-negado"
+                                                                            aria-hidden="true"
+                                                                        />
+                                                                    )}
+                                                                </div>
                                                             )}
                                                         </td>
                                                         <td className="text-center">
@@ -472,7 +516,11 @@ export default class Invitados extends Component {
                                                                         className="mr-2"
                                                                         onClick={ev =>
                                                                             this.handleMail(
-                                                                                e.Link,
+                                                                                [
+                                                                                    e.Link,
+                                                                                    e._id
+                                                                                ],
+
                                                                                 ev
                                                                             )
                                                                         }
