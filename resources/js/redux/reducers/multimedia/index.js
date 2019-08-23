@@ -2,6 +2,8 @@ import {
   FETCHED_MEDIA_EVENTS,
   FETCHED_MEDIA_SECTOR,
   FETCHED_MEDIA_JOBS,
+  CREATE_NEW_JOB,
+  REMOVE_JOB,
   FETCHED_MEDIA_TOOLS
 } from '../../actions/multimedia/types';
 
@@ -32,6 +34,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         jobs: action.payload
+      };
+    case CREATE_NEW_JOB: 
+      return {
+        ...state,
+        jobs: [...state.jobs, action.payload]
+      };
+    case REMOVE_JOB:
+      return {
+        ...state,
+        jobs: state.jobs.filter(job => job.id !== action.payload.id)
       };
     case FETCHED_MEDIA_TOOLS:
       return {

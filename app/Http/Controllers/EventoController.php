@@ -1015,7 +1015,7 @@ class EventoController extends Controller
             $parametro = $input['parametro'];
 
             //valido que venga el id sino mando un error
-            if($evento){
+            if ($evento) {
 
                 //ubico el id en la bd
                 $evento = Evento::find($evento);
@@ -1029,15 +1029,20 @@ class EventoController extends Controller
                 $envio->Parametro = $parametro;
 
 
-                if($envio->save()){                   
-                    $envios = Envio::get();
-                    return json_encode(['code' => 200,'envios'=>$envios]);
-                }else{
-                    return json_encode(['code' => 500]);
-                }
+                if($envio->save())    
+                    return json_encode(['code' => 200, 'envio' => [
+                      '_id' => $envio->_id,
+                      'Evento' => $envio->Evento,
+                      'Tipo' => $envio->Tipo,
+                      'Estado' => $envio->Estado,
+                      'Inicio' => $envio->Inicio,
+                      'Fin' => $envio->Fin,
+                      'Parametro' => $envio->Parametro,
+                    ]]);
+                
+                return json_encode(['code' => 500]);
 
             } else {
-
                 return json_encode(['code' => 600]);
             }
     }
