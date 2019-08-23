@@ -14,7 +14,9 @@ export default class Edit extends Component {
             apellido:"",
             correo:"",
             telefono:"",
+            evento:"",
             id:"",
+            evento_id:"",
             idInvitado:"",
             adicionales:[],
             footer: "Footer",
@@ -43,6 +45,7 @@ export default class Edit extends Component {
                 telefono:r.invitado.telefono,
                 grupo:r.invitado.grupo,
                 evento:r.invitado.evento,
+                evento_id:r.invitado.evento_id,
                 adicionales: r.adicionales,
                 cantidadAdicionales:0,
                 cargadoAdicionales:false
@@ -75,6 +78,7 @@ export default class Edit extends Component {
         let formData = new FormData()
         formData.append("id",this.state.idInvitado);
         formData.append("id_evento_invitado",this.state.id);
+        formData.append("id_evento",this.state.evento_id);
         formData.append("nombre", this.state.nombre);
         formData.append("apellido", this.state.apellido);
         formData.append("correo", this.state.correo);
@@ -222,14 +226,23 @@ export default class Edit extends Component {
         } else {
             return (
                 <div>
-                    <img className="logo-inside" src={logo} />
+                    
                         <div id="sweet" className="container-fluid">
+                        <div className="row mb-4">
+                            <div className="col-3">
+                            <img className="ml-4" src={logo} style={{ width: "60%"}}/>
+                            </div>
+                            <div className="col-3">
+                                {this.state.evento}
+                            </div>
+                        </div>
                             <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li className="nav-item">
                                     <a className="nav-link active" id="pills-datos-tab" data-toggle="pill" href="#pills-datos" role="tab" aria-controls="pills-datos" aria-selected="true">Datos</a>
                                 </li>
 
                             </ul>
+
 
                             <hr className="line-gray"/>
 

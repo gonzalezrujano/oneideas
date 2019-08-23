@@ -26,6 +26,8 @@ class MailController extends Controller
                 'cantidad_menores' => $eventoInvitado->CantidadInvitadosMenores,
                 'link' => $link
             ];
+            $eventoInvitado->Enviado = true;
+            $eventoInvitado->save();
             Mail::to(Invitado::find($eventoInvitado->Invitado_id)->Correo)->send(new CorreoDeInvitacion($data));
             return json_encode(['code' => 200,'mensaje'=>"Invitacion enviada"]);
         }else{

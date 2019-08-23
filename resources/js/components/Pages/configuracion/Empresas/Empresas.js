@@ -210,6 +210,16 @@ export default class Empresas extends Component {
                                     ) : (
                                         ""
                                     )}
+                                    <tr>
+                                        <td>
+                                            <Link
+                                                to="/empresa/planos/"
+                                                className="btn-sm btn-dark button-add p-2"
+                                            >
+                                                Planos
+                                            </Link>
+                                        </td>
+                                    </tr>
                                     <tr className="fila-head">
                                         <th className="text-center">NOMBRE</th>
                                         <th className="text-center">CORREO</th>
