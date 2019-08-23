@@ -38,6 +38,7 @@ import Etapas from "../Pages/configuracion/Eventos/Etapas/Etapas";
 import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
 import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
+import Planos from "../Pages/configuracion/Planos/Planos";
 
 function App() {
     return (
@@ -77,6 +78,7 @@ function App() {
                         path="/empresa/eventos/:id"
                         component={Eventos}
                     />
+                    <Route exact path="/empresa/planos" component={Planos} />
                     <Route
                         exact
                         path="/eventos/add/:id"

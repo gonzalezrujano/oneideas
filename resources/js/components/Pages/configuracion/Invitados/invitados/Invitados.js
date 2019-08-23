@@ -405,11 +405,11 @@ export default class Invitados extends Component {
                                                             {e.Correo}
                                                         </td>
                                                         <td className="text-center">
-                                                            {e.Confirmacion ? (
+                                                            {e.Confirmado ? (
                                                                 <i
-                                                                    className="fa fa-check fa-lg icono-check"
-                                                                    aria-hidden="true"
-                                                                />
+                                                                aria-hidden="true"
+                                                                className="fas fa-envelope icono-ver"
+                                                            />
                                                             ) : (
                                                                 <i
                                                                     className="fa fa-times fa-lg boton-negado"
