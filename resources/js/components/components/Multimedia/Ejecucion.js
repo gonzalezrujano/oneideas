@@ -6,9 +6,9 @@ import "./css/Ejecucion.css";
 
 const Ejecucion = props => {
   
-  function deleteJob (id) {
+  function deleteJob (id, type) {
     props.deleteJob(id)
-      .then(deletedId => props.removeMqttJob(deletedId))
+      .then(deletedId => props.removeMqttJob(deletedId, type))
       .catch(e => {
         alert('Try again');
         console.log(e);
@@ -52,7 +52,7 @@ const Ejecucion = props => {
                                     <i
                                       className="fa fa-trash"
                                       style={{ cursor: "pointer" }}
-                                      onClick={e => deleteJob(job.id)}
+                                      onClick={e => deleteJob(job.id, job.type)}
                                     />
                                 </td>
                             </tr>

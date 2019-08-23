@@ -87,7 +87,7 @@ class Multimedia extends Component {
      * @param {fecha de inicio del comando o accion} fechainicio 
      * @param {fecha final del comando evento o accion} fechafin 
      */
-    sendMqttCommand () {
+    sendMqttCommand (moment) {
       const { titleTool } = this.props.tool;
       const { startTime, endTime, color, evento, empresa, archivo, flash2 } = this.state;
 
@@ -100,20 +100,18 @@ class Multimedia extends Component {
       
       switch (titleTool) {
         case 'colores': 
-          message = `COL,:id:,${color},${startTime.getTime()},${endTime.getTime()}`;
+          message = `COL,${moment},:id:,${color},${startTime.getTime()},${endTime.getTime()}`;
           payload = color;
           break;
         case 'flash':
-          message = `FLH,:id:,${flash2},${startTime.getTime()},${endTime.getTime()}`;
+          message = `FLH,${moment},:id:,${flash2},${startTime.getTime()},${endTime.getTime()}`;
           payload = flash2;
           break;
         default:
-          message = `MUL,:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          message = `MUL,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
           payload = archivo;
           break;
       }
-
-      this.mqttClient.send(topic, message);
 
       const job = {
         eventId: evento,
@@ -131,7 +129,7 @@ class Multimedia extends Component {
         .catch(e => {
           alert('Try again');
           
-          console.log(e)
+          console.log(e);
         })
     }
 
@@ -156,10 +154,20 @@ class Multimedia extends Component {
      * Metodo para quitar un comando de las acciones asociadas a ella
      * @param {id} ID del job a dejar de ejecutar 
      */
-    removeMqttJob (id) {
+    removeMqttJob (id, type) {
+      let jobType = '';
+
+      switch (type) {
+        case 'colores':
+          jobType = 'COL';  
+          break;
+        case 'flash':
+          jobType = 'FLH';
+          break;
+      }
       const { empresa, evento } = this.state;
       const topic = `/${empresa}/${evento}`;
-      const message = `REMOVE,${id}`;
+      const message = `REM,0,${id},${jobType}`;
 
       this.mqttClient.send(topic, message);
    }
@@ -413,7 +421,7 @@ class Multimedia extends Component {
                       change={this.handleChange} 
                       openStartTime={this.openStartTime}
                       openEndTime={this.openEndTime}
-                      enviar={this.sendMqttCommand} 
+                      sendMqttCommand={this.sendMqttCommand} 
                     />
                   </div>
                 </div>
