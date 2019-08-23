@@ -25,14 +25,19 @@ const Cola = props => {
 
                         if (event.eventId != props.evento)
                             return null;
+
+                        const startTime = new Date(event.startTime);
+                        const endTime = new Date(event.endTime);
+                        const startTimeString = `${startTime.getHours()}:${startTime.getMinutes()}:${startTime.getSeconds()}`;
+                        const endTimeString = `${endTime.getHours()}:${endTime.getMinutes()}:${endTime.getSeconds()}`;
                         
                         return (
                             <tr key={event.id} id={event.id}>
-                                <td>{event.Tipo}</td>
-                                <td>{event.Inicio}</td>
-                                <td>{event.Fin}</td>
+                                <td>{event.type}</td>
+                                <td>{startTimeString}</td>
+                                <td>{endTimeString}</td>
                                 <td>Grada, Campo</td>
-                                <td>{event.Parametro}</td>
+                                <td>{event.payload}</td>
                                 <td>
                                     <i
                                       className="fa fa-trash mr-2"

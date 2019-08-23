@@ -191,7 +191,6 @@ const Parametros = (props) => {
                         name="color" value={color} onChange={props.change}
                         placement="right"
                     />
-                    {console.log(color)}
                     <div
                     id="recuadro-color"
                     style={{
