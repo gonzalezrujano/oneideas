@@ -5,6 +5,16 @@ import { deleteJob } from './../../../redux/actions/multimedia';
 import "./css/Ejecucion.css";
 
 const Ejecucion = props => {
+  
+  function deleteJob (id, type) {
+    props.deleteJob(id)
+      .then(deletedId => props.removeMqttJob(deletedId, type))
+      .catch(e => {
+        alert('Try again');
+        console.log(e);
+      });
+  }
+
     return (
         <div>
             <table className="table table-dark-theme-console fixed_header">
@@ -19,25 +29,30 @@ const Ejecucion = props => {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.envios.map(event => {
-                        if (event.status != "ejecucion")
+                    {props.envios.map(job => {
+                        if (job.status != "ejecucion")
                             return null;
 
-                        if (event.eventId != props.evento)
+                        if (job.eventId != props.evento)
                             return null;
+
+                        const startTime = new Date(job.startTime);
+                        const endTime = new Date(job.endTime);
+                        const startTimeString = `${startTime.getHours()}:${startTime.getMinutes()}:${startTime.getSeconds()}`;
+                        const endTimeString = `${endTime.getHours()}:${endTime.getMinutes()}:${endTime.getSeconds()}`;
 
                         return (
-                            <tr key={event.id} id={event.id}>
-                                <td>{event.type}</td>
-                                <td>{event.startTime}</td>
-                                <td>{event.endTime}</td>
+                            <tr key={job.id} id={job.id}>
+                                <td>{job.type}</td>
+                                <td>{startTimeString}</td>
+                                <td>{endTimeString}</td>
                                 <td>Grada, Campo</td>
-                                <td>{event.payload}</td>
+                                <td>{job.payload}</td>
                                 <td>
                                     <i
                                       className="fa fa-trash"
                                       style={{ cursor: "pointer" }}
-                                      onClick={e =>props.deleteJob(event.id)}
+                                      onClick={e => deleteJob(job.id, job.type)}
                                     />
                                 </td>
                             </tr>

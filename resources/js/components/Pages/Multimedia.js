@@ -46,8 +46,8 @@ class Multimedia extends Component {
          * Desclarando las funciones que daran uso al state del constructor de esta clase
          */
         this.handleChange = this.handleChange.bind(this);
-        this.enviarComando = this.enviarComando.bind(this);
-        this.enviarComandoQuitar = this.enviarComandoQuitar.bind(this);
+        this.sendMqttCommand = this.sendMqttCommand.bind(this);
+        this.removeMqttJob = this.removeMqttJob.bind(this);
         this.handleStartTime = this.handleStartTime.bind(this);
         this.handleEndTime = this.handleEndTime.bind(this);
         this.openStartTime = this.openStartTime.bind(this);
@@ -56,8 +56,8 @@ class Multimedia extends Component {
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
 
-        this.mqttHost = 'localhost';
-        this.mqttPort = 9001;
+        this.mqttHost = 'mqtt.oneshow.com.ar';
+        this.mqttPort = 11344;
         this.mqttClientId = uuidv4();
         this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, this.mqttClientId);
     }
@@ -87,7 +87,7 @@ class Multimedia extends Component {
      * @param {fecha de inicio del comando o accion} fechainicio 
      * @param {fecha final del comando evento o accion} fechafin 
      */
-    enviarComando () {
+    sendMqttCommand (moment) {
       const { titleTool } = this.props.tool;
       const { startTime, endTime, color, evento, empresa, archivo, flash2 } = this.state;
 
@@ -100,20 +100,18 @@ class Multimedia extends Component {
       
       switch (titleTool) {
         case 'colores': 
-          message = `COL,${color},${startTime.getTime()},${endTime.getTime()}`;
+          message = `COL,${moment},:id:,${color},${startTime.getTime()},${endTime.getTime()}`;
           payload = color;
           break;
         case 'flash':
-          message = `FLH,${flash2},${startTime.getTime()},${endTime.getTime()}`;
+          message = `FLH,${moment},:id:,${flash2},${startTime.getTime()},${endTime.getTime()}`;
           payload = flash2;
           break;
         default:
-          message = `MUL,${archivo},${empresa},${evento},${startTime.getTime()},${endTime.getTime()}`;
+          message = `MUL,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
           payload = archivo;
           break;
       }
-
-      this.mqttClient.send(topic, message);
 
       const job = {
         eventId: evento,
@@ -124,11 +122,15 @@ class Multimedia extends Component {
         payload
       }
 
-      console.log('apiToken', this.state.api_token);
-
       this.props.createJob(job, this.state.api_token)
-        .then(() => console.log('Done it'))
-        .catch(e => console.log(e))
+        .then(jobId => {
+          this.mqttClient.send(topic, message.replace(':id:', jobId));
+        })
+        .catch(e => {
+          alert('Try again');
+          
+          console.log(e);
+        })
     }
 
     /**
@@ -150,61 +152,24 @@ class Multimedia extends Component {
 
     /**
      * Metodo para quitar un comando de las acciones asociadas a ella
-     * @param {titulo} title 
-     * @param {parametro} parametro 
-     * @param {fecha inicio de la accion} fechainicio 
-     * @param {fecha fin de la accion} fechafin 
+     * @param {id} ID del job a dejar de ejecutar 
      */
-    enviarComandoQuitar (title,parametro,fechainicio,fechafin) {
-       
-      var reconnectTimeout = 2000;
-       var host="mqtt.oneshow.com.ar";
-       var port=11344;
-       var self=this;
-       function onConnect() {
+    removeMqttJob (id, type) {
+      let jobType = '';
 
-       var titleTool=title;
-       var evento=self.state.evento.split("_")[0];
-       var topic="/"+self.state.empresa+"/"+evento;
-       if(fechainicio==""){
-           fechainicio=moment().format("hh:mm:ss");
-       }
-       if(fechafin==""){
-           fechafin="99:99:99";
-       }
-       if(titleTool=='imagen'||titleTool=='video'||titleTool=='audio'){
+      switch (type) {
+        case 'colores':
+          jobType = 'COL';  
+          break;
+        case 'flash':
+          jobType = 'FLH';
+          break;
+      }
+      const { empresa, evento } = this.state;
+      const topic = `/${empresa}/${evento}`;
+      const message = `REM,0,${id},${jobType}`;
 
-       var message2 = new Paho.MQTT.Message("MUL,"+self.state.empresa+"/"+evento+"/"+parametro+"..1,"+fechainicio+","+fechafin);
-       message2.destinationName = topic;
-       window.mqttCliente.send(message2);
-       }
-       if(titleTool=='flash'){
-       parametro=0;
-       var message2 = new Paho.MQTT.Message("FLH,"+parametro+","+fechainicio+","+fechafin);
-       message2.destinationName = topic;
-       window.mqttCliente.send(message2);
-       }
-       if(titleTool=='colores'){
-       parametro='#000';
-       var message2 = new Paho.MQTT.Message("COL,"+parametro+"+10,"+fechainicio+","+fechafin);
-       message2.destinationName = topic;
-       window.mqttCliente.send(message2);
-       }
-     }
-     function MQTTconnect() {
-       console.log("connecting to "+ host +" "+ port);
-       window.mqttCliente = new Paho.MQTT.Client(host,port,"clientjs");
-       //document.write("connecting to "+ host);
-       var options = {
-           timeout: 3,
-           onSuccess: onConnect,
-           useSSL:true
-        };
-        
-       window.mqttCliente.connect(options); //connect
-       }
-    
-    MQTTconnect();
+      this.mqttClient.send(topic, message);
    }
 
    /**
@@ -269,7 +234,7 @@ class Multimedia extends Component {
         if(title=='colores'){
         parametro=this.state.color;
         }
-        this.enviarComandoQuitar(title,parametro,inicio,fin);
+        this.removeMqttJob(title,parametro,inicio,fin);
         document.getElementById(id).style.display="none";
         axios.post('/api/eventos/remove-envios', {evento,title,estado,inicio,fin,parametro,id} ,{
             headers: {
@@ -424,13 +389,13 @@ class Multimedia extends Component {
               <div>
                 <Ejecucion
                   envios={this.props.envios}
-                  evento={this.state.evento} 
-                  sincola={this.quitarCola.bind(this)}
+                  evento={this.state.evento}
+                  removeMqttJob={this.removeMqttJob}
                 />
                 <Cola
                   envios={this.props.envios} 
                   evento={this.state.evento} 
-                  sincola={this.quitarCola.bind(this)}
+                  removeMqttJob={this.removeMqttJob}
                 />
                 <div className="container-fluid container-tools">
                   <div className="row">
@@ -456,7 +421,7 @@ class Multimedia extends Component {
                       change={this.handleChange} 
                       openStartTime={this.openStartTime}
                       openEndTime={this.openEndTime}
-                      enviar={this.enviarComando.bind(this)} 
+                      sendMqttCommand={this.sendMqttCommand} 
                     />
                   </div>
                 </div>

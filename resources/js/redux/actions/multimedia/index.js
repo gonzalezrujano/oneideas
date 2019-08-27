@@ -80,6 +80,8 @@ export function createJob (job, apiToken) {
           eventId: envio.Evento,
         }));
 
+        return envio._id;
+
       } else if (res.data.code === 500) {
         return Promise.reject([]);
       }
@@ -95,10 +97,12 @@ export function deleteJob (jobId) {
       }
     })
     .then(res => {
-      if (res.data.code === 200)
-        return dispatch(removeJob(jobId));
+      if (res.data.code !== 200)
+        return Promise.reject({});
+        
+      dispatch(removeJob(jobId));
 
-      return Promise.reject({});
+      return jobId;
     });
   }
 }

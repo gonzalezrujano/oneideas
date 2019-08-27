@@ -191,7 +191,6 @@ const Parametros = (props) => {
                         name="color" value={color} onChange={props.change}
                         placement="right"
                     />
-                    {console.log(color)}
                     <div
                     id="recuadro-color"
                     style={{
@@ -255,9 +254,9 @@ const Parametros = (props) => {
           </div>
         </div>
         <div className="offset-3 mb-4">
-            <button className="btn btn-sm btn-dark mr-2" onClick={(e)=> props.enviar()}>Inmediata</button>
-            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.enviar('audio')}>Proxima</button>
-            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.cola('cola',fechainicio,fechafin)}>En cola</button>
+            <button className="btn btn-sm btn-dark mr-2" onClick={(e)=> props.sendMqttCommand(1)}>Inmediata</button>
+            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.sendMqttCommand(2)}>Proxima</button>
+            <button className="btn btn-sm btn-dark mr-2" onClick={(e) => props.sendMqttCommand(3)}>En cola</button>
             <button className="btn btn-sm btn-dark mr-2">Cancelar</button>
         </div>
       </div>
