@@ -163,6 +163,21 @@ Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
     Route::get('/evento/{id}', 'EtapaController@getEtapasEvento');
     Route::get('/{id}', 'EtapaController@getEtapa');
 });
+
+
+/**
+ * Rutas API orientadas al controlador de Plano InvitadoController
+ */
+Route::group(['middleware'=>'api_token','prefix' => 'planos'], function() {
+    //rutas de empresas
+    Route::post('/', 'PlanoController@addPlano');
+    Route::post('/delete', 'PlanoController@deletePlano');
+    Route::post('/edit','PlanoController@setPlano');
+    Route::get('/evento/{id}', 'PlanoController@getPlanosEvento');
+    Route::get('/{id}', 'PlanoController@getPlano');
+});
+
+
 /**
  * Rutas API orientadas al controlador de Menus(menugrastronomico) 
  * (queda por restructurar)

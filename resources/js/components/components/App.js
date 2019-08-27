@@ -39,6 +39,7 @@ import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
 import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
 import Planos from "../Pages/configuracion/Planos/Planos";
+import PlanosAdd from "../Pages/configuracion/Planos/Add";
 
 function App() {
     return (
@@ -78,7 +79,7 @@ function App() {
                         path="/empresa/eventos/:id"
                         component={Eventos}
                     />
-                    <Route exact path="/empresa/planos" component={Planos} />
+
                     <Route
                         exact
                         path="/eventos/add/:id"
@@ -108,6 +109,16 @@ function App() {
                         exact
                         path="/eventos/etapas/edit/:id"
                         component={EtapasEdit}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/planos/:id"
+                        component={Planos}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/planos/add/:id"
+                        component={PlanosAdd}
                     />
                     <Route exact path="/usuarios" component={Usuarios} />
                     <Route exact path="/usuarios/add" component={UsuariosAdd} />

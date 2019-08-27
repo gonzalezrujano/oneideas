@@ -355,6 +355,38 @@ export default class Eventos extends Component {
                                                                     ""
                                                                 )}
                                                                 {this.state.permisoUsuario.permisos.evento.includes(
+                                                                    "edit"
+                                                                ) ? (
+                                                                    <Link
+                                                                        className="mr-2"
+                                                                        to={{
+                                                                            pathname:
+                                                                                "/eventos/planos/" +
+                                                                                e._id,
+                                                                            state: {
+                                                                                link:
+                                                                                    "/empresa/eventos/" +
+                                                                                    this
+                                                                                        .state
+                                                                                        .idEmpresa,
+                                                                                nombreEmpresa: this
+                                                                                    .state
+                                                                                    .empresa
+                                                                                    .Nombre
+                                                                            }
+                                                                        }}
+                                                                    >
+                                                                        <i
+                                                                            data-toggle="tooltip"
+                                                                            data-placement="top"
+                                                                            title="Planos"
+                                                                            className="fas fa-chair icono-ver"
+                                                                        />
+                                                                    </Link>
+                                                                ) : (
+                                                                    ""
+                                                                )}
+                                                                {this.state.permisoUsuario.permisos.evento.includes(
                                                                     "delete"
                                                                 ) ? (
                                                                     <Link className="mr-2">
