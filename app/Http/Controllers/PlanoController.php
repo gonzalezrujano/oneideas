@@ -77,14 +77,7 @@ class PlanoController extends Controller
         
   }
 
-  public function getplanos(){
-    $Planos = Plano::where("borrado",false)->get();
-    //devuelvo un json con la data
-    return response()->json([
-        'code' => 200,
-        'planos' => $planos
-    ]);
-  }
+
 
   public function setPlano(Request $request){
     //capturo el valor del id
@@ -128,6 +121,18 @@ class PlanoController extends Controller
           return json_encode(['code' => 600]);
       }
 
+  }
+
+   public function getPlanos(){
+    $seatsio = new \Seatsio\SeatsioClient("f4b8068e-031f-4035-a6c2-c56eca47ced9");
+    
+    $data = [];
+    $charts = $seatsio->charts->listAll();
+    foreach($charts as $chart) {
+        array_push($data,$chart);
+    }
+
+    return json_encode(['code'=>200,'data'=>$data]);
   }
 
 }

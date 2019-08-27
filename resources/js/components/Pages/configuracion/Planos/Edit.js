@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 //import { SeatsioSeatingChart } from "@seatsio/seatsio-react";
 import { SeatsioDesigner } from "@seatsio/seatsio-react";
-import axios from "axios";
 import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 import "./css/planos.css";
 
-export default class Add extends Component {
+export default class Edit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            nombre: "",
-            idEvento: this.props.match.params.id,
+            idPlano: this.props.match.params.id,
+            eventoLink: this.props.location.state.link,
+            idEvento: this.props.location.state.idEvento,
+            nombreEmpresa: this.props.location.state.nombreEmpresa,
             evento: "",
             opcion: "Etapas",
             footer: "Footer",
@@ -32,7 +33,6 @@ export default class Add extends Component {
                 }
             })
             .then(res => {
-                console.log(res);
                 this.setState({
                     evento: res.data.evento.evento,
                     isLoading: false
@@ -90,17 +90,7 @@ export default class Add extends Component {
                                 <div className="col-sm-12 col-md-12">
                                     <h1 className="page-header-heading">
                                         <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                        &nbsp;
-                                        <Link
-                                            to={
-                                                "/eventos/etapas/" +
-                                                this.state.idEvento
-                                            }
-                                        >
-                                            Eventos
-                                            {" /" + this.state.evento.Nombre}
-                                        </Link>
-                                        / Agregar Plano
+                                        &nbsp; Modificar Plano
                                     </h1>
                                 </div>
                             </div>
@@ -123,7 +113,7 @@ export default class Add extends Component {
                                     aria-controls="pills-datos"
                                     aria-selected="true"
                                 >
-                                    Datos
+                                    Editor
                                 </a>
                             </li>
                         </ul>
@@ -136,8 +126,11 @@ export default class Add extends Component {
                             encType="multipart/form-data"
                         >
                             <div className="row mb-4">
-                                <div className="col-10">
-                                    <SeatsioDesigner designerKey="90e8b482-18d2-4747-8b3d-f77f9fe4391a" />
+                                <div className="col-12">
+                                    <SeatsioDesigner
+                                        designerKey="90e8b482-18d2-4747-8b3d-f77f9fe4391a"
+                                        chartKey={this.state.idPlano}
+                                    />
                                 </div>
                             </div>
 
@@ -146,7 +139,7 @@ export default class Add extends Component {
                                     <Link
                                         to={{
                                             pathname:
-                                                "/eventos/planos/" +
+                                                "/eventos/etapas/" +
                                                 this.state.idEvento,
                                             state: {
                                                 link: this.state.eventoLink,

@@ -40,6 +40,7 @@ import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
 import Planos from "../Pages/configuracion/Planos/Planos";
 import PlanosAdd from "../Pages/configuracion/Planos/Add";
+import PlanosEdit from "../Pages/configuracion/Planos/Edit";
 
 function App() {
     return (
@@ -119,6 +120,11 @@ function App() {
                         exact
                         path="/eventos/planos/add/:id"
                         component={PlanosAdd}
+                    />
+                    <Route
+                        exact
+                        path="/eventos/planos/edit/:id"
+                        component={PlanosEdit}
                     />
                     <Route exact path="/usuarios" component={Usuarios} />
                     <Route exact path="/usuarios/add" component={UsuariosAdd} />

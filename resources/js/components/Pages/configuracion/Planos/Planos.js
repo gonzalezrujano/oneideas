@@ -15,29 +15,35 @@ export default class Planos extends Component {
             nombreEmpresa: this.props.location.state.nombreEmpresa,
             evento: "",
             etapas: [],
+            planos: [],
             opcion: "Etapas",
             footer: "Footer",
             api_token: localStorage.getItem("api_token"),
-            isLoading: false
+            isLoading: true
         };
         this.modalDelete = this.modalDelete.bind(this);
     }
 
     componentDidMount() {
-        /*
         axios
-            .get("api/etapas/evento/" + this.state.idEvento, {
+            .get("api/planos", {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
                 console.log(res);
-                this.setState({
-                    etapas: res.data.etapas,
-                    evento: res.data.evento,
-                    isLoading: false
-                });
+                this.setState({ planos: res.data.data });
+                axios
+                    .get("api/etapas/evento/" + this.state.idEvento, {
+                        headers: { Authorization: this.state.api_token }
+                    })
+                    .then(res => {
+                        console.log(res);
+                        this.setState({
+                            evento: res.data.evento,
+                            isLoading: false
+                        });
+                    });
             });
-        */
     }
 
     modalDelete(id) {
@@ -186,17 +192,29 @@ export default class Planos extends Component {
                                                 Plano
                                             </th>
                                             <th className="text-center">
+                                                PREVIEW
+                                            </th>
+                                            <th className="text-center">
                                                 ACCIONES
                                             </th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        {/*this.state.etapas.map((e, index) => {
+                                        {this.state.planos.map((e, index) => {
                                             return (
                                                 <tr key={index} id={e._id}>
                                                     <td className="text-center">
-                                                        {e.Nombre}
+                                                        {e.name}
+                                                    </td>
+                                                    <td className="text-center">
+                                                        <img
+                                                            src={
+                                                                e.publishedVersionThumbnailUrl
+                                                            }
+                                                            width="300"
+                                                            height="300"
+                                                        />
                                                     </td>
 
                                                     <td className="text-center">
@@ -208,8 +226,8 @@ export default class Planos extends Component {
                                                                     className="mr-2"
                                                                     to={{
                                                                         pathname:
-                                                                            "/eventos/etapas/edit/" +
-                                                                            e._id,
+                                                                            "/eventos/planos/edit/" +
+                                                                            e.key,
                                                                         state: {
                                                                             link: this
                                                                                 .state
@@ -233,7 +251,7 @@ export default class Planos extends Component {
                                                             ) : (
                                                                 ""
                                                             )}
-                                                            {this.state.permisoUsuario.permisos.evento.includes(
+                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
                                                                 "delete"
                                                             ) ? (
                                                                 <Link className="mr-2">
@@ -252,12 +270,12 @@ export default class Planos extends Component {
                                                                 </Link>
                                                             ) : (
                                                                 ""
-                                                            )}
+                                                            )*/}
                                                         </div>
                                                     </td>
                                                 </tr>
                                             );
-                                        })*/}
+                                        })}
                                     </tbody>
                                 </table>
 

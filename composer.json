@@ -19,6 +19,7 @@
         "nesbot/carbon": "^2.16",
         "predis/predis": "^1.1",
         "s-ichikawa/laravel-sendgrid-driver": "^2.0",
+        "seatsio/seatsio-php": "^53.0",
         "spatie/laravel-directory-cleanup": "^1.2",
         "spatie/laravel-model-cleanup": "^2.2",
         "yajra/laravel-datatables-oracle": "~9.0"
