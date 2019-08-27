@@ -73,8 +73,9 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        timeout: 3,
-        onSuccess: () => console.log('Connected!!')
+        useSSL: true,
+        onSuccess: () => console.log('Connected!!'),
+        onFailure: e => console.log(e)
       })
     }
 
