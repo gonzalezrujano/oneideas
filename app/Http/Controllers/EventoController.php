@@ -722,6 +722,27 @@ class EventoController extends Controller
            
     }
 
+    /**funcion de actuali acion */
+    public function actu(){
+        $eve = Evento::borrado(false)->get();
+        foreach ($eve as $e) {
+            if(!$e->SeatsSubAccount_id){
+                $seatsio = new \Seatsio\SeatsioClient("f4b8068e-031f-4035-a6c2-c56eca47ced9");
+                $dato =  $seatsio->subaccounts->create($e->Nombre);
+                $e->secretKey                 = $dato->secretKey;
+                $e->publicKey                 = $dato->publicKey;
+                $e->designerKey               = $dato->designerKey;
+                $e->SeatsSubAccount_id        = $dato->id;
+                if(!$e->save()){
+                    return json_encode(['code' => 200,'mensaje'=>"no se guardo"]);
+                }
+            }
+            
+        }
+        return json_encode(['code' => 200,'mensaje'=>"guardado con exito"]);
+
+    }
+
     /**
      * metodo para obtener todas las opciones de menu que tendra el evento
      */
@@ -794,7 +815,8 @@ class EventoController extends Controller
                 'idevento'         => $this->generateRandomIDEvento(),
                 'borrado'          => false
             ];
-
+            $seatsio = new \Seatsio\SeatsioClient("f4b8068e-031f-4035-a6c2-c56eca47ced9");
+            $dato = $seatsio->subaccounts->create($input["nombre"]);
             //procedo a guardarlos en la bd
             $registro = new Evento;
             $registro->Empresa_id                = $data['id-emp'];
@@ -811,13 +833,17 @@ class EventoController extends Controller
             $registro->Logo                      = $data['logo'];
             $registro->IDEvento                  = $data['idevento'];
             $registro->MenuApp                   = $menusapp;
+            $registro->secretKey                 = $dato->secretKey;
+            $registro->publicKey                 = $dato->publicKey;
+            $registro->designerKey               = $dato->designerKey;
+            $registro->SeatsSubAccount_id        = $dato->id;
             $registro->Borrado                   = $data['borrado'];
 
 
             //verifico si fue exitoso el insert en la bd
             if($registro->save()){
 
-                return response()->json(['code' => 200]);
+                return response()->json(['code' => 200,'data'=>$registro]);
 
             }else{
                 return response()->json(['code' => 500]);

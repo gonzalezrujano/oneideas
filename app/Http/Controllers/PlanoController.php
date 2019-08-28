@@ -123,12 +123,31 @@ class PlanoController extends Controller
 
   }
 
-   public function getPlanos(){
+   public function getAllPlanos(){
     $seatsio = new \Seatsio\SeatsioClient("f4b8068e-031f-4035-a6c2-c56eca47ced9");
     
     $data = [];
     $charts = $seatsio->charts->listAll();
     foreach($charts as $chart) {
+        array_push($data,$chart);
+    }
+
+    return json_encode(['code'=>200,'data'=>$data]);
+  }
+
+  public function getPlanosEvento(Request $request)
+  {
+    $input = $request->all();
+    $secretKey = $input['secretKey'];
+    $seatsio = new \Seatsio\SeatsioClient($secretKey);
+    $evento = Evento::where("secretKey",$secretKey)->get();
+    $evento = $evento[0];
+    $data = [];
+    $charts = $seatsio->charts->listAll();
+    foreach($charts as $chart) {
+        if(! $seatsio->events->retrieve($evento->_id)){
+            $seatsio->events->create($chart->key, $evento->_id);
+        }
         array_push($data,$chart);
     }
 

@@ -15,6 +15,7 @@ export default class Add extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             nombre: "",
             idEvento: this.props.match.params.id,
+            designerKey: this.props.location.state.designerKey,
             evento: "",
             opcion: "Etapas",
             footer: "Footer",
@@ -137,7 +138,10 @@ export default class Add extends Component {
                         >
                             <div className="row mb-4">
                                 <div className="col-10">
-                                    <SeatsioDesigner designerKey="90e8b482-18d2-4747-8b3d-f77f9fe4391a" />
+                                    <SeatsioDesigner
+                                        designerKey={this.state.designerKey}
+                                        language="es"
+                                    />
                                 </div>
                             </div>
 

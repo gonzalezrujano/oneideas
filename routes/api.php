@@ -87,6 +87,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     Route::post('/add','EventoController@addEvento');
     Route::post('/delete','EventoController@deleteEvento');
     Route::post('/edit','EventoController@editEvento');
+    Route::get('/actu', 'EventoController@actu');
     Route::get('/{id}', 'EventoController@getEvento');
     Route::post('/empresa', 'EventoController@getEventosEmpresa');
 
@@ -173,8 +174,8 @@ Route::group(['middleware'=>'api_token','prefix' => 'planos'], function() {
     Route::post('/', 'PlanoController@addPlano');
     Route::post('/delete', 'PlanoController@deletePlano');
     Route::post('/edit','PlanoController@setPlano');
-    Route::get('/', 'PlanoController@getPlanos');
-    Route::get('/evento/{id}', 'PlanoController@getPlanosEvento');
+    Route::get('/', 'PlanoController@getAllPlanos');
+    Route::post('/evento', 'PlanoController@getPlanosEvento');
     Route::get('/{id}', 'PlanoController@getPlano');
 });
 

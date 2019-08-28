@@ -16,6 +16,7 @@ export default class Edit extends Component {
             eventoLink: this.props.location.state.link,
             idEvento: this.props.location.state.idEvento,
             nombreEmpresa: this.props.location.state.nombreEmpresa,
+            designerKey: this.props.location.state.designerKey,
             evento: "",
             opcion: "Etapas",
             footer: "Footer",
@@ -128,8 +129,9 @@ export default class Edit extends Component {
                             <div className="row mb-4">
                                 <div className="col-12">
                                     <SeatsioDesigner
-                                        designerKey="90e8b482-18d2-4747-8b3d-f77f9fe4391a"
+                                        designerKey={this.state.designerKey}
                                         chartKey={this.state.idPlano}
+                                        languaje="es"
                                     />
                                 </div>
                             </div>

@@ -163,7 +163,6 @@ export default class Add extends React.Component {
             
             console.log(res);
             if (res.data.code == 200){
-                console.log("estoy aca")
                 sweetalert(
                     "Evento agregado correctamente",
                     "success",

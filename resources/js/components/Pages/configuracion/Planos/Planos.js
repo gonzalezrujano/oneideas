@@ -26,20 +26,26 @@ export default class Planos extends Component {
 
     componentDidMount() {
         axios
-            .get("api/planos", {
+            .get("api/etapas/evento/" + this.state.idEvento, {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
-                console.log(res);
-                this.setState({ planos: res.data.data });
+                var evento = res.data.evento;
+                this.setState({
+                    evento: res.data.evento
+                });
                 axios
-                    .get("api/etapas/evento/" + this.state.idEvento, {
-                        headers: { Authorization: this.state.api_token }
-                    })
+                    .post(
+                        "api/planos/evento",
+                        { secretKey: evento.secretKey },
+                        {
+                            headers: { Authorization: this.state.api_token }
+                        }
+                    )
                     .then(res => {
                         console.log(res);
                         this.setState({
-                            evento: res.data.evento,
+                            planos: res.data.data,
                             isLoading: false
                         });
                     });
@@ -175,10 +181,18 @@ export default class Planos extends Component {
                                                 <td>
                                                     <Link
                                                         className="btn-sm btn-dark button-add p-2"
-                                                        to={
-                                                            "/eventos/planos/add/" +
-                                                            this.state.idEvento
-                                                        }
+                                                        to={{
+                                                            pathname:
+                                                                "/eventos/planos/add/" +
+                                                                this.state
+                                                                    .idEvento,
+                                                            state: {
+                                                                designerKey: this
+                                                                    .state
+                                                                    .evento
+                                                                    .designerKey
+                                                            }
+                                                        }}
                                                     >
                                                         Agregar plano
                                                     </Link>
@@ -237,7 +251,11 @@ export default class Planos extends Component {
                                                                                 .nombreEmpresa,
                                                                             idEvento: this
                                                                                 .state
-                                                                                .idEvento
+                                                                                .idEvento,
+                                                                            designerKey: this
+                                                                                .state
+                                                                                .evento
+                                                                                .designerKey
                                                                         }
                                                                     }}
                                                                 >
