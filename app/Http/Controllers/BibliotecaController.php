@@ -199,7 +199,7 @@ class BibliotecaController extends Controller
                 $registro = Biblioteca::find($id);
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
-                    Storage::disk('public_oneshow')->delete($registro->Path);
+                    Storage::disk('public')->delete($registro->Path);
                     return json_encode(['code' => 200]);
                 }
                 return json_encode(['code' => 500]);
@@ -342,7 +342,9 @@ class BibliotecaController extends Controller
         //creo el nombre del archivo
         $name = $input['name'].'.'.$fileData['extension'];
 
-        Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
+        $path = $request->file('archivo')->storeAs($pathSave, $name, 'public');
+
+        // Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
 
         //capturo los datos y los acomodo en un arreglo
         $data = [
@@ -350,7 +352,7 @@ class BibliotecaController extends Controller
             'nombre'           => $input['name'],
             'nombrec'          => $name,
             //'tipo'             => $type,
-            'path'             => $pathSave.$name,
+            'path'             => $path,
             'size'             => $fileData['size'],
             'categoria'        => new ObjectId($input['categoria']),
             'activo'           => true,
