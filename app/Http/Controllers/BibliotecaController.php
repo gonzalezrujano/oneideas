@@ -15,6 +15,7 @@ use Auth, DataTables, File, Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
+use PHP\BitTorrent\Torrent;
 
 class BibliotecaController extends Controller
 {
@@ -199,7 +200,11 @@ class BibliotecaController extends Controller
                 $registro = Biblioteca::find($id);
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
-                    Storage::disk('public')->delete($registro->Path);
+                    Storage::disk('public')->delete([
+                      $registro->Path,
+                      'torrents/' . $id . '.torrent'
+                    ]);
+
                     return json_encode(['code' => 200]);
                 }
                 return json_encode(['code' => 500]);
@@ -343,9 +348,19 @@ class BibliotecaController extends Controller
         $name = $input['name'].'.'.$fileData['extension'];
 
         $path = $request->file('archivo')->storeAs($pathSave, $name, 'public');
+        $torrent = Torrent::createFromPath(storage_path('app\public\\' . $pathSave . $name), 'http://localhost:59269/announce');
+        
+        $torrent->setAnnounceList([
+          'tracker.openbittorrent.com:80',
+          'tracker.internetwarriors.net:1337',
+          'tracker.leechers-paradise.org:6969',
+          'tracker.coppersurfer.tk:6969',
+          'exodus.desync.com:6969',
+          'tracker.btorrent.xyz',
+          'tracker.fastcast.nz',
+        ]);
 
         // Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
-
         //capturo los datos y los acomodo en un arreglo
         $data = [
             'id-evento'        => new ObjectID($input['id-evento']),
@@ -377,6 +392,8 @@ class BibliotecaController extends Controller
 
         //verifico si fue exitoso el insert en la bd
         if($registro->save()){
+            
+            $torrent->save(storage_path('app\public\torrents\\') . $registro->id . '.torrent');
 
             return response()->json(['code' => 200]);
 
