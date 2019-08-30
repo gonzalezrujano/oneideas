@@ -135,6 +135,16 @@ class PlanoController extends Controller
     return json_encode(['code'=>200,'data'=>$data]);
   }
 
+  public function isEvent($eventos, $key){
+      $retorno =false;
+      foreach($eventos as $evento){
+        if($evento->key == $key){
+            $retorno = true;
+        }
+      }
+      return $retorno;
+  }
+
   public function getPlanosEvento(Request $request)
   {
     $input = $request->all();
@@ -143,15 +153,19 @@ class PlanoController extends Controller
     $evento = Evento::where("secretKey",$secretKey)->get();
     $evento = $evento[0];
     $data = [];
+    $prueba = [];
     $charts = $seatsio->charts->listAll();
+    $count = 0;
+    $eventos = $seatsio->events->listAll();
     foreach($charts as $chart) {
-        if(! $seatsio->events->retrieve($evento->_id)){
-            $seatsio->events->create($chart->key, $evento->_id);
+        if(!$this->isEvent($eventos , $evento->_id."-".$count) ) {
+            $event = $seatsio->events->create($chart->key, $evento->_id."-".$count);
         }
         array_push($data,$chart);
+        $count++;
     }
 
-    return json_encode(['code'=>200,'data'=>$data]);
+    return json_encode(['code'=>200,'data'=>$data,'info'=>$evento->_id."-0"]);
   }
 
 }

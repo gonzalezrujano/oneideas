@@ -31,6 +31,7 @@ export default class Planos extends Component {
             })
             .then(res => {
                 console.log(res);
+                console.log(this.state.api_token);
                 var evento = res.data.evento;
                 this.setState({
                     evento: res.data.evento

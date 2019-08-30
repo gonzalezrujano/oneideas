@@ -141,8 +141,8 @@ export default class Add extends Component {
                     }).then((result) => {
                         if (result.value) {
                             window.scrollTo(0, 0);
-                            var asientos = 1 + parseInt(this.state.invitadosAdicionalesMayores,10)+parseInt(this.state.invitadosAdicionalesMenores,10);
-                            this.props.history.push("/invitados/seleccion-asientos",{idEvento:this.state.evento,asientos,idInvitado:res.data.invitado._id});
+                            
+                            this.props.history.push("/invitados");
                         }
                     }); 
                 }else if(res.data.code === 500){

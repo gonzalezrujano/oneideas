@@ -34,6 +34,7 @@ export default class SeleccionAsientos extends Component {
                 }
             })
             .then(res => {
+                console.log(res);
                 var evento = res.data.evento.evento;
                 this.setState({
                     evento,
@@ -111,7 +112,7 @@ export default class SeleccionAsientos extends Component {
                                 <div className="col-10">
                                     <SeatsioSeatingChart
                                         publicKey={this.state.evento.publicKey}
-                                        event={this.state.evento._id}
+                                        event={this.state.evento._id + "-0"}
                                         numberOfPlacesToSelect={
                                             this.state.asientos
                                         }

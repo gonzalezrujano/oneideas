@@ -42,6 +42,7 @@ import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfir
 import Planos from "../Pages/configuracion/Planos/Planos";
 import PlanosAdd from "../Pages/configuracion/Planos/Add";
 import PlanosEdit from "../Pages/configuracion/Planos/Edit";
+import Asientos from "../Pages/configuracion/Invitados/asientos/Asientos";
 
 function App() {
     return (
@@ -170,6 +171,11 @@ function App() {
                         exact
                         path="/invitados/seleccion-asientos/"
                         component={SeleccionAsientos}
+                    />
+                    <Route
+                        exact
+                        path="/invitados/asientos/"
+                        component={Asientos}
                     />
                     <Route exact path="/grupos" component={Grupos} />
                     <Route exact path="/grupos/add" component={GruposAdd} />
