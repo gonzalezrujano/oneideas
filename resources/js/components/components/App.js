@@ -31,6 +31,7 @@ import Invitados from "../Pages/configuracion/Invitados/invitados/Invitados";
 import InvitadosAdd from "../Pages/configuracion/Invitados/invitados/Add";
 import InvitadosShow from "../Pages/configuracion/Invitados/invitados/Show";
 import InvitadosEdit from "../Pages/configuracion/Invitados/invitados/Edit";
+import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
 import Grupos from "../Pages/configuracion/Grupos/Grupos";
 import GruposAdd from "../Pages/configuracion/Grupos/Add";
 import GruposEdit from "../Pages/configuracion/Grupos/Edit";
@@ -164,6 +165,11 @@ function App() {
                         exact
                         path="/invitados/show/"
                         component={InvitadosShow}
+                    />
+                    <Route
+                        exact
+                        path="/invitados/seleccion-asientos/"
+                        component={SeleccionAsientos}
                     />
                     <Route exact path="/grupos" component={Grupos} />
                     <Route exact path="/grupos/add" component={GruposAdd} />
