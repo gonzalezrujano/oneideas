@@ -30,7 +30,7 @@ export default class Planos extends Component {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
-                console.log(evento);
+                console.log(res);
                 var evento = res.data.evento;
                 this.setState({
                     evento: res.data.evento
