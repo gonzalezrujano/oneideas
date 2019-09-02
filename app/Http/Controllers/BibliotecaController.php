@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
 use PHP\BitTorrent\Torrent;
+use App\Jobs\MoveFileToTorrentClient;
 
 class BibliotecaController extends Controller
 {
@@ -348,17 +349,6 @@ class BibliotecaController extends Controller
         $name = $input['name'].'.'.$fileData['extension'];
 
         $path = $request->file('archivo')->storeAs($pathSave, $name, 'public');
-        $torrent = Torrent::createFromPath(storage_path('app\public\\' . $pathSave . $name), 'http://localhost:59269/announce');
-        
-        $torrent->setAnnounceList([
-          'tracker.openbittorrent.com:80',
-          'tracker.internetwarriors.net:1337',
-          'tracker.leechers-paradise.org:6969',
-          'tracker.coppersurfer.tk:6969',
-          'exodus.desync.com:6969',
-          'tracker.btorrent.xyz',
-          'tracker.fastcast.nz',
-        ]);
 
         // Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
         //capturo los datos y los acomodo en un arreglo
@@ -366,7 +356,6 @@ class BibliotecaController extends Controller
             'id-evento'        => new ObjectID($input['id-evento']),
             'nombre'           => $input['name'],
             'nombrec'          => $name,
-            //'tipo'             => $type,
             'path'             => $path,
             'size'             => $fileData['size'],
             'categoria'        => new ObjectId($input['categoria']),
@@ -378,7 +367,6 @@ class BibliotecaController extends Controller
         //procedo a guardarlos en la bd
         $registro = new Biblioteca;
         $registro->Evento_id                 = $data['id-evento'];
-        //$registro->Tipo                      = $data['tipo'];
         $registro->Nombre                    = $data['nombre'];
         $registro->NombreCompleto            = $data['nombrec'];
         $registro->Path                      = $data['path'];
@@ -389,11 +377,10 @@ class BibliotecaController extends Controller
         $registro->Activo                    = $data['activo'];
         $registro->Borrado                   = $data['borrado'];
 
-
         //verifico si fue exitoso el insert en la bd
         if($registro->save()){
             
-            $torrent->save(storage_path('app\public\torrents\\') . $registro->id . '.torrent');
+            MoveFileToTorrentClient::dispatch($registro);
 
             return response()->json(['code' => 200]);
 
