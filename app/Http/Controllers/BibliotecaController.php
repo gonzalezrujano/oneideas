@@ -404,4 +404,15 @@ class BibliotecaController extends Controller
 
     }
 
+    public function downloadTorrent (Request $request) {
+      // return 'asldknaskldnaslkd';
+      $pathToFile = public_path('storage/torrents') . '/' . $request->filename . '.torrent';
+
+      if (is_file($pathToFile))
+        return response()->file($pathToFile, [
+          'Access-Control-Allow-Origin' => '*'
+        ]);
+
+      return response('Not Found', 404);
+    }
 }
