@@ -15,6 +15,8 @@ use Auth, DataTables, File, Storage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
+use PHP\BitTorrent\Torrent;
+use App\Jobs\MoveFileToTorrentClient;
 
 class BibliotecaController extends Controller
 {
@@ -199,7 +201,11 @@ class BibliotecaController extends Controller
                 $registro = Biblioteca::find($id);
                 //valido que de verdad sea borrado en caso de que no arrojo un error
                 if($registro->delete()){
-                    Storage::disk('public_oneshow')->delete($registro->Path);
+                    Storage::disk('public')->delete([
+                      $registro->Path,
+                      'torrents/' . $id . '.torrent'
+                    ]);
+
                     return json_encode(['code' => 200]);
                 }
                 return json_encode(['code' => 500]);
@@ -342,15 +348,15 @@ class BibliotecaController extends Controller
         //creo el nombre del archivo
         $name = $input['name'].'.'.$fileData['extension'];
 
-        Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
+        $path = $request->file('archivo')->storeAs($pathSave, $name, 'public');
 
+        // Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
         //capturo los datos y los acomodo en un arreglo
         $data = [
             'id-evento'        => new ObjectID($input['id-evento']),
             'nombre'           => $input['name'],
             'nombrec'          => $name,
-            //'tipo'             => $type,
-            'path'             => $pathSave.$name,
+            'path'             => $path,
             'size'             => $fileData['size'],
             'categoria'        => new ObjectId($input['categoria']),
             'activo'           => true,
@@ -361,7 +367,6 @@ class BibliotecaController extends Controller
         //procedo a guardarlos en la bd
         $registro = new Biblioteca;
         $registro->Evento_id                 = $data['id-evento'];
-        //$registro->Tipo                      = $data['tipo'];
         $registro->Nombre                    = $data['nombre'];
         $registro->NombreCompleto            = $data['nombrec'];
         $registro->Path                      = $data['path'];
@@ -372,17 +377,30 @@ class BibliotecaController extends Controller
         $registro->Activo                    = $data['activo'];
         $registro->Borrado                   = $data['borrado'];
 
-
         //verifico si fue exitoso el insert en la bd
-        if($registro->save()){
+        if($registro->save()) {
+            
+            $name = $registro->id .'.'. $fileData['extension'];
+            $request->file('archivo')->storeAs('ROOT/files', $name, 'ftp');
 
             return response()->json(['code' => 200]);
 
-        }else{
+        } else {
             return response()->json(['code' => 500]);
         }
         
 
     }
 
+    public function downloadTorrent (Request $request) {
+      // return 'asldknaskldnaslkd';
+      $pathToFile = public_path('storage/torrents') . '/' . $request->filename . '.torrent';
+
+      if (is_file($pathToFile))
+        return response()->file($pathToFile, [
+          'Access-Control-Allow-Origin' => '*'
+        ]);
+
+      return response('Not Found', 404);
+    }
 }

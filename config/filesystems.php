@@ -69,6 +69,16 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'ftp' => [
+          'driver' => 'ftp',
+          'host' => env('ONESHOW_FTP_HOST', 'ftp.example.com'),
+          'username' => env('ONESHOW_FTP_USER', 'your-username'),
+          'password' => env('ONESHOW_FTP_PASS', 'your-password'),
+          'port' => env('ONESHOW_FTP_PORT', 21),
+          // 'root' => env('ONESHOW_FTP_ROOT', '/'),
+          // 'passive' => true,
+          // 'timeout' => 30,
+      ],
     ],
 
 ];
