@@ -378,13 +378,14 @@ class BibliotecaController extends Controller
         $registro->Borrado                   = $data['borrado'];
 
         //verifico si fue exitoso el insert en la bd
-        if($registro->save()){
+        if($registro->save()) {
             
-            MoveFileToTorrentClient::dispatch($registro);
+            $name = $registro->id .'.'. $fileData['extension'];
+            $request->file('archivo')->storeAs('ROOT/files', $name, 'ftp');
 
             return response()->json(['code' => 200]);
 
-        }else{
+        } else {
             return response()->json(['code' => 500]);
         }
         
