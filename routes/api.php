@@ -176,6 +176,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'planos'], function() {
     Route::post('/edit','PlanoController@setPlano');
     Route::get('/', 'PlanoController@getAllPlanos');
     Route::post('/evento', 'PlanoController@getPlanosEvento');
+    Route::post('/reservar', 'PlanoController@reservar');
     Route::get('/{id}', 'PlanoController@getPlano');
 });
 

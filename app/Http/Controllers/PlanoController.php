@@ -168,4 +168,15 @@ class PlanoController extends Controller
     return json_encode(['code'=>200,'data'=>$data,'info'=>$evento->_id."-0"]);
   }
 
+  public function reservar(Request $request){
+      $input = $request->all();
+      $seat = $input['seat'];
+      $secretKey = $input['secretKey'];
+      $eventKey = $input['eventKey'];
+      $seatsio = new \Seatsio\SeatsioClient($secretKey);
+      $respuesta = $seatsio->events->book($eventKey, [$seat]);
+      json_encode(['code'=>200,'data'=>$respuesta]);
+
+  }
+
 }

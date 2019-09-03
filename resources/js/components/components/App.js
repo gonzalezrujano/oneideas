@@ -31,7 +31,6 @@ import Invitados from "../Pages/configuracion/Invitados/invitados/Invitados";
 import InvitadosAdd from "../Pages/configuracion/Invitados/invitados/Add";
 import InvitadosShow from "../Pages/configuracion/Invitados/invitados/Show";
 import InvitadosEdit from "../Pages/configuracion/Invitados/invitados/Edit";
-import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
 import Grupos from "../Pages/configuracion/Grupos/Grupos";
 import GruposAdd from "../Pages/configuracion/Grupos/Add";
 import GruposEdit from "../Pages/configuracion/Grupos/Edit";
@@ -43,6 +42,8 @@ import Planos from "../Pages/configuracion/Planos/Planos";
 import PlanosAdd from "../Pages/configuracion/Planos/Add";
 import PlanosEdit from "../Pages/configuracion/Planos/Edit";
 import Asientos from "../Pages/configuracion/Invitados/asientos/Asientos";
+import SeleccionPlanos from "../Pages/configuracion/Invitados/asientos/SeleccionPlanos";
+import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
 
 function App() {
     return (
@@ -167,15 +168,21 @@ function App() {
                         path="/invitados/show/"
                         component={InvitadosShow}
                     />
-                    <Route
-                        exact
-                        path="/invitados/seleccion-asientos/"
-                        component={SeleccionAsientos}
-                    />
+
                     <Route
                         exact
                         path="/invitados/asientos/"
                         component={Asientos}
+                    />
+                    <Route
+                        exact
+                        path="/asientos/planos/"
+                        component={SeleccionPlanos}
+                    />
+                    <Route
+                        exact
+                        path="/planos/seleccion-asiento/"
+                        component={SeleccionAsientos}
                     />
                     <Route exact path="/grupos" component={Grupos} />
                     <Route exact path="/grupos/add" component={GruposAdd} />

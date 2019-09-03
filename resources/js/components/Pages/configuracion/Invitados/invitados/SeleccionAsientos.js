@@ -9,14 +9,14 @@ import { Link } from "react-router-dom";
 export default class SeleccionAsientos extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             nombre: "",
             idEvento: props.location.state.idEvento,
+            eventKey: props.location.state.eventKey,
             evento: "",
-            asientos: props.location.state.asientos,
+            asientos: 1,
             idInvitado: props.location.idInvitado,
             opcion: "Etapas",
             footer: "Footer",
@@ -24,6 +24,7 @@ export default class SeleccionAsientos extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -43,7 +44,50 @@ export default class SeleccionAsientos extends Component {
             });
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+        var elements = document.getElementById("prueba").elements;
+        var seat = elements.item(0).value;
+        $("#boton-asiento").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        axios
+            .post(
+                "api/planos/reservar",
+                {
+                    seat,
+                    secretKey: this.state.evento.secretKey,
+                    eventKey: this.state.eventKey
+                },
+                {
+                    headers: { Authorization: this.state.api_token }
+                }
+            )
+            .then(res => {
+                if (res.data.code === 200) {
+                    Swal.fire({
+                        text: "Asiento reservado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById("sweet")
+                    }).then(result => {
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+
+                            this.props.history.push("/invitados/asientos");
+                        }
+                    });
+                } else if (res.data.code === 500) {
+                    $("button#save-usuario")
+                        .find("i.fa")
+                        .remove();
+                    sweetalert(res.data.mensaje, "error", "sweet");
+                }
+            });
+    }
+
     render() {
+        console.log(this.state.eventKey);
         if (this.state.isLoading) {
             return (
                 <div>
@@ -110,13 +154,28 @@ export default class SeleccionAsientos extends Component {
                         >
                             <div className="row mb-4">
                                 <div className="col-10">
-                                    <SeatsioSeatingChart
-                                        publicKey={this.state.evento.publicKey}
-                                        event={this.state.evento._id + "-0"}
-                                        numberOfPlacesToSelect={
-                                            this.state.asientos
-                                        }
-                                    />
+                                    <form
+                                        id="prueba"
+                                        onSubmit={this.handleSubmit}
+                                    >
+                                        <SeatsioSeatingChart
+                                            publicKey={
+                                                this.state.evento.publicKey
+                                            }
+                                            event={this.state.eventKey}
+                                            numberOfPlacesToSelect={
+                                                this.state.asientos
+                                            }
+                                            selectedObjectsInputName="selectedSeats"
+                                        />
+                                        <button
+                                            type="submit"
+                                            id="boton-asiento"
+                                            className="btn btn-sm btn-dark "
+                                        >
+                                            Guardar
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
 
@@ -127,7 +186,7 @@ export default class SeleccionAsientos extends Component {
                                             type="button"
                                             className="btn btn-sm btn-dark"
                                         >
-                                            Guardar
+                                            volver
                                         </button>
                                     </Link>
                                 </div>

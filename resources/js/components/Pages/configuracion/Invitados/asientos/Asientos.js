@@ -369,48 +369,42 @@ export default class Asientos extends Component {
                                     <tbody>
                                         {this.state.invitados.map(
                                             (e, index) => {
-                                                if (!e.esInvitadoAdicional) {
-                                                    return (
-                                                        <tr
-                                                            key={index}
-                                                            id={e._id}
-                                                        >
-                                                            <td className="text-center">
-                                                                {e.Nombre +
-                                                                    " " +
-                                                                    e.Apellido}
-                                                            </td>
-                                                            <td className="text-center">
-                                                                {e.Grupo}
-                                                            </td>
-                                                            <td className="text-center">
-                                                                <div className="text-center">
-                                                                    <Link
-                                                                        to={{
-                                                                            pathname:
-                                                                                "/invitados/seleccion-asientos",
-                                                                            state: {
-                                                                                idEvento:
-                                                                                    e.Evento_id,
-                                                                                asientos: 1,
-                                                                                idInvitado:
-                                                                                    e._id
-                                                                            }
-                                                                        }}
-                                                                        className="mr-2"
-                                                                    >
-                                                                        <i
-                                                                            data-toggle="tooltip"
-                                                                            data-placement="top"
-                                                                            title="Ver"
-                                                                            className="fas fa-eye icono-ver"
-                                                                        />
-                                                                    </Link>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                }
+                                                return (
+                                                    <tr key={index} id={e._id}>
+                                                        <td className="text-center">
+                                                            {e.Nombre +
+                                                                " " +
+                                                                e.Apellido}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            {e.Grupo}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <div className="text-center">
+                                                                <Link
+                                                                    to={{
+                                                                        pathname:
+                                                                            "/asientos/planos",
+                                                                        state: {
+                                                                            idEvento:
+                                                                                e.Evento_id,
+                                                                            idInvitado:
+                                                                                e._id
+                                                                        }
+                                                                    }}
+                                                                    className="mr-2"
+                                                                >
+                                                                    <i
+                                                                        data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Ver"
+                                                                        className="fas fa-eye icono-ver"
+                                                                    />
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
                                             }
                                         )}
                                     </tbody>
