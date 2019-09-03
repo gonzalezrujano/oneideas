@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Evento;
 use App\Models\MongoDB\Plano;
+use App\Models\MongoDB\Reserva;
 use MongoDB\BSON\ObjectID;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -168,6 +169,29 @@ class PlanoController extends Controller
     return json_encode(['code'=>200,'data'=>$data,'info'=>$evento->_id."-0"]);
   }
 
+  public function getPlanosEventoReservas(Request $request)
+  {
+    $input = $request->all();
+    $secretKey = $input['secretKey'];
+    $seatsio = new \Seatsio\SeatsioClient($secretKey);
+    $evento = Evento::where("secretKey",$secretKey)->get();
+    $evento = $evento[0];
+    $data = [];
+    $prueba = [];
+    $charts = $seatsio->charts->listAll();
+    $count = 0;
+    $eventos = $seatsio->events->listAll();
+    foreach($charts as $chart) {
+        if(!$this->isEvent($eventos , $evento->_id."-".$count) ) {
+            $event = $seatsio->events->create($chart->key, $evento->_id."-".$count);
+        }
+        array_push($data,$chart);
+        $count++;
+    }
+    $reservas = Reserva::where("borrado",false)->get();
+    return json_encode(['code'=>200,'data'=>$data,'reservas'=>$reservas]);
+  }
+
   public function reservar(Request $request){
       $input = $request->all();
       $seat = $input['seat'];
@@ -175,7 +199,16 @@ class PlanoController extends Controller
       $eventKey = $input['eventKey'];
       $seatsio = new \Seatsio\SeatsioClient($secretKey);
       $respuesta = $seatsio->events->book($eventKey, [$seat]);
-      json_encode(['code'=>200,'data'=>$respuesta]);
+      $reserva = new Reserva;
+      $reserva->eventKey = $eventKey;
+      $reserva->asiento  = $seat;
+      $reserva->Invitado_id = $input['idInvitado'];
+      $reserva->Evento_id   = $input['idEvento'];
+      $reserva->borrado = (boolean) false;
+      if($reserva->save()){
+        return json_encode(['code'=>200,'data'=>$reserva]);
+      }
+      return json_encode(['code'=>500]);
 
   }
 

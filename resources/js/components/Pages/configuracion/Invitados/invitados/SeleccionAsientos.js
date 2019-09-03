@@ -17,7 +17,7 @@ export default class SeleccionAsientos extends Component {
             eventKey: props.location.state.eventKey,
             evento: "",
             asientos: 1,
-            idInvitado: props.location.idInvitado,
+            idInvitado: props.location.state.idInvitado,
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -55,14 +55,17 @@ export default class SeleccionAsientos extends Component {
                 {
                     seat,
                     secretKey: this.state.evento.secretKey,
-                    eventKey: this.state.eventKey
+                    eventKey: this.state.eventKey,
+                    idInvitado: this.state.idInvitado,
+                    idEvento: this.state.idEvento
                 },
                 {
                     headers: { Authorization: this.state.api_token }
                 }
             )
             .then(res => {
-                if (res.data.code === 200) {
+                console.log(res);
+                if (res.data.code == 200) {
                     Swal.fire({
                         text: "Asiento reservado exitosamente",
                         type: "success",

@@ -12,7 +12,7 @@ export default class SeleccionPlanos extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             idEvento: props.location.state.idEvento,
             evento: "",
-            idInvitado: props.location.idInvitado,
+            idInvitado: props.location.state.idInvitado,
             evento: "",
             planos: [],
             opcion: "Etapas",
@@ -20,6 +20,7 @@ export default class SeleccionPlanos extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+        this.esReservado = this.esReservado.bind(this);
     }
 
     componentDidMount() {
@@ -35,7 +36,7 @@ export default class SeleccionPlanos extends Component {
                 });
                 axios
                     .post(
-                        "api/planos/evento",
+                        "api/planos/evento-reservas",
                         { secretKey: evento.secretKey },
                         {
                             headers: { Authorization: this.state.api_token }
@@ -45,10 +46,23 @@ export default class SeleccionPlanos extends Component {
                         console.log(res);
                         this.setState({
                             planos: res.data.data,
+                            reservas: res.data.reservas,
                             isLoading: false
                         });
                     });
             });
+    }
+
+    esReservado(id) {
+        console.log(id);
+        var retorno = false;
+        this.state.reservas.forEach(reserva => {
+            console.log(reserva.eventKey);
+            if (reserva.eventKey == id) {
+                retorno = true;
+            }
+        });
+        return retorno;
     }
 
     render() {
@@ -102,9 +116,8 @@ export default class SeleccionPlanos extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                            <Link to="invitados/asientos">
-                                                Asientos
-                                                {" " + this.state.nombreEmpresa}
+                                            <Link to="/invitados/asientos">
+                                                Asientos{" "}
                                             </Link>{" "}
                                             &nbsp; / Planos
                                         </h1>
@@ -128,6 +141,9 @@ export default class SeleccionPlanos extends Component {
                                                 PREVIEW
                                             </th>
                                             <th className="text-center">
+                                                STATUS
+                                            </th>
+                                            <th className="text-center">
                                                 SELECCION
                                             </th>
                                         </tr>
@@ -149,6 +165,16 @@ export default class SeleccionPlanos extends Component {
                                                             width="300"
                                                             height="300"
                                                         />
+                                                    </td>
+                                                    <td className="text-center">
+                                                        {this.esReservado(
+                                                            this.state
+                                                                .idEvento +
+                                                                "-" +
+                                                                index
+                                                        )
+                                                            ? "Ya reservado"
+                                                            : "No reservado"}
                                                     </td>
 
                                                     <td className="text-center">
