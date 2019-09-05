@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 export default class SeleccionPlanos extends Component {
     constructor(props) {
         super(props);
+        console.log(props.location.state.idInvitado);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),

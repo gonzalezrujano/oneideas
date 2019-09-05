@@ -38,6 +38,7 @@ import Etapas from "../Pages/configuracion/Eventos/Etapas/Etapas";
 import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
 import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
+import MailAsiento from "../Pages/configuracion/MailAsiento/MailAsiento";
 import Planos from "../Pages/configuracion/Planos/Planos";
 import PlanosAdd from "../Pages/configuracion/Planos/Add";
 import PlanosEdit from "../Pages/configuracion/Planos/Edit";
@@ -196,6 +197,7 @@ function App() {
                         path="/mail/:id"
                         component={MailConfirmation}
                     />
+                    <Route exact path="/event/:id" component={MailAsiento} />
                 </Switch>
             </BrowserRouter>
         </Provider>

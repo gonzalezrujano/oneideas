@@ -150,7 +150,16 @@ Route::group(['prefix' => 'mail-confirmacion'], function() {
     Route::post('/', 'InvitadoController@mailConfirmacion');  
     Route::post('/datos','InvitadoController@confirmacionDatos');
     Route::post('/datos-listos','MailController@datosListos');
+    
 });
+
+Route::group(['prefix' => 'mail-asientos'], function() {
+    //rutas de empresas
+    Route::post('/', 'PlanoController@infoEvento'); 
+    
+});
+
+
 
 
 

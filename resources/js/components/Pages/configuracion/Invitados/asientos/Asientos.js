@@ -389,7 +389,7 @@ export default class Asientos extends Component {
                                                                             idEvento:
                                                                                 e.Evento_id,
                                                                             idInvitado:
-                                                                                e._id
+                                                                                e.Invitado_id
                                                                         }
                                                                     }}
                                                                     className="mr-2"

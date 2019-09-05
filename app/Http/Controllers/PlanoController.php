@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\Invitado;
 use App\Models\MongoDB\Plano;
 use App\Models\MongoDB\Reserva;
 use MongoDB\BSON\ObjectID;
+use App\Mail\CorreoDeAsiento;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use DB, DataTables, Image, Storage, File, Auth, Mail, QrCode;
+use DB, DataTables, Image, Storage, File,Mail, Auth, QrCode;
 
 //controlador encargado de los invitados
 
@@ -205,11 +207,30 @@ class PlanoController extends Controller
       $reserva->Invitado_id = $input['idInvitado'];
       $reserva->Evento_id   = $input['idEvento'];
       $reserva->borrado = (boolean) false;
+      $invitado = Invitado::find($input['idInvitado']);
+      //$link = "http://localhost:8000/event/".$eventKey;
+      $link = "https://consola.oneshow.com.ar/event/".$eventKey;
+      $data  = [
+          "nombre"=>$invitado->Nombre,
+          "seat"=>$seat,
+          "eventKey"=>$eventKey,
+          "id_invitado"=>$input["idInvitado"],
+          "link" => $link,
+          "nombre_evento"=> Evento::find($input['idEvento'])->Nombre
+        ];
+      Mail::to($invitado->Correo)->send(new CorreoDeAsiento($data));
       if($reserva->save()){
         return json_encode(['code'=>200,'data'=>$reserva]);
       }
       return json_encode(['code'=>500]);
 
+  }
+
+  public function infoEvento(Request $request){
+    $input = $request->all();
+    $eventoId = $input['eventoId'];
+    $evento = Evento::find($eventoId);
+    return json_encode(['code'=>200,'data'=>$evento]);
   }
 
 }
