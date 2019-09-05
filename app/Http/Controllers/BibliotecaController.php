@@ -273,12 +273,10 @@ class BibliotecaController extends Controller
      * $request variable que recibe el id del evento
      */
     public function getFilesEvento(Request $request){
-
         //capturo el id de la empresa para buscar los eventos en base a ella
-        $input = $request->all();
-        $idevento = $input['evento'];
+        $idevento = $request->id;
 
-        $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectID($idevento) )->get();
+        $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectID($idevento))->get();
 
         $archivos = [];
 
@@ -294,10 +292,10 @@ class BibliotecaController extends Controller
                     //'Tipo'      => $f->Tipo,
                     'Size'      => $f->Size,
                     'Categoria' => CategoriaBiblioteca::find($f->CategoriaBiblioteca_id)->Nombre,
-                    'Activo'    => $f->Activo
+                    'Activo'    => $f->Activo,
+                    'MagnetURI' => $f->MagnetURI
                 ];
             }
-
         }
 
         if($archivos){
@@ -380,8 +378,13 @@ class BibliotecaController extends Controller
         //verifico si fue exitoso el insert en la bd
         if($registro->save()) {
             
-            $name = $registro->id .'.'. $fileData['extension'];
-            $request->file('archivo')->storeAs('ROOT/files', $name, 'ftp');
+            if (env('APP_ENV') === 'local') {
+              MoveFileToTorrentClient::dispatch($registro);
+            } else {
+              $name = $registro->id .'.'. $fileData['extension'];
+              $request->file('archivo')->storeAs('ROOT/files', $name, 'ftp');
+            }
+
 
             return response()->json(['code' => 200]);
 
