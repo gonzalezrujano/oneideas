@@ -26,7 +26,8 @@ export default class Invitados extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.modalDelete = this.modalDelete.bind(this);
         this.handleMail = this.handleMail.bind(this);
-        this.handleFiltro = this.handleFiltro.bind(this);
+        this.handleFiltroEvento = this.handleFiltroEvento.bind(this);
+        this.handleFiltroEmpresa = this.handleFiltroEmpresa.bind(this);
     }
 
     componentDidMount() {
@@ -63,7 +64,7 @@ export default class Invitados extends Component {
             });
     }
 
-    handleFiltro(event) {
+    handleFiltroEmpresa(event) {
         const target = event.target;
         const value =
             target.type === "checkbox" ? target.checked : target.value;
@@ -85,6 +86,35 @@ export default class Invitados extends Component {
                 console.log(this.state.invitadosCompletos[j].Empresa_id.$oid);
                 console.log(value);
                 if (this.state.invitadosCompletos[j].Empresa_id.$oid == value) {
+                    invitados.push(this.state.invitadosCompletos[j]);
+                }
+            }
+            this.setState({
+                invitados
+            });
+        }
+    }
+
+    handleFiltroEvento(event) {
+        const target = event.target;
+        const value =
+            target.type === "checkbox" ? target.checked : target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value,
+            isLoadingEmpresa: true
+        });
+        if (value == "todas") {
+            this.setState({
+                isLoadingEmpresa: false,
+                invitados: this.state.invitadosCompletos
+            });
+        } else {
+            var invitados = [];
+            for (var j = 0; j < this.state.invitadosCompletos.length; j++) {
+                console.log(this.state.invitadosCompletos[j].Evento_id);
+                console.log(value);
+                if (this.state.invitadosCompletos[j].Evento_id == value) {
                     invitados.push(this.state.invitadosCompletos[j]);
                 }
             }
@@ -308,49 +338,111 @@ export default class Invitados extends Component {
                                 <label className="my-1 mr-2 form-control-sm">
                                     <strong>Empresa</strong>
                                 </label>
-                                {this.state.permisoUsuario.nombre ==
-                                "ADMINISTRADOR" ? (
-                                    <select
-                                        className="form-control form-control-sm my-1 mr-sm-2 col-2"
-                                        id="pro-find-empresa"
-                                        name="empresa"
-                                        onChange={this.handleFiltro}
-                                        value={this.state.empresa}
-                                    >
-                                        <option value="todas">Todas</option>
-                                        {this.state.empresas.map((e, index) => {
-                                            return (
-                                                <option
-                                                    value={e._id}
-                                                    key={index}
-                                                >
-                                                    {e.Nombre}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                ) : (
-                                    <select
-                                        className="form-control form-control-sm my-1 mr-sm-2 col-2"
-                                        id="pro-find-empresa"
-                                        name="empresa"
-                                        onChange={this.handleFiltro}
-                                        value={this.state.usuario.Empresa_id}
-                                        disabled
-                                    >
-                                        <option value="todas">Todas</option>
-                                        {this.state.empresas.map((e, index) => {
-                                            return (
-                                                <option
-                                                    value={e._id}
-                                                    key={index}
-                                                >
-                                                    {e.Nombre}
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                )}
+                                <div className="col-4">
+                                    {this.state.permisoUsuario.nombre ==
+                                    "ADMINISTRADOR" ? (
+                                        <select
+                                            className="form-control form-control-sm my-1 mr-sm-2 col-10"
+                                            id="pro-find-empresa"
+                                            name="empresa"
+                                            onChange={this.handleFiltroEmpresa}
+                                            value={this.state.empresa}
+                                        >
+                                            <option value="todas">Todas</option>
+                                            {this.state.empresas.map(
+                                                (e, index) => {
+                                                    return (
+                                                        <option
+                                                            value={e._id}
+                                                            key={index}
+                                                        >
+                                                            {e.Nombre}
+                                                        </option>
+                                                    );
+                                                }
+                                            )}
+                                        </select>
+                                    ) : (
+                                        <select
+                                            className="form-control form-control-sm my-1 mr-sm-2 col-10"
+                                            id="pro-find-empresa"
+                                            name="empresa"
+                                            onChange={this.handleFiltroEmpresa}
+                                            value={
+                                                this.state.usuario.Empresa_id
+                                            }
+                                            disabled
+                                        >
+                                            <option value="todas">Todas</option>
+                                            {this.state.empresas.map(
+                                                (e, index) => {
+                                                    return (
+                                                        <option
+                                                            value={e._id}
+                                                            key={index}
+                                                        >
+                                                            {e.Nombre}
+                                                        </option>
+                                                    );
+                                                }
+                                            )}
+                                        </select>
+                                    )}
+                                </div>
+                                <label className="my-1 mr-2 form-control-sm">
+                                    <strong>Evento</strong>
+                                </label>
+                                <div className="col-4">
+                                    {this.state.permisoUsuario.nombre ==
+                                    "ADMINISTRADOR" ? (
+                                        <select
+                                            className="form-control form-control-sm my-1 mr-sm-2 col-10"
+                                            id="pro-find-empresa"
+                                            name="evento"
+                                            onChange={this.handleFiltroEvento}
+                                            value={this.state.evento}
+                                        >
+                                            <option value="todas">Todas</option>
+                                            {this.state.eventos.map(
+                                                (e, index) => {
+                                                    return (
+                                                        <option
+                                                            value={e._id}
+                                                            key={index}
+                                                        >
+                                                            {e.Nombre}
+                                                        </option>
+                                                    );
+                                                }
+                                            )}
+                                        </select>
+                                    ) : (
+                                        <select
+                                            className="form-control form-control-sm my-1 mr-sm-2 col-10"
+                                            id="pro-find-empresa"
+                                            name="evento"
+                                            onChange={this.handleFiltroEvento}
+                                            value={
+                                                this.state.usuario.Empresa_id
+                                            }
+                                            disabled
+                                        >
+                                            <option value="todas">Todas</option>
+                                            {this.state.eventos.map(
+                                                (e, index) => {
+                                                    return (
+                                                        <option
+                                                            value={e._id}
+                                                            key={index}
+                                                        >
+                                                            {e.Nombre}
+                                                        </option>
+                                                    );
+                                                }
+                                            )}
+                                        </select>
+                                    )}
+                                </div>
                                 {this.state.permisoUsuario.permisos.evento.includes(
                                     "add"
                                 ) ? (

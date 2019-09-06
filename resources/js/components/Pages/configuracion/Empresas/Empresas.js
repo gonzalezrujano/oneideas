@@ -203,7 +203,7 @@ export default class Empresas extends Component {
                                                     to="/empresas/add/"
                                                     className="btn-sm btn-dark button-add p-2"
                                                 >
-                                                    Agregar Archivo
+                                                    Agregar Empresa
                                                 </Link>
                                             </td>
                                         </tr>
@@ -279,23 +279,38 @@ export default class Empresas extends Component {
                                                                 </Link>
                                                                 {this.state.permisoUsuario.permisos.empresa.includes(
                                                                     "edit"
-                                                                ) ? (
-                                                                    <Link
-                                                                        className="mr-2"
-                                                                        to={
-                                                                            linkEdit
-                                                                        }
-                                                                    >
-                                                                        <i
-                                                                            data-toggle="tooltip"
-                                                                            data-placement="top"
-                                                                            title="Editar"
-                                                                            className="fas fa-edit icono-ver"
-                                                                        />
-                                                                    </Link>
-                                                                ) : (
-                                                                    ""
-                                                                )}
+                                                                )
+                                                                    ? [
+                                                                          <Link
+                                                                              className="mr-2"
+                                                                              to={{
+                                                                                  pathname:
+                                                                                      "/empresas/planos-base/" +
+                                                                                      e._id
+                                                                              }}
+                                                                          >
+                                                                              <i
+                                                                                  data-toggle="tooltip"
+                                                                                  data-placement="top"
+                                                                                  title="Planos"
+                                                                                  className="fas fa-chair icono-ver"
+                                                                              />
+                                                                          </Link>,
+                                                                          <Link
+                                                                              className="mr-2"
+                                                                              to={
+                                                                                  linkEdit
+                                                                              }
+                                                                          >
+                                                                              <i
+                                                                                  data-toggle="tooltip"
+                                                                                  data-placement="top"
+                                                                                  title="Editar"
+                                                                                  className="fas fa-edit icono-ver"
+                                                                              />
+                                                                          </Link>
+                                                                      ]
+                                                                    : ""}
                                                                 {this.state.permisoUsuario.permisos.empresa.includes(
                                                                     "delete"
                                                                 ) ? (

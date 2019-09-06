@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Evento;
+use App\Models\MongoDB\Empresa;
+use App\Models\MongoDB\EventoSeats;
 use App\Models\MongoDB\Invitado;
 use App\Models\MongoDB\Plano;
 use App\Models\MongoDB\Reserva;
@@ -231,6 +233,34 @@ class PlanoController extends Controller
     $eventoId = $input['eventoId'];
     $evento = Evento::find($eventoId);
     return json_encode(['code'=>200,'data'=>$evento]);
+  }
+
+
+  public function getPlanosEmpresa(Request $request)
+  {
+    $input = $request->all();
+    $secretKey = $input['secretKey'];
+    $seatsio = new \Seatsio\SeatsioClient($secretKey);
+    $empresa = Empresa::where("secretKey",$secretKey)->get();
+    $empresa = $empresa[0];
+    $data = [];
+    $prueba = [];
+    $charts = $seatsio->charts->listAll();
+    $count = 0;
+    foreach($charts as $chart) {
+        if($chart->status == "NOT_USED") {
+            $event = $seatsio->events->create($chart->key, (string) new ObjectId());
+            $eventSeats = new EventoSeats;
+            $eventSeats->Empresa_id = $empresa->_id;
+            $eventSeats->eventKey   = $event->key;
+            $eventSeats->chartKey   = $event->chartKey;
+            $eventSeats->save();
+            array_push($prueba,$event);
+        }
+        array_push($data,$chart);
+        $count++;
+    }
+    return json_encode(['code'=>200,'data'=>$data,'prueba'=>$prueba]);
   }
 
 }

@@ -186,6 +186,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'planos'], function() {
     Route::post('/edit','PlanoController@setPlano');
     Route::get('/', 'PlanoController@getAllPlanos');
     Route::post('/evento', 'PlanoController@getPlanosEvento');
+    Route::post('/empresa', 'PlanoController@getPlanosEmpresa');
     Route::post('/evento-reservas', 'PlanoController@getPlanosEventoReservas');
     Route::post('/reservar', 'PlanoController@reservar');
     Route::get('/{id}', 'PlanoController@getPlano');
