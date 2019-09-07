@@ -122,7 +122,7 @@ export default class Usuarios extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i className="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>

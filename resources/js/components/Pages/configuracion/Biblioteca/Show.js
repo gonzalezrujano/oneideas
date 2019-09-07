@@ -159,7 +159,7 @@ export default class Show extends React.Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i class="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>

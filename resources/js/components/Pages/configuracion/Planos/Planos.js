@@ -39,7 +39,7 @@ export default class Planos extends Component {
                 axios
                     .post(
                         "api/planos/evento",
-                        { secretKey: evento.secretKey },
+                        { idEvento: evento._id },
                         {
                             headers: { Authorization: this.state.api_token }
                         }
@@ -128,7 +128,7 @@ export default class Planos extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i className="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>
@@ -199,6 +199,29 @@ export default class Planos extends Component {
                                                         Agregar plano
                                                     </Link>
                                                 </td>
+                                                <td>
+                                                    <Link
+                                                        className="btn-sm btn-dark button-add p-2"
+                                                        to={{
+                                                            pathname:
+                                                                "/evento/planos/planos-base-copia/" +
+                                                                this.state
+                                                                    .idEvento,
+                                                            state: {
+                                                                evento: this
+                                                                    .state
+                                                                    .evento,
+                                                                idEmpresa: this
+                                                                    .state
+                                                                    .evento
+                                                                    .Empresa_id
+                                                            }
+                                                        }}
+                                                    >
+                                                        Agregar Plano a partir
+                                                        de uno base
+                                                    </Link>
+                                                </td>
                                             </tr>
                                         ) : (
                                             ""
@@ -225,9 +248,7 @@ export default class Planos extends Component {
                                                     </td>
                                                     <td className="text-center">
                                                         <img
-                                                            src={
-                                                                e.publishedVersionThumbnailUrl
-                                                            }
+                                                            src={e.imagen}
                                                             width="300"
                                                             height="300"
                                                         />
@@ -235,7 +256,7 @@ export default class Planos extends Component {
 
                                                     <td className="text-center">
                                                         <div className="text-center">
-                                                            {this.state.permisoUsuario.permisos.evento.includes(
+                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
                                                                 "edit"
                                                             ) ? (
                                                                 <Link

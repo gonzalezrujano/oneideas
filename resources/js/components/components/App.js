@@ -47,6 +47,8 @@ import SeleccionPlanos from "../Pages/configuracion/Invitados/asientos/Seleccion
 import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
 import PlanoBase from "../Pages/configuracion/PlanoBase/PlanoBase";
 import PlanoBaseAdd from "../Pages/configuracion/PlanoBase/Add";
+import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
+import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 
 function App() {
     return (
@@ -126,6 +128,16 @@ function App() {
                         exact
                         path="/eventos/etapas/edit/:id"
                         component={EtapasEdit}
+                    />
+                    <Route
+                        exact
+                        path="/evento/planos/planos-base-copia/:id"
+                        component={PlanosBaseCopia}
+                    />
+                    <Route
+                        exact
+                        path="/evento/plano/copia/"
+                        component={PlanoCopiaAdd}
                     />
                     <Route
                         exact

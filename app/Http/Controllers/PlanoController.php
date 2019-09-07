@@ -8,6 +8,7 @@ use App\Models\MongoDB\EventoSeats;
 use App\Models\MongoDB\Invitado;
 use App\Models\MongoDB\Plano;
 use App\Models\MongoDB\Reserva;
+use App\Models\MongoDB\PlanoEvento;
 use MongoDB\BSON\ObjectID;
 use App\Mail\CorreoDeAsiento;
 use Illuminate\Support\Str;
@@ -153,24 +154,9 @@ class PlanoController extends Controller
   public function getPlanosEvento(Request $request)
   {
     $input = $request->all();
-    $secretKey = $input['secretKey'];
-    $seatsio = new \Seatsio\SeatsioClient($secretKey);
-    $evento = Evento::where("secretKey",$secretKey)->get();
-    $evento = $evento[0];
-    $data = [];
-    $prueba = [];
-    $charts = $seatsio->charts->listAll();
-    $count = 0;
-    $eventos = $seatsio->events->listAll();
-    foreach($charts as $chart) {
-        if(!$this->isEvent($eventos , $evento->_id."-".$count) ) {
-            $event = $seatsio->events->create($chart->key, $evento->_id."-".$count);
-        }
-        array_push($data,$chart);
-        $count++;
-    }
-
-    return json_encode(['code'=>200,'data'=>$data,'info'=>$evento->_id."-0"]);
+    $idEvento = $input["idEvento"];
+    $charts = PlanoEvento::where("Evento_id",$idEvento)->get();
+    return json_encode(['code'=>200,'data'=>$charts]);
   }
 
   public function getPlanosEventoReservas(Request $request)
@@ -261,6 +247,31 @@ class PlanoController extends Controller
         $count++;
     }
     return json_encode(['code'=>200,'data'=>$data,'prueba'=>$prueba]);
+  }
+
+  public function copiaPlano(Request $request){
+      $input = $request->all();
+      $empresa = $input['empresa'];
+      $chartBaseKey = $input['chartKey'];
+      $privateKey = $empresa['secretKey'];
+      $seatsio = new \Seatsio\SeatsioClient($privateKey);
+      $copyChart = $seatsio->charts->copy($chartBaseKey);
+      return json_encode(['code'=>200,'data'=>$copyChart]);
+
+  }
+
+  public function addPlanoEvento(Request $request){
+      $input = $request->all();
+      $chartKey = $input['chartKey'];
+      $idEvento = $input['idEvento'];
+      $registro = new PlanoEvento;
+      $registro->name = $input['name'];
+      $registro->chartKey = $chartKey;
+      $registro->imagen = $input['imagen'];
+      $registro->Evento_id= $idEvento;
+      if($registro->save()){
+        return json_encode(['code'=>200,'data'=>$registro]);
+      }
   }
 
 }

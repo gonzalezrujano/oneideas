@@ -4,13 +4,15 @@ import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 
-export default class PlanoBase extends Component {
+export default class PlanoBaseCopia extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            idEmpresa: props.match.params.id,
+            idEvento: props.match.params.id,
+            idEmpresa: props.location.state.idEmpresa,
+            evento: props.location.state.evento,
             empresa: "",
             etapas: [],
             planos: [],
@@ -19,7 +21,6 @@ export default class PlanoBase extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
-        this.modalDelete = this.modalDelete.bind(this);
     }
 
     componentDidMount() {
@@ -53,53 +54,6 @@ export default class PlanoBase extends Component {
             });
     }
 
-    modalDelete(id) {
-        Swal.fire({
-            text: "¿Está seguro que desea borrar el etapa?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#343a40",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            target: document.getElementById("sweet")
-        }).then(result => {
-            if (result.value) {
-                axios
-                    .post(
-                        "/api/etapas/delete",
-                        { id },
-                        {
-                            headers: {
-                                Authorization: this.state.api_token
-                            }
-                        }
-                    )
-                    .then(res => {
-                        if (res.data.code === 200) {
-                            sweetalert(
-                                "Item eliminado correctamente",
-                                "success",
-                                "sweet"
-                            );
-                            $("#" + id).hide();
-                        } else if (res.data.code === 600) {
-                            sweetalert(
-                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
-                                "error",
-                                "sweet"
-                            );
-                        } else if (res.data.code == 500) {
-                            sweetalert(
-                                "Error al Eliminar. Consulte al Administrador",
-                                "error",
-                                "sweet"
-                            );
-                        }
-                    });
-            }
-        });
-    }
-
     render() {
         if (this.state.isLoading) {
             return (
@@ -116,7 +70,7 @@ export default class PlanoBase extends Component {
                                     <div className="col-sm-12 col-md-12">
                                         <h1 className="page-header-heading">
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                            &nbsp; Planos
+                                            &nbsp; Planos Base Copia
                                         </h1>
                                     </div>
                                 </div>
@@ -154,7 +108,17 @@ export default class PlanoBase extends Component {
                                             <Link to="/empresas">
                                                 Empresas /
                                             </Link>
-                                            / &nbsp; Planos base
+                                            <Link
+                                                to={`/empresa/eventos/${this.state.idEmpresa}`}
+                                            >
+                                                {this.state.evento.Nombre} /
+                                            </Link>
+                                            <Link
+                                                to={`/evento/planos/${this.state.evento._id}`}
+                                            >
+                                                Planos /
+                                            </Link>
+                                            / &nbsp; Planos Base copia
                                         </h1>
                                     </div>
                                 </div>
@@ -169,34 +133,6 @@ export default class PlanoBase extends Component {
                                     id="dt-eventos"
                                 >
                                     <thead>
-                                        {this.state.permisoUsuario.permisos.evento.includes(
-                                            "add"
-                                        ) ? (
-                                            <tr>
-                                                <td>
-                                                    <Link
-                                                        className="btn-sm btn-dark button-add p-2"
-                                                        to={{
-                                                            pathname:
-                                                                "/empresa/planos-base/add/",
-                                                            state: {
-                                                                designerKey: this
-                                                                    .state
-                                                                    .empresa
-                                                                    .designerKey,
-                                                                idEmpresa: this
-                                                                    .state
-                                                                    .empresa._id
-                                                            }
-                                                        }}
-                                                    >
-                                                        Agregar plano base
-                                                    </Link>
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            ""
-                                        )}
                                         <tr className="fila-head">
                                             <th className="text-center">
                                                 Plano
@@ -229,62 +165,33 @@ export default class PlanoBase extends Component {
 
                                                     <td className="text-center">
                                                         <div className="text-center">
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
+                                                            {this.state.permisoUsuario.permisos.evento.includes(
                                                                 "edit"
                                                             ) ? (
                                                                 <Link
                                                                     className="mr-2"
                                                                     to={{
-                                                                        pathname:
-                                                                            "/eventos/planos/edit/" +
-                                                                            e.key,
+                                                                        pathname: `/evento/plano/copia`,
                                                                         state: {
-                                                                            link: this
+                                                                            chartKey:
+                                                                                e.key,
+                                                                            evento: this
                                                                                 .state
-                                                                                .eventoLink,
-                                                                            nombreEmpresa: this
+                                                                                .evento,
+                                                                            empresa: this
                                                                                 .state
-                                                                                .nombreEmpresa,
-                                                                            idEvento: this
-                                                                                .state
-                                                                                .idEvento,
-                                                                            designerKey: this
-                                                                                .state
-                                                                                .evento
-                                                                                .designerKey
+                                                                                .empresa,
+                                                                            imagen:
+                                                                                e.publishedVersionThumbnailUrl
                                                                         }
                                                                     }}
                                                                 >
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Editar"
-                                                                        className="fas fa-edit icono-ver"
-                                                                    />
+                                                                    <i className="far fa-copy mr-1"></i>
+                                                                    Copiar Plano
                                                                 </Link>
                                                             ) : (
                                                                 ""
                                                             )}
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
-                                                                "delete"
-                                                            ) ? (
-                                                                <Link className="mr-2">
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Eliminar"
-                                                                        className="fas fa-trash-alt icono-ver"
-                                                                        onClick={ev =>
-                                                                            this.modalDelete(
-                                                                                e._id,
-                                                                                ev
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )*/}
                                                         </div>
                                                     </td>
                                                 </tr>
