@@ -4,16 +4,14 @@ import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 
-export default class Planos extends Component {
+export default class PlanoBase extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            idEvento: this.props.match.params.id,
-            eventoLink: this.props.location.state.link,
-            nombreEmpresa: this.props.location.state.nombreEmpresa,
-            evento: "",
+            idEmpresa: props.match.params.id,
+            empresa: "",
             etapas: [],
             planos: [],
             opcion: "Etapas",
@@ -26,20 +24,21 @@ export default class Planos extends Component {
 
     componentDidMount() {
         axios
-            .get("api/etapas/evento/" + this.state.idEvento, {
-                headers: { Authorization: this.state.api_token }
+            .get(`api/empresas/${this.state.idEmpresa}`, {
+                headers: {
+                    Authorization: this.state.api_token
+                }
             })
             .then(res => {
                 console.log(res);
-                console.log(this.state.api_token);
-                var evento = res.data.evento;
-                this.setState({
-                    evento: res.data.evento
-                });
+                let r = res.data;
+                this.setState(() => ({
+                    empresa: r.data.empresa
+                }));
                 axios
                     .post(
-                        "api/planos/evento",
-                        { idEvento: evento._id },
+                        "api/planos/empresa",
+                        { secretKey: this.state.empresa.secretKey },
                         {
                             headers: { Authorization: this.state.api_token }
                         }
@@ -154,20 +153,14 @@ export default class Planos extends Component {
                                             <i className="fas fa-ticket-alt page-header-heading-icon" />
                                             <Link to="/empresas">
                                                 Empresas /
-                                                {" " + this.state.nombreEmpresa}
                                             </Link>
-                                            {" / "}
-                                            <Link to={this.state.eventoLink}>
-                                                Eventos
-                                                {" / " +
-                                                    this.state.evento.Nombre}
-                                            </Link>{" "}
-                                            / &nbsp; Planos
+                                            / &nbsp; Planos base
                                         </h1>
                                     </div>
                                 </div>
                             </div>
                         </header>
+                        {console.log(this.state.empresa._id)}
 
                         <div id="sweet" className="container-fluid">
                             <div className="row mb-4">
@@ -185,41 +178,19 @@ export default class Planos extends Component {
                                                         className="btn-sm btn-dark button-add p-2"
                                                         to={{
                                                             pathname:
-                                                                "/eventos/planos/add/" +
-                                                                this.state
-                                                                    .idEvento,
+                                                                "/empresa/planos-base/add/",
                                                             state: {
                                                                 designerKey: this
                                                                     .state
-                                                                    .evento
-                                                                    .designerKey
-                                                            }
-                                                        }}
-                                                    >
-                                                        Agregar plano
-                                                    </Link>
-                                                </td>
-                                                <td>
-                                                    <Link
-                                                        className="btn-sm btn-dark button-add p-2"
-                                                        to={{
-                                                            pathname:
-                                                                "/evento/planos/planos-base-copia/" +
-                                                                this.state
-                                                                    .idEvento,
-                                                            state: {
-                                                                evento: this
-                                                                    .state
-                                                                    .evento,
+                                                                    .empresa
+                                                                    .designerKey,
                                                                 idEmpresa: this
                                                                     .state
-                                                                    .evento
-                                                                    .Empresa_id
+                                                                    .empresa._id
                                                             }
                                                         }}
                                                     >
-                                                        Agregar Plano a partir
-                                                        de uno base
+                                                        Agregar plano base
                                                     </Link>
                                                 </td>
                                             </tr>
@@ -248,7 +219,9 @@ export default class Planos extends Component {
                                                     </td>
                                                     <td className="text-center">
                                                         <img
-                                                            src={e.imagen}
+                                                            src={
+                                                                e.publishedVersionThumbnailUrl
+                                                            }
                                                             width="300"
                                                             height="300"
                                                         />

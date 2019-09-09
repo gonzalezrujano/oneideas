@@ -191,7 +191,7 @@ export default class AddEmpresas extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i className="fas fa-industry fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>

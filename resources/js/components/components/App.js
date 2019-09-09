@@ -38,12 +38,17 @@ import Etapas from "../Pages/configuracion/Eventos/Etapas/Etapas";
 import EtapasAdd from "../Pages/configuracion/Eventos/Etapas/Add";
 import EtapasEdit from "../Pages/configuracion/Eventos/Etapas/Edit";
 import MailConfirmation from "../Pages/configuracion/MailConfirmation/MailConfirmation";
+import MailAsiento from "../Pages/configuracion/MailAsiento/MailAsiento";
 import Planos from "../Pages/configuracion/Planos/Planos";
 import PlanosAdd from "../Pages/configuracion/Planos/Add";
 import PlanosEdit from "../Pages/configuracion/Planos/Edit";
 import Asientos from "../Pages/configuracion/Invitados/asientos/Asientos";
 import SeleccionPlanos from "../Pages/configuracion/Invitados/asientos/SeleccionPlanos";
 import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
+import PlanoBase from "../Pages/configuracion/PlanoBase/PlanoBase";
+import PlanoBaseAdd from "../Pages/configuracion/PlanoBase/Add";
+import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
+import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 
 function App() {
     return (
@@ -80,6 +85,16 @@ function App() {
                     />
                     <Route
                         exact
+                        path="/empresas/planos-base/:id"
+                        component={PlanoBase}
+                    />
+                    <Route
+                        exact
+                        path="/empresa/planos-base/add"
+                        component={PlanoBaseAdd}
+                    />
+                    <Route
+                        exact
                         path="/empresa/eventos/:id"
                         component={Eventos}
                     />
@@ -113,6 +128,16 @@ function App() {
                         exact
                         path="/eventos/etapas/edit/:id"
                         component={EtapasEdit}
+                    />
+                    <Route
+                        exact
+                        path="/evento/planos/planos-base-copia/:id"
+                        component={PlanosBaseCopia}
+                    />
+                    <Route
+                        exact
+                        path="/evento/plano/copia/"
+                        component={PlanoCopiaAdd}
                     />
                     <Route
                         exact
@@ -196,6 +221,7 @@ function App() {
                         path="/mail/:id"
                         component={MailConfirmation}
                     />
+                    <Route exact path="/event/:id" component={MailAsiento} />
                 </Switch>
             </BrowserRouter>
         </Provider>

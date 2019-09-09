@@ -384,6 +384,8 @@ class EmpresaController extends Controller
                 'logo'             => $base64,
                 'borrado'          => false
             ];
+            $seatsio = new \Seatsio\SeatsioClient("f4b8068e-031f-4035-a6c2-c56eca47ced9");
+            $dato = $seatsio->subaccounts->create($input["nombre"]);
 
             //procedo a guardarlos en la bd
             $registro                            = new Empresa;
@@ -394,6 +396,10 @@ class EmpresaController extends Controller
             $registro->Pais_id                   = $data['pais'];
             $registro->Activo                    = $data['estatus'];
             $registro->Logo                      = $data['logo'];
+            $registro->secretKey                 = $dato->secretKey;
+            $registro->publicKey                 = $dato->publicKey;
+            $registro->designerKey               = $dato->designerKey;
+            $registro->SeatsSubAccount_id        = $dato->id;
             $registro->Borrado                   = $data['borrado'];
 
             //verifico si fue exitoso el insert en la bd

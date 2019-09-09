@@ -1,43 +1,105 @@
 import React, { Component } from "react";
 //import { SeatsioSeatingChart } from "@seatsio/seatsio-react";
 import { SeatsioDesigner } from "@seatsio/seatsio-react";
+import axios from "axios";
 import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 import "./css/planos.css";
 
-export default class Edit extends Component {
+export default class Add extends Component {
     constructor(props) {
         super(props);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            idPlano: this.props.match.params.id,
-            eventoLink: this.props.location.state.link,
-            idEvento: this.props.location.state.idEvento,
-            nombreEmpresa: this.props.location.state.nombreEmpresa,
-            designerKey: this.props.location.state.designerKey,
-            evento: "",
+            chartKey: this.props.location.state.chartKey,
+            empresa: this.props.location.state.empresa,
+            evento: this.props.location.state.evento,
+            imagen: this.props.location.state.imagen,
+            chartCopy: "",
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         axios
-            .get("api/eventos/one/" + this.state.idEvento, {
-                headers: {
-                    Authorization: this.state.api_token
+            .post(
+                "api/planos/copia",
+                {
+                    chartKey: this.state.chartKey,
+                    evento: this.state.evento,
+                    empresa: this.state.empresa
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
                 }
-            })
+            )
             .then(res => {
+                console.log(res);
                 this.setState({
-                    evento: res.data.evento.evento,
+                    chartCopy: res.data.data,
                     isLoading: false
                 });
+            });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        $("#boton-plano").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        axios
+            .post(
+                "api/planos/add-copy-evento",
+                {
+                    idEvento: this.state.evento._id,
+                    chartKey: this.state.chartCopy.key,
+                    name: this.state.chartCopy.name,
+                    imagen: this.state.imagen
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }
+            )
+            .then(res => {
+                console.log(res);
+                if (res.data.code === 200) {
+                    Swal.fire({
+                        text: "Plano agregado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById("sweet")
+                    }).then(result => {
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+                            this.props.history.push({
+                                pathname:
+                                    "/eventos/planos/" + this.state.evento._id,
+                                state: {
+                                    link:
+                                        "/empresa/eventos/" +
+                                        this.state.empresa._id,
+                                    nombreEmpresa: this.state.empresa.Nombre
+                                }
+                            });
+                        }
+                    });
+                } else if (res.data.code === 500) {
+                    $("button#save-usuario")
+                        .find("i.fa")
+                        .remove();
+                    sweetalert(res.data.mensaje, "error", "sweet");
+                }
             });
     }
 
@@ -91,7 +153,7 @@ export default class Edit extends Component {
                                 <div className="col-sm-12 col-md-12">
                                     <h1 className="page-header-heading">
                                         <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                        &nbsp; Modificar Plano
+                                        &nbsp; Agregar Plano Copia
                                     </h1>
                                 </div>
                             </div>
@@ -114,7 +176,7 @@ export default class Edit extends Component {
                                     aria-controls="pills-datos"
                                     aria-selected="true"
                                 >
-                                    Editor
+                                    Datos
                                 </a>
                             </li>
                         </ul>
@@ -127,10 +189,12 @@ export default class Edit extends Component {
                             encType="multipart/form-data"
                         >
                             <div className="row mb-4">
-                                <div className="col-12">
+                                <div className="col-10">
                                     <SeatsioDesigner
-                                        designerKey={this.state.designerKey}
-                                        chartKey={this.state.idPlano}
+                                        designerKey={
+                                            this.state.empresa.designerKey
+                                        }
+                                        chartKey={this.state.chartCopy.key}
                                         languaje="es"
                                     />
                                 </div>
@@ -138,25 +202,14 @@ export default class Edit extends Component {
 
                             <div className="form-group row">
                                 <div className="col-sm-4">
-                                    <Link
-                                        to={{
-                                            pathname:
-                                                "/eventos/etapas/" +
-                                                this.state.idEvento,
-                                            state: {
-                                                link: this.state.eventoLink,
-                                                nombreEmpresa: this.state
-                                                    .nombreEmpresa
-                                            }
-                                        }}
+                                    <button
+                                        type="button"
+                                        id="boton-plano"
+                                        className="btn btn-sm btn-dark "
+                                        onClick={this.handleSubmit}
                                     >
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm btn-dark"
-                                        >
-                                            Volver
-                                        </button>
-                                    </Link>
+                                        Guardar
+                                    </button>
                                 </div>
                             </div>
                         </form>

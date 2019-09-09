@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 export default class SeleccionAsientos extends Component {
     constructor(props) {
         super(props);
+        console.log(props.location.state.idInvitado)
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
@@ -117,7 +118,7 @@ export default class SeleccionAsientos extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i className="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>

@@ -207,7 +207,7 @@ export default class Asientos extends Component {
                                 <div className="offset-6">
                                     <h3>
                                         <i className="fa fa-spinner fa-spin" />{" "}
-                                        Cagargando
+                                        Cargando
                                     </h3>
                                 </div>
                             </div>
@@ -389,7 +389,7 @@ export default class Asientos extends Component {
                                                                             idEvento:
                                                                                 e.Evento_id,
                                                                             idInvitado:
-                                                                                e._id
+                                                                                e.Invitado_id
                                                                         }
                                                                     }}
                                                                     className="mr-2"

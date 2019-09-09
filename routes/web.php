@@ -15,6 +15,7 @@
 
     Route::view('/{path?}', 'index');
     Route::view('/mail/{id}', 'index');
+    Route::view('/event/{id}', 'index');
 
 /*
 Route::middleware(['auth', 'prevent-back-history'])->group(function(){

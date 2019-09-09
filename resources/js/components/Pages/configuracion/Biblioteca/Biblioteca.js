@@ -264,7 +264,7 @@ export default class Biblioteca extends Component {
                                     {this.state.isLoadingEmpresa ? (
                                         <h3>
                                             <i class="fa fa-spinner fa-spin" />{" "}
-                                            Cagargando
+                                            Cargando
                                         </h3>
                                     ) : (
                                         this.state.eventos.map((e, index) => {
