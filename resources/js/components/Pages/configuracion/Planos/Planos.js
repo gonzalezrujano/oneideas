@@ -189,10 +189,10 @@ export default class Planos extends Component {
                                                                 this.state
                                                                     .idEvento,
                                                             state: {
-                                                                designerKey: this
+                                                                idEmpresa: this
                                                                     .state
                                                                     .evento
-                                                                    .designerKey
+                                                                    .Empresa_id
                                                             }
                                                         }}
                                                     >
@@ -248,7 +248,9 @@ export default class Planos extends Component {
                                                     </td>
                                                     <td className="text-center">
                                                         <img
-                                                            src={e.imagen}
+                                                            src={
+                                                                e.publishedVersionThumbnailUrl
+                                                            }
                                                             width="300"
                                                             height="300"
                                                         />
@@ -256,7 +258,7 @@ export default class Planos extends Component {
 
                                                     <td className="text-center">
                                                         <div className="text-center">
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
+                                                            {this.state.permisoUsuario.permisos.evento.includes(
                                                                 "edit"
                                                             ) ? (
                                                                 <Link
@@ -272,6 +274,10 @@ export default class Planos extends Component {
                                                                             nombreEmpresa: this
                                                                                 .state
                                                                                 .nombreEmpresa,
+                                                                            idEmpresa: this
+                                                                                .state
+                                                                                .evento
+                                                                                .Empresa_id,
                                                                             idEvento: this
                                                                                 .state
                                                                                 .idEvento,
@@ -292,26 +298,6 @@ export default class Planos extends Component {
                                                             ) : (
                                                                 ""
                                                             )}
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
-                                                                "delete"
-                                                            ) ? (
-                                                                <Link className="mr-2">
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Eliminar"
-                                                                        className="fas fa-trash-alt icono-ver"
-                                                                        onClick={ev =>
-                                                                            this.modalDelete(
-                                                                                e._id,
-                                                                                ev
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )*/}
                                                         </div>
                                                     </td>
                                                 </tr>

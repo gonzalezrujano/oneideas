@@ -15,29 +15,87 @@ export default class Add extends Component {
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             nombre: "",
             idEvento: this.props.match.params.id,
-            designerKey: this.props.location.state.designerKey,
-            evento: "",
+            idEmpresa: this.props.location.state.idEmpresa,
+            empresa: "",
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+        this.chartKeyGenerate = this.chartKeyGenerate.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
+        console.log(this.state.idEmpresa);
         axios
-            .get("api/eventos/one/" + this.state.idEvento, {
+            .get(`api/empresas/${this.state.idEmpresa}`, {
                 headers: {
                     Authorization: this.state.api_token
                 }
             })
             .then(res => {
                 console.log(res);
-                this.setState({
-                    evento: res.data.evento.evento,
+                let r = res.data;
+                this.setState(() => ({
+                    empresa: r.data.empresa,
                     isLoading: false
-                });
+                }));
+            });
+    }
+
+    chartKeyGenerate(key) {
+        this.setState({ chartKey: key });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        $("#boton-plano").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        axios
+            .post(
+                "api/planos/add-plano-evento",
+                {
+                    idEvento: this.state.idEvento,
+                    chartKey: this.state.chartKey
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }
+            )
+            .then(res => {
+                console.log(res);
+                if (res.data.code === 200) {
+                    Swal.fire({
+                        text: "Plano agregado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById("sweet")
+                    }).then(result => {
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+                            this.props.history.push({
+                                pathname:
+                                    "/eventos/planos/" + this.state.idEvento,
+                                state: {
+                                    link:
+                                        "/empresa/eventos/" +
+                                        this.state.empresa._id,
+                                    nombreEmpresa: this.state.empresa.Nombre
+                                }
+                            });
+                        }
+                    });
+                } else if (res.data.code === 500) {
+                    $("button#save-usuario")
+                        .find("i.fa")
+                        .remove();
+                    sweetalert(res.data.mensaje, "error", "sweet");
+                }
             });
     }
 
@@ -99,7 +157,6 @@ export default class Add extends Component {
                                             }
                                         >
                                             Eventos
-                                            {" /" + this.state.evento.Nombre}
                                         </Link>
                                         / Agregar Plano
                                     </h1>
@@ -139,9 +196,25 @@ export default class Add extends Component {
                             <div className="row mb-4">
                                 <div className="col-10">
                                     <SeatsioDesigner
-                                        designerKey={this.state.designerKey}
+                                        designerKey={
+                                            this.state.empresa.designerKey
+                                        }
                                         language="es"
+                                        onChartCreated={this.chartKeyGenerate}
                                     />
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <div className="col-sm-4">
+                                    <button
+                                        type="button"
+                                        id="boton-plano"
+                                        className="btn btn-sm btn-dark "
+                                        onClick={this.handleSubmit}
+                                    >
+                                        Guardar
+                                    </button>
                                 </div>
                             </div>
 

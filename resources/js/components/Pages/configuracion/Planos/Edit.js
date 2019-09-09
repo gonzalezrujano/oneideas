@@ -16,8 +16,8 @@ export default class Edit extends Component {
             eventoLink: this.props.location.state.link,
             idEvento: this.props.location.state.idEvento,
             nombreEmpresa: this.props.location.state.nombreEmpresa,
-            designerKey: this.props.location.state.designerKey,
-            evento: "",
+            idEmpresa: this.props.location.state.idEmpresa,
+            empresa: "",
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
@@ -27,17 +27,20 @@ export default class Edit extends Component {
     }
 
     componentDidMount() {
+        console.log(this.state.idEmpresa);
         axios
-            .get("api/eventos/one/" + this.state.idEvento, {
+            .get(`api/empresas/${this.state.idEmpresa}`, {
                 headers: {
                     Authorization: this.state.api_token
                 }
             })
             .then(res => {
-                this.setState({
-                    evento: res.data.evento.evento,
+                console.log(res);
+                let r = res.data;
+                this.setState(() => ({
+                    empresa: r.data.empresa,
                     isLoading: false
-                });
+                }));
             });
     }
 
@@ -129,7 +132,9 @@ export default class Edit extends Component {
                             <div className="row mb-4">
                                 <div className="col-12">
                                     <SeatsioDesigner
-                                        designerKey={this.state.designerKey}
+                                        designerKey={
+                                            this.state.empresa.designerKey
+                                        }
                                         chartKey={this.state.idPlano}
                                         languaje="es"
                                     />
@@ -141,7 +146,7 @@ export default class Edit extends Component {
                                     <Link
                                         to={{
                                             pathname:
-                                                "/eventos/etapas/" +
+                                                "/eventos/planos/" +
                                                 this.state.idEvento,
                                             state: {
                                                 link: this.state.eventoLink,

@@ -56,12 +56,10 @@ export default class Add extends Component {
         $("#boton-plano").prepend('<i class="fa fa-spinner fa-spin"></i> ');
         axios
             .post(
-                "api/planos/add-copy-evento",
+                "api/planos/add-plano-evento",
                 {
                     idEvento: this.state.evento._id,
-                    chartKey: this.state.chartCopy.key,
-                    name: this.state.chartCopy.name,
-                    imagen: this.state.imagen
+                    chartKey: this.state.chartCopy.key
                 },
                 {
                     headers: {

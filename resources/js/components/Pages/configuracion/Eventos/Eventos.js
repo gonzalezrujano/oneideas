@@ -58,15 +58,15 @@ export default class Eventos extends Component {
                 )
                 .then(res => {
                     console.log(res);
-                    axios.get(
-                        "api/eventos/actu",
-                        {
+                    axios
+                        .get("api/eventos/actu", {
                             headers: {
                                 Authorization: this.state.api_token
                             }
-                        }).then(res=>{
-                            console.log(res)
                         })
+                        .then(res => {
+                            console.log(res);
+                        });
                     this.setState({
                         eventosEmpresa: res.data.eventos,
                         empresa: res.data.empresa,

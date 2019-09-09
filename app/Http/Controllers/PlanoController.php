@@ -7,6 +7,7 @@ use App\Models\MongoDB\Empresa;
 use App\Models\MongoDB\EventoSeats;
 use App\Models\MongoDB\Invitado;
 use App\Models\MongoDB\Plano;
+use App\Models\MongoDB\PlanoBase;
 use App\Models\MongoDB\Reserva;
 use App\Models\MongoDB\PlanoEvento;
 use MongoDB\BSON\ObjectID;
@@ -154,9 +155,31 @@ class PlanoController extends Controller
   public function getPlanosEvento(Request $request)
   {
     $input = $request->all();
-    $idEvento = $input["idEvento"];
-    $charts = PlanoEvento::where("Evento_id",$idEvento)->get();
-    return json_encode(['code'=>200,'data'=>$charts]);
+    $evento = Evento::find($input["idEvento"]);
+    $empresa = Empresa::find($evento->Empresa_id);
+    $seatsio = new \Seatsio\SeatsioClient($empresa->secretKey);
+    $planosEvento = PlanoEvento::where("Evento_id",$input["idEvento"])->get();
+    $data = [];
+    $prueba = [];
+    $charts = $seatsio->charts->listAll();
+    foreach($charts as $chart) {
+        if($chart->status == "NOT_USED") {
+            $event = $seatsio->events->create($chart->key, (string) new ObjectId());
+            $eventSeats = new EventoSeats;
+            $eventSeats->Empresa_id = $empresa->_id;
+            $eventSeats->eventKey   = $event->key;
+            $eventSeats->chartKey   = $event->chartKey;
+            $eventSeats->save();
+            array_push($prueba,$event);
+        }
+        foreach($planosEvento as $planoEvento){
+            if($chart->key == $planoEvento->chartKey){
+                array_push($data,$chart);
+                break;
+            }
+        }
+    }
+    return json_encode(['code'=>200,'data'=>$data,'prueba'=>$prueba]);
   }
 
   public function getPlanosEventoReservas(Request $request)
@@ -229,10 +252,10 @@ class PlanoController extends Controller
     $seatsio = new \Seatsio\SeatsioClient($secretKey);
     $empresa = Empresa::where("secretKey",$secretKey)->get();
     $empresa = $empresa[0];
+    $planosBase = PlanoBase::where("Empresa_id",$empresa->_id)->get();
     $data = [];
     $prueba = [];
     $charts = $seatsio->charts->listAll();
-    $count = 0;
     foreach($charts as $chart) {
         if($chart->status == "NOT_USED") {
             $event = $seatsio->events->create($chart->key, (string) new ObjectId());
@@ -243,10 +266,25 @@ class PlanoController extends Controller
             $eventSeats->save();
             array_push($prueba,$event);
         }
-        array_push($data,$chart);
-        $count++;
+        foreach($planosBase as $planoBase){
+            if($chart->key == $planoBase->chartKey){
+                array_push($data,$chart);
+                break;
+            }
+        }
     }
     return json_encode(['code'=>200,'data'=>$data,'prueba'=>$prueba]);
+  }
+
+  public function addPlanoBase(Request $request){
+    $input = $request->all();
+    $registro = new PlanoBase;
+    $registro->Empresa_id = $input["idEmpresa"];
+    $registro->chartKey = $input["chartKey"];
+    if($registro->save()){
+        return json_encode(['code'=>200]);
+    }
+    return json_encode(['code'=>400]);
   }
 
   public function copiaPlano(Request $request){
@@ -265,10 +303,8 @@ class PlanoController extends Controller
       $chartKey = $input['chartKey'];
       $idEvento = $input['idEvento'];
       $registro = new PlanoEvento;
-      $registro->name = $input['name'];
-      $registro->chartKey = $chartKey;
-      $registro->imagen = $input['imagen'];
-      $registro->Evento_id= $idEvento;
+      $registro->chartKey  = $chartKey;
+      $registro->Evento_id = $idEvento;
       if($registro->save()){
         return json_encode(['code'=>200,'data'=>$registro]);
       }
