@@ -111,6 +111,11 @@ class Multimedia extends Component {
         case 'audio':
           message = `AUD,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
           payload = archivo;
+          break;
+        case 'video':
+          message =  `VID,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          payload = archivo;
+          break;
         default:
           message = `MUL,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
           payload = archivo;
@@ -167,6 +172,12 @@ class Multimedia extends Component {
           break;
         case 'flash':
           jobType = 'FLH';
+          break;
+        case 'audio':
+          jobType = 'AUD';
+          break;
+        case 'video':
+          jobType = 'VID';
           break;
       }
       const { empresa, evento } = this.state;
