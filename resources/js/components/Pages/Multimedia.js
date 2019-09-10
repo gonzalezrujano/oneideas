@@ -108,6 +108,10 @@ class Multimedia extends Component {
           message = `FLH,${moment},:id:,${flash2},${startTime.getTime()},${endTime.getTime()}`;
           payload = flash2;
           break;
+        case 'imagen':
+          message = `IMG,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          payload = archivo;
+          break;
         case 'audio':
           message = `AUD,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
           payload = archivo;
@@ -172,6 +176,9 @@ class Multimedia extends Component {
           break;
         case 'flash':
           jobType = 'FLH';
+          break;
+        case 'imagen':
+          jobType = 'IMG';
           break;
         case 'audio':
           jobType = 'AUD';
