@@ -17,7 +17,9 @@ export default class Invitados extends Component {
             empresa: "",
             empresas: [],
             eventos: [],
+            grupos: [],
             evento: "",
+            grupo: "",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
             isLoading: true,
@@ -28,6 +30,7 @@ export default class Invitados extends Component {
         this.handleMail = this.handleMail.bind(this);
         this.handleFiltroEvento = this.handleFiltroEvento.bind(this);
         this.handleFiltroEmpresa = this.handleFiltroEmpresa.bind(this);
+        this.handleFiltroGrupo = this.handleFiltroGrupo.bind(this);
     }
 
     componentDidMount() {
@@ -58,6 +61,7 @@ export default class Invitados extends Component {
                     invitadosCompletos: res.data.invitados,
                     empresas: res.data.empresas,
                     eventos: res.data.eventos,
+                    grupos: res.data.grupos,
                     isLoading: false
                 });
                 console.log(this.state);
@@ -115,6 +119,37 @@ export default class Invitados extends Component {
                 console.log(this.state.invitadosCompletos[j].Evento_id);
                 console.log(value);
                 if (this.state.invitadosCompletos[j].Evento_id == value) {
+                    invitados.push(this.state.invitadosCompletos[j]);
+                }
+            }
+            this.setState({
+                invitados
+            });
+        }
+    }
+
+    handleFiltroGrupo(event) {
+        const target = event.target;
+        const value = target.value;
+        console.log(value);
+        console.log(name);
+        const name = target.name;
+        this.setState({
+            [name]: value,
+            isLoadingEmpresa: true
+        });
+
+        if (value == "todas") {
+            this.setState({
+                isLoadingEmpresa: false,
+                invitados: this.state.invitadosCompletos
+            });
+        } else {
+            var invitados = [];
+            for (var j = 0; j < this.state.invitadosCompletos.length; j++) {
+                console.log(this.state.invitadosCompletos[j].Grupo_id);
+                console.log(value);
+                if (this.state.invitadosCompletos[j].Grupo_id == value) {
                     invitados.push(this.state.invitadosCompletos[j]);
                 }
             }
@@ -338,7 +373,7 @@ export default class Invitados extends Component {
                                 <label className="my-1 mr-2 form-control-sm">
                                     <strong>Empresa</strong>
                                 </label>
-                                <div className="col-4">
+                                <div className="col-3">
                                     {this.state.permisoUsuario.nombre ==
                                     "ADMINISTRADOR" ? (
                                         <select
@@ -392,7 +427,7 @@ export default class Invitados extends Component {
                                 <label className="my-1 mr-2 form-control-sm">
                                     <strong>Evento</strong>
                                 </label>
-                                <div className="col-4">
+                                <div className="col-3">
                                     {this.state.permisoUsuario.nombre ==
                                     "ADMINISTRADOR" ? (
                                         <select
@@ -442,6 +477,30 @@ export default class Invitados extends Component {
                                             )}
                                         </select>
                                     )}
+                                </div>
+                                <label className="mt-1 mr-2 form-control-sm">
+                                    <strong>Grupo</strong>
+                                </label>
+                                <div className="col-3">
+                                    <select
+                                        className="form-control form-control-sm my-1 mr-sm-2 col-10"
+                                        id="pro-find-empresa"
+                                        name="grupo"
+                                        onChange={this.handleFiltroGrupo}
+                                        value={this.state.grupo}
+                                    >
+                                        <option value="todas">Todas</option>
+                                        {this.state.grupos.map((e, index) => {
+                                            return (
+                                                <option
+                                                    value={e._id}
+                                                    key={index}
+                                                >
+                                                    {e.Nombre}
+                                                </option>
+                                            );
+                                        })}
+                                    </select>
                                 </div>
                                 {this.state.permisoUsuario.permisos.evento.includes(
                                     "add"

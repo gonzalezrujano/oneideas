@@ -9,14 +9,15 @@ import { Link } from "react-router-dom";
 export default class SeleccionAsientos extends Component {
     constructor(props) {
         super(props);
-        console.log(props.location.state.idInvitado)
+        console.log("abajo empresa en asientos");
+        console.log(props.location.state.empresa);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            nombre: "",
-            idEvento: props.location.state.idEvento,
+            nempresaombre: "",
+            evento: props.location.state.evento,
             eventKey: props.location.state.eventKey,
-            evento: "",
+            empresa: "",
             asientos: 1,
             idInvitado: props.location.state.idInvitado,
             opcion: "Etapas",
@@ -29,19 +30,21 @@ export default class SeleccionAsientos extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.match.params);
+
         axios
-            .get("api/eventos/one/" + this.state.idEvento, {
+            .get(`api/empresas/${this.state.evento.Empresa_id}`, {
                 headers: {
                     Authorization: this.state.api_token
                 }
             })
             .then(res => {
                 console.log(res);
-                var evento = res.data.evento.evento;
-                this.setState({
-                    evento,
+                let r = res.data;
+                this.setState(() => ({
+                    empresa: r.data.empresa,
                     isLoading: false
-                });
+                }));
             });
     }
 
@@ -55,10 +58,10 @@ export default class SeleccionAsientos extends Component {
                 "api/planos/reservar",
                 {
                     seat,
-                    secretKey: this.state.evento.secretKey,
+                    secretKey: this.state.empresa.secretKey,
                     eventKey: this.state.eventKey,
                     idInvitado: this.state.idInvitado,
-                    idEvento: this.state.idEvento
+                    idEvento: this.state.evento._id
                 },
                 {
                     headers: { Authorization: this.state.api_token }
@@ -91,7 +94,7 @@ export default class SeleccionAsientos extends Component {
     }
 
     render() {
-        console.log(this.state.eventKey);
+        console.log(this.state);
         if (this.state.isLoading) {
             return (
                 <div>
@@ -162,9 +165,11 @@ export default class SeleccionAsientos extends Component {
                                         id="prueba"
                                         onSubmit={this.handleSubmit}
                                     >
+                                        {console.log(this.state.empresa)}
+                                        {console.log(this.state.eventKey)}
                                         <SeatsioSeatingChart
                                             publicKey={
-                                                this.state.evento.publicKey
+                                                this.state.empresa.publicKey
                                             }
                                             event={this.state.eventKey}
                                             numberOfPlacesToSelect={

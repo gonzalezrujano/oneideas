@@ -57,7 +57,9 @@ export default class Add extends Component {
                 "api/planos/add-plano-evento",
                 {
                     idEvento: this.state.idEvento,
-                    chartKey: this.state.chartKey
+                    chartKey: this.state.chartKey,
+                    idEmpresa: this.state.idEmpresa,
+                    secretKey: this.state.empresa.secretKey
                 },
                 {
                     headers: {

@@ -7,13 +7,13 @@ import { Link } from "react-router-dom";
 export default class SeleccionPlanos extends Component {
     constructor(props) {
         super(props);
-        console.log(props.location.state.idInvitado);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
             idEvento: props.location.state.idEvento,
             evento: "",
             idInvitado: props.location.state.idInvitado,
+            empresa: "",
             evento: "",
             planos: [],
             opcion: "Etapas",
@@ -37,8 +37,8 @@ export default class SeleccionPlanos extends Component {
                 });
                 axios
                     .post(
-                        "api/planos/evento-reservas",
-                        { secretKey: evento.secretKey },
+                        "api/planos/evento",
+                        { idEvento: evento._id },
                         {
                             headers: { Authorization: this.state.api_token }
                         }
@@ -47,7 +47,6 @@ export default class SeleccionPlanos extends Component {
                         console.log(res);
                         this.setState({
                             planos: res.data.data,
-                            reservas: res.data.reservas,
                             isLoading: false
                         });
                     });
@@ -153,61 +152,63 @@ export default class SeleccionPlanos extends Component {
                                     <tbody>
                                         {this.state.planos.map((e, index) => {
                                             console.log(e);
-                                            return (
-                                                <tr key={index} id={e._id}>
-                                                    <td className="text-center">
-                                                        {e.name}
-                                                    </td>
-                                                    <td className="text-center">
-                                                        <img
-                                                            src={
-                                                                e.publishedVersionThumbnailUrl
-                                                            }
-                                                            width="300"
-                                                            height="300"
-                                                        />
-                                                    </td>
-                                                    <td className="text-center">
-                                                        {this.esReservado(
-                                                            this.state
-                                                                .idEvento +
-                                                                "-" +
-                                                                index
-                                                        )
-                                                            ? "Ya reservado"
-                                                            : "No reservado"}
-                                                    </td>
+                                            if (
+                                                e.status == "PUBLISHED" &&
+                                                e.events.length > 0
+                                            ) {
+                                                return (
+                                                    <tr key={index} id={e.key}>
+                                                        <td className="text-center">
+                                                            {e.name}
+                                                        </td>
+                                                        <td className="text-center">
+                                                            <img
+                                                                src={
+                                                                    e.publishedVersionThumbnailUrl
+                                                                }
+                                                                width="300"
+                                                                height="300"
+                                                            />
+                                                        </td>
+                                                        <td className="text-center">
+                                                            {/*this.esReservado(
+                                                                this.state
+                                                                    .idEvento +
+                                                                    "-" +
+                                                                    index
+                                                            )
+                                                                ? "Ya reservado"
+                                                            : "No reservado"*/}
+                                                        </td>
 
-                                                    <td className="text-center">
-                                                        <div className="text-center">
-                                                            <Link
-                                                                className="mr-2"
-                                                                to={{
-                                                                    pathname:
-                                                                        "/planos/seleccion-asiento",
-                                                                    state: {
-                                                                        idEvento: this
-                                                                            .state
-                                                                            .idEvento,
-                                                                        idInvitado: this
-                                                                            .state
-                                                                            .idInvitado,
-                                                                        eventKey:
-                                                                            this
+                                                        <td className="text-center">
+                                                            <div className="text-center">
+                                                                <Link
+                                                                    className="mr-2"
+                                                                    to={{
+                                                                        pathname:
+                                                                            "/planos/seleccion-asiento",
+                                                                        state: {
+                                                                            evento: this
                                                                                 .state
-                                                                                .evento
-                                                                                ._id +
-                                                                            "-" +
-                                                                            index
-                                                                    }
-                                                                }}
-                                                            >
-                                                                Seleccionar
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
+                                                                                .evento,
+                                                                            idInvitado: this
+                                                                                .state
+                                                                                .idInvitado,
+                                                                            eventKey:
+                                                                                e
+                                                                                    .events[0]
+                                                                                    .key
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    Seleccionar
+                                                                </Link>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            }
                                         })}
                                     </tbody>
                                 </table>

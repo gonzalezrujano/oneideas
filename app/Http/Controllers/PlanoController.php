@@ -159,9 +159,10 @@ class PlanoController extends Controller
     $empresa = Empresa::find($evento->Empresa_id);
     $seatsio = new \Seatsio\SeatsioClient($empresa->secretKey);
     $planosEvento = PlanoEvento::where("Evento_id",$input["idEvento"])->get();
+    
     $data = [];
     $prueba = [];
-    $charts = $seatsio->charts->listAll();
+    $charts = $seatsio->charts->listAll((new \Seatsio\Charts\ChartListParams())->withExpandEvents(true));
     foreach($charts as $chart) {
         if($chart->events === null) {
             /*$event = $seatsio->events->create($chart->key);
@@ -299,15 +300,24 @@ class PlanoController extends Controller
   }
 
   public function addPlanoEvento(Request $request){
-      $input = $request->all();
-      $chartKey = $input['chartKey'];
-      $idEvento = $input['idEvento'];
-      $registro = new PlanoEvento;
-      $registro->chartKey  = $chartKey;
-      $registro->Evento_id = $idEvento;
-      if($registro->save()){
-        return json_encode(['code'=>200,'data'=>$registro]);
-      }
+        $input = $request->all();
+        $chartKey = $input['chartKey'];
+        $idEvento = $input['idEvento'];
+        $secretKey = $input['secretKey'];
+        $idEmpresa = $input['idEmpresa'];
+        $seatsio = new \Seatsio\SeatsioClient($secretKey);
+        $event = $seatsio->events->create($chartKey);
+        $eventSeats = new EventoSeats;
+        $eventSeats->Empresa_id = $idEmpresa;
+        $eventSeats->eventKey   = $event->key;
+        $eventSeats->chartKey   = $event->chartKey;
+        $eventSeats->save();
+        $registro = new PlanoEvento;
+        $registro->chartKey  = $chartKey;
+        $registro->Evento_id = $idEvento;
+        if($registro->save()){
+            return json_encode(['code'=>200,'data'=>$registro]);
+        }
   }
 
 }
