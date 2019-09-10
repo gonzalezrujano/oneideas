@@ -163,14 +163,14 @@ class PlanoController extends Controller
     $prueba = [];
     $charts = $seatsio->charts->listAll();
     foreach($charts as $chart) {
-        if($chart->status == "NOT_USED") {
-            $event = $seatsio->events->create($chart->key, (string) new ObjectId());
+        if($chart->events === null) {
+            /*$event = $seatsio->events->create($chart->key);
             $eventSeats = new EventoSeats;
             $eventSeats->Empresa_id = $empresa->_id;
             $eventSeats->eventKey   = $event->key;
             $eventSeats->chartKey   = $event->chartKey;
             $eventSeats->save();
-            array_push($prueba,$event);
+            array_push($prueba,$event);*/
         }
         foreach($planosEvento as $planoEvento){
             if($chart->key == $planoEvento->chartKey){
@@ -258,13 +258,13 @@ class PlanoController extends Controller
     $charts = $seatsio->charts->listAll();
     foreach($charts as $chart) {
         if($chart->status == "NOT_USED") {
-            $event = $seatsio->events->create($chart->key, (string) new ObjectId());
+            /*$event = $seatsio->events->create($chart->key, (string) new ObjectId());
             $eventSeats = new EventoSeats;
             $eventSeats->Empresa_id = $empresa->_id;
             $eventSeats->eventKey   = $event->key;
             $eventSeats->chartKey   = $event->chartKey;
             $eventSeats->save();
-            array_push($prueba,$event);
+            array_push($prueba,$event);*/
         }
         foreach($planosBase as $planoBase){
             if($chart->key == $planoBase->chartKey){

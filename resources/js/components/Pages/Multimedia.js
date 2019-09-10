@@ -56,8 +56,8 @@ class Multimedia extends Component {
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
 
-        this.mqttHost = 'mqtt.oneshow.com.ar';
-        this.mqttPort = 11344;
+        this.mqttHost = 'localhost';
+        this.mqttPort = 9001;
         this.mqttClientId = uuidv4();
         this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, this.mqttClientId);
     }
@@ -73,7 +73,7 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        useSSL: true,
+        // useSSL: true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })
@@ -107,6 +107,14 @@ class Multimedia extends Component {
         case 'flash':
           message = `FLH,${moment},:id:,${flash2},${startTime.getTime()},${endTime.getTime()}`;
           payload = flash2;
+          break;
+        case 'audio':
+          message = `AUD,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          payload = archivo;
+          break;
+        case 'video':
+          message =  `VID,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
+          payload = archivo;
           break;
         default:
           message = `MUL,${moment},:id:,${archivo},${startTime.getTime()},${endTime.getTime()}`;
@@ -164,6 +172,12 @@ class Multimedia extends Component {
           break;
         case 'flash':
           jobType = 'FLH';
+          break;
+        case 'audio':
+          jobType = 'AUD';
+          break;
+        case 'video':
+          jobType = 'VID';
           break;
       }
       const { empresa, evento } = this.state;
