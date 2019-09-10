@@ -4,47 +4,28 @@ import { SeatsioDesigner } from "@seatsio/seatsio-react";
 import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
-import "./css/planos.css";
+import "../Planos/css/planos.css";
 
 export default class Edit extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
+        console.log(props.location.state.empresa);
         this.state = {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             permisoUsuario: JSON.parse(localStorage.getItem("permisosUsuario")),
-            idPlano: this.props.match.params.id,
-            eventoLink: this.props.location.state.link,
-            idEvento: this.props.location.state.idEvento,
-            nombreEmpresa: this.props.location.state.nombreEmpresa,
-            idEmpresa: this.props.location.state.idEmpresa,
-            empresa: "",
+            chartKey: this.props.match.params.id,
+            empresa: props.location.state.empresa,
             opcion: "Etapas",
             footer: "Footer",
             eventos: JSON.parse(localStorage.getItem("eventos")),
             api_token: localStorage.getItem("api_token"),
-            isLoading: true
+            isLoading: false
         };
     }
 
-    componentDidMount() {
-        console.log(this.state.idEmpresa);
-        axios
-            .get(`api/empresas/${this.state.idEmpresa}`, {
-                headers: {
-                    Authorization: this.state.api_token
-                }
-            })
-            .then(res => {
-                console.log(res);
-                let r = res.data;
-                this.setState(() => ({
-                    empresa: r.data.empresa,
-                    isLoading: false
-                }));
-            });
-    }
-
     render() {
+        console.log(this.state.empresa);
         if (this.state.isLoading) {
             return (
                 <div>
@@ -94,7 +75,7 @@ export default class Edit extends Component {
                                 <div className="col-sm-12 col-md-12">
                                     <h1 className="page-header-heading">
                                         <i className="fas fa-ticket-alt page-header-heading-icon" />
-                                        &nbsp; Modificar Plano
+                                        &nbsp; Modificar Plano Base
                                     </h1>
                                 </div>
                             </div>
@@ -135,7 +116,7 @@ export default class Edit extends Component {
                                         designerKey={
                                             this.state.empresa.designerKey
                                         }
-                                        chartKey={this.state.idPlano}
+                                        chartKey={this.state.chartKey}
                                         languaje="es"
                                     />
                                 </div>
@@ -146,8 +127,8 @@ export default class Edit extends Component {
                                     <Link
                                         to={{
                                             pathname:
-                                                "/eventos/planos/" +
-                                                this.state.idEvento,
+                                                "/empresas/planos-base/" +
+                                                this.state.empresa._id,
                                             state: {
                                                 link: this.state.eventoLink,
                                                 nombreEmpresa: this.state

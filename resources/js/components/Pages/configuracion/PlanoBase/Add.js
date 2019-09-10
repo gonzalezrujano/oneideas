@@ -17,6 +17,7 @@ export default class Add extends Component {
             nombre: "",
             idEmpresa: props.location.state.idEmpresa,
             designerKey: props.location.state.designerKey,
+            chartKey: "",
             evento: "",
             opcion: "Etapas",
             footer: "Footer",
@@ -24,6 +25,55 @@ export default class Add extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: false
         };
+        this.chartKeyGenerate = this.chartKeyGenerate.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    chartKeyGenerate(key) {
+        this.setState({ chartKey: key });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        $("#boton-plano").prepend('<i class="fa fa-spinner fa-spin"></i> ');
+        axios
+            .post(
+                "api/planos/add-plano-base",
+                {
+                    idEmpresa: this.state.idEmpresa,
+                    chartKey: this.state.chartKey
+                },
+                {
+                    headers: {
+                        Authorization: this.state.api_token
+                    }
+                }
+            )
+            .then(res => {
+                console.log(res);
+                if (res.data.code === 200) {
+                    Swal.fire({
+                        text: "Plano agregado exitosamente",
+                        type: "success",
+                        showCancelButton: false,
+                        confirmButtonColor: "#343a40",
+                        confirmButtonText: "OK",
+                        target: document.getElementById("sweet")
+                    }).then(result => {
+                        if (result.value) {
+                            window.scrollTo(0, 0);
+                            this.props.history.push(
+                                "/empresas/planos-base/" + this.state.idEmpresa
+                            );
+                        }
+                    });
+                } else if (res.data.code === 500) {
+                    $("button#save-usuario")
+                        .find("i.fa")
+                        .remove();
+                    sweetalert(res.data.mensaje, "error", "sweet");
+                }
+            });
     }
 
     render() {
@@ -126,7 +176,20 @@ export default class Add extends Component {
                                     <SeatsioDesigner
                                         designerKey={this.state.designerKey}
                                         language="es"
+                                        onChartCreated={this.chartKeyGenerate}
                                     />
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <div className="col-sm-4">
+                                    <button
+                                        type="button"
+                                        id="boton-plano"
+                                        className="btn btn-sm btn-dark "
+                                        onClick={this.handleSubmit}
+                                    >
+                                        Guardar
+                                    </button>
                                 </div>
                             </div>
 

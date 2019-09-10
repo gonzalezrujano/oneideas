@@ -47,6 +47,7 @@ import SeleccionPlanos from "../Pages/configuracion/Invitados/asientos/Seleccion
 import SeleccionAsientos from "../Pages/configuracion/Invitados/invitados/SeleccionAsientos";
 import PlanoBase from "../Pages/configuracion/PlanoBase/PlanoBase";
 import PlanoBaseAdd from "../Pages/configuracion/PlanoBase/Add";
+import PlanoBaseEdit from "../Pages/configuracion/PlanoBase/Edit";
 import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
 import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 
@@ -92,6 +93,12 @@ function App() {
                         exact
                         path="/empresa/planos-base/add"
                         component={PlanoBaseAdd}
+                    />
+
+                    <Route
+                        exact
+                        path="/empresa/planos-base/edit/:id"
+                        component={PlanoBaseEdit}
                     />
                     <Route
                         exact

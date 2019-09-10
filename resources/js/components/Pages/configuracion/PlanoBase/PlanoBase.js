@@ -19,7 +19,6 @@ export default class PlanoBase extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
-        this.modalDelete = this.modalDelete.bind(this);
     }
 
     componentDidMount() {
@@ -51,53 +50,6 @@ export default class PlanoBase extends Component {
                         });
                     });
             });
-    }
-
-    modalDelete(id) {
-        Swal.fire({
-            text: "¿Está seguro que desea borrar el etapa?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#343a40",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            target: document.getElementById("sweet")
-        }).then(result => {
-            if (result.value) {
-                axios
-                    .post(
-                        "/api/etapas/delete",
-                        { id },
-                        {
-                            headers: {
-                                Authorization: this.state.api_token
-                            }
-                        }
-                    )
-                    .then(res => {
-                        if (res.data.code === 200) {
-                            sweetalert(
-                                "Item eliminado correctamente",
-                                "success",
-                                "sweet"
-                            );
-                            $("#" + id).hide();
-                        } else if (res.data.code === 600) {
-                            sweetalert(
-                                "Error en el Proceso de Eliminacion. Consulte al Administrador",
-                                "error",
-                                "sweet"
-                            );
-                        } else if (res.data.code == 500) {
-                            sweetalert(
-                                "Error al Eliminar. Consulte al Administrador",
-                                "error",
-                                "sweet"
-                            );
-                        }
-                    });
-            }
-        });
     }
 
     render() {
@@ -229,32 +181,26 @@ export default class PlanoBase extends Component {
 
                                                     <td className="text-center">
                                                         <div className="text-center">
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
+                                                            {this.state.permisoUsuario.permisos.evento.includes(
                                                                 "edit"
                                                             ) ? (
                                                                 <Link
                                                                     className="mr-2"
                                                                     to={{
                                                                         pathname:
-                                                                            "/eventos/planos/edit/" +
+                                                                            "/empresa/planos-base/edit/" +
                                                                             e.key,
                                                                         state: {
-                                                                            link: this
+                                                                            empresa: this
                                                                                 .state
-                                                                                .eventoLink,
-                                                                            nombreEmpresa: this
-                                                                                .state
-                                                                                .nombreEmpresa,
-                                                                            idEvento: this
-                                                                                .state
-                                                                                .idEvento,
-                                                                            designerKey: this
-                                                                                .state
-                                                                                .evento
-                                                                                .designerKey
+                                                                                .empresa
                                                                         }
                                                                     }}
                                                                 >
+                                                                    {console.log(
+                                                                        this
+                                                                            .state
+                                                                    )}
                                                                     <i
                                                                         data-toggle="tooltip"
                                                                         data-placement="top"
@@ -265,26 +211,6 @@ export default class PlanoBase extends Component {
                                                             ) : (
                                                                 ""
                                                             )}
-                                                            {/*this.state.permisoUsuario.permisos.evento.includes(
-                                                                "delete"
-                                                            ) ? (
-                                                                <Link className="mr-2">
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Eliminar"
-                                                                        className="fas fa-trash-alt icono-ver"
-                                                                        onClick={ev =>
-                                                                            this.modalDelete(
-                                                                                e._id,
-                                                                                ev
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Link>
-                                                            ) : (
-                                                                ""
-                                                            )*/}
                                                         </div>
                                                     </td>
                                                 </tr>

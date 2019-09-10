@@ -169,7 +169,7 @@ export default class PlanoBaseCopia extends Component {
                                                                 "edit"
                                                             ) ? (
                                                                 <Link
-                                                                    className="mr-2"
+                                                                    className="mr-2 btn btn-primary p-2"
                                                                     to={{
                                                                         pathname: `/evento/plano/copia`,
                                                                         state: {

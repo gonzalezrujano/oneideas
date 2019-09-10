@@ -182,13 +182,14 @@ Route::group(['middleware'=>'api_token','prefix' => 'etapas'], function() {
 Route::group(['middleware'=>'api_token','prefix' => 'planos'], function() {
     //rutas de empresas
     Route::post('/', 'PlanoController@addPlano');
+    Route::post('/add-plano-base','PlanoController@addPlanoBase');
     Route::post('/delete', 'PlanoController@deletePlano');
     Route::post('/edit','PlanoController@setPlano');
     Route::get('/', 'PlanoController@getAllPlanos');
     Route::post('/evento', 'PlanoController@getPlanosEvento');
     Route::post('/empresa', 'PlanoController@getPlanosEmpresa');
     Route::post("/copia",'PlanoController@copiaPlano');
-    Route::post("/add-copy-evento",'PlanoController@addPlanoEvento');
+    Route::post("/add-plano-evento",'PlanoController@addPlanoEvento');
     
     Route::post('/evento-reservas', 'PlanoController@getPlanosEventoReservas');
     Route::post('/reservar', 'PlanoController@reservar');
