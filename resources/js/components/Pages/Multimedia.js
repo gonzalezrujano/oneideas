@@ -56,8 +56,8 @@ class Multimedia extends Component {
         this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
 
-        this.mqttHost = 'localhost';
-        this.mqttPort = 9001;
+        this.mqttHost = 'mqtt.oneshow.com.ar';
+        this.mqttPort = 11344;
         this.mqttClientId = uuidv4();
         this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, this.mqttClientId);
     }
