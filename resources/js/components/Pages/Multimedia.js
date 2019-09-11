@@ -73,7 +73,7 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        // useSSL: true,
+        useSSL: true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })
