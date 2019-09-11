@@ -274,7 +274,7 @@ class BibliotecaController extends Controller
      */
     public function getFilesEvento(Request $request){
         //capturo el id de la empresa para buscar los eventos en base a ella
-        $idevento = $request->id;
+        $idevento = $request->evento;
 
         $files = Biblioteca::borrado(false)->activo(true)->where('Evento_id', new ObjectID($idevento))->get();
 
