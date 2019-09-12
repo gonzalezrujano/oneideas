@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
     case FETCHED_MEDIA_EVENTS:
       return {
         ...state,
-        eventos: action.payload
+        eventos: action.payload.map(mapEventFromDbToStore),
       };
     case FETCHED_MEDIA_SECTOR:
       return {
@@ -71,4 +71,15 @@ function mapCompanyFromDbToStore (company) {
     countryId: company.Pais_id,
     active: company.Activo,
   }
+}
+
+function mapEventFromDbToStore (event) {
+  return {
+    id: event._id,
+    name: event.Nombre,
+    date: event.Fecha,
+    time: event.Hora,
+    companyId: event.Empresa_id,
+    countryId: event.Pais_id,
+  };
 }

@@ -9,7 +9,7 @@ import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
-import { getEventos, getCompanies, getJobs, createJob } from './../../redux/actions/multimedia';
+import { getEventos, getCompanies, getJobs, createJob, getEventsFromCompany } from './../../redux/actions/multimedia';
 import uuidv4 from 'uuid/v4';
 
 class Multimedia extends Component {
@@ -21,6 +21,7 @@ class Multimedia extends Component {
           password: "",
           eventos: [],
           envios:[],
+          companyId: '',
           sectores: [],
           evento: "",
           sector: '',
@@ -46,6 +47,8 @@ class Multimedia extends Component {
          * Desclarando las funciones que daran uso al state del constructor de esta clase
          */
         this.handleChange = this.handleChange.bind(this);
+        this.handleCompanyChange = this.handleCompanyChange.bind(this);
+        this.handleEventChange = this.handleEventChange.bind(this);
         this.sendMqttCommand = this.sendMqttCommand.bind(this);
         this.removeMqttJob = this.removeMqttJob.bind(this);
         this.handleStartTime = this.handleStartTime.bind(this);
@@ -53,7 +56,6 @@ class Multimedia extends Component {
         this.openStartTime = this.openStartTime.bind(this);
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
-        this.quitarCola = this.quitarCola.bind(this);
         this.getEnvios = this.getEnvios.bind(this);
 
         this.mqttHost = 'mqtt.oneshow.com.ar';
@@ -150,23 +152,6 @@ class Multimedia extends Component {
     }
 
     /**
-     * Obtener todos los elementos o acciones asociadas al evento
-     * @param {*} eventonew 
-     */
-    getEnvios (eventId) {
-      let { evento } = this.state;
-      
-      if (eventId) {
-        evento = eventId;
-      }
-
-      this.props.getEnvios(evento, this.state.api_token)
-        .then(console.log)
-        .catch(console.log)
-    }
-
-
-    /**
      * Metodo para quitar un comando de las acciones asociadas a ella
      * @param {id} ID del job a dejar de ejecutar 
      */
@@ -197,25 +182,35 @@ class Multimedia extends Component {
       this.mqttClient.send(topic, message);
    }
 
+    handleCompanyChange (e) {
+      const { value } = e.target;
+
+      if (!value)
+        return this.setState({ companyId: '', evento: '' });
+
+      this.setState({ companyId: value }, () => this.props.getEventsFromCompany(value));
+    }
+
+    handleEventChange (e) {
+      const { value } = e.target;
+
+      if (!value)
+        return this.setState({ evento: '' });
+
+      this.setState({ evento: value }, () => this.props.getEnvios(value));
+    }
+
    /**
     * metodo para cambiar el state de las variables usadas en los inputs
     * @param {evento} e 
     */
     handleChange (e) {
+      console.log('original handle change');
       if (e.target != undefined) {
-        if (e.target.name == "evento") {
-          const event = this.props.eventos.find(evento => evento._id === e.target.value);
-                            
-          this.setState({
-            evento: event._id,
-            empresa: event.Empresa_id,
-          }, () => this.getEnvios(event._id));
+        this.setState({
+          [e.target.name]: e.target.value
+        });
 
-        } else {
-          this.setState({
-            [e.target.name]: e.target.value
-          });
-        }
       } else if (e.hex != undefined) {  
         let colorDiv = document.getElementById("recuadro-color");
         colorDiv.style.backgroundColor=e.hex;
@@ -224,67 +219,6 @@ class Multimedia extends Component {
             color: e.hex
         });
       }
-    }
-
-    /**
-     * Metodo para eliminar de la cola de acciones de eventos
-     * @param {*} newestado 
-     * @param {*} tipo 
-     * @param {*} inicio 
-     * @param {*} fin 
-     * @param {*} id 
-     */
-    quitarCola(newestado,tipo,inicio,fin,id){
-        let {evento} = this.state;
-        evento=evento.split("_")[0];
-        var title=tipo;
-        var parametro='';
-
-        var estado='cola';
-        if(newestado!=undefined&&newestado!=null&&newestado!=""){
-            estado=newestado;
-        }
-        if(inicio==undefined&&inicio==null&&inicio==""){
-            inicio=moment().format("hh:mm:ss");
-        }
-        if(fin==undefined&&fin==null&&fin==""){
-            fin="99:99:99";
-        }
-        if(title=='imagen'||title=='video'||title=='audio'){
-        parametro=this.state.archivo;
-        }
-        if(title=='flash'){
-        parametro=this.state.flash2;
-        }
-        if(title=='colores'){
-        parametro=this.state.color;
-        }
-        this.removeMqttJob(title,parametro,inicio,fin);
-        document.getElementById(id).style.display="none";
-        axios.post('/api/eventos/remove-envios', {evento,title,estado,inicio,fin,parametro,id} ,{
-            headers: {
-                Authorization: this.state.api_token
-            }
-        })
-            .then(res => {
-                if(res){
-
-                    let r = res.data;
-
-                    if(r.code === 200){
-
-                        this.setState({
-                            envios: r.envios,
-                        });
-                        this.getEnvios();
-
-                    }else if(r.code === 500){
-                      console.log(r.msj);
-                    }
-
-                }
-
-            }).catch(function (error) {});
     }
 
     openStartTime () {
@@ -345,68 +279,6 @@ class Multimedia extends Component {
         <Menu usuario={this.state.user} />
         <Header usuario={this.state.user} history={this.props.history} />
         <div className="content-wrapper">
-          {/* <header className="page-header">
-              <div className="container-fluid">
-                  <div className="row">
-                      <div className="col-sm-12 col-md-12">
-                          <div className="d-flex">
-                              <div className="my-2">
-                                  <h1 className="page-header-heading">
-                                      <div>
-                                          <i className="fas fa-compact-disc page-header-heading-icon" />
-                                          Multimedia
-                                          {this.state.evento !== "" && 
-                                            <React.Fragment>
-                                              <i className="fas fa-clock mr-2 ml-4" />
-                                              <Clock
-                                                  format={
-                                                      "HH:mm:ss A"
-                                                  }
-                                                  ticking={true}
-                                                  timezone={
-                                                      this.state
-                                                          .zonaevento
-                                                  }
-                                              />
-                                            </React.Fragment>
-                                          }
-                                      </div>
-                                  </h1>
-                              </div>
-                              <form className="form-inline ml-5">
-                                  <i className="fas fa-calendar-week fa-lg mr-3" />
-                                  <select
-                                      className="form-control form-control-sm form-select-event"
-                                      name="evento"
-                                      value={this.state.evento}
-                                      onChange={this.handleChange}
-                                  >
-                                      <option value="">
-                                          Seleccione evento
-                                      </option>
-                                      {this.props.eventos.map(event => (
-                                          <option key={event._id} value={`${event._id}`}>
-                                            {event.Nombre}
-                                          </option>
-                                      ))}
-                                  </select>
-                              </form>
-
-                              <div className="ml-auto">
-                                  <button
-                                      type="button"
-                                      className="btn btn-sm btn-dark ml-4"
-                                      onClick={this.goFull}
-                                  >
-                                      <i className="fas fa-arrows-alt" />
-                                      &nbsp;Fullscreen
-                                  </button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </header> */}
           <header className="page-header">
             <div className="container-fluid">
               <div className="row align-items-center">
@@ -419,8 +291,13 @@ class Multimedia extends Component {
                   <form>
                     <div className="form-row">
                       <div className="col">
-                        <select className="form-control form-control-sm">
-                          <option>Selecione una Empresa</option>
+                        <select
+                          name="company"
+                          className="form-control form-control-sm"
+                          onChange={this.handleCompanyChange}
+                          value={this.state.company}
+                        >
+                          <option value="">Selecione una Empresa</option>
                           {this.props.companies.map(company => (
                             <option key={company.id} value={`${company.id}`}>
                               {company.name}
@@ -429,11 +306,16 @@ class Multimedia extends Component {
                         </select>
                       </div>
                       <div className="col">
-                        <select className="form-control form-control-sm">
-                          <option>Seleccione un Evento</option>
+                        <select 
+                          name="event"
+                          className="form-control form-control-sm" 
+                          onChange={this.handleEventChange}
+                          value={this.state.evento}
+                        >
+                          <option value="">Seleccione un Evento</option>
                           {this.props.eventos.map(event => (
-                            <option key={event._id} value={`${event._id}`}>
-                              {event.Nombre}
+                            <option key={event.id} value={`${event.id}`}>
+                              {event.name}
                             </option>
                           ))}
                         </select>
@@ -516,8 +398,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getCompanies: () => dispatch(getCompanies()),
+  getEnvios: (eventId) => dispatch(getJobs(eventId)),
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
-  getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
+  getEventsFromCompany: (companyId) => dispatch(getEventsFromCompany(companyId)),
   createJob: (eventId, job, apiToken) => dispatch(createJob(eventId, job, apiToken))
 });
 

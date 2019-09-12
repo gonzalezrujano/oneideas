@@ -13,8 +13,6 @@ export function getCompanies () {
   return (dispatch, getState) => {
     const { auth: { apiToken } } = getState();
 
-    console.log('state', getState());
-
     return axios.get('api/empresas', {
       headers: {
         Authorization: apiToken
@@ -23,10 +21,21 @@ export function getCompanies () {
     .then(res => {
       const { data } = res;
 
-      console.log('data', data);
-
       return dispatch(saveCompanies(data.empresas));      
     })
+  }
+}
+
+export function getEventsFromCompany (companyId) {
+  return (dispatch, getState) => {
+    const { auth: { apiToken }} = getState();
+    
+    return axios.get(`api/empresas/eventos/${companyId}`, {
+      headers: {
+        Authorization: apiToken
+      }
+    })
+    .then(res => dispatch(saveEventos(res.data)))
   }
 }
 
@@ -47,8 +56,10 @@ export function getEventos (userId, apiToken) {
   }
 }
 
-export function getJobs (eventId, apiToken) {
-  return dispatch => {
+export function getJobs (eventId) {
+  return (dispatch, getState) => {
+    const { auth: { apiToken }} = getState();
+    
     return axios.post("/api/eventos/envios", { evento: eventId }, {
         headers: {
             Authorization: apiToken
