@@ -14,6 +14,8 @@ use App\Models\MongoDB\Cobranza;
 use App\Models\MongoDB\Sucursal;
 use App\Models\MongoDB\TipoDocumento;
 use App\Models\MongoDB\TipoRubro;
+use App\Models\MongoDB\Rol;
+use App\Models\MongoDB\Usuario;
 use Illuminate\Http\Request;
 use App\Pdf\Empresa\QRPDF;
 use Carbon\Carbon;
@@ -257,13 +259,23 @@ class EmpresaController extends Controller
     /**
      * metodo para retornar todas las empresas
      */
-    public function getEmpresas(){
-        $empresas = Empresa::borrado(false)->get();
-        //devuelvo un json con la data
-        return response()->json([
-            'code' => 200,
-            'empresas' => $empresas
-        ]);
+    public function getEmpresas (Request $request) {
+      $apiToken = $request->header('Authorization');
+      $user = Usuario::where('api_token', $apiToken)->first();
+      $role = Rol::where('_id', new ObjectId($user->Rol_id))->first();
+      $companies = [];
+
+      
+      if ($role->Nombre == 'ADMINISTRADOR') {
+        $companies = Empresa::where('Borrado', false)->get();
+      } else {
+        $companies = Empresa::borrado(false)->where('_id', new ObjectId($user->Empresa_id))->get();
+      }
+      
+      return response()->json([
+          'code' => 200,
+          'empresas' => $companies
+      ]);
     }
 
     /**

@@ -46,7 +46,6 @@ Route::group(['middleware'=>'api_token','prefix' => 'empresas'], function() {
     Route::post('/update','EmpresaController@updateEmpresa');
     Route::get('/eventos/{empresa}', 'EmpresaController@getEventosPorEmpresa');
     Route::get('/{id}','EmpresaController@getEmpresa');
-    
 });
 
 

@@ -9,7 +9,7 @@ import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
-import { getEventos, getJobs, createJob } from './../../redux/actions/multimedia';
+import { getEventos, getCompanies, getJobs, createJob } from './../../redux/actions/multimedia';
 import uuidv4 from 'uuid/v4';
 
 class Multimedia extends Component {
@@ -68,8 +68,11 @@ class Multimedia extends Component {
 
       this.setState({ isLoading: true });
 
-      this.props.getEvents(usuario._id, api_token)
+      this.props.getCompanies()
         .then(() => this.setState({ isLoading: false }));
+
+      // this.props.getEvents(usuario._id, api_token)
+      //   .then(() => this.setState({ isLoading: false }));
 
       // Subscribing to broker
       this.mqttClient.connect({
@@ -417,15 +420,21 @@ class Multimedia extends Component {
                     <div className="form-row">
                       <div className="col">
                         <select className="form-control form-control-sm">
-                          <option></option>
+                          <option>Selecione una Empresa</option>
+                          {this.props.companies.map(company => (
+                            <option key={company.id} value={`${company.id}`}>
+                              {company.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
                       <div className="col">
                         <select className="form-control form-control-sm">
+                          <option>Seleccione un Evento</option>
                           {this.props.eventos.map(event => (
-                              <option key={event._id} value={`${event._id}`}>
-                                {event.Nombre}
-                              </option>
+                            <option key={event._id} value={`${event._id}`}>
+                              {event.Nombre}
+                            </option>
                           ))}
                         </select>
                       </div>
@@ -498,6 +507,7 @@ class Multimedia extends Component {
 }
 
 const mapStateToProps = state => ({
+  companies: state.multimedia.companies,
   eventos: state.multimedia.eventos,
   sectores: state.multimedia.sectores,
   envios: state.multimedia.jobs,
@@ -505,6 +515,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getCompanies: () => dispatch(getCompanies()),
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
   getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
   createJob: (eventId, job, apiToken) => dispatch(createJob(eventId, job, apiToken))

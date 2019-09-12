@@ -1,5 +1,6 @@
 import {
   FETCHED_MEDIA_EVENTS,
+  FETCHED_COMPANIES,
   FETCHED_MEDIA_SECTOR,
   FETCHED_MEDIA_JOBS,
   CREATE_NEW_JOB,
@@ -7,6 +8,27 @@ import {
   FETCHED_MEDIA_TOOLS
 } from './types';
 import axios from 'axios';
+
+export function getCompanies () {
+  return (dispatch, getState) => {
+    const { auth: { apiToken } } = getState();
+
+    console.log('state', getState());
+
+    return axios.get('api/empresas', {
+      headers: {
+        Authorization: apiToken
+      }
+    })
+    .then(res => {
+      const { data } = res;
+
+      console.log('data', data);
+
+      return dispatch(saveCompanies(data.empresas));      
+    })
+  }
+}
 
 export function getEventos (userId, apiToken) {
   return dispatch => {
@@ -146,6 +168,13 @@ export function saveEventos (eventos) {
     type: FETCHED_MEDIA_EVENTS,
     payload: eventos,
   };
+}
+
+export function saveCompanies (companies) {
+  return {
+    type: FETCHED_COMPANIES,
+    payload: { companies }
+  }
 }
 
 export function saveSectores (sectores) {

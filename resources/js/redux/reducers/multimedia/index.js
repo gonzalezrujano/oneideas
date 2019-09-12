@@ -1,4 +1,5 @@
 import { 
+  FETCHED_COMPANIES,
   FETCHED_MEDIA_EVENTS,
   FETCHED_MEDIA_SECTOR,
   FETCHED_MEDIA_JOBS,
@@ -8,6 +9,7 @@ import {
 } from '../../actions/multimedia/types';
 
 const initialState = {
+  companies: [],
   eventos: [],
   sectores: [],
   jobs: [],
@@ -20,6 +22,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case FETCHED_COMPANIES:
+      return {
+        ...state,
+        companies: action.payload.companies.map(mapCompanyFromDbToStore),
+      }
     case FETCHED_MEDIA_EVENTS:
       return {
         ...state,
@@ -52,5 +59,16 @@ export default function (state = initialState, action) {
       };
     default:
       return state;
+  }
+}
+
+function mapCompanyFromDbToStore (company) {
+  return {
+    id: company._id,
+    name: company.Nombre,
+    email: company.Correo,
+    phone: company.Telefono,
+    countryId: company.Pais_id,
+    active: company.Activo,
   }
 }
