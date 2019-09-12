@@ -342,7 +342,7 @@ class Multimedia extends Component {
         <Menu usuario={this.state.user} />
         <Header usuario={this.state.user} history={this.props.history} />
         <div className="content-wrapper">
-          <header className="page-header">
+          {/* <header className="page-header">
               <div className="container-fluid">
                   <div className="row">
                       <div className="col-sm-12 col-md-12">
@@ -403,6 +403,47 @@ class Multimedia extends Component {
                       </div>
                   </div>
               </div>
+          </header> */}
+          <header className="page-header">
+            <div className="container-fluid">
+              <div className="row align-items-center">
+                <div className="col-sm-3">
+                  <h4 className="text-center my-0">
+                    <i className="fas fa-compact-disc" /> Multimedia
+                  </h4>
+                </div>
+                <div className="col-sm-9">
+                  <form>
+                    <div className="form-row">
+                      <div className="col">
+                        <select className="form-control form-control-sm">
+                          <option></option>
+                        </select>
+                      </div>
+                      <div className="col">
+                        <select className="form-control form-control-sm">
+                          {this.props.eventos.map(event => (
+                              <option key={event._id} value={`${event._id}`}>
+                                {event.Nombre}
+                              </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div className="row mt-2 justify-content-center">
+                <div className="col-sm-4 text-center">
+                  <i className="fas fa-clock" /> {`  `}
+                  <Clock
+                    format="HH:mm:ss A"
+                    ticking={true}
+                    timezone={this.state.zonaevento}
+                  />
+                </div>
+              </div>
+            </div>
           </header>
           <div id="sweet" className="container-fluid">
             {this.state.evento == '' ?(

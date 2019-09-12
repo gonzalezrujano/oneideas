@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import axios from "axios";
 import swal from "sweetalert2";
 import logoOneShow from "../../../../public/images/logo-oneshow.png";
+import { authenticate } from './../../redux/actions/auth';
+import { connect } from 'react-redux';
 
 import "./css/Login.css";
 
-export default class Login extends Component {
-    constructor() {
-        super();
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
             url: "",
             correo: "",
@@ -40,64 +41,52 @@ export default class Login extends Component {
      * @param {*} e
      */
     handleLogin(e) {
-        let self = this;
+      e.preventDefault();
 
-        self.setState({
-            isLoading: true
-        });
+      this.setState({
+          isLoading: true
+      });
 
-        let urlInicio = this.state.url + "/welcome";
-        let correo = this.state.correo;
-        let password = this.state.password;
+      const { correo, password } = this.state;
 
-        e.preventDefault();
-
-        axios
-            .post("api/login", { correo, password })
-            .then(res => {
-                let r = res.data;
-
-                if (r.code === 200) {
-                    self.setState({
-                        correo: "",
-                        password: "",
-                        isLoading: false
-                    });
-                    console.log("log valido");
-                    console.log(r);
-                    localStorage.setItem("usuario", JSON.stringify(r.usuario));
-                    this.props.history.push({
-                        pathname: "/welcome",
-                        state: { usuario: r.usuario, api_token: r.api_token }
-                    });
-                    //window.location.href = urlInicio;
-                } else if (r.code === 600) {
-                    self.setState({
-                        isLoading: false
-                    });
-
-                    swal.fire({
-                        title: '<i class="fas fa-exclamation-circle"></i>',
-                        text: r.msj,
-                        confirmButtonColor: "#343a40",
-                        confirmButtonText: "Ok"
-                    });
-                }
-            })
-            .catch(function(error) {
-                if (error.response.status == 422) {
-                    self.setState({
-                        isLoading: false
-                    });
-
-                    swal.fire({
-                        title: '<i class="fas fa-exclamation-circle"></i>',
-                        text: error.response.data,
-                        confirmButtonColor: "#343a40",
-                        confirmButtonText: "Ok"
-                    });
-                }
+      this.props.authenticate(correo, password)
+        .then(data => {
+            this.setState({
+                correo: "",
+                password: "",
+                isLoading: false
             });
+
+            localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+            this.props.history.push({
+                pathname: "/welcome",
+                state: { usuario: data.usuario, api_token: data.api_token }
+            });
+        })
+        .catch(error => {
+          this.setState({
+              isLoading: false
+          });
+
+          if (error.code) {
+            if (error.code === 600) {
+              swal.fire({
+                title: '<i class="fas fa-exclamation-circle"></i>',
+                text: error.message,
+                confirmButtonColor: "#343a40",
+                confirmButtonText: "Ok"
+              });
+            }
+          } else if (error.response.status === 422) {
+            swal.fire({
+                title: '<i class="fas fa-exclamation-circle"></i>',
+                text: error.response.data,
+                confirmButtonColor: "#343a40",
+                confirmButtonText: "Ok"
+            });
+          }
+        });
     }
 
     render() {
@@ -173,3 +162,9 @@ export default class Login extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+  authenticate: (email, password) => dispatch(authenticate(email, password)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
