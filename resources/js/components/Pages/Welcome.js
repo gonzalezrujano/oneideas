@@ -5,6 +5,7 @@ import Header from "../components/Header";
 export default class Welcome extends Component {
     constructor(props) {
         super(props);
+        console.log(props.location.state);
         this.state = {
             url: "",
             correo: "",
@@ -15,6 +16,10 @@ export default class Welcome extends Component {
             api_token: this.props.location.state.api_token,
             isLoading: false
         };
+        localStorage.setItem(
+            "usuario",
+            JSON.stringify(this.props.location.state.usuario)
+        );
         localStorage.setItem("api_token", this.props.location.state.api_token);
     }
 

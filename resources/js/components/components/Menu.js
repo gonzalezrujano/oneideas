@@ -6,6 +6,7 @@ import axios from "axios";
 export default class Menu extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props);
         this.state = {
             url: "",
             usuario: this.props.usuario,
@@ -13,6 +14,18 @@ export default class Menu extends Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+    }
+
+    handleChange(opcion) {
+        console.log(opcion);
+        var elemento = document.getElementById(opcion);
+        console.log(elemento);
+        var activo = document.getElementsByClassName(
+            "sidebar-nav-link active"
+        )[0];
+        activo.className = "sidebar-nav-link";
+        elemento.className = "sidebar-nav-link active";
+        console.log(activo);
     }
 
     getPermisos() {
@@ -91,15 +104,39 @@ export default class Menu extends Component {
             return (
                 <aside className="left-sidebar">
                     <ul className="sidebar-nav mt-3">
-                        <li className="sidebar-nav-link active">
-                            <Link to="/welcome">
+                        <li
+                            className="sidebar-nav-link active"
+                            id="dashboard-option"
+                            onClick={e => {
+                                this.handleChange("dashboard-option");
+                            }}
+                        >
+                            <Link
+                                to={{
+                                    pathname: "/welcome",
+                                    state: {
+                                        usuario: JSON.parse(
+                                            localStorage.getItem("usuario")
+                                        ),
+                                        api_token: localStorage.getItem(
+                                            "api_token"
+                                        )
+                                    }
+                                }}
+                            >
                                 <i className="fas fa-tachometer-alt sidebar-nav-link-logo" />{" "}
                                 Dashboard
                             </Link>
                         </li>
 
                         {permisos.multimedia.includes("show") ? (
-                            <li className="sidebar-nav-link">
+                            <li
+                                className="sidebar-nav-link"
+                                id="multimedia-option"
+                                onClick={e => {
+                                    this.handleChange("multimedia-option");
+                                }}
+                            >
                                 <Link to="/multimedia">
                                     <i className="fas fa-compact-disc sidebar-nav-link-logo" />{" "}
                                     Multimedia
@@ -109,7 +146,13 @@ export default class Menu extends Component {
                             ""
                         )}
 
-                        <li className="sidebar-nav-link sidebar-nav-link-group">
+                        <li
+                            className="sidebar-nav-link sidebar-nav-link-group"
+                            id="invitados-option"
+                            onClick={e => {
+                                this.handleChange("invitados-option");
+                            }}
+                        >
                             <a
                                 data-subnav-toggle
                                 data-toggle="collapse"
@@ -189,7 +232,13 @@ export default class Menu extends Component {
                             </div>
                         </li>
 
-                        <li className="sidebar-nav-link sidebar-nav-link-group">
+                        <li
+                            className="sidebar-nav-link sidebar-nav-link-group"
+                            id="configuracion-option"
+                            onClick={e => {
+                                this.handleChange("configuracion-option");
+                            }}
+                        >
                             <a
                                 data-subnav-toggle
                                 data-toggle="collapse"
@@ -280,7 +329,16 @@ export default class Menu extends Component {
                                             ""
                                         )}
                                         {/*@endif*/}
-
+                                        {permisos.usuario.includes("show") ? (
+                                            <li className="sidebar-nav-link">
+                                                <Link to="/menu-gastronomico">
+                                                    <i className="fas fa-coffee sidebar-nav-link-logo" />
+                                                    Menu Gastronómico
+                                                </Link>
+                                            </li>
+                                        ) : (
+                                            ""
+                                        )}
                                         {/*@if(Auth::user()->hasPermission('usuario', 'show'))*/}
                                         {permisos.usuario.includes("show") ? (
                                             <li className="sidebar-nav-link">

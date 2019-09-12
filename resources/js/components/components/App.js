@@ -50,6 +50,7 @@ import PlanoBaseAdd from "../Pages/configuracion/PlanoBase/Add";
 import PlanoBaseEdit from "../Pages/configuracion/PlanoBase/Edit";
 import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
 import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
+import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastronomico";
 
 function App() {
     return (
@@ -229,6 +230,11 @@ function App() {
                         component={MailConfirmation}
                     />
                     <Route exact path="/event/:id" component={MailAsiento} />
+                    <Route
+                        exact
+                        path="/menu-gastronomico/"
+                        component={MenuGastronomico}
+                    />
                 </Switch>
             </BrowserRouter>
         </Provider>
