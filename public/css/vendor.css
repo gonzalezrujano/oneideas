@@ -4717,20 +4717,28 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   text-align: center;
 }
 
-.console .console-header h5 {
+.console.command .console-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.console .console-header h5, .console .console-header h6 {
   text-transform: uppercase;
   font-weight: 700;
 }
 
-.console-status.running {
+.console.command .console-header h6 {
+  color: rgba(255, 255, 255, .8);
+}
+
+.console-status.running, .console.command .running {
   background-color: rgba(40, 167, 69, 0.4)!important;
 }
 
-.console-status.waiting {
+.console-status.waiting, .console.command .waiting {
   background-color: rgba(255, 193, 7, 0.4)!important;
 }
 
-.console-status.nothing {
+.console-status.nothing, .console.command .nothing {
   background-color: rgba(108, 117, 125, 0.3)!important;
 }
 
@@ -4739,4 +4747,20 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   font-size: 14px;
   text-transform: lowercase;
   font-weight: 600;
+}
+
+.console.command .console-body input[type=number] {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.console.command .console-body input[type=number]::-webkit-inner-spin-button, 
+.console.command .console-body input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }

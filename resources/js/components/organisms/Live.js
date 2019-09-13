@@ -1,5 +1,8 @@
 import React from 'react';
-import ConsoleControl from './../molecules/ConsoleControl';
+import ColorControls from './ColorControls';
+import FlashControls from './FlashControls';
+import AudioControls from './AudioControls';
+import VideoControls from './VideoControls';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -22,13 +25,10 @@ class Live extends React.Component {
       
       return (
         <div key={i} className={classNames}>
-          <ConsoleControl 
-            name={name}
-            icon={show[name].icon}
-            color={show[name].color}
-            running={show[name].running}
-            current={show[name].current}
-          />
+          {name === 'color' && <ColorControls />}
+          {name === 'flash' && <FlashControls />}
+          {name === 'audio' && <AudioControls />}
+          {name === 'video' && <VideoControls />}
         </div>
       )
     })
