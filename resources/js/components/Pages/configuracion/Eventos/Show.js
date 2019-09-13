@@ -3,6 +3,7 @@ import axios from "axios";
 import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
+import $ from "jquery"
 
 import "../../css/configuracion/Biblioteca.css";
 import "./css/Eventos.css";
@@ -17,6 +18,7 @@ export default class Show extends React.Component {
             estados: [],
             menuAppInvitados:[],
             idEvento: this.props.match.params.id,
+            idEmpresa: "",
             nombre:"",
             fecha:"",
             hora:"",
@@ -57,6 +59,7 @@ export default class Show extends React.Component {
                         infoEvento:res.data.evento,
                         nombre:res.data.evento.evento.Nombre,
                         fecha:res.data.evento.evento.Fecha,
+                        idEmpresa: res.data.evento.evento.Empresa_id,
                         hora:res.data.evento.evento.Hora,
                         licencias:res.data.evento.evento.Licencias,
                         paises:res.data.evento.paises,
@@ -163,15 +166,15 @@ export default class Show extends React.Component {
                                         <i className="fas fa-calendar-week page-header-heading-icon" />
                                         &nbsp;
                                         <Link to="/empresas">
-                                            Empresa
+                                            Empresa /
                                         </Link>{" "}
-                                        /{" "}
+                                        {" "}
                                         <Link
                                             to={`/empresa/eventos/${
                                                 this.state.idEmpresa
                                             }`}
                                         >
-                                            / Eventos
+                                            Eventos
                                         </Link>{" "}
                                         / Agregar Evento
                                     </h1>
@@ -339,7 +342,7 @@ export default class Show extends React.Component {
                                     <div className="form-group row">
                                         <label className="col-sm-2 col-form-label col-form-label-sm">Menús</label>
                                         <div className="col-sm-4">
-                                            <select className="form-control form-control-sm" id="menuapp" name="menuAppSeleccionados" value={this.state.menuAppSeleccionados} onChange={this.handleChangeMulti} multiple="multiple" disabled>
+                                            <select className="form-control form-control-sm" id="menuapp" name="menuAppSeleccionados" value={this.state.menuAppSeleccionados} onChange={this.handleChangeMulti} multiple="multiple">
                                             {this.state.menuAppInvitados.map(
                                                 (e, index) => {
                                                     return (

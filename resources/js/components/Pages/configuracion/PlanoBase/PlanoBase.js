@@ -106,7 +106,7 @@ export default class PlanoBase extends Component {
                                             <Link to="/empresas">
                                                 Empresas /
                                             </Link>
-                                            / &nbsp; Planos base
+                                            &nbsp; Planos base
                                         </h1>
                                     </div>
                                 </div>

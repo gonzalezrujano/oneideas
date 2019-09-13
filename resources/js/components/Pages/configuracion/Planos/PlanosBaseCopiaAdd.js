@@ -100,6 +100,17 @@ export default class Add extends Component {
                         .remove();
                     sweetalert(res.data.mensaje, "error", "sweet");
                 }
+            })
+            .catch(error => {
+                console.log(error);
+                $("#boton-plano")
+                    .find("i.fa")
+                    .remove();
+                sweetalert(
+                    "Verifica que todos los elementos del plano tengan sección, categoria y punto focal",
+                    "error",
+                    "sweet"
+                );
             });
     }
 

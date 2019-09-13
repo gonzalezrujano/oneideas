@@ -186,24 +186,8 @@ class PlanoController extends Controller
   public function getPlanosEventoReservas(Request $request)
   {
     $input = $request->all();
-    $secretKey = $input['secretKey'];
-    $seatsio = new \Seatsio\SeatsioClient($secretKey);
-    $evento = Evento::where("secretKey",$secretKey)->get();
-    $evento = $evento[0];
-    $data = [];
-    $prueba = [];
-    $charts = $seatsio->charts->listAll();
-    $count = 0;
-    $eventos = $seatsio->events->listAll();
-    foreach($charts as $chart) {
-        if(!$this->isEvent($eventos , $evento->_id."-".$count) ) {
-            $event = $seatsio->events->create($chart->key, $evento->_id."-".$count);
-        }
-        array_push($data,$chart);
-        $count++;
-    }
-    $reservas = Reserva::where("borrado",false)->get();
-    return json_encode(['code'=>200,'data'=>$data,'reservas'=>$reservas]);
+    $reservas = Reserva::where("borrado",false)->where("Evento_id",$input['idEvento'])->where("Invitado_id",$input['idInvitado'])->get();
+    return json_encode(['code'=>200,'reservas'=>$reservas]);
   }
 
   public function reservar(Request $request){
@@ -305,18 +289,24 @@ class PlanoController extends Controller
         $idEvento = $input['idEvento'];
         $secretKey = $input['secretKey'];
         $idEmpresa = $input['idEmpresa'];
-        $seatsio = new \Seatsio\SeatsioClient($secretKey);
-        $event = $seatsio->events->create($chartKey);
-        $eventSeats = new EventoSeats;
-        $eventSeats->Empresa_id = $idEmpresa;
-        $eventSeats->eventKey   = $event->key;
-        $eventSeats->chartKey   = $event->chartKey;
-        $eventSeats->save();
-        $registro = new PlanoEvento;
-        $registro->chartKey  = $chartKey;
-        $registro->Evento_id = $idEvento;
-        if($registro->save()){
-            return json_encode(['code'=>200,'data'=>$registro]);
+        try {
+            $seatsio = new \Seatsio\SeatsioClient($secretKey);
+            $event = $seatsio->events->create($chartKey);
+            $eventSeats = new EventoSeats;
+            $eventSeats->Empresa_id = $idEmpresa;
+            $eventSeats->eventKey   = $event->key;
+            $eventSeats->chartKey   = $event->chartKey;
+            $eventSeats->save();
+            $registro = new PlanoEvento;
+            $registro->chartKey  = $chartKey;
+            $registro->Evento_id = $idEvento;
+            if($registro->save()){
+                return json_encode(['code'=>200,'data'=>$registro]);
+            }
+        } catch (ModelNotFoundException $ex) { // User not found
+            abort(422, 'Invalid email: administrator not found');
+        } catch (Exception $ex) { // Anything that went wrong
+            abort(500, 'Could not create office or assign it to administrator');
         }
   }
 

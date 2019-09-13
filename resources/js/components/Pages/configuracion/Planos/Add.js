@@ -93,11 +93,22 @@ export default class Add extends Component {
                         }
                     });
                 } else if (res.data.code === 500) {
-                    $("button#save-usuario")
+                    $("#boton-plano")
                         .find("i.fa")
                         .remove();
                     sweetalert(res.data.mensaje, "error", "sweet");
                 }
+            })
+            .catch(error => {
+                console.log(error);
+                $("#boton-plano")
+                    .find("i.fa")
+                    .remove();
+                sweetalert(
+                    "Verifica que todos los elementos del plano tengan sección, categoria y punto focal",
+                    "error",
+                    "sweet"
+                );
             });
     }
 

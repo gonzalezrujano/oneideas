@@ -16,6 +16,7 @@ export default class SeleccionPlanos extends Component {
             empresa: "",
             evento: "",
             planos: [],
+            reservas: [],
             opcion: "Etapas",
             footer: "Footer",
             api_token: localStorage.getItem("api_token"),
@@ -30,7 +31,6 @@ export default class SeleccionPlanos extends Component {
                 headers: { Authorization: this.state.api_token }
             })
             .then(res => {
-                console.log(res);
                 var evento = res.data.evento;
                 this.setState({
                     evento: res.data.evento
@@ -44,11 +44,29 @@ export default class SeleccionPlanos extends Component {
                         }
                     )
                     .then(res => {
-                        console.log(res);
                         this.setState({
-                            planos: res.data.data,
-                            isLoading: false
+                            planos: res.data.data
                         });
+                        axios
+                            .post(
+                                "api/planos/evento-reservas",
+                                {
+                                    idEvento: this.state.evento._id,
+                                    idInvitado: this.state.idInvitado
+                                },
+                                {
+                                    headers: {
+                                        Authorization: this.state.api_token
+                                    }
+                                }
+                            )
+                            .then(res => {
+                                console.log(res);
+                                this.setState({
+                                    isLoading: false,
+                                    reservas: res.data.reservas
+                                });
+                            });
                     });
             });
     }
@@ -171,14 +189,11 @@ export default class SeleccionPlanos extends Component {
                                                             />
                                                         </td>
                                                         <td className="text-center">
-                                                            {/*this.esReservado(
-                                                                this.state
-                                                                    .idEvento +
-                                                                    "-" +
-                                                                    index
+                                                            {this.esReservado(
+                                                                e.events[0].key
                                                             )
                                                                 ? "Ya reservado"
-                                                            : "No reservado"*/}
+                                                                : "No reservado"}
                                                         </td>
 
                                                         <td className="text-center">

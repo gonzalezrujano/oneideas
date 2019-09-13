@@ -70,6 +70,8 @@ export default class AddEmpresas extends Component {
                 nombre:r.data.empresa.Nombre,
                 telefono:r.data.empresa.Telefono,
                 correo:r.data.empresa.Correo,
+                paisSeleccionado: r.data.empresa.Pais_id,
+                estadoSeleccionado: (r.data.empresa.Activo)? ("5b7e4c3b589bd25309f878ca"):("5b7e4c90eaf5685309c47a4f"),
                 isLoading:false
             }));
         });
@@ -365,7 +367,7 @@ export default class AddEmpresas extends Component {
                         <div className="col-sm-4">
                             <button type="submit" id="save-empresa" className="btn btn-sm btn-dark mr-2">Guardar</button>
 
-                            <a href=""><button type="button" className="btn btn-sm btn-dark">Volver</button></a>
+                            <Link to="/empresas" className="btn btn-sm btn-dark">Volver</Link>
                         </div>
                     </div>
 

@@ -242,7 +242,7 @@ export default class AddEmpresas extends Component {
                         <div class="tab-pane fade show active" id="pills-datos" role="tabpanel" aria-labelledby="pills-datos-tab">
 
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Identificación</label>
+                                <label class="col-sm-2 col-form-label col-form-label-sm">ID fiscal</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control form-control-sm" id="identificacion" name="identificacion" placeholder="Ingrese el numero de identificacion fiscal"  onChange={this.handleChange}/>
                                 </div>

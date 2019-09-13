@@ -87,8 +87,8 @@ export default class Edit extends React.Component {
                         latitud:res.data.evento.evento.Latitud,
                         longitud:res.data.evento.evento.Longitud,
                         ubicacion:res.data.evento.evento.Ubicacion,
-                        estado:res.data.evento.evento.Activo,
-                        app:res.data.evento.evento.App,
+                        estado:res.data.evento.evento.Activo ? ("5b7e4c3b589bd25309f878ca"):("5b7e4c90eaf5685309c47a4f"),
+                        app:res.data.evento.evento.App ? ("5b7e4c3b589bd25309f878ca"):("5b7e4c90eaf5685309c47a4f"),
                         logo:res.data.evento.evento.Logo,
                         isLoading:false
                     })
