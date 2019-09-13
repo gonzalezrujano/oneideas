@@ -37,7 +37,7 @@ class TabNavigation extends React.Component {
       });
 
       return (
-        <div className={classNames}>
+        <div key={i} className={classNames}>
           {tab}
         </div>
       );

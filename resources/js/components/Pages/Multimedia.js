@@ -3,6 +3,7 @@ import Menu from "../components/Menu";
 import Header from "../components/Header";
 import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
+import Live from './../organisms/Live';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
 import TabNavigation from './../organisms/TabNavigation';
 import Ejecucion from "../components/Multimedia/Ejecucion";
@@ -337,8 +338,9 @@ class Multimedia extends Component {
             </div>
           </header>
           <div id="sweet" className="container-fluid">
-            <TabNavigation items={['Luces y Sonido', 'Escenas']}>
-              {[]}
+            <TabNavigation items={['En Vivo', 'Escenas']}>
+              <Live />
+              <div />
             </TabNavigation>
             {this.state.evento == '' ?(
                 <EmptyMultimedia/>

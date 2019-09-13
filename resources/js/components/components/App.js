@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./../../redux";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
@@ -50,6 +52,8 @@ import PlanoBaseAdd from "../Pages/configuracion/PlanoBase/Add";
 import PlanoBaseEdit from "../Pages/configuracion/PlanoBase/Edit";
 import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
 import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
+
+library.add(fas);
 
 function App() {
     return (

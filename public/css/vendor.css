@@ -4697,3 +4697,46 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
     color: black !important;
     text-decoration: none;
 }
+
+.row-fluid{
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.row-fluid > div[class^=col] {
+  display: inline-block;
+}
+
+.console {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #3a4144;
+}
+
+.console .console-header {
+  padding: 5px;
+  text-align: center;
+}
+
+.console .console-header h5 {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.console-status.running {
+  background-color: rgba(40, 167, 69, 0.4)!important;
+}
+
+.console-status.waiting {
+  background-color: rgba(255, 193, 7, 0.4)!important;
+}
+
+.console-status.nothing {
+  background-color: rgba(108, 117, 125, 0.3)!important;
+}
+
+.console-status p {
+  margin: 0px;
+  font-size: 14px;
+  text-transform: lowercase;
+  font-weight: 600;
+}
