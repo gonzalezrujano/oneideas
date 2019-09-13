@@ -12,3 +12,7 @@ export const REMOVE_JOB = 'REMOVE_JOB';
 
 export const FETCHED_MEDIA_TOOLS = 'FETCHED_MEDIA_TOOLS';
 
+export const SET_COMPANY = 'SET_COMPANY';
+
+export const SET_EVENT = 'SET_EVENT';
+

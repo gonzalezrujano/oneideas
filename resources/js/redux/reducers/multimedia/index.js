@@ -5,10 +5,14 @@ import {
   FETCHED_MEDIA_JOBS,
   CREATE_NEW_JOB,
   REMOVE_JOB,
+  SET_COMPANY,
+  SET_EVENT,
   FETCHED_MEDIA_TOOLS
 } from '../../actions/multimedia/types';
 
 const initialState = {
+  companyId: '',
+  eventId: '',
   companies: [],
   eventos: [],
   sectores: [],
@@ -56,6 +60,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         tool: action.payload
+      };
+    case SET_COMPANY:
+      return {
+        ...state,
+        companyId: action.payload.companyId
+      };
+    case SET_EVENT:
+      return {
+        ...state,
+        eventId: action.payload.eventId
       };
     default:
       return state;

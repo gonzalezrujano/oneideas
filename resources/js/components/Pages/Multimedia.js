@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
+import TabNavigation from './../organisms/TabNavigation';
 import Ejecucion from "../components/Multimedia/Ejecucion";
 import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
@@ -56,7 +57,6 @@ class Multimedia extends Component {
         this.openStartTime = this.openStartTime.bind(this);
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
-        this.getEnvios = this.getEnvios.bind(this);
 
         this.mqttHost = 'mqtt.oneshow.com.ar';
         this.mqttPort = 11344;
@@ -337,6 +337,9 @@ class Multimedia extends Component {
             </div>
           </header>
           <div id="sweet" className="container-fluid">
+            <TabNavigation items={['Luces y Sonido', 'Escenas']}>
+              {[]}
+            </TabNavigation>
             {this.state.evento == '' ?(
                 <EmptyMultimedia/>
             ):(

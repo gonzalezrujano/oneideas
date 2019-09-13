@@ -5,6 +5,8 @@ import {
   FETCHED_MEDIA_JOBS,
   CREATE_NEW_JOB,
   REMOVE_JOB,
+  SET_COMPANY,
+  SET_EVENT,
   FETCHED_MEDIA_TOOLS
 } from './types';
 import axios from 'axios';
@@ -221,4 +223,18 @@ export function saveTool (tools) {
     type: FETCHED_MEDIA_TOOLS,
     payload: tools
   }
+}
+
+export function setCompany (companyId) {
+  return {
+    type: SET_COMPANY,
+    payload: { companyId }
+  };
+}
+
+export function setEvent (eventId) {
+  return {
+    type: SET_EVENT,
+    payload: { eventId }
+  };
 }
