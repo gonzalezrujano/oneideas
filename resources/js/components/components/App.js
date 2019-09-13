@@ -51,6 +51,7 @@ import PlanoBaseEdit from "../Pages/configuracion/PlanoBase/Edit";
 import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
 import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastronomico";
+import EdicionAsiento from "../Pages/configuracion/Invitados/invitados/EdicionAsiento";
 
 function App() {
     return (
@@ -216,6 +217,11 @@ function App() {
                         exact
                         path="/planos/seleccion-asiento/"
                         component={SeleccionAsientos}
+                    />
+                    <Route
+                        exact
+                        path="/planos/edicion-asiento/"
+                        component={EdicionAsiento}
                     />
                     <Route exact path="/grupos" component={Grupos} />
                     <Route exact path="/grupos/add" component={GruposAdd} />

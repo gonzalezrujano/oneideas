@@ -83,6 +83,18 @@ export default class SeleccionPlanos extends Component {
         return retorno;
     }
 
+    getAsiento(id) {
+        console.log(id);
+        var retorno = "----";
+        this.state.reservas.forEach(reserva => {
+            console.log(reserva.eventKey);
+            if (reserva.eventKey == id) {
+                retorno = reserva.asiento;
+            }
+        });
+        return retorno;
+    }
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -162,6 +174,9 @@ export default class SeleccionPlanos extends Component {
                                                 STATUS
                                             </th>
                                             <th className="text-center">
+                                                ASIENTO
+                                            </th>
+                                            <th className="text-center">
                                                 SELECCION
                                             </th>
                                         </tr>
@@ -188,39 +203,93 @@ export default class SeleccionPlanos extends Component {
                                                                 height="300"
                                                             />
                                                         </td>
-                                                        <td className="text-center">
-                                                            {this.esReservado(
-                                                                e.events[0].key
-                                                            )
-                                                                ? "Ya reservado"
-                                                                : "No reservado"}
-                                                        </td>
-
-                                                        <td className="text-center">
-                                                            <div className="text-center">
-                                                                <Link
-                                                                    className="mr-2"
-                                                                    to={{
-                                                                        pathname:
-                                                                            "/planos/seleccion-asiento",
-                                                                        state: {
-                                                                            evento: this
-                                                                                .state
-                                                                                .evento,
-                                                                            idInvitado: this
-                                                                                .state
-                                                                                .idInvitado,
-                                                                            eventKey:
-                                                                                e
-                                                                                    .events[0]
-                                                                                    .key
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    Seleccionar
-                                                                </Link>
-                                                            </div>
-                                                        </td>
+                                                        {this.esReservado(
+                                                            e.events[0].key
+                                                        )
+                                                            ? [
+                                                                  <td className="text-center">
+                                                                      <span className="badge badge-success badge-dt">
+                                                                          Reservado
+                                                                      </span>
+                                                                  </td>,
+                                                                  <td className="text-center">
+                                                                      <span className="badge badge-primary badge-dt">
+                                                                          {this.getAsiento(
+                                                                              e
+                                                                                  .events[0]
+                                                                                  .key
+                                                                          )}
+                                                                      </span>
+                                                                  </td>,
+                                                                  <td className="text-center">
+                                                                      <div className="text-center">
+                                                                          <Link
+                                                                              className="mr-2 btn btn-primary"
+                                                                              to={{
+                                                                                  pathname:
+                                                                                      "/planos/edicion-asiento",
+                                                                                  state: {
+                                                                                      evento: this
+                                                                                          .state
+                                                                                          .evento,
+                                                                                      idInvitado: this
+                                                                                          .state
+                                                                                          .idInvitado,
+                                                                                      eventKey:
+                                                                                          e
+                                                                                              .events[0]
+                                                                                              .key,
+                                                                                      asiento: this.getAsiento(
+                                                                                          e
+                                                                                              .events[0]
+                                                                                              .key
+                                                                                      )
+                                                                                  }
+                                                                              }}
+                                                                          >
+                                                                              Editar
+                                                                          </Link>
+                                                                      </div>
+                                                                  </td>
+                                                              ]
+                                                            : [
+                                                                  <td className="text-center">
+                                                                      <span className="badge badge-danger badge-dt">
+                                                                          No
+                                                                          Reservado
+                                                                      </span>
+                                                                  </td>,
+                                                                  <td className="text-center">
+                                                                      <span className="badge badge-warning badge-dt">
+                                                                          ----
+                                                                      </span>
+                                                                  </td>,
+                                                                  <td className="text-center">
+                                                                      <div className="text-center">
+                                                                          <Link
+                                                                              className="mr-2 btn btn-primary"
+                                                                              to={{
+                                                                                  pathname:
+                                                                                      "/planos/seleccion-asiento",
+                                                                                  state: {
+                                                                                      evento: this
+                                                                                          .state
+                                                                                          .evento,
+                                                                                      idInvitado: this
+                                                                                          .state
+                                                                                          .idInvitado,
+                                                                                      eventKey:
+                                                                                          e
+                                                                                              .events[0]
+                                                                                              .key
+                                                                                  }
+                                                                              }}
+                                                                          >
+                                                                              Seleccionar
+                                                                          </Link>
+                                                                      </div>
+                                                                  </td>
+                                                              ]}
                                                     </tr>
                                                 );
                                             }

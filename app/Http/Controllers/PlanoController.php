@@ -219,8 +219,35 @@ class PlanoController extends Controller
         return json_encode(['code'=>200,'data'=>$reserva]);
       }
       return json_encode(['code'=>500]);
-
   }
+
+  public function liberar(Request $request){
+    $input = $request->all();
+    $secretKey = $input['secretKey'];
+    $eventKey = $input['eventKey'];
+    $seat = $input['asiento'];
+    $seatsio = new \Seatsio\SeatsioClient($secretKey);
+    $seatsio->events->release($eventKey, [$seat]);
+    return json_encode(['code'=>200,"mensaje"=>"liberado"]);
+  }
+
+  public function modificarReserva(Request $request){
+    $input = $request->all();
+    $seat = $input['seat'];
+    $secretKey = $input['secretKey'];
+    $eventKey = $input['eventKey'];
+    $idEvento = $input['idEvento'];
+    $idInvitado = $input['idInvitado'];
+    $reserva = Reserva::where("borrado",false)->where("eventKey",$eventKey)->where("Invitado_id",$idInvitado)->get();
+    $reserva = $reserva[0];
+    $reserva->asiento = $seat;
+    $seatsio = new \Seatsio\SeatsioClient($secretKey);
+    $respuesta = $seatsio->events->book($eventKey, [$seat]);
+    if($reserva->save()){
+      return json_encode(['code'=>200,'data'=>$reserva]);
+    }
+    return json_encode(['code'=>500]);
+}
 
   public function infoEvento(Request $request){
     $input = $request->all();
