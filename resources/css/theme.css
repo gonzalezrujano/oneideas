@@ -1430,9 +1430,9 @@ fieldset[disabled] .btn-faded-blue.focus {
   border-radius: 0;
   padding-top: 3px;
 }
-.btn-sm {
+/* .btn-sm {
   padding-bottom: 7px;
-}
+} */
 .btn-xl {
   padding: 16px 36px;
   font-size: 23px;
@@ -4463,6 +4463,7 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 
 .row-fluid{
   flex-wrap: nowrap;
+  flex-direction: row;
   overflow-x: auto;
 }
 
@@ -4526,4 +4527,8 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 .console.command .console-body input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.css-192das5-InputColor {
+
 }

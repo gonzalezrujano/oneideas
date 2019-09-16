@@ -1,21 +1,43 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
+import ColorSelector from './../molecules/ColorSelector';
 import { connect } from 'react-redux';
 
-function ColorControls (props) {  
-  return (
-    <React.Fragment>
-      <ConsoleControl 
-        name="color"
-        icon={props.color.icon}
-        color={props.color.color}
-        running={props.color.running}
-        current={props.color.current}
-      />
-      <Loop />
-    </React.Fragment>
-  );
+class ColorControls extends React.Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      colors: [],
+    }
+
+    this.handleNewColor = this.handleNewColor.bind(this);
+  }
+
+  handleNewColor (color) {
+    this.setState(state => ({
+      colors: [...state.colors, color]
+    }));
+  }
+
+  render () {
+    return (
+      <React.Fragment>
+        <ConsoleControl 
+          name="color"
+          icon={this.props.color.icon}
+          color={this.props.color.color}
+          running={this.props.color.running}
+          current={this.props.color.current}
+        />
+        <ColorSelector 
+          onSubmit={this.handleNewColor}
+        />
+        <Loop />
+      </React.Fragment>
+    );
+  }
 }
 
 const mapStateToProps = state => ({

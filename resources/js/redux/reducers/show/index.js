@@ -9,17 +9,17 @@ const initialState = {
     queue: [],
   },
   flash: {
-    running: true,
+    running: false,
     icon: 'bolt',
     color: '#eb3b5a',
-    current: {},
+    current: null,
     queue: [],
   },
   audio: {
     running: false,
     icon: 'volume-up',
     color: '#2bcbba',
-    current: {},
+    current: null,
     queue: [],
   },
   video: {

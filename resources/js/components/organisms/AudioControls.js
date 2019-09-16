@@ -13,6 +13,14 @@ function AudioControls (props) {
         running={props.audio.running}
         current={props.audio.current}
       />
+      <div className="mt-3">
+        <select className="form-control form-control-sm">
+          <option value="">Seleccione</option>
+          <option value="1">Audio.mp3</option>
+          <option value="2">IronMaidenClassic.mp3</option>
+          <option value="3">LoveSong.mp3</option>
+        </select>
+      </div>
       <Loop />
     </React.Fragment>
   );

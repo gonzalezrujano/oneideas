@@ -13,6 +13,14 @@ function VideoControls (props) {
         running={props.video.running}
         current={props.video.current}
       />
+      <div className="mt-3">
+        <select className="form-control form-control-sm">
+          <option value="">Seleccione</option>
+          <option value="1">Wedding.mp4</option>
+          <option value="2">WifesVideo.mpeg</option>
+          <option value="3">AvengersBirthday.mp4</option>
+        </select>
+      </div>
       <Loop />
     </React.Fragment>
   );
