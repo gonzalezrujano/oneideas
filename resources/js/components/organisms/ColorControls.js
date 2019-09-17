@@ -10,11 +10,17 @@ class ColorControls extends React.Component {
     super(props);
 
     this.state = {
+      loop: 0,
       colors: [],
     }
 
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
+    this.handleLoopChange = this.handleLoopChange.bind(this);
+  }
+
+  handleLoopChange (value) {
+    this.setState({ loop: value });
   }
 
   handleNewColor (color) {
@@ -46,7 +52,10 @@ class ColorControls extends React.Component {
           onDelete={this.handleDeletedColor}
           colors={this.state.colors}
         />
-        <Loop />
+        <Loop
+          value={this.state.loop}
+          onChange={this.handleLoopChange}
+        />
       </React.Fragment>
     );
   }

@@ -14,29 +14,30 @@ class Loop extends React.Component {
     this.loopRef.current.addEventListener('wheel', this.onWheelMovement, { passive: false });
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.value == -1 && this.props.value > -1) {
+      this.loopRef.current.addEventListener('wheel', this.onWheelMovement, { passive: false });
+    }
+  }
+
   onWheelMovement (e) {
     e.preventDefault();
 
     let next = parseInt(this.loopRef.current.value) + (e.deltaY * -0.01);
+    let value = next < -1 ? -1 : next;
 
-    this.loopRef.current.value = next < 0 ? 0 : next;
-
-    // this.setState((state) => {
-    //   let next = state.n + (e.deltaY * -0.01);
-
-    //   return {n: next < 0 ? 0 : next}
-    // });
-
-    // return false;
+    this.props.onChange(value);
   }
 
   onRestartClick (e) {
     e.preventDefault();
 
-    this.loopRef.current.value = 0;
+    this.props.onChange(0);
   }
 
   render () {
+    const { value } = this.props;
+
     return (
       <div className="console command rounded mt-3">
         <div className="console-header">
@@ -47,13 +48,24 @@ class Loop extends React.Component {
         <form>
           <div className="console-body">
             <div className="command-control">
-              <input 
-                name="n" 
-                min="0"
-                defaultValue={0}
-                type="number" 
-                ref={this.loopRef}
-              />
+              {value === -1 ? (
+                <div className="my-2 text-center">
+                  <FontAwesomeIcon 
+                    icon="infinity" 
+                    color="#fff" 
+                    size="3x"
+                    onClick={this.onRestartClick}
+                  />
+                </div>
+              ):(
+                <input 
+                  name="n" 
+                  min="-1"
+                  value={value}
+                  type="number"
+                  ref={this.loopRef}
+                />
+              )}
             </div>
             <div className="command-control">
               <div className="btn-group" style={{ display: 'flex' }}>
