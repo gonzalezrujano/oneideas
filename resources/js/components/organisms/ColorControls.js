@@ -2,6 +2,7 @@ import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
 import ColorSelector from './../molecules/ColorSelector';
+import ColorList from './../molecules/ColorList';
 import { connect } from 'react-redux';
 
 class ColorControls extends React.Component {
@@ -13,11 +14,18 @@ class ColorControls extends React.Component {
     }
 
     this.handleNewColor = this.handleNewColor.bind(this);
+    this.handleDeletedColor = this.handleDeletedColor.bind(this);
   }
 
   handleNewColor (color) {
     this.setState(state => ({
       colors: [...state.colors, color]
+    }));
+  }
+
+  handleDeletedColor (index) {
+    this.setState(state => ({
+      colors: state.colors.filter((_, i) => i !== index)
     }));
   }
 
@@ -33,6 +41,10 @@ class ColorControls extends React.Component {
         />
         <ColorSelector 
           onSubmit={this.handleNewColor}
+        />
+        <ColorList 
+          onDelete={this.handleDeletedColor}
+          colors={this.state.colors}
         />
         <Loop />
       </React.Fragment>

@@ -4529,6 +4529,56 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   margin: 0; 
 }
 
-.css-192das5-InputColor {
+.color-list {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  overflow-x: auto;
+}
 
+/* width */
+.color-list::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Track */
+.color-list::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.color-list::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #888; 
+}
+
+/* Gap between handle and actual track */
+.color-list::-webkit-scrollbar-track-piece {
+  background: #555;
+}
+
+.color-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.color-box-option {
+  background-color: #000;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: opacity 1s;
+  cursor: pointer;
+  transition: opacity .5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-box-option:hover {
+  opacity: .4;
 }
