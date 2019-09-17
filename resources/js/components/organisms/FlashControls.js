@@ -1,6 +1,7 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
+import BPM from './../molecules/BPM';
 import { connect } from 'react-redux';
 
 class FlashControls extends React.Component {
@@ -8,14 +9,20 @@ class FlashControls extends React.Component {
     super(props);
 
     this.state = {
+      bpm: 0,
       loop: 0,
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
+    this.handleBPMChange = this.handleBPMChange.bind(this);
   }
 
   handleLoopChange (value) {
     this.setState({ loop: value });
+  }
+
+  handleBPMChange (value) {
+    this.setState({ bpm: value });
   }
   
   render () {
@@ -31,6 +38,10 @@ class FlashControls extends React.Component {
         <Loop 
           value={this.state.loop}
           onChange={this.handleLoopChange}
+        />
+        <BPM
+          value={this.state.bpm}
+          onChange={this.handleBPMChange}
         />
       </React.Fragment>
     );

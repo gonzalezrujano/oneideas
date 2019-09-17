@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-class Loop extends React.Component {
+class BPM extends React.Component {
   constructor (props) {
     super(props);
 
@@ -10,6 +10,9 @@ class Loop extends React.Component {
     this.loopRef = React.createRef();
   }
 
+  /**
+   * Lifecycle components
+   */
   componentDidMount () {
     this.loopRef.current.addEventListener('wheel', this.onWheelMovement, { passive: false });
   }
@@ -20,6 +23,9 @@ class Loop extends React.Component {
     }
   }
 
+  /**
+   * Event handler components
+   */
   onWheelMovement (e) {
     e.preventDefault();
 
@@ -42,7 +48,7 @@ class Loop extends React.Component {
       <div className="console command rounded mt-3">
         <div className="console-header">
           <h6>
-            <FontAwesomeIcon icon="ring" /> {`   `} Loop
+            <FontAwesomeIcon icon="heartbeat" /> {`   `} Beats Per Minute
           </h6>
         </div>
         <form>
@@ -51,7 +57,7 @@ class Loop extends React.Component {
               {value === -1 &&
                 <div className="my-2 text-center">
                   <FontAwesomeIcon 
-                    icon="infinity" 
+                    icon="circle" 
                     color="#fff" 
                     size="2x"
                   />
@@ -63,11 +69,30 @@ class Loop extends React.Component {
                       textTransform: 'uppercase'
                     }}
                   >
-                    Infinito
+                    Fijo
                   </p>
                 </div>
               }
-              {value >= 0 &&
+              {value === 0 &&
+                <div className="my-2 text-center">
+                  <FontAwesomeIcon 
+                    icon="power-off" 
+                    color="#fff" 
+                    size="2x"
+                  />
+                  <p 
+                    className="text-center" 
+                    style={{ 
+                      fontWeight: '600',
+                      fontSize: '12px',
+                      textTransform: 'uppercase' 
+                    }}
+                  >
+                    OFF
+                  </p>
+                </div>
+              }
+              {value > 0 && 
                 <input 
                   name="n" 
                   min="-1"
@@ -101,4 +126,4 @@ class Loop extends React.Component {
   }
 }
 
-export default Loop;
+export default BPM;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
+import BPM from './../molecules/BPM';
 import ColorSelector from './../molecules/ColorSelector';
 import ColorList from './../molecules/ColorList';
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ class ColorControls extends React.Component {
     super(props);
 
     this.state = {
+      bpm: 0,
       loop: 0,
       colors: [],
     }
@@ -17,10 +19,15 @@ class ColorControls extends React.Component {
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
     this.handleLoopChange = this.handleLoopChange.bind(this);
+    this.handleBPMChange = this.handleBPMChange.bind(this);
   }
 
   handleLoopChange (value) {
     this.setState({ loop: value });
+  }
+
+  handleBPMChange (value) {
+    this.setState({ bpm: value });
   }
 
   handleNewColor (color) {
@@ -55,6 +62,10 @@ class ColorControls extends React.Component {
         <Loop
           value={this.state.loop}
           onChange={this.handleLoopChange}
+        />
+        <BPM
+          value={this.state.bpm}
+          onChange={this.handleBPMChange}
         />
       </React.Fragment>
     );
