@@ -86,12 +86,6 @@ class Loop extends React.Component {
                 >
                   <FontAwesomeIcon icon="undo-alt" color="#fff" />
                 </button>
-                <button 
-                  type="button" 
-                  className="btn btn-sm p-0 running"
-                >
-                  <FontAwesomeIcon icon="paper-plane" color="#fff" />
-                </button>
               </div>
             </div>
           </div>

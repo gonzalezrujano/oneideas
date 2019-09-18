@@ -6,6 +6,7 @@ import ColorSelector from './../molecules/ColorSelector';
 import ColorList from './../molecules/ColorList';
 import Vibrate from './../molecules/Vibrate';
 import Time from './../molecules/Time';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 
 class ColorControls extends React.Component {
@@ -68,6 +69,12 @@ class ColorControls extends React.Component {
           running={this.props.color.running}
           current={this.props.color.current}
         />
+        <button 
+          onClick={() => console.log(this.state)}
+          className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
+        >
+          <FontAwesomeIcon icon="paper-plane" color="#fff"/>
+        </button>
         <ColorSelector 
           onSubmit={this.handleNewColor}
         />

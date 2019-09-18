@@ -1,6 +1,9 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
+import Time from './../molecules/Time';
+import Vibrate from './../molecules/Vibrate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 
 class ImageControls extends React.Component {  
@@ -9,6 +12,8 @@ class ImageControls extends React.Component {
 
     this.state = {
       loop: 0,
+      time: 0,
+      vibrate: false,
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
@@ -16,6 +21,16 @@ class ImageControls extends React.Component {
 
   handleLoopChange (value) {
     this.setState({ loop: value });
+  }
+
+  handleTimeChange (value) {
+    this.setState({ time: value });
+  }
+
+  toggleVibration () {
+    this.setState(state => ({
+      vibrate: !state.vibrate
+    }));
   }
 
   render () {
@@ -28,6 +43,12 @@ class ImageControls extends React.Component {
           running={this.props.image.running}
           current={this.props.image.current}
         />
+        <button 
+          onClick={() => console.log(this.state)}
+          className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
+        >
+          <FontAwesomeIcon icon="paper-plane" color="#fff"/>
+        </button>
         <div className="mt-3">
           <select className="form-control form-control-sm">
             <option value="">Seleccione</option>
@@ -39,6 +60,14 @@ class ImageControls extends React.Component {
         <Loop 
           value={this.state.loop}
           onChange={this.handleLoopChange}
+        />
+        <Time 
+          value={this.state.time}
+          onChange={this.handleTimeChange}
+        />
+        <Vibrate 
+          vibrate={this.state.vibrate}
+          onChange={this.toggleVibration}
         />
       </React.Fragment>
     );

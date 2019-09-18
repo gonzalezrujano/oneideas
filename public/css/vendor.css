@@ -4731,15 +4731,18 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   color: rgba(255, 255, 255, .8);
 }
 
-.console-status.running, .console.command .running {
+.console-status.running, .console.command .running,
+.btn-running {
   background-color: rgba(40, 167, 69, 0.4)!important;
 }
 
-.console-status.waiting, .console.command .waiting {
+.console-status.waiting, .console.command .waiting,
+.btn-waiting {
   background-color: rgba(255, 193, 7, 0.4)!important;
 }
 
-.console-status.nothing, .console.command .nothing {
+.console-status.nothing, .console.command .nothing,
+.btn-nothing {
   background-color: rgba(108, 117, 125, 0.3)!important;
 }
 

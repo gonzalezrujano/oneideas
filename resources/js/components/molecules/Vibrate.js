@@ -20,7 +20,7 @@ class Vibrate extends React.Component {
                 <div className="my-2 text-center">
                   <FontAwesomeIcon 
                     icon="toggle-on" 
-                    color="#fff" 
+                    color="rgba(40, 167, 69, 0.4)" 
                     size="2x"
                   />
                   <p 
@@ -39,7 +39,7 @@ class Vibrate extends React.Component {
                 <div className="my-2 text-center">
                   <FontAwesomeIcon 
                     icon="toggle-off" 
-                    color="#fff" 
+                    color="rgba(108, 117, 125, 0.3)" 
                     size="2x"
                   />
                   <p 
@@ -54,23 +54,6 @@ class Vibrate extends React.Component {
                   </p>
                 </div>
               }
-            </div>
-            <div className="command-control">
-              <div className="btn-group" style={{ display: 'flex' }}>
-                <button 
-                  type="button" 
-                  className="btn btn-sm p-0 nothing" 
-                  onClick={this.onRestartClick}
-                >
-                  <FontAwesomeIcon icon="undo-alt" color="#fff" />
-                </button>
-                <button 
-                  type="button" 
-                  className="btn btn-sm p-0 running"
-                >
-                  <FontAwesomeIcon icon="paper-plane" color="#fff" />
-                </button>
-              </div>
             </div>
           </div>
         </form>

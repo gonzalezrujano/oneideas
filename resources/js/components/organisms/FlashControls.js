@@ -4,6 +4,7 @@ import Loop from './../molecules/Loop';
 import BPM from './../molecules/BPM';
 import Time from './../molecules/Time';
 import Vibrate from './../molecules/Vibrate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 
 class FlashControls extends React.Component {
@@ -51,6 +52,12 @@ class FlashControls extends React.Component {
           running={this.props.flash.running}
           current={this.props.flash.current}
         />
+        <button 
+          onClick={() => console.log(this.state)}
+          className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
+        >
+          <FontAwesomeIcon icon="paper-plane" color="#fff"/>
+        </button>
         <Loop 
           value={this.state.loop}
           onChange={this.handleLoopChange}
