@@ -3,8 +3,9 @@ import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
 import BPM from './../molecules/BPM';
 import ColorSelector from './../molecules/ColorSelector';
-import Vibrate from './../molecules/Vibrate';
 import ColorList from './../molecules/ColorList';
+import Vibrate from './../molecules/Vibrate';
+import Time from './../molecules/Time';
 import { connect } from 'react-redux';
 
 class ColorControls extends React.Component {
@@ -14,6 +15,7 @@ class ColorControls extends React.Component {
     this.state = {
       bpm: 0,
       loop: 0,
+      time: 0,
       colors: [],
       vibrate: false,
     }
@@ -23,6 +25,7 @@ class ColorControls extends React.Component {
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleBPMChange = this.handleBPMChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
   }
 
   handleLoopChange (value) {
@@ -31,6 +34,10 @@ class ColorControls extends React.Component {
 
   handleBPMChange (value) {
     this.setState({ bpm: value });
+  }
+  
+  handleTimeChange (value) {
+    this.setState({ time: value });
   }
 
   handleNewColor (color) {
@@ -71,6 +78,10 @@ class ColorControls extends React.Component {
         <Loop
           value={this.state.loop}
           onChange={this.handleLoopChange}
+        />
+        <Time 
+          value={this.state.time}
+          onChange={this.handleTimeChange}
         />
         <BPM
           value={this.state.bpm}

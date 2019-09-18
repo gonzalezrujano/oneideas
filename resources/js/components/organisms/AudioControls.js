@@ -1,7 +1,7 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
-import BPM from './../molecules/BPM';
+import Time from './../molecules/Time';
 import { connect } from 'react-redux';
 
 class AudioControls extends React.Component {  
@@ -9,15 +9,15 @@ class AudioControls extends React.Component {
     super(props);
 
     this.state = {
-      bpm: 0,
       loop: 0,
+      time: 0,
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
-    this.handleBPMChange = this.handleBPMChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
   }
 
-  handleBPMChange (value) {
+  handleTimeChange (value) {
     this.setState({ bpm: value });
   }
 
@@ -47,9 +47,9 @@ class AudioControls extends React.Component {
           value={this.state.loop}
           onChange={this.handleLoopChange}
         />
-        <BPM
-          value={this.state.bpm}
-          onChange={this.handleBPMChange}
+        <Time 
+          value={this.state.time}
+          onChange={this.handleTimeChange}
         />
       </React.Fragment>
     );

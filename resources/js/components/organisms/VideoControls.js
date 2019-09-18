@@ -1,6 +1,8 @@
 import React from 'react';
 import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
+import Time from './../molecules/Time';
+import Vibrate from './../molecules/Vibrate';
 import { connect } from 'react-redux';
 
 class VideoControls extends React.Component {  
@@ -9,13 +11,27 @@ class VideoControls extends React.Component {
 
     this.state = {
       loop: 0,
+      time: 0,
+      vibrate: false,
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.toggleVibration = this.toggleVibration.bind(this);
   }
 
   handleLoopChange (value) {
     this.setState({ loop: value });
+  }
+  
+  handleTimeChange (value) {
+    this.setState({ time: value });
+  }
+
+  toggleVibration () {
+    this.setState(state => ({
+      vibrate: !state.vibrate
+    }));
   }
 
   render () {
@@ -39,6 +55,14 @@ class VideoControls extends React.Component {
         <Loop 
           value={this.state.loop}
           onChange={this.handleLoopChange}
+        />
+        <Time 
+          value={this.state.time}
+          onChange={this.handleTimeChange}
+        />
+        <Vibrate 
+          vibrate={this.state.vibrate}
+          onChange={this.toggleVibration}
         />
       </React.Fragment>
     );
