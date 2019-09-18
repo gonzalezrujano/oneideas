@@ -28,6 +28,13 @@ const initialState = {
     color: '#fed330',
     current: null,
     queue: [],
+  },
+  image: {
+    running: false,
+    icon: 'image',
+    color: '#a55eea',
+    current: null,
+    queue: [],
   }
 };
 

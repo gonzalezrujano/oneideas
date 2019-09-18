@@ -48,7 +48,7 @@ class BPM extends React.Component {
       <div className="console command rounded mt-3">
         <div className="console-header">
           <h6>
-            <FontAwesomeIcon icon="heartbeat" /> {`   `} Beats Per Minute
+            <FontAwesomeIcon icon="heartbeat" /> {`   `} Beats por Minuto
           </h6>
         </div>
         <form>

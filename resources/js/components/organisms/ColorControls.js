@@ -3,6 +3,7 @@ import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
 import BPM from './../molecules/BPM';
 import ColorSelector from './../molecules/ColorSelector';
+import Vibrate from './../molecules/Vibrate';
 import ColorList from './../molecules/ColorList';
 import { connect } from 'react-redux';
 
@@ -14,12 +15,14 @@ class ColorControls extends React.Component {
       bpm: 0,
       loop: 0,
       colors: [],
+      vibrate: false,
     }
 
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleBPMChange = this.handleBPMChange.bind(this);
+    this.toggleVibration = this.toggleVibration.bind(this);
   }
 
   handleLoopChange (value) {
@@ -39,6 +42,12 @@ class ColorControls extends React.Component {
   handleDeletedColor (index) {
     this.setState(state => ({
       colors: state.colors.filter((_, i) => i !== index)
+    }));
+  }
+
+  toggleVibration () {
+    this.setState(state => ({
+      vibrate: !state.vibrate
     }));
   }
 
@@ -66,6 +75,10 @@ class ColorControls extends React.Component {
         <BPM
           value={this.state.bpm}
           onChange={this.handleBPMChange}
+        />
+        <Vibrate 
+          vibrate={this.state.vibrate}
+          onChange={this.toggleVibration}
         />
       </React.Fragment>
     );

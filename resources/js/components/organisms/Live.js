@@ -3,6 +3,7 @@ import ColorControls from './ColorControls';
 import FlashControls from './FlashControls';
 import AudioControls from './AudioControls';
 import VideoControls from './VideoControls';
+import ImageControls from './ImageControls';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -29,6 +30,7 @@ class Live extends React.Component {
           {name === 'flash' && <FlashControls />}
           {name === 'audio' && <AudioControls />}
           {name === 'video' && <VideoControls />}
+          {name === 'image' && <ImageControls />}
         </div>
       )
     })
