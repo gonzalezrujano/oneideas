@@ -353,10 +353,14 @@ class Multimedia extends Component {
             </div>
           </header>
           <div id="sweet" className="container-fluid">
-            <TabNavigation items={['En Vivo', 'Escenas']}>
-              <Live />
-              <div />
-            </TabNavigation>
+            {this.props.eventId === '' ? (
+              <EmptyMultimedia/>
+            ):(
+              <TabNavigation items={['En Vivo', 'Escenas']}>
+                <Live />
+                <div />
+              </TabNavigation>
+            )}
             {/* {this.state.evento == '' ?(
                 <EmptyMultimedia/>
             ):(

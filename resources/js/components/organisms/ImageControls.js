@@ -4,6 +4,7 @@ import Loop from './../molecules/Loop';
 import Time from './../molecules/Time';
 import Vibrate from './../molecules/Vibrate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getFilesFromEvent } from './../../redux/actions/show';
 import { connect } from 'react-redux';
 
 class ImageControls extends React.Component {  
@@ -13,12 +14,22 @@ class ImageControls extends React.Component {
     this.state = {
       loop: 0,
       time: 0,
+      files: [],
       vibrate: false,
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
+  }
+
+  componentDidMount () {
+    this.props.getFilesFromEvent('Imagen').then(files => {
+      this.setState({ files });
+    })
+    .catch(e => {
+      console.log('Error', e);
+    })
   }
 
   handleLoopChange (value) {
@@ -36,6 +47,10 @@ class ImageControls extends React.Component {
   }
 
   render () {
+    const options = this.state.files.map(file => (
+      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
+    ));
+
     return (
       <React.Fragment>
         <ConsoleControl 
@@ -54,9 +69,7 @@ class ImageControls extends React.Component {
         <div className="mt-3">
           <select className="form-control form-control-sm">
             <option value="">Seleccione</option>
-            <option value="1">Wedding.mp4</option>
-            <option value="2">WifesVideo.mpeg</option>
-            <option value="3">AvengersBirthday.mp4</option>
+            {options}
           </select>
         </div>
         <Loop 
@@ -80,4 +93,8 @@ const mapStateToProps = state => ({
   image: state.show.image,
 });
 
-export default connect(mapStateToProps)(ImageControls);
+const mapDispatchToProps = dispatch => ({
+  getFilesFromEvent: (type) => dispatch(getFilesFromEvent(type)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageControls);

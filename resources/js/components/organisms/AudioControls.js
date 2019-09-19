@@ -3,6 +3,7 @@ import ConsoleControl from './../molecules/ConsoleControl';
 import Loop from './../molecules/Loop';
 import Time from './../molecules/Time';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getFilesFromEvent } from './../../redux/actions/show';
 import { connect } from 'react-redux';
 
 class AudioControls extends React.Component {  
@@ -12,10 +13,20 @@ class AudioControls extends React.Component {
     this.state = {
       loop: 0,
       time: 0,
+      files: [],
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
+  }
+
+  componentDidMount () {
+    this.props.getFilesFromEvent('Audio').then(files => {
+      this.setState({ files });
+    })
+    .catch(e => {
+      console.log('Error', e);
+    })
   }
 
   handleTimeChange (value) {
@@ -27,6 +38,10 @@ class AudioControls extends React.Component {
   }
 
   render () {
+    const options = this.state.files.map(file => (
+      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
+    ));
+
     return (
       <React.Fragment>
         <ConsoleControl 
@@ -45,9 +60,7 @@ class AudioControls extends React.Component {
         <div className="mt-3">
           <select className="form-control form-control-sm">
             <option value="">Seleccione</option>
-            <option value="1">Audio.mp3</option>
-            <option value="2">IronMaidenClassic.mp3</option>
-            <option value="3">LoveSong.mp3</option>
+            {options}
           </select>
         </div>
         <Loop 
@@ -67,4 +80,8 @@ const mapStateToProps = state => ({
   audio: state.show.audio,
 });
 
-export default connect(mapStateToProps)(AudioControls);
+const mapDispatchToProps = dispatch => ({
+  getFilesFromEvent: (type) => dispatch(getFilesFromEvent(type)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AudioControls);

@@ -13,6 +13,7 @@ class VideoControls extends React.Component {
     this.state = {
       loop: 0,
       time: 0,
+      files: [],
       vibrate: false,
     }
 
@@ -36,6 +37,10 @@ class VideoControls extends React.Component {
   }
 
   render () {
+    const options = this.state.files.map(file => (
+      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
+    ));
+
     return (
       <React.Fragment>
         <ConsoleControl 
@@ -54,9 +59,7 @@ class VideoControls extends React.Component {
         <div className="mt-3">
           <select className="form-control form-control-sm">
             <option value="">Seleccione</option>
-            <option value="1">Wedding.mp4</option>
-            <option value="2">WifesVideo.mpeg</option>
-            <option value="3">AvengersBirthday.mp4</option>
+            {options}
           </select>
         </div>
         <Loop 
