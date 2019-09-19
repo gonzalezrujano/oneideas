@@ -11,7 +11,15 @@ import Cola from "../components/Multimedia/Cola";
 import Herramientas from "../components/Multimedia/Herramientas";
 import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
-import { getEventos, getCompanies, getJobs, createJob, getEventsFromCompany } from './../../redux/actions/multimedia';
+import { 
+  getEventos, 
+  getCompanies, 
+  getJobs, 
+  createJob,
+  setCompany,
+  setEvent,
+  getEventsFromCompany 
+} from './../../redux/actions/multimedia';
 import uuidv4 from 'uuid/v4';
 
 class Multimedia extends Component {
@@ -25,7 +33,6 @@ class Multimedia extends Component {
           envios:[],
           companyId: '',
           sectores: [],
-          evento: "",
           sector: '',
           archivo: '',
           fechainicio: '',
@@ -96,9 +103,10 @@ class Multimedia extends Component {
      */
     sendMqttCommand (moment) {
       const { titleTool } = this.props.tool;
-      const { startTime, endTime, color, evento, empresa, archivo, flash2 } = this.state;
+      const { companyId, eventId } = this.props;
+      const { startTime, endTime, color, archivo, flash2 } = this.state;
 
-      const topic = `/${empresa}/${evento}`;
+      const topic = `/${companyId}/${eventId}`;
       let message = '';
       let payload = '';
 
@@ -133,7 +141,7 @@ class Multimedia extends Component {
       }
 
       const job = {
-        eventId: evento,
+        eventId,
         type: titleTool,
         status: 'ejecucion',
         startTime: startTime.getTime(),
@@ -176,8 +184,8 @@ class Multimedia extends Component {
           jobType = 'VID';
           break;
       }
-      const { empresa, evento } = this.state;
-      const topic = `/${empresa}/${evento}`;
+      const { companyId, eventId } = this.props;
+      const topic = `/${companyId}/${eventId}`;
       const message = `REM,0,${id},${jobType}`;
 
       this.mqttClient.send(topic, message);
@@ -186,19 +194,26 @@ class Multimedia extends Component {
     handleCompanyChange (e) {
       const { value } = e.target;
 
-      if (!value)
-        return this.setState({ companyId: '', evento: '' });
-
-      this.setState({ companyId: value }, () => this.props.getEventsFromCompany(value));
+      if (!value) {
+        this.props.setCompany('');
+        this.props.setEvent('');
+      
+      } else {
+        
+        this.props.setCompany(value);
+        this.props.getEventsFromCompany(value);
+      }
     }
 
     handleEventChange (e) {
       const { value } = e.target;
 
-      if (!value)
-        return this.setState({ evento: '' });
+      if (!value) {
+        return this.props.setEvent('');
+      }
 
-      this.setState({ evento: value }, () => this.props.getEnvios(value));
+      this.props.setEvent(value);
+      this.props.getEnvios(value);
     }
 
    /**
@@ -311,7 +326,7 @@ class Multimedia extends Component {
                           name="event"
                           className="form-control form-control-sm" 
                           onChange={this.handleEventChange}
-                          value={this.state.evento}
+                          value={this.props.eventId}
                         >
                           <option value="">Seleccione un Evento</option>
                           {this.props.eventos.map(event => (
@@ -342,7 +357,7 @@ class Multimedia extends Component {
               <Live />
               <div />
             </TabNavigation>
-            {this.state.evento == '' ?(
+            {/* {this.state.evento == '' ?(
                 <EmptyMultimedia/>
             ):(
               <div>
@@ -385,7 +400,7 @@ class Multimedia extends Component {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </Fullscreen>
@@ -394,6 +409,8 @@ class Multimedia extends Component {
 }
 
 const mapStateToProps = state => ({
+  companyId: state.multimedia.companyId,
+  eventId: state.multimedia.eventId,
   companies: state.multimedia.companies,
   eventos: state.multimedia.eventos,
   sectores: state.multimedia.sectores,
@@ -402,6 +419,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setCompany: (companyId) => dispatch(setCompany(companyId)),
+  setEvent: (eventId) => dispatch(setEvent(eventId)),
   getCompanies: () => dispatch(getCompanies()),
   getEnvios: (eventId) => dispatch(getJobs(eventId)),
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),

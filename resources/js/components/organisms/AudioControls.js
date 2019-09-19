@@ -19,7 +19,7 @@ class AudioControls extends React.Component {
   }
 
   handleTimeChange (value) {
-    this.setState({ bpm: value });
+    this.setState({ time: value });
   }
 
   handleLoopChange (value) {

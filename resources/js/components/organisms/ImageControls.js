@@ -17,6 +17,8 @@ class ImageControls extends React.Component {
     }
 
     this.handleLoopChange = this.handleLoopChange.bind(this);
+    this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.toggleVibration = this.toggleVibration.bind(this);
   }
 
   handleLoopChange (value) {
