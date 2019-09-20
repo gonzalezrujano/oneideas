@@ -56,26 +56,29 @@ class ColorControls extends React.Component {
   }
 
   startCommand () {
-    const result = this.validateConfiguration();
-    
-    if (!result)
+    // Checking if the configuration is valid
+    if (!this.validateConfiguration())
       return;
 
+    // End previous execution
     this.endCurrentShow();
 
     this.props.setCurrentScene('color', this.state);
     const interval = (60 / this.state.bpm) * 1000;
 
+    // Updating timer to 0 when time finishes
     if (this.state.time > 0) {
       this.timeout = setTimeout(() => {
         this.props.endCurrentSceneTime('color')
         
         if (this.props.color.current.loop === 0)
-          return this.endCurrentShow();
+          return this.endRunningShow('color');
         
       }, this.state.time * 1000);
     }
 
+    // Executing a command every time a
+    // beat is produced
     this.interval = setInterval(() => {
       const { current } = this.props.color;
 
@@ -99,7 +102,7 @@ class ColorControls extends React.Component {
 
         if (current.loop > 0) {
           this.props.updateCurrentLoop('color', current.loop - 1);
-        }    
+        }
       } else {
         this.step = this.step + 1;
       }
@@ -176,6 +179,14 @@ class ColorControls extends React.Component {
         >
           <FontAwesomeIcon icon="paper-plane" color="#fff"/>
         </button>
+        {this.props.color.current && 
+          <button 
+            onClick={this.endCurrentShow}
+            className="btn btn-sm btn-block btn-danger mt-3 py-0 rounded"
+          >
+            <FontAwesomeIcon icon="stop" color="#fff"/>
+          </button>
+        }
         <ColorSelector 
           onSubmit={this.handleNewColor}
         />

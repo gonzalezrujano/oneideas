@@ -15,6 +15,7 @@ class FlashControls extends React.Component {
       bpm: 0,
       time: 0,
       loop: 0,
+      status: false,
       vibrate: false
     }
 
@@ -22,6 +23,83 @@ class FlashControls extends React.Component {
     this.handleBPMChange = this.handleBPMChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
+
+    // Class attributes
+    this.interval = '';
+    this.timeout = '';
+    this.step = 0;
+  }
+
+  componentWillUnmount () {
+    this.endCurrentShow();
+  }
+
+  endCurrentShow () {
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+    this.props.endRunningShow('flash');
+  }
+
+  startCommand () {
+    // Checking if the configuration is valid
+    if (!this.validateConfiguration())
+      return;
+
+    // End previous execution
+    this.endCurrentShow();
+
+    this.props.setCurrentScene('flash', this.state);
+    const interval = (60 / this.state.bpm) * 1000;
+
+    // Updating timer to 0 when time finishes
+    if (this.state.time > 0) {
+      this.timeout = setTimeout(() => {
+        this.props.endCurrentSceneTime('flash')
+        
+        if (this.props.color.current.loop === 0)
+          return this.endCurrentShow();
+        
+      }, this.state.time * 1000);
+    }
+
+    // Executing a command every time a
+    // beat is produced
+    this.interval = setInterval(() => {
+      const { current } = this.props.flash;
+
+      if (current.time === 0 && current.loop === 0)
+        return this.endCurrentShow();
+
+      let id = this.step;
+      let flash = !current.status;
+      let moment = 1;
+      let now = (new Date()).getTime();
+      let end = now + ((60 / current.bpm) * 1000) + 5000;
+
+      let command = `COL,${moment},${id},${flash},${now},${end}`;
+
+      console.log('command', command);
+
+      this.props.submitCommand(command);
+
+      if (this.step === (current.colors.length - 1)) {
+        this.step = 0;
+
+        if (current.loop > 0) {
+          this.props.updateCurrentLoop('color', current.loop - 1);
+        }    
+      } else {
+        this.step = this.step + 1;
+      }
+    }, interval);
+
+    this.setState({
+      bpm: 0,
+      loop: 0,
+      time: 0,
+      colors: [],
+      vibrate: false,
+    });
   }
 
   handleTimeChange (value) {

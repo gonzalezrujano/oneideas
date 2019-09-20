@@ -26,13 +26,21 @@ class ConsoleControl extends React.Component {
           </h5>
         </div>
         <div className={consoleClassNames}>
-          <p className="text-center">
             {current ? (
-              'Ejecutando'
+              <p className="text-center py-1">
+                <span className="blink">
+                  <FontAwesomeIcon
+                    icon="circle"
+                    color="#eb3b5a"
+                  />
+                </span>
+                {` `} Ejecutando
+              </p>
             ):(
-              'Nada Pendiente'
+              <p className="text-center py-1">
+                Nada Pendiente
+              </p>
             )}
-          </p>
         </div>
       </div>
     )
