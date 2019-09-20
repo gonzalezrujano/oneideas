@@ -12,11 +12,10 @@ class ConsoleControl extends React.Component {
   }
 
   render () {
-    const { name, icon, color, running, current } = this.props;
+    const { name, icon, color, current } = this.props;
     const consoleClassNames = classnames('console-status', {
-      'running': running && current,
-      'waiting': !running && current,
-      'nothing': !running && !current,
+      'running': current,
+      'nothing': !current,
     });
 
     return (
@@ -28,9 +27,11 @@ class ConsoleControl extends React.Component {
         </div>
         <div className={consoleClassNames}>
           <p className="text-center">
-            {running && current ? 'Ejecutando' : null}
-            {!running && current ? 'En Espera' : null}
-            {!running && !current ? 'Nada Pendiente' : null}
+            {current ? (
+              'Ejecutando'
+            ):(
+              'Nada Pendiente'
+            )}
           </p>
         </div>
       </div>

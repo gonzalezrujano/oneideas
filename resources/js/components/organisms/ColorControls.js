@@ -7,6 +7,12 @@ import ColorList from './../molecules/ColorList';
 import Vibrate from './../molecules/Vibrate';
 import Time from './../molecules/Time';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  endRunningShow,
+  setCurrentScene, 
+  updateCurrentLoop,
+  endCurrentSceneTime,
+} from './../../redux/actions/show';
 import { connect } from 'react-redux';
 
 class ColorControls extends React.Component {
@@ -21,12 +27,84 @@ class ColorControls extends React.Component {
       vibrate: false,
     }
 
+    // Class functions
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleBPMChange = this.handleBPMChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.startCommand = this.startCommand.bind(this);
+    this.endCurrentShow = this.endCurrentShow.bind(this);
+
+    // Class attributes
+    this.interval = '';
+    this.timeout = '';
+    this.step = 0;
+  }
+
+  componentWillUnmount () {
+    this.endCurrentShow();
+  }
+
+  endCurrentShow () {
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+    this.props.endRunningShow('color');
+  }
+
+  startCommand () {
+    this.endCurrentShow();
+
+    this.props.setCurrentScene('color', this.state);
+    const interval = (60 / this.state.bpm) * 1000;
+
+    if (this.state.time > 0) {
+      this.timeout = setTimeout(() => {
+        this.props.endCurrentSceneTime('color')
+        
+        if (this.props.color.current.loop === 0)
+          return this.endCurrentShow();
+        
+      }, this.state.time * 1000);
+    }
+
+    this.interval = setInterval(() => {
+      const { current } = this.props.color;
+
+      if (current.time === 0 && current.loop === 0)
+        return this.endCurrentShow();
+
+      let id = this.step;
+      let color = current.colors[this.step];
+      let moment = 1;
+      let now = (new Date()).getTime();
+      let end = now + ((60 / current.bpm) * 1000) + 5000;
+
+      let command = `COL,${moment},${id},${color},${now},${end}`;
+
+      console.log('command', command);
+
+      this.props.submitCommand(command);
+
+      if (this.step === (current.colors.length - 1)) {
+        this.step = 0;
+
+        if (current.loop > 0) {
+          this.props.updateCurrentLoop('color', current.loop - 1);
+        }    
+      } else {
+        this.step = this.step + 1;
+      }
+    }, interval);
+
+    this.setState({
+      bpm: 0,
+      loop: 0,
+      time: 0,
+      colors: [],
+      vibrate: false,
+    });
   }
 
   handleLoopChange (value) {
@@ -70,7 +148,7 @@ class ColorControls extends React.Component {
           current={this.props.color.current}
         />
         <button 
-          onClick={() => console.log(this.state)}
+          onClick={this.startCommand}
           className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
         >
           <FontAwesomeIcon icon="paper-plane" color="#fff"/>
@@ -107,4 +185,11 @@ const mapStateToProps = state => ({
   color: state.show.color,
 });
 
-export default connect(mapStateToProps)(ColorControls);
+const mapDispatchToProps = dispatch => ({
+  setCurrentScene: (scene, current) => dispatch(setCurrentScene(scene, current)),
+  updateCurrentLoop: (scene, loop) => dispatch(updateCurrentLoop(scene, loop)),
+  endCurrentSceneTime: scene => dispatch(endCurrentSceneTime(scene)),
+  endRunningShow: (scene) => dispatch(endRunningShow(scene)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorControls);

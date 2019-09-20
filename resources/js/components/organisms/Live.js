@@ -26,11 +26,31 @@ class Live extends React.Component {
       
       return (
         <div key={i} className={classNames}>
-          {name === 'color' && <ColorControls />}
-          {name === 'flash' && <FlashControls />}
-          {name === 'audio' && <AudioControls />}
-          {name === 'video' && <VideoControls />}
-          {name === 'image' && <ImageControls />}
+          {name === 'color' && 
+            <ColorControls 
+              submitCommand={this.props.submitCommand} 
+            />
+          }
+          {name === 'flash' && 
+            <FlashControls 
+              submitCommand={this.props.submitCommand} 
+            />
+          }
+          {name === 'audio' && 
+            <AudioControls 
+              submitCommand={this.props.submitCommand} 
+            />
+          }
+          {name === 'video' && 
+            <VideoControls 
+              submitCommand={this.props.submitCommand} 
+            />
+          }
+          {name === 'image' && 
+            <ImageControls 
+              submitCommand={this.props.submitCommand} 
+            />
+          }
         </div>
       )
     })

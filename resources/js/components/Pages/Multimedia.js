@@ -6,10 +6,6 @@ import Fullscreen from "react-full-screen";
 import Live from './../organisms/Live';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
 import TabNavigation from './../organisms/TabNavigation';
-import Ejecucion from "../components/Multimedia/Ejecucion";
-import Cola from "../components/Multimedia/Cola";
-import Herramientas from "../components/Multimedia/Herramientas";
-import Parametros from "../components/Multimedia/Parametros";
 import { connect } from 'react-redux';
 import { 
   getEventos, 
@@ -59,6 +55,7 @@ class Multimedia extends Component {
         this.handleCompanyChange = this.handleCompanyChange.bind(this);
         this.handleEventChange = this.handleEventChange.bind(this);
         this.sendMqttCommand = this.sendMqttCommand.bind(this);
+        this.sendGivenMqttCommand = this.sendGivenMqttCommand.bind(this);
         this.removeMqttJob = this.removeMqttJob.bind(this);
         this.handleStartTime = this.handleStartTime.bind(this);
         this.handleEndTime = this.handleEndTime.bind(this);
@@ -66,8 +63,8 @@ class Multimedia extends Component {
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
 
-        this.mqttHost = 'mqtt.oneshow.com.ar';
-        this.mqttPort = 11344;
+        this.mqttHost = 'localhost'; // mqtt.oneshow.com.ar
+        this.mqttPort = 9001; // 11344
         this.mqttClientId = uuidv4();
         this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, this.mqttClientId);
     }
@@ -86,7 +83,7 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        useSSL: true,
+        // useSSL: true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })
@@ -94,6 +91,12 @@ class Multimedia extends Component {
 
     componentWillUnmount () {
       this.mqttClient.disconnect();
+    }
+
+    sendGivenMqttCommand (command) {
+      const { companyId, eventId } = this.props;
+      
+      this.mqttClient.send(`/${companyId}/${eventId}`, command);
     }
 
     /**
@@ -357,54 +360,12 @@ class Multimedia extends Component {
               <EmptyMultimedia/>
             ):(
               <TabNavigation items={['En Vivo', 'Escenas']}>
-                <Live />
+                <Live 
+                  submitCommand={this.sendGivenMqttCommand}
+                />
                 <div />
               </TabNavigation>
             )}
-            {/* {this.state.evento == '' ?(
-                <EmptyMultimedia/>
-            ):(
-              <div>
-                <Ejecucion
-                  envios={this.props.envios}
-                  evento={this.state.evento}
-                  removeMqttJob={this.removeMqttJob}
-                />
-                <Cola
-                  envios={this.props.envios} 
-                  evento={this.state.evento} 
-                  removeMqttJob={this.removeMqttJob}
-                />
-                <div className="container-fluid container-tools">
-                  <div className="row">
-                    <Herramientas 
-                      eventId={this.state.evento}
-                    />
-                    <Parametros 
-                      hideTimes={this.hideTimes}
-                      handleStartTime={this.handleStartTime} 
-                      handleEndTime={this.handleEndTime} 
-                      isOpenStartTime={this.state.isOpenStartTime} 
-                      isOpenEndTime={this.state.isOpenEndTime} 
-                      startTime={this.state.startTime} 
-                      endTime={this.state.endTime}
-                      istool={this.props.tool.isTool} 
-                      title={this.props.tool.titleTool} 
-                      sectores={this.props.sectores} 
-                      bibliotecas={this.props.tool.bibliotecas} 
-                      sector={this.state.sector} 
-                      fechainicio={this.state.fechainicio} 
-                      fechafin={this.state.fechafin} 
-                      archivo={this.state.archivo} 
-                      change={this.handleChange} 
-                      openStartTime={this.openStartTime}
-                      openEndTime={this.openEndTime}
-                      sendMqttCommand={this.sendMqttCommand} 
-                    />
-                  </div>
-                </div>
-              </div>
-            )} */}
           </div>
         </div>
       </Fullscreen>
