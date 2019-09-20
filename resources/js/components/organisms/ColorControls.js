@@ -7,6 +7,7 @@ import ColorList from './../molecules/ColorList';
 import Vibrate from './../molecules/Vibrate';
 import Time from './../molecules/Time';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { displayAlertMessage } from './../../redux/actions/alert'
 import { 
   endRunningShow,
   setCurrentScene, 
@@ -36,6 +37,7 @@ class ColorControls extends React.Component {
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.startCommand = this.startCommand.bind(this);
     this.endCurrentShow = this.endCurrentShow.bind(this);
+    this.validateConfiguration = this.validateConfiguration.bind(this);
 
     // Class attributes
     this.interval = '';
@@ -54,6 +56,11 @@ class ColorControls extends React.Component {
   }
 
   startCommand () {
+    const result = this.validateConfiguration();
+    
+    if (!result)
+      return;
+
     this.endCurrentShow();
 
     this.props.setCurrentScene('color', this.state);
@@ -137,6 +144,22 @@ class ColorControls extends React.Component {
     }));
   }
 
+  validateConfiguration () {
+    const { colors, loop, time } = this.state;
+
+    if (colors.length <= 0) {
+      this.props.displayAlertMessage('', 'No seleccionó ningún color para empezar el show', 'error');
+      return false;
+    }
+    
+    if (loop === 0 && time === 0) {
+      this.props.displayAlertMessage('', 'Duración del comando no especificado', 'error');
+      return false;
+    }
+  
+    return true;
+  }
+
   render () {
     return (
       <React.Fragment>
@@ -190,6 +213,7 @@ const mapDispatchToProps = dispatch => ({
   updateCurrentLoop: (scene, loop) => dispatch(updateCurrentLoop(scene, loop)),
   endCurrentSceneTime: scene => dispatch(endCurrentSceneTime(scene)),
   endRunningShow: (scene) => dispatch(endRunningShow(scene)),
+  displayAlertMessage: (title, text, type = 'info') => dispatch(displayAlertMessage(title, text, type)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ColorControls);
