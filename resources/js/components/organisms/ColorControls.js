@@ -7,7 +7,7 @@ import ColorList from './../molecules/ColorList';
 import Vibrate from './../molecules/Vibrate';
 import Time from './../molecules/Time';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { displayAlertMessage } from './../../redux/actions/alert'
+import { displayAlertMessage } from './../../redux/actions/alert';
 import { 
   endRunningShow,
   setCurrentScene, 
@@ -35,6 +35,8 @@ class ColorControls extends React.Component {
     this.handleBPMChange = this.handleBPMChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
+    
+    // Functions to control execution
     this.startCommand = this.startCommand.bind(this);
     this.endCurrentShow = this.endCurrentShow.bind(this);
     this.validateConfiguration = this.validateConfiguration.bind(this);

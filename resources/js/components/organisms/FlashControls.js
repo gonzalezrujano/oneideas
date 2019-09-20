@@ -5,6 +5,13 @@ import BPM from './../molecules/BPM';
 import Time from './../molecules/Time';
 import Vibrate from './../molecules/Vibrate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { displayAlertMessage } from './../../redux/actions/alert';
+import { 
+  endRunningShow,
+  setCurrentScene, 
+  updateCurrentLoop,
+  endCurrentSceneTime,
+} from './../../redux/actions/show';
 import { connect } from 'react-redux';
 
 class FlashControls extends React.Component {
@@ -15,14 +22,19 @@ class FlashControls extends React.Component {
       bpm: 0,
       time: 0,
       loop: 0,
-      status: false,
       vibrate: false
     }
 
+    // Class functions
     this.handleLoopChange = this.handleLoopChange.bind(this);
     this.handleBPMChange = this.handleBPMChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
     this.toggleVibration = this.toggleVibration.bind(this);
+
+    // Functions to control execution
+    this.startCommand = this.startCommand.bind(this);
+    this.endCurrentShow = this.endCurrentShow.bind(this);
+    this.validateConfiguration = this.validateConfiguration.bind(this);
 
     // Class attributes
     this.interval = '';
@@ -71,22 +83,22 @@ class FlashControls extends React.Component {
         return this.endCurrentShow();
 
       let id = this.step;
-      let flash = !current.status;
+      let flash = this.step;
       let moment = 1;
       let now = (new Date()).getTime();
       let end = now + ((60 / current.bpm) * 1000) + 5000;
 
-      let command = `COL,${moment},${id},${flash},${now},${end}`;
+      let command = `FLH,${moment},${id},${flash},${now},${end}`;
 
       console.log('command', command);
 
       this.props.submitCommand(command);
 
-      if (this.step === (current.colors.length - 1)) {
+      if (this.step === 1) {
         this.step = 0;
 
         if (current.loop > 0) {
-          this.props.updateCurrentLoop('color', current.loop - 1);
+          this.props.updateCurrentLoop('flash', current.loop - 1);
         }    
       } else {
         this.step = this.step + 1;
@@ -97,9 +109,19 @@ class FlashControls extends React.Component {
       bpm: 0,
       loop: 0,
       time: 0,
-      colors: [],
       vibrate: false,
     });
+  }
+
+  validateConfiguration () {
+    const { loop, time } = this.state;
+    
+    if (loop === 0 && time === 0) {
+      this.props.displayAlertMessage('', 'Duración del comando no especificado', 'error');
+      return false;
+    }
+  
+    return true;
   }
 
   handleTimeChange (value) {
@@ -131,11 +153,19 @@ class FlashControls extends React.Component {
           current={this.props.flash.current}
         />
         <button 
-          onClick={() => console.log(this.state)}
+          onClick={this.startCommand}
           className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
         >
           <FontAwesomeIcon icon="paper-plane" color="#fff"/>
         </button>
+        {this.props.flash.current && 
+          <button 
+            onClick={this.endCurrentShow}
+            className="btn btn-sm btn-block btn-danger mt-3 py-0 rounded"
+          >
+            <FontAwesomeIcon icon="stop" color="#fff"/>
+          </button>
+        }
         <Loop 
           value={this.state.loop}
           onChange={this.handleLoopChange}
@@ -161,4 +191,12 @@ const mapStateToProps = state => ({
   flash: state.show.flash,
 });
 
-export default connect(mapStateToProps)(FlashControls);
+const mapDispatchToProps = dispatch => ({
+  setCurrentScene: (scene, current) => dispatch(setCurrentScene(scene, current)),
+  updateCurrentLoop: (scene, loop) => dispatch(updateCurrentLoop(scene, loop)),
+  endCurrentSceneTime: scene => dispatch(endCurrentSceneTime(scene)),
+  endRunningShow: (scene) => dispatch(endRunningShow(scene)),
+  displayAlertMessage: (title, text, type = 'info') => dispatch(displayAlertMessage(title, text, type)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FlashControls);
