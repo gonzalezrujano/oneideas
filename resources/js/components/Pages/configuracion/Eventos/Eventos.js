@@ -397,6 +397,7 @@ export default class Eventos extends Component {
                                                                 ) : (
                                                                     ""
                                                                 )}
+<<<<<<< HEAD
                                                                 {<Link className="mr-2" to={linkConfigurarRedes}>
                                                                     <i
                                                                         data-toggle="tooltip"
@@ -405,6 +406,8 @@ export default class Eventos extends Component {
                                                                         className="fas fa-share-alt-square icono-ver"
                                                                     />
                                                                 </Link>}
+=======
+>>>>>>> 93626e1335a2da9dee4fbcfa5b6ece38a823adb0
                                                                 {this.state.permisoUsuario.permisos.evento.includes(
                                                                     "delete"
                                                                 ) ? (
