@@ -1,0 +1,16 @@
+.botones-tabla {
+    padding-top: 2.5rem;
+}
+
+.icono-ver {
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.icono-check {
+    color: #449d44;
+}
+
+.boton-negado {
+    color: #d9534f;
+}

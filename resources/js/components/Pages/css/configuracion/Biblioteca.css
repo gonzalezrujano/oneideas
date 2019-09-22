@@ -1,0 +1,12 @@
+.columna-icono {
+    text-align: center;
+}
+.icono-ver,
+.icono-eliminar {
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.fila-head {
+    background: #282d2f;
+}

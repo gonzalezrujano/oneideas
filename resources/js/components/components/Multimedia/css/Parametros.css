@@ -1,0 +1,22 @@
+.label-inicio,
+.label-fin,
+.label-color {
+    margin-right: 10px;
+}
+
+.boton-hora {
+    border: 1px solid #fff;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 88%;
+    color: #dadada;
+}
+
+#recuadro-color {
+    position: relative;
+    border: 1px solid #fff;
+    border-radius: 20px;
+}
