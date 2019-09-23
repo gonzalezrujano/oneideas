@@ -25,12 +25,6 @@ class FlashControls extends React.Component {
       vibrate: false
     }
 
-    // Class functions
-    this.handleLoopChange = this.handleLoopChange.bind(this);
-    this.handleBPMChange = this.handleBPMChange.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.toggleVibration = this.toggleVibration.bind(this);
-
     // Functions to control execution
     this.startCommand = this.startCommand.bind(this);
     this.endCurrentShow = this.endCurrentShow.bind(this);
@@ -49,7 +43,10 @@ class FlashControls extends React.Component {
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
+
     this.props.endRunningShow('flash');
+
+    this.props.submitCommand(`REM,0,${this.step},FLH`);
   }
 
   startCommand () {
@@ -68,7 +65,7 @@ class FlashControls extends React.Component {
       this.timeout = setTimeout(() => {
         this.props.endCurrentSceneTime('flash')
         
-        if (this.props.color.current.loop === 0)
+        if (this.props.flash.current.loop === 0)
           return this.endCurrentShow();
         
       }, this.state.time * 1000);
@@ -124,24 +121,6 @@ class FlashControls extends React.Component {
     return true;
   }
 
-  handleTimeChange (value) {
-    this.setState({ time: value });
-  }
-
-  handleLoopChange (value) {
-    this.setState({ loop: value });
-  }
-
-  handleBPMChange (value) {
-    this.setState({ bpm: value });
-  }
-
-  toggleVibration () {
-    this.setState(state => ({
-      vibrate: !state.vibrate
-    }));
-  }
-  
   render () {
     return (
       <React.Fragment>
@@ -168,19 +147,19 @@ class FlashControls extends React.Component {
         }
         <Loop 
           value={this.state.loop}
-          onChange={this.handleLoopChange}
+          onChange={value => this.setState({ loop: value })}
         />
         <Time 
           value={this.state.time}
-          onChange={this.handleTimeChange}
+          onChange={value => this.setState({ time: value })}
         />
         <BPM
           value={this.state.bpm}
-          onChange={this.handleBPMChange}
+          onChange={value => this.setState({ bpm: value })}
         />
         <Vibrate 
           vibrate={this.state.vibrate}
-          onChange={this.toggleVibration}
+          onChange={() => this.setState(state => ({ vibrate: !state.vibrate }))}
         />
       </React.Fragment>
     );

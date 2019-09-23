@@ -31,10 +31,6 @@ class ColorControls extends React.Component {
     // Class functions
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
-    this.handleLoopChange = this.handleLoopChange.bind(this);
-    this.handleBPMChange = this.handleBPMChange.bind(this);
-    this.toggleVibration = this.toggleVibration.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
     
     // Functions to control execution
     this.startCommand = this.startCommand.bind(this);
@@ -54,7 +50,10 @@ class ColorControls extends React.Component {
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
+    
     this.props.endRunningShow('color');
+
+    this.props.submitCommand(`REM,0,${this.step},COL`);
   }
 
   startCommand () {
@@ -119,18 +118,6 @@ class ColorControls extends React.Component {
     });
   }
 
-  handleLoopChange (value) {
-    this.setState({ loop: value });
-  }
-
-  handleBPMChange (value) {
-    this.setState({ bpm: value });
-  }
-  
-  handleTimeChange (value) {
-    this.setState({ time: value });
-  }
-
   handleNewColor (color) {
     this.setState(state => ({
       colors: [...state.colors, color]
@@ -140,12 +127,6 @@ class ColorControls extends React.Component {
   handleDeletedColor (index) {
     this.setState(state => ({
       colors: state.colors.filter((_, i) => i !== index)
-    }));
-  }
-
-  toggleVibration () {
-    this.setState(state => ({
-      vibrate: !state.vibrate
     }));
   }
 
@@ -198,19 +179,19 @@ class ColorControls extends React.Component {
         />
         <Loop
           value={this.state.loop}
-          onChange={this.handleLoopChange}
+          onChange={loop => this.setState({ loop })}
         />
         <Time 
           value={this.state.time}
-          onChange={this.handleTimeChange}
+          onChange={time => this.setState({ time })}
         />
         <BPM
           value={this.state.bpm}
-          onChange={this.handleBPMChange}
+          onChange={bpm => this.setState({ bpm })}
         />
         <Vibrate 
           vibrate={this.state.vibrate}
-          onChange={this.toggleVibration}
+          onChange={() => this.setState(state => ({ vibrate: !state.vibrate }))}
         />
       </React.Fragment>
     );
