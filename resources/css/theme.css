@@ -4605,3 +4605,57 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
+
+.image-dropdown {
+  background-color: #f9f9f9;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.image-dropdown .image-wrapper {
+  position: relative;
+  border: 0px solid transparent;
+  -webkit-transition: border 2s;
+  transition: border .2s;
+}
+
+.image-dropdown .image-wrapper.selected {
+  border: 2px solid #1CA2CE;
+}
+
+.image-dropdown .image-checker {
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+/* width */
+.image-dropdown::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Track */
+.image-dropdown::-webkit-scrollbar-track {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: #fff; 
+}
+ 
+/* Handle */
+.image-dropdown::-webkit-scrollbar-thumb {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: rgb(201, 200, 200); 
+}
+
+.image-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #888; 
+}
+
+/* Gap between handle and actual track */
+.image-dropdown::-webkit-scrollbar-track-piece {
+  background: #fff;
+}

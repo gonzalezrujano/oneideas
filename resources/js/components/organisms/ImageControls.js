@@ -5,6 +5,7 @@ import Time from './../molecules/Time';
 import Vibrate from './../molecules/Vibrate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getFilesFromEvent } from './../../redux/actions/show';
+import DropdownImageSelector from './../molecules/DropdownImageSelector';
 import { connect } from 'react-redux';
 
 class ImageControls extends React.Component {  
@@ -15,41 +16,42 @@ class ImageControls extends React.Component {
       loop: 0,
       time: 0,
       files: [],
+      isSelectorOpen: false,
       vibrate: false,
     }
 
-    this.handleLoopChange = this.handleLoopChange.bind(this);
-    this.handleTimeChange = this.handleTimeChange.bind(this);
-    this.toggleVibration = this.toggleVibration.bind(this);
+    this.handleImageSelect = this.handleImageSelect.bind(this);
   }
 
   componentDidMount () {
     this.props.getFilesFromEvent('Imagen').then(files => {
-      this.setState({ files });
+      this.setState({ 
+        files: files.map(file => ({...file, selected: false }))
+      });
     })
     .catch(e => {
       console.log('Error', e);
     })
   }
 
-  handleLoopChange (value) {
-    this.setState({ loop: value });
-  }
-
-  handleTimeChange (value) {
-    this.setState({ time: value });
-  }
-
-  toggleVibration () {
+  handleImageSelect (imageId) {
     this.setState(state => ({
-      vibrate: !state.vibrate
+      files: state.files.map(file => {
+        if (file._id === imageId)
+          return {...file, selected: !file.selected };
+
+        return file;
+      })
     }));
   }
 
   render () {
-    const options = this.state.files.map(file => (
-      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
-    ));
+
+    const images = this.state.files.map(file => ({
+      id: file._id,
+      selected: file.selected,
+      url: `storage/${file.Path}`
+    }));
 
     return (
       <React.Fragment>
@@ -66,23 +68,36 @@ class ImageControls extends React.Component {
         >
           <FontAwesomeIcon icon="paper-plane" color="#fff"/>
         </button>
+        <div className="mt-1">
+          <button 
+            onClick={e => this.setState(state => ({ isSelectorOpen: !state.isSelectorOpen }))}
+            className="btn btn-block btn-primary mt-3 py-0 rounded btn-txt"
+          >
+            {this.state.isSelectorOpen ? (
+              <FontAwesomeIcon icon="sort-up" color="#fff"/>
+              ) : (
+              <FontAwesomeIcon icon="sort-down" color="#fff"/>
+            )}
+          </button>
+        </div>
         <div className="mt-3">
-          <select className="form-control form-control-sm">
-            <option value="">Seleccione</option>
-            {options}
-          </select>
+          <DropdownImageSelector
+            images={images}
+            open={this.state.isSelectorOpen}
+            handleSelect={this.handleImageSelect}
+          />
         </div>
         <Loop 
           value={this.state.loop}
-          onChange={this.handleLoopChange}
+          onChange={loop => this.setState({ loop })}
         />
         <Time 
           value={this.state.time}
-          onChange={this.handleTimeChange}
+          onChange={time => this.setState({ time })}
         />
         <Vibrate 
           vibrate={this.state.vibrate}
-          onChange={this.toggleVibration}
+          onChange={() => this.setState(state => ({ vibrate: !state.vibrate }))}
         />
       </React.Fragment>
     );
