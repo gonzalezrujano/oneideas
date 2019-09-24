@@ -11,31 +11,26 @@ const initialState = {
     icon: 'palette',
     color: '#4b7bec',
     current: null,
-    queue: [],
   },
   flash: {
     icon: 'bolt',
     color: '#eb3b5a',
     current: null,
-    queue: [],
   },
   audio: {
     icon: 'volume-up',
     color: '#2bcbba',
     current: null,
-    queue: [],
   },
   video: {
     icon: 'video',
     color: '#fed330',
     current: null,
-    queue: [],
   },
   image: {
     icon: 'image',
     color: '#a55eea',
     current: null,
-    queue: [],
   }
 };
 

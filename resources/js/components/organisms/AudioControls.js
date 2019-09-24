@@ -50,8 +50,6 @@ class AudioControls extends React.Component {
 
     this.props.endRunningShow('audio');
 
-    console.log('command', 'REM,0,1,AUD');
-
     this.props.submitCommand(`REM,0,1,AUD`);
   }
 
@@ -87,8 +85,6 @@ class AudioControls extends React.Component {
     let end = now + 600000;
 
     let command = `AUD,${moment},${id},${audio},${now},${end}`;
-
-    console.log('command', command);
 
     this.props.submitCommand(command);
 

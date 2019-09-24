@@ -95,6 +95,8 @@ class Multimedia extends Component {
 
     sendGivenMqttCommand (command) {
       const { companyId, eventId } = this.props;
+
+      console.log('command', command);
       
       this.mqttClient.send(`/${companyId}/${eventId}`, command);
     }

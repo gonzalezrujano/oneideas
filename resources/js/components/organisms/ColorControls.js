@@ -73,7 +73,7 @@ class ColorControls extends React.Component {
         this.props.endCurrentSceneTime('color')
         
         if (this.props.color.current.loop === 0)
-          return this.endRunningShow('color');
+          return this.endCurrentShow();
         
       }, this.state.time * 1000);
     }
@@ -93,8 +93,6 @@ class ColorControls extends React.Component {
       let end = now + ((60 / current.bpm) * 1000) + 5000;
 
       let command = `COL,${moment},${id},${color},${now},${end}`;
-
-      console.log('command', command);
 
       this.props.submitCommand(command);
 

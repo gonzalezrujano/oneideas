@@ -87,8 +87,6 @@ class FlashControls extends React.Component {
 
       let command = `FLH,${moment},${id},${flash},${now},${end}`;
 
-      console.log('command', command);
-
       this.props.submitCommand(command);
 
       if (this.step === 1) {

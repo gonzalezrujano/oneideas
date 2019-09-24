@@ -52,8 +52,6 @@ class VideoControls extends React.Component {
 
     this.props.endRunningShow('video');
 
-    console.log('command', 'REM,0,1,VID');
-
     this.props.submitCommand(`REM,0,1,VID`);
   }
 
@@ -89,8 +87,6 @@ class VideoControls extends React.Component {
     let end = now + 600000;
 
     let command = `VID,${moment},${id},${video},${now},${end}`;
-
-    console.log('command', command);
 
     this.props.submitCommand(command);
 
