@@ -8,6 +8,7 @@ import { displayAlertMessage } from './../../redux/actions/alert';
 import { 
   endRunningShow,
   setCurrentScene, 
+  updateCurrentLoop,
   endCurrentSceneTime,
 } from './../../redux/actions/show';
 import { connect } from 'react-redux';
@@ -29,7 +30,7 @@ class AudioControls extends React.Component {
     this.validateConfiguration = this.validateConfiguration.bind(this);
 
     // Class attributes
-    this.timeout = '';
+    this.interval = '';
   }
 
   componentDidMount () {
@@ -46,7 +47,7 @@ class AudioControls extends React.Component {
   }
 
   endCurrentShow () {
-    clearTimeout(this.timeout);
+    clearInterval(this.interval);
 
     this.props.endRunningShow('audio');
 
@@ -61,38 +62,43 @@ class AudioControls extends React.Component {
     // End previous execution
     this.endCurrentShow();
 
-    this.props.setCurrentScene('audio', this.state);
+    const selectedFile = this.state.files.find(audio => audio._id === this.state.selected);
+    
+    this.props.setCurrentScene('audio', {
+      loop: this.state.loop,
+      time: this.state.time,
+      file: selectedFile,
+    });
 
-    // Updating timer to 0 when time finishes
-    if (this.state.time > 0) {
-      this.timeout = setTimeout(() => {
-        this.props.endCurrentSceneTime('audio')
-        
-        if (this.props.audio.current.loop === 0)
-          return this.endCurrentShow();
-        
-      }, this.state.time * 1000);
-    }
+    // Executing a command every time a
+    // beat is produced
+    const interval = selectedFile.Duracion + (this.state.time * 1000);
 
-    // The audio command is only executed once because 
-    // there is uncertainty of how long a song lasts
-    const current = this.state;
+    this.interval = setInterval(() => {
+      const { current } = this.props.audio;
 
-    let id = 1;
-    let audio = current.selected;
-    let moment = 1;
-    let now = (new Date()).getTime();
-    let end = now + 600000;
+      if (current.loop === 0)
+        return this.endCurrentShow();
 
-    let command = `AUD,${moment},${id},${audio},${now},${end}`;
+      let id = 1;
+      let audio = current.file.NombreCompleto;
+      let moment = 1;
+      let now = (new Date()).getTime();
+      let end = now + 5000;
 
-    this.props.submitCommand(command);
+      let command = `AUD,${moment},${id},${audio},${now},${end}`;
+
+      this.props.submitCommand(command);
+      
+      if (current.loop > 0) {
+        this.props.updateCurrentLoop('audio', current.loop - 1);
+      }
+    }, interval);
 
     this.setState({
       bpm: 0,
       loop: 0,
       time: 0,
-      vibrate: false,
     });
   }
 
@@ -114,7 +120,7 @@ class AudioControls extends React.Component {
 
   render () {
     const options = this.state.files.map(file => (
-      <option key={file._id} value={file.NombreCompleto}>{file.NombreCompleto}</option>
+      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
     ));
 
     return (
@@ -171,6 +177,7 @@ const mapDispatchToProps = dispatch => ({
   setCurrentScene: (scene, current) => dispatch(setCurrentScene(scene, current)),
   endCurrentSceneTime: scene => dispatch(endCurrentSceneTime(scene)),
   endRunningShow: (scene) => dispatch(endRunningShow(scene)),
+  updateCurrentLoop: (scene, loop) => dispatch(updateCurrentLoop(scene, loop)),
   displayAlertMessage: (title, text, type = 'info') => dispatch(displayAlertMessage(title, text, type)),
 });
 
