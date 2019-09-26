@@ -57,6 +57,7 @@ class Login extends React.Component {
                 isLoading: false
             });
 
+            localStorage.setItem('apiToken', data.api_token);
             localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
             this.props.history.push({

@@ -3,10 +3,12 @@ import {
   USER_LOGGED_IN
 } from './../../actions/auth/types';
 
+const token = localStorage.getItem('apiToken');
+
 const initialState = {
   isAuthenticated: false,
   user: null,
-  apiToken: '',
+  apiToken: token ? token : '',
 };
 
 export default function (state = initialState, action) {
