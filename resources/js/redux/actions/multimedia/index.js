@@ -1,12 +1,45 @@
 import {
   FETCHED_MEDIA_EVENTS,
+  FETCHED_COMPANIES,
   FETCHED_MEDIA_SECTOR,
   FETCHED_MEDIA_JOBS,
   CREATE_NEW_JOB,
   REMOVE_JOB,
+  SET_COMPANY,
+  SET_EVENT,
   FETCHED_MEDIA_TOOLS
 } from './types';
 import axios from 'axios';
+
+export function getCompanies () {
+  return (dispatch, getState) => {
+    const { auth: { apiToken } } = getState();
+
+    return axios.get('api/empresas', {
+      headers: {
+        Authorization: apiToken
+      }
+    })
+    .then(res => {
+      const { data } = res;
+
+      return dispatch(saveCompanies(data.empresas));      
+    })
+  }
+}
+
+export function getEventsFromCompany (companyId) {
+  return (dispatch, getState) => {
+    const { auth: { apiToken }} = getState();
+    
+    return axios.get(`api/empresas/eventos/${companyId}`, {
+      headers: {
+        Authorization: apiToken
+      }
+    })
+    .then(res => dispatch(saveEventos(res.data)))
+  }
+}
 
 export function getEventos (userId, apiToken) {
   return dispatch => {
@@ -25,8 +58,10 @@ export function getEventos (userId, apiToken) {
   }
 }
 
-export function getJobs (eventId, apiToken) {
-  return dispatch => {
+export function getJobs (eventId) {
+  return (dispatch, getState) => {
+    const { auth: { apiToken }} = getState();
+    
     return axios.post("/api/eventos/envios", { evento: eventId }, {
         headers: {
             Authorization: apiToken
@@ -148,6 +183,13 @@ export function saveEventos (eventos) {
   };
 }
 
+export function saveCompanies (companies) {
+  return {
+    type: FETCHED_COMPANIES,
+    payload: { companies }
+  }
+}
+
 export function saveSectores (sectores) {
   return {
     type: FETCHED_MEDIA_SECTOR,
@@ -181,4 +223,18 @@ export function saveTool (tools) {
     type: FETCHED_MEDIA_TOOLS,
     payload: tools
   }
+}
+
+export function setCompany (companyId) {
+  return {
+    type: SET_COMPANY,
+    payload: { companyId }
+  };
+}
+
+export function setEvent (eventId) {
+  return {
+    type: SET_EVENT,
+    payload: { eventId }
+  };
 }

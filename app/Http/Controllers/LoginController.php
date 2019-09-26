@@ -22,7 +22,7 @@ class LoginController extends Controller
     }
 
     //metodo que crea la vista
-    public function index(){
+    public function index () {
         //devuelve la vista asociada
         return view('login');
     }
@@ -39,8 +39,7 @@ class LoginController extends Controller
 
         $user = Usuario::where('Correo', $credenciales['correo'])->first();
 
-        if($user){
-
+        if ($user) {
             if($user->Activo == true){
 
                 if(Hash::check($credenciales['password'], $user->Password)){
@@ -55,15 +54,12 @@ class LoginController extends Controller
                             'api_token' => $apitoken,
                             'usuario' => $user
                         ]);
-                    }else{
+                    } else {
                         return response()->json([
                             'code' => 404, 
                             'msj' => 'error no esperado' 
                         ]);
-                    }
-
-                    
-
+                    }                  
                 }
 
                 return response()->json([

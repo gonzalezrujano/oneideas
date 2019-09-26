@@ -12,12 +12,17 @@ use App\Models\MongoDB\Provincia;
 use App\Models\MongoDB\Estado;
 use App\Models\MongoDB\Cobranza;
 use App\Models\MongoDB\Sucursal;
+use App\Models\MongoDB\CategoriaBiblioteca;
+use App\Models\MongoDB\Biblioteca;
 use App\Models\MongoDB\TipoDocumento;
 use App\Models\MongoDB\TipoRubro;
+use App\Models\MongoDB\Rol;
+use App\Models\MongoDB\Usuario;
 use Illuminate\Http\Request;
 use App\Pdf\Empresa\QRPDF;
 use Carbon\Carbon;
 use MongoDB\BSON\ObjectID;
+use Illuminate\Support\Facades\Validator;
 use DB, DataTables, Image, Storage, File, Auth;
 
 //controlador encargado de la seccion empresa
@@ -257,13 +262,23 @@ class EmpresaController extends Controller
     /**
      * metodo para retornar todas las empresas
      */
-    public function getEmpresas(){
-        $empresas = Empresa::borrado(false)->get();
-        //devuelvo un json con la data
-        return response()->json([
-            'code' => 200,
-            'empresas' => $empresas
-        ]);
+    public function getEmpresas (Request $request) {
+      $apiToken = $request->header('Authorization');
+      $user = Usuario::where('api_token', $apiToken)->first();
+      $role = Rol::where('_id', new ObjectId($user->Rol_id))->first();
+      $companies = [];
+
+      
+      if ($role->Nombre == 'ADMINISTRADOR') {
+        $companies = Empresa::where('Borrado', false)->get();
+      } else {
+        $companies = Empresa::borrado(false)->where('_id', new ObjectId($user->Empresa_id))->get();
+      }
+      
+      return response()->json([
+          'code' => 200,
+          'empresas' => $companies
+      ]);
     }
 
     /**
@@ -430,12 +445,12 @@ class EmpresaController extends Controller
         
     }
 
-        /**
-         * Metodo para actuali ar empresa
-         * el request recibe toda la informacion necesaria para modificar la empresa ya 
-         * creada
-         */
-        public function updateEmpresa(ValidateEmpresa $request){
+    /**
+     * Metodo para actuali ar empresa
+     * el request recibe toda la informacion necesaria para modificar la empresa ya 
+     * creada
+     */
+    public function updateEmpresa(ValidateEmpresa $request){
         //obtengo todos los datos del formulario
         $input = $request->all();
 
@@ -495,32 +510,56 @@ class EmpresaController extends Controller
         }else{
             return response()->json(['code' => 500]);
         }
-            
-    
-        }
+    }
 
-        /**
-         * metodo obtener todos los eventos por el id de la emrpesa
-         */
-        public function getEventosPorEmpresa($empresa){
-            //cargo los eventos
-            $resultado = \App\Models\MongoDB\Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
-            //devulevo un json con la data
-            return json_encode($resultado);
-        }
+    /**
+     * metodo obtener todos los eventos por el id de la emrpesa
+     */
+    public function getEventosPorEmpresa($empresa){
+        //cargo los eventos
+        $events = Evento::borrado(false)->activo(true)->where('Empresa_id', new ObjectID($empresa) )->orderBy('Nombre', 'asc')->get();
+        //devulevo un json con la data
+        return response()->json($events);
+    }
 
-        /**
-         * Metodo para retornar todos los paises para el formulario de add empresa
-         */
-        public function getPaises(){
-            $pais = Pais::borrado(false)->get();
-            $estatus = Estado::borrado(false)->get();
-            //devuelvo un json con la data
-            return response()->json([
-                'code' => 200,
-                'paises' => $pais,
-                'estados' => $estatus
-            ]);
-        }
+    /**
+     * Metodo para retornar todos los paises para el formulario de add empresa
+     */
+    public function getPaises(){
+        $pais = Pais::borrado(false)->get();
+        $estatus = Estado::borrado(false)->get();
+        //devuelvo un json con la data
+        return response()->json([
+            'code' => 200,
+            'paises' => $pais,
+            'estados' => $estatus
+        ]);
+    }
     
+    public function getFileTypesFromEvent (Request $request, $companyId, $eventId, $type) {
+      $data = [
+        'companyId' => $companyId,
+        'eventId' => $eventId,
+        'type' => $type
+      ];
+
+      Validator::make($data, [
+        'companyId' => 'required|exists:Empresas,_id',
+        'eventId' => 'required|exists:Eventos,_id',
+        'type' => 'required|in:Audio,Imagen,Video'
+      ])->validate();
+
+      $fileType = CategoriaBiblioteca::where('Nombre', $type)->first();
+
+      if (!$fileType)
+        return response()->json([
+          'error' => 'Something went wrong with the request',
+        ], 400);
+      
+      $files = Biblioteca::where('Evento_id', new ObjectID($eventId))
+        ->where('CategoriaBiblioteca_id', new ObjectID($fileType->_id))
+        ->get();
+
+      return response()->json($files);
+    }
 }

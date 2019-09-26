@@ -1,1 +1,3 @@
 export const AUTH_EXAMPLE_ACTION = 'AUTH_EXAMPLE_ACTION';
+
+export const USER_LOGGED_IN = 'USER_LOGGED_IN';

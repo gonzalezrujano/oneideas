@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import axios from "axios";
 import swal from "sweetalert2";
 import logoOneShow from "../../../../public/images/logo-oneshow.png";
+import { authenticate } from './../../redux/actions/auth';
+import { connect } from 'react-redux';
 
 import "./css/Login.css";
 
-export default class Login extends Component {
-    constructor() {
-        super();
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
         this.state = {
             url: "",
             correo: "",
@@ -40,15 +41,21 @@ export default class Login extends Component {
      * @param {*} e
      */
     handleLogin(e) {
-        let self = this;
+      e.preventDefault();
 
-        self.setState({
-            isLoading: true
-        });
+      this.setState({
+          isLoading: true
+      });
 
-        let urlInicio = this.state.url + "/welcome";
-        let correo = this.state.correo;
-        let password = this.state.password;
+      const { correo, password } = this.state;
+
+      this.props.authenticate(correo, password)
+        .then(data => {
+            this.setState({
+                correo: "",
+                password: "",
+                isLoading: false
+            });
 
         e.preventDefault();
 
@@ -99,6 +106,8 @@ export default class Login extends Component {
                     });
                 }
             });
+          }
+        });
     }
 
     render() {
@@ -174,3 +183,9 @@ export default class Login extends Component {
         );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+  authenticate: (email, password) => dispatch(authenticate(email, password)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

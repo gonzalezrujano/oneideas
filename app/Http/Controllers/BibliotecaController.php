@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectId;
 use PHP\BitTorrent\Torrent;
 use App\Jobs\MoveFileToTorrentClient;
+use wapmorgan\Mp3Info\Mp3Info;
 
 class BibliotecaController extends Controller
 {
@@ -330,8 +331,8 @@ class BibliotecaController extends Controller
     public function addFile(ValidateArchivo $request){
         $input = $request->all();
 
-        $evento  = (string)$input['id-evento'];
-        $empresa = (string)Evento::find($evento)->Empresa_id;
+        $evento  = (string) $input['id-evento'];
+        $empresa = (string) Evento::find($evento)->Empresa_id;
         $pathSave = $empresa.'/'.$evento.'/';
 
         $archivo = $input['archivo'];
@@ -347,6 +348,19 @@ class BibliotecaController extends Controller
         $name = $input['name'].'.'.$fileData['extension'];
 
         $path = $request->file('archivo')->storeAs($pathSave, $name, 'public');
+        $categoria = CategoriaBiblioteca::where('_id', new ObjectId($input['categoria']))->first();
+        $duration = null;
+
+        if ($categoria->Nombre === 'Audio') {
+          $audio = new Mp3Info($request->archivo->path());
+          $duration = floor($audio->duration * 1000);
+
+        } else if ($categoria->Nombre === 'Video') {
+          $getID3 = new \getID3();
+          $video = $getID3->analyze($request->archivo->path());
+
+          $duration = floor($video['playtime_seconds'] * 1000);
+        }
 
         // Storage::disk('public_oneshow')->put($pathSave.$name, File::get($archivo));
         //capturo los datos y los acomodo en un arreglo
@@ -373,6 +387,7 @@ class BibliotecaController extends Controller
         $registro->CategoriaBiblioteca_id    = $data['categoria'];
         $registro->Fecha                     = Carbon::now();
         $registro->Activo                    = $data['activo'];
+        $registro->Duracion                  = $duration;
         $registro->Borrado                   = $data['borrado'];
 
         //verifico si fue exitoso el insert en la bd
