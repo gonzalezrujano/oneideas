@@ -57,54 +57,33 @@ class Login extends React.Component {
                 isLoading: false
             });
 
-        e.preventDefault();
+            localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-        axios
-            .post("api/login", { correo, password })
-            .then(res => {
-                let r = res.data;
+            this.props.history.push({
+                pathname: "/welcome",
+                state: { usuario: data.usuario, api_token: data.api_token }
+            });
+        })
+        .catch(error => {
+          this.setState({
+              isLoading: false
+          });
 
-                if (r.code === 200) {
-                    self.setState({
-                        correo: "",
-                        password: "",
-                        isLoading: false
-                    });
-                    console.log("log valido");
-                    console.log(r);
-                    localStorage.setItem("usuario", JSON.stringify(r.usuario));
-                    this.props.history.push({
-                        pathname: "/welcome",
-                        state: { usuario: r.usuario, api_token: r.api_token }
-                    });
-                    //window.location.href = urlInicio;
-                } else if (r.code === 600) {
-                    self.setState({
-                        isLoading: false
-                    });
-
-                    swal.fire({
-                        title: '<i class="fas fa-exclamation-circle"></i>',
-                        text: r.msj,
-                        confirmButtonColor: "#343a40",
-                        confirmButtonText: "Ok"
-                    });
-                }
-            })
-            .catch(function(error) {
-                console.log(error.response);
-                if (error.response.status == 422) {
-                    self.setState({
-                        isLoading: false
-                    });
-
-                    swal.fire({
-                        title: '<i class="fas fa-exclamation-circle"></i>',
-                        text: error.response.data,
-                        confirmButtonColor: "#343a40",
-                        confirmButtonText: "Ok"
-                    });
-                }
+          if (error.code) {
+            if (error.code === 600) {
+              swal.fire({
+                title: '<i class="fas fa-exclamation-circle"></i>',
+                text: error.message,
+                confirmButtonColor: "#343a40",
+                confirmButtonText: "Ok"
+              });
+            }
+          } else if (error.response.status === 422) {
+            swal.fire({
+                title: '<i class="fas fa-exclamation-circle"></i>',
+                text: error.response.data,
+                confirmButtonColor: "#343a40",
+                confirmButtonText: "Ok"
             });
           }
         });
