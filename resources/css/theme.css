@@ -4659,3 +4659,7 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 .image-dropdown::-webkit-scrollbar-track-piece {
   background: #fff;
 }
+
+.fullscreen {
+  background: #3a4144;
+}

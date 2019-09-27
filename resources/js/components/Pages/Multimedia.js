@@ -3,6 +3,7 @@ import Menu from "../components/Menu";
 import Header from "../components/Header";
 import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Live from './../organisms/Live';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
 import TabNavigation from './../organisms/TabNavigation';
@@ -83,7 +84,7 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        useSSL: true,
+        // useSSL: true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })
@@ -293,10 +294,7 @@ class Multimedia extends Component {
       return null;
   
     return (
-      <Fullscreen
-        enabled={this.state.isFull}
-        onChange={isFull => this.setState({ isFull })}
-      >
+      <React.Fragment>
         <Menu usuario={this.state.user} />
         <Header usuario={this.state.user} history={this.props.history} />
         <div className="content-wrapper">
@@ -355,22 +353,40 @@ class Multimedia extends Component {
                   />
                 </div>
               </div>
+              <div className="row mt-2 justify-content-center">
+                <div className="col-sm-4 text-center">
+                  <span style={{ cursor: 'pointer' }}>
+                    <FontAwesomeIcon
+                      onClick={() => this.setState(state => ({
+                        isFull: !state.isFull,
+                      }))}
+                      icon="expand-arrows-alt"
+                      color="#fff" 
+                    />
+                  </span>
+                </div>
+              </div>
             </div>
           </header>
-          <div id="sweet" className="container-fluid">
-            {this.props.eventId === '' ? (
-              <EmptyMultimedia/>
-            ):(
-              <TabNavigation items={['En Vivo', 'Escenas']}>
-                <Live 
-                  submitCommand={this.sendGivenMqttCommand}
-                />
-                <div />
-              </TabNavigation>
-            )}
-          </div>
+          <Fullscreen 
+            enabled={this.state.isFull}
+            onChange={isFull => this.setState({ isFull })}
+          >
+            <div id="sweet" className="container-fluid">
+              {this.props.eventId === '' ? (
+                <EmptyMultimedia/>
+              ):(
+                <TabNavigation items={['En Vivo', 'Escenas']}>
+                  <Live 
+                    submitCommand={this.sendGivenMqttCommand}
+                  />
+                  <div />
+                </TabNavigation>
+              )}
+            </div>
+          </Fullscreen>
         </div>
-      </Fullscreen>
+      </React.Fragment>
     );
     }
 }
