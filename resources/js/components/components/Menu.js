@@ -233,6 +233,27 @@ export default class Menu extends Component {
                         </li>
 
                         <li
+                            className="sidebar-nav-link"
+                            id="social-wall-option"
+                            onClick={e => {
+                                this.handleChange("social-wall-option");
+                            }}
+                        >
+                            <Link
+                                to={{
+                                    pathname: "/social-wall",
+                                    state: {
+                                        usuario: JSON.parse(localStorage.getItem("usuario")),
+                                        api_token: localStorage.getItem("api_token")
+                                    }
+                                }}
+                            >
+                                <i className="fas fa-photo-video sidebar-nav-link-logo" />{" "}
+                                Social Wall
+                            </Link>
+                        </li>
+
+                        <li
                             className="sidebar-nav-link sidebar-nav-link-group"
                             id="configuracion-option"
                             onClick={e => {
