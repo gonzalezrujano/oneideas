@@ -88,11 +88,10 @@ class ColorControls extends React.Component {
 
       let id = this.step;
       let color = current.colors[this.step];
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + ((60 / current.bpm) * 1000) + 5000;
 
-      let command = `COL,${moment},${id},${color},${now},${end}`;
+      let command = `COL,${moment},${id},${color},${vibrate}`;
 
       this.props.submitCommand(command);
 
