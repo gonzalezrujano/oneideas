@@ -56,6 +56,7 @@ import PlanosBaseCopia from "../Pages/configuracion/Planos/PlanosBaseCopia";
 import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastronomico";
 import EdicionAsiento from "../Pages/configuracion/Invitados/invitados/EdicionAsiento";
+import SocialWall from "../Pages/SocialWall";
 
 library.add(fas);
 
@@ -72,6 +73,7 @@ function App () {
                     <Route exact path="/" component={Login} />
                     <Route exact path="/welcome" component={Welcome} />
                     <Route exact path="/multimedia" component={Multimedia} />
+                    <Route exact path="/social-wall" component={SocialWall} />
                     <Route exact path="/biblioteca" component={Biblioteca} />
                     <Route
                         exact
