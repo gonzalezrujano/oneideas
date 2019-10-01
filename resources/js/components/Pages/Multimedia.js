@@ -64,8 +64,8 @@ class Multimedia extends Component {
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
 
-        this.mqttHost = 'mqtt.oneshow.com.ar';
-        this.mqttPort = 11344;
+        this.mqttHost = process.env.MIX_MQTT_HOST;
+        this.mqttPort = parseInt(process.env.MIX_MQTT_PORT);
         this.mqttClientId = uuidv4();
         this.mqttClient = new Paho.MQTT.Client(this.mqttHost, this.mqttPort, this.mqttClientId);
     }
@@ -84,7 +84,7 @@ class Multimedia extends Component {
 
       // Subscribing to broker
       this.mqttClient.connect({
-        // useSSL: true,
+        useSSL: process.env.NODE_ENV === 'development' ? false : true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })

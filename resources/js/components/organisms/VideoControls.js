@@ -85,11 +85,10 @@ class VideoControls extends React.Component {
 
       let id = 1;
       let video = current.file.NombreCompleto;
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + 5000;
 
-      let command = `VID,${moment},${id},${video},${now},${end}`;
+      let command = `VID,${moment},${id},${video},${vibrate}`;
 
       this.props.submitCommand(command);
       

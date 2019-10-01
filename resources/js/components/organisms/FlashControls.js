@@ -81,11 +81,10 @@ class FlashControls extends React.Component {
 
       let id = this.step;
       let flash = this.step;
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + ((60 / current.bpm) * 1000) + 5000;
 
-      let command = `FLH,${moment},${id},${flash},${now},${end}`;
+      let command = `FLH,${moment},${id},${flash},${vibrate}`;
 
       this.props.submitCommand(command);
 
