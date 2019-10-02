@@ -1,7 +1,11 @@
 import React from 'react';
 import ColorSelector from './../molecules/ColorSelector';
+import ColorScene from './ColorScene';
+import FlashScene from './FlashScene';
+import AudioScene from './AudioScene';
+import VideoScene from './VideoScene';
+import ImageScene from './ImageScene';
 import DropdownIconSelector from './../molecules/DropdownIconSelector';
-import icons from './../../data/icons';
 
 class Scenes extends React.Component {
   constructor (props) {
@@ -10,11 +14,13 @@ class Scenes extends React.Component {
     this.state = {
       name: '',
       color: '#5e72e4',
-    }
+    };
 
+    this.setColor = this.setColor.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleNewColor = this.handleNewColor.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   handleChange (e) {
@@ -23,13 +29,40 @@ class Scenes extends React.Component {
     })
   }
 
+  handleCheckboxChange (e) {
+    const name = e.target.name;
+    const checked = e.target.checked;
+
+    this.setState(state => ({
+      [name]: {
+        ...state[name],
+        enabled: checked
+      }
+    }));
+  }
+
   handleNewColor (color) {
+    this.setState(state => ({
+      colors: {
+        ...state.colors,
+        colors: [
+          ...state.colors.colors, 
+          color
+        ]
+      }
+    }));
+  }
+
+  setColor (color) {
     this.setState({ color });
   }
 
   handleDeletedColor (index) {
     this.setState(state => ({
-      colors: state.colors.filter((_, i) => i !== index)
+      colors: {
+        ...state.colors,
+        colors: state.colors.colors.filter((_, i) => i !== index)
+      }
     }));
   }
 
@@ -44,6 +77,7 @@ class Scenes extends React.Component {
             <div className="form-group">
               <input 
                 type="text"
+                name="name"
                 value={this.state.name}
                 className="form-control"
                 onChange={this.handleChange}
@@ -63,8 +97,30 @@ class Scenes extends React.Component {
               Color
             </h5>
             <ColorSelector 
-              onSubmit={this.handleNewColor}
+              onSubmit={this.setColor}
             />
+          </div>
+        </div>
+        <div>
+          <ColorScene
+            containerStyle="bg-dark py-3 px-3"
+          />
+          <FlashScene
+            containerStyle="py-3 px-3"
+          />
+          <AudioScene
+            containerStyle="bg-dark py-3 px-3"
+          />
+          <VideoScene
+            containerStyle="py-3 px-3"
+          />
+          <ImageScene
+            containerStyle="bg-dark py-3 px-3"
+          />
+          <div className="text-right my-3">
+            <button className="btn btn-info btn-sm">
+              Guardar Escena
+            </button>
           </div>
         </div>
       </div>

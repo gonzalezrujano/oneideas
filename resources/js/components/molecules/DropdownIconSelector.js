@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import icons from './../../data/icons';
 
 function DropdownIconSelector (props) {
-  const [selected, setSelected] = useState('stop');
+  const [selected, setSelected] = useState('star');
   const [ isOpen, setOpen ] = useState(false);
   
   const style = useSpring({
