@@ -22,7 +22,7 @@ class ColorSelector extends React.Component {
   render () {
 
     return (
-      <form onSubmit={this.handleSubmit} className="mt-3">
+      <form onSubmit={this.handleSubmit} className={this.props.className}>
         <div className="input-group mb-1">
           <input 
             type="text"

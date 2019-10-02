@@ -167,7 +167,8 @@ class ColorControls extends React.Component {
             <FontAwesomeIcon icon="stop" color="#fff"/>
           </button>
         }
-        <ColorSelector 
+        <ColorSelector
+          className="mt-3"
           onSubmit={this.handleNewColor}
         />
         <ColorList 

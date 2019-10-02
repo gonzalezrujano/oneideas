@@ -5,6 +5,7 @@ import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Live from './../organisms/Live';
+import Scenes from './../organisms/Scenes';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
 import TabNavigation from './../organisms/TabNavigation';
 import { connect } from 'react-redux';
@@ -380,7 +381,7 @@ class Multimedia extends Component {
                   <Live 
                     submitCommand={this.sendGivenMqttCommand}
                   />
-                  <div />
+                  <Scenes />
                 </TabNavigation>
               )}
             </div>
