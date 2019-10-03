@@ -20,7 +20,6 @@ import Eventos from "../Pages/configuracion/Eventos/Eventos";
 import EventosAdd from "../Pages/configuracion/Eventos/Add";
 import EventoEdit from "../Pages/configuracion/Eventos/Edit";
 import EventoShow from "../Pages/configuracion/Eventos/Show";
-import RedesSociales from "../Pages/configuracion/Eventos/RedesSociales";
 import Usuarios from "../Pages/configuracion/Usuarios/Usuarios";
 import UsuariosAdd from "../Pages/configuracion/Usuarios/Add";
 import UsuariosEdit from "../Pages/configuracion/Usuarios/Edit";
@@ -124,11 +123,6 @@ function App() {
                         exact
                         path="/eventos/show/:id"
                         component={EventoShow}
-                    />
-                    <Route 
-                        exact 
-                        path="/eventos/redes-sociales/:id"
-                        component={RedesSociales} 
                     />
                     <Route
                         exact

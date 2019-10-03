@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import  React, { Component } from 'react';
 
 /*
-- Presentar todas las opciones de ajuste que ofrece la libreria en espera de aprobación de cuales seran ajustadas por el usuario
+- Conectar filtro de evento con Redux
 - Componente de configuración para las opciones del Social Wall
 - Hacer endpoint para guardar y consultar esas configuraciones
 - Mensaje de Hashtag no encontrados para el evento
@@ -18,6 +18,9 @@ export default class SocialWall extends Component {
 
     constructor(props) {
         super(props);
+
+        this.mostrarFiltros = true;
+
         this.state = {
             footer: "Footer",
             estaCargando: false,
@@ -27,6 +30,8 @@ export default class SocialWall extends Component {
 
         this.colocarPantallaCompleta = this.colocarPantallaCompleta.bind(this);
         this.consultarHashtagsDelEvento = this.consultarHashtagsDelEvento.bind(this);
+        this.editarFiltroDeTipoDeContenido = this.editarFiltroDeTipoDeContenido.bind(this);
+        this.agregarEventoPantallaCompletaAIframe = this.agregarEventoPantallaCompletaAIframe.bind(this);
 
         this.estilosIframe = {
             width: "inherit",
@@ -72,6 +77,7 @@ export default class SocialWall extends Component {
      * @return {void}
      */
     colocarPantallaCompleta() {
+
         let elementoIframe = document.getElementById("iFrameSocialWall");
 
         if (elementoIframe.requestFullscreen) {
@@ -85,13 +91,40 @@ export default class SocialWall extends Component {
         }
     }
 
+    /**
+     * Agregar|Retirar Filtro de tipo de contenido (Twitter o Instagram o ambos)
+     * 
+     * @return {void}
+     */
+    editarFiltroDeTipoDeContenido() {
+
+        this.mostrarFiltros = !this.mostrarFiltros;
+
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName("filter-items")[0]
+            .style
+            .visibility = (this.mostrarFiltros) ? "visible" : "hidden";
+    }
+
+    /**
+     * Agregar evento de Full Screen a Iframe
+     * 
+     * @return {void}
+     */
+    agregarEventoPantallaCompletaAIframe() {
+        document.getElementById('iFrameSocialWall').addEventListener('webkitfullscreenchange', () => {
+            this.editarFiltroDeTipoDeContenido();
+        });
+    }
+
     render() {
         if (this.state.estaCargando) {
             return (
                 <div>Cargando...</div>
             );
         } else {
-            let urlParaIframe = "http://" + window.location.hostname + "/Lib";
+            let urlParaIframe = window.location.protocol + "//" + window.location.hostname + "/Lib";
             return (
                 <div>
                     <Menu usuario={this.state.user} />
@@ -112,6 +145,17 @@ export default class SocialWall extends Component {
                                                     </div>
                                                 </h1>
                                             </div>
+                                            <form className="form-inline ml-5">
+                                                <i className="fas fa-calendar-week fa-lg mr-3" />
+                                                <select
+                                                    className="form-control form-control-sm form-select-event"
+                                                    name="evento"
+                                                >
+                                                    <option value="">
+                                                        Seleccione evento
+                                                    </option>
+                                                </select>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -130,11 +174,13 @@ export default class SocialWall extends Component {
                             </div>
                         </header>
 
-                    <div id="sweet" className="container-fluid" onClick={this.colocarPantallaCompleta}>
+                    <div id="sweet" className="container-fluid">
                         <iframe
                             id="iFrameSocialWall"
                             style={this.estilosIframe}
-                            src={urlParaIframe}>
+                            src={urlParaIframe}
+                            onLoad={this.agregarEventoPantallaCompletaAIframe}
+                        >
                         </iframe>
                     </div>
 

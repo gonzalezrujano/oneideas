@@ -3,6 +3,7 @@ import axios from "axios";
 import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
+import RedesSociales from "./RedesSociales";
 
 import "../../css/configuracion/Biblioteca.css";
 import "./css/Eventos.css";
@@ -333,6 +334,9 @@ export default class Edit extends React.Component {
                         <li className="nav-item">
                             <a className="nav-link" id="pills-invitados-tab" data-toggle="pill" href="#pills-invitados" role="tab" aria-controls="pills-invitados" aria-selected="false">APP Invitados</a>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="pills-redes-sociales-tab" data-toggle="pill" href="#pills-redes-sociales" role="tab" aria-controls="pills-redes-sociales" aria-selected="false">Redes Sociales</a>
+                        </li>
                     </ul>
 
                 <hr className="line-gray"/>
@@ -513,6 +517,11 @@ export default class Edit extends React.Component {
                                 </div>
                             </div>
 
+                        </div>
+
+                        {/* Componente de configuracion de Redes Sociales */}
+                        <div className="tab-pane fade" id="pills-redes-sociales" role="tabpanel" aria-labelledby="pills-redes-sociales-tab">
+                            <RedesSociales />
                         </div>
 
 
