@@ -1,10 +1,6 @@
 import React from 'react';
 
 function Toggle (props) {
-  function handleChange (e) {
-    props.onChange(e);
-  }
-
   return (
     <div className={`custom-control custom-switch ${props.className}`}>
       <input 
@@ -12,7 +8,11 @@ function Toggle (props) {
         id={props.name}
         name={props.name}
         value={props.checked}
-        onChange={handleChange}
+        onChange={e => {
+          console.log('name', e.target.name);
+          
+          props.onChange(e)
+        }}
         className="custom-control-input"
       />
       <label 

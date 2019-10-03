@@ -15,6 +15,7 @@ class AudioScene extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.getConfiguration = this.getConfiguration.bind(this);
   }
 
   componentDidMount () {
@@ -27,11 +28,24 @@ class AudioScene extends React.Component {
   }
 
   handleChange (e) {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const { type, name } = e.target;
+
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
+    const realName = type === 'checkbox' ? name.split('-')[1] : name;
+
+    console.log('handle name', name);
 
     this.setState({
-      [e.target.name]: value,
-    })
+      [realName]: value,
+    });
+  }
+
+  getConfiguration () {
+    return { 
+      time: this.state.time,
+      enabled: this.state.enabled,
+      selected: this.state.selected,
+    }
   }
 
   render () {
@@ -42,7 +56,7 @@ class AudioScene extends React.Component {
     return (
       <div className={this.props.containerStyle}>
         <Toggle 
-          name="enabled" 
+          name="audio-enabled" 
           checked={this.state.enabled} 
           onChange={this.handleChange}
           className="mb-1"
@@ -67,7 +81,7 @@ class AudioScene extends React.Component {
                   id="time"
                   name="time"
                   type="number"
-                  placeholder="Tiempo entre audios (seg)"
+                  placeholder="Tiempo entre audios"
                   className="form-control"
                   value={this.state.time}
                   onChange={this.handleChange}
@@ -85,4 +99,6 @@ const mapDispatchToProps = dispatch => ({
   getFilesFromEvent: (type) => dispatch(getFilesFromEvent(type))
 });
 
-export default connect(null, mapDispatchToProps)(AudioScene);
+export default connect(null, mapDispatchToProps, null, {
+  forwardRef: true,
+})(AudioScene);

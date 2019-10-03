@@ -16,11 +16,17 @@ class Scenes extends React.Component {
       color: '#5e72e4',
     };
 
+    // Refs
+    this.colorRef = React.createRef();
+    this.flashRef = React.createRef();
+    this.audioRef = React.createRef();
+    this.videoRef = React.createRef();
+    this.imageRef = React.createRef();
+
+    // Functions
     this.setColor = this.setColor.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleNewColor = this.handleNewColor.bind(this);
-    this.handleDeletedColor = this.handleDeletedColor.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange (e) {
@@ -29,41 +35,18 @@ class Scenes extends React.Component {
     })
   }
 
-  handleCheckboxChange (e) {
-    const name = e.target.name;
-    const checked = e.target.checked;
-
-    this.setState(state => ({
-      [name]: {
-        ...state[name],
-        enabled: checked
-      }
-    }));
-  }
-
-  handleNewColor (color) {
-    this.setState(state => ({
-      colors: {
-        ...state.colors,
-        colors: [
-          ...state.colors.colors, 
-          color
-        ]
-      }
-    }));
-  }
-
   setColor (color) {
     this.setState({ color });
   }
 
-  handleDeletedColor (index) {
-    this.setState(state => ({
-      colors: {
-        ...state.colors,
-        colors: state.colors.colors.filter((_, i) => i !== index)
-      }
-    }));
+  handleSubmit (e) {
+    e.preventDefault();
+
+    console.log('color configuration', this.colorRef.current.getConfiguration());
+    console.log('flash configuration', this.flashRef.current.getConfiguration());
+    console.log('audio configuration', this.audioRef.current.getConfiguration());
+    console.log('video configuration', this.videoRef.current.getConfiguration());
+    console.log('image configuration', this.imageRef.current.getConfiguration());
   }
 
   render () {
@@ -103,22 +86,27 @@ class Scenes extends React.Component {
         </div>
         <div>
           <ColorScene
+            ref={this.colorRef}
             containerStyle="bg-dark py-3 px-3"
           />
           <FlashScene
+            ref={this.flashRef}
             containerStyle="py-3 px-3"
           />
           <AudioScene
+            ref={this.audioRef}
             containerStyle="bg-dark py-3 px-3"
           />
           <VideoScene
+            ref={this.videoRef}
             containerStyle="py-3 px-3"
           />
           <ImageScene
+            ref={this.imageRef}
             containerStyle="bg-dark py-3 px-3"
           />
           <div className="text-right my-3">
-            <button className="btn btn-info btn-sm">
+            <button onClick={this.handleSubmit} className="btn btn-primary btn-sm rounded">
               Guardar Escena
             </button>
           </div>

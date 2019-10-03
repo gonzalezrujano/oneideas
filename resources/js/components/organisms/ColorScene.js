@@ -15,21 +15,37 @@ class ColorScene extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.getConfiguration = this.getConfiguration.bind(this);
   }
 
   handleChange (e) {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const { type, name } = e.target;
+
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
+    const realName = type === 'checkbox' ? name.split('-')[1] : name;
+
+    console.log('handle name', name);
 
     this.setState({
-      [e.target.name]: value,
-    })
+      [realName]: value,
+    });
+  }
+
+  getConfiguration () {
+    return { 
+      time: 0,
+      loop: -1,
+      bpm: this.state.bpm,
+      vibrate: this.state.vibrate,
+      enabled: this.state.enabled,
+    }
   }
 
   render () {
     return (
       <div className={this.props.containerStyle}>
         <Toggle 
-          name="enabled" 
+          name="color-enabled" 
           checked={this.state.enabled} 
           onChange={this.handleChange}
           className="mb-1"
@@ -62,7 +78,7 @@ class ColorScene extends React.Component {
               </div>
               <div className="form-group">
                 <Toggle 
-                  name="vibrate" 
+                  name="color-vibrate" 
                   checked={this.state.vibrate} 
                   onChange={this.handleChange}
                 >

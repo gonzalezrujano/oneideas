@@ -16,10 +16,11 @@ class ImageScene extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.getConfiguration = this.getConfiguration.bind(this);
   }
 
   componentDidMount () {
-    this.props.getFilesFromEvent('Image').then(files => {
+    this.props.getFilesFromEvent('Imagen').then(files => {
       this.setState({ files });
     })
     .catch(e => {
@@ -28,11 +29,26 @@ class ImageScene extends React.Component {
   }
 
   handleChange (e) {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const { type, name } = e.target;
+
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
+    const realName = type === 'checkbox' ? name.split('-')[1] : name;
+
+    console.log('handle name', name);
 
     this.setState({
-      [e.target.name]: value,
-    })
+      [realName]: value,
+    });
+  }
+
+  getConfiguration () {
+    return { 
+      loop: -1,
+      time: this.state.time,
+      vibrate: this.state.vibrate,
+      selected: this.state.selected,
+      enabled: this.state.enabled,
+    }
   }
 
   render () {
@@ -43,7 +59,7 @@ class ImageScene extends React.Component {
     return (
       <div className={this.props.containerStyle}>
         <Toggle 
-          name="enabled" 
+          name="image-enabled" 
           checked={this.state.enabled} 
           onChange={this.handleChange}
           className="mb-1"
@@ -76,7 +92,7 @@ class ImageScene extends React.Component {
               </div>
               <div className="form-group">
                 <Toggle 
-                  name="vibrate" 
+                  name="image-vibrate" 
                   checked={this.state.vibrate} 
                   onChange={this.handleChange}
                 >
@@ -95,4 +111,6 @@ const mapDispatchToProps = dispatch => ({
   getFilesFromEvent: (type) => dispatch(getFilesFromEvent(type))
 });
 
-export default connect(null, mapDispatchToProps)(ImageScene);
+export default connect(null, mapDispatchToProps, null, {
+  forwardRef: true,
+})(ImageScene);

@@ -15,6 +15,7 @@ class VideoScene extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.getConfiguration = this.getConfiguration.bind(this);
   }
 
   componentDidMount () {
@@ -27,11 +28,26 @@ class VideoScene extends React.Component {
   }
 
   handleChange (e) {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const { type, name } = e.target;
+
+    const value = type === 'checkbox' ? e.target.checked : e.target.value;
+    const realName = type === 'checkbox' ? name.split('-')[1] : name;
+
+    console.log('handle name', name);
 
     this.setState({
-      [e.target.name]: value,
-    })
+      [realName]: value,
+    });
+  }
+
+  getConfiguration () {
+    return { 
+      loop: -1,
+      time: this.state.time,
+      vibrate: this.state.vibrate,
+      selected: this.state.selected,
+      enabled: this.state.enabled,
+    }
   }
 
   render () {
@@ -42,7 +58,7 @@ class VideoScene extends React.Component {
     return (
       <div className={this.props.containerStyle}>
         <Toggle 
-          name="enabled" 
+          name="video-enabled" 
           checked={this.state.enabled} 
           onChange={this.handleChange}
           className="mb-1"
@@ -67,7 +83,7 @@ class VideoScene extends React.Component {
                   id="time"
                   name="time"
                   type="number"
-                  placeholder="Tiempo entre videos (seg)"
+                  placeholder="Tiempo entre videos"
                   className="form-control"
                   value={this.state.time}
                   onChange={this.handleChange}
@@ -85,4 +101,6 @@ const mapDispatchToProps = dispatch => ({
   getFilesFromEvent: (type) => dispatch(getFilesFromEvent(type))
 });
 
-export default connect(null, mapDispatchToProps)(VideoScene);
+export default connect(null, mapDispatchToProps, null, {
+  forwardRef: true,
+})(VideoScene);
