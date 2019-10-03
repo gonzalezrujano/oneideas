@@ -41,10 +41,18 @@ class VideoScene extends React.Component {
   }
 
   getConfiguration () {
+    const { time } = this.state;
+    const intTime = parseInt(time);
+    let failure = false;
+
+    if (intTime < 0 || isNaN(intTime)) {
+      failure = true;
+    }
+
     return { 
+      failure,
       loop: -1,
-      time: this.state.time,
-      vibrate: this.state.vibrate,
+      time: intTime,
       selected: this.state.selected,
       enabled: this.state.enabled,
     }

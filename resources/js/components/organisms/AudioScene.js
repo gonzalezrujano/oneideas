@@ -41,10 +41,19 @@ class AudioScene extends React.Component {
   }
 
   getConfiguration () {
+    const { time } = this.state;
+    const intTime = parseInt(time);
+    let failure = false;
+
+    if (intTime < 0 || isNaN(intTime)) {
+      failure = true;
+    }
+
     return { 
-      time: this.state.time,
-      enabled: this.state.enabled,
+      failure,
+      time: intTime,
       selected: this.state.selected,
+      enabled: this.state.enabled,
     }
   }
 

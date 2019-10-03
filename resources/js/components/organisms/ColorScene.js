@@ -15,7 +15,9 @@ class ColorScene extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleNewColor = this.handleNewColor.bind(this);
     this.getConfiguration = this.getConfiguration.bind(this);
+    this.handleDeletedColor = this.handleDeletedColor.bind(this);
   }
 
   handleChange (e) {
@@ -31,11 +33,35 @@ class ColorScene extends React.Component {
     });
   }
 
+  handleNewColor (color) {
+    this.setState(state => ({
+      colors: [...state.colors, color]
+    }));
+  }
+
+  handleDeletedColor (i) {
+    this.setState(state => ({
+      colors: state.colors.filter((_, index) => i !== index)
+    }))
+  }
+
   getConfiguration () {
+    const { bpm, colors } = this.state;
+    let failure = false;
+    let intBPM = parseInt(bpm);
+    
+    if (colors.length === 0) {
+      failure = true;
+    } else if (intBPM === 0 || intBPM === NaN) {
+      failure = true;
+    }
+
     return { 
+      colors,
+      failure,
       time: 0,
       loop: -1,
-      bpm: this.state.bpm,
+      bpm: intBPM,
       vibrate: this.state.vibrate,
       enabled: this.state.enabled,
     }

@@ -29,10 +29,20 @@ class FlashScene extends React.Component {
   }
 
   getConfiguration () {
+    const { bpm } = this.state;
+    const intBPM = parseInt(bpm);
+    let failure = false;
+
+    if (intBPM <= 0 || isNaN(intBPM)) {
+      failure = true;
+    }
+
     return { 
       time: 0,
+      failure,
       loop: -1,
-      bpm: this.state.bpm,
+      bpm: intBPM,
+      vibrate: this.state.vibrate,
       enabled: this.state.enabled,
     }
   }

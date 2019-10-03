@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import icons from './../../data/icons';
 
 function DropdownIconSelector (props) {
-  const [selected, setSelected] = useState('star');
   const [ isOpen, setOpen ] = useState(false);
   
   const style = useSpring({
@@ -17,7 +16,7 @@ function DropdownIconSelector (props) {
       <FontAwesomeIcon
         icon={icon}
         color={props.color}
-        onClick={() => setSelected(icon)}
+        onClick={() => props.onChange(icon)}
       />
     </div>
   ));
@@ -34,7 +33,7 @@ function DropdownIconSelector (props) {
       >
         <FontAwesomeIcon
           color={props.color}
-          icon={selected}
+          icon={props.icon}
         />
       </div>
       <animated.div style={style} className={dropdownListClass}>

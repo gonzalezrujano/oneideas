@@ -13,6 +13,7 @@ class Scenes extends React.Component {
 
     this.state = {
       name: '',
+      icon: 'star',
       color: '#5e72e4',
     };
 
@@ -42,11 +43,21 @@ class Scenes extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
 
-    console.log('color configuration', this.colorRef.current.getConfiguration());
-    console.log('flash configuration', this.flashRef.current.getConfiguration());
-    console.log('audio configuration', this.audioRef.current.getConfiguration());
-    console.log('video configuration', this.videoRef.current.getConfiguration());
-    console.log('image configuration', this.imageRef.current.getConfiguration());
+    const colorConf = this.colorRef.current.getConfiguration();
+    const flashConf = this.flashRef.current.getConfiguration();
+    const audioConf = this.audioRef.current.getConfiguration();
+    const videoConf = this.videoRef.current.getConfiguration();
+    const imageConf = this.imageRef.current.getConfiguration();
+    const { name, color, icon } = this.state;
+
+    console.log('name', name);
+    console.log('color', color);
+    console.log('icon', icon);
+    console.log('colorConf', colorConf);
+    console.log('flashConf', flashConf);
+    console.log('audioConf', audioConf);
+    console.log('videoConf', videoConf);
+    console.log('imageConf', imageConf);   
   }
 
   render () {
@@ -71,8 +82,10 @@ class Scenes extends React.Component {
             <h5 className="text-center mb-1 mt-2 oneshow-title">
               Icono
             </h5>
-            <DropdownIconSelector 
+            <DropdownIconSelector
+              icon={this.state.icon}
               color={this.state.color}
+              onChange={(icon) => this.setState({ icon })}
             />
           </div>
           <div className="col-md-4">
