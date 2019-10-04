@@ -6,22 +6,21 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class Biblioteca extends Eloquent
 {
-    protected $connection = 'mongodb';
-    protected $table = 'Bibliotecas';
+  protected $connection = 'mongodb';
+  protected $table = 'Bibliotecas';
 
-    const CREATED_AT = 'Creado';
-    const UPDATED_AT = 'Actualizado';
+  const CREATED_AT = 'Creado';
+  const UPDATED_AT = 'Actualizado';
 
-    protected $dates = ['Fecha'];
+  protected $dates = ['Fecha'];
 
-    //scope para buscar por borrado
-    public function scopeBorrado($query, $flag) {
-        return $query->where('Borrado', $flag);
-    }
+  //scope para buscar por borrado
+  public function scopeBorrado($query, $flag) {
+      return $query->where('Borrado', $flag);
+  }
 
-    //scope para buscar por activo
-    public function scopeActivo($query, $flag) {
-        return $query->where('Activo', $flag);
-    }
-
+  //scope para buscar por activo
+  public function scopeActivo($query, $flag) {
+      return $query->where('Activo', $flag);
+  }
 }
