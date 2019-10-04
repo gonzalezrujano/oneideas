@@ -19,7 +19,7 @@ class Live extends React.Component {
   render () {
     const { show } = this.props;
 
-    const columns = Object.keys(show).map((name, i) => {
+    const columns = Object.keys(show).filter(name => name !== 'scenes').map((name, i) => {
       let classNames = classnames('col-xs-6', 'col-sm-4', 'col-md-3', {
         'bg-dark': i % 2 === 0,
       }, 'py-3');

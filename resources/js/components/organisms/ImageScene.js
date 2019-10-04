@@ -17,6 +17,7 @@ class ImageScene extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.getConfiguration = this.getConfiguration.bind(this);
+    this.cleanConfiguration = this.cleanConfiguration.bind(this);
   }
 
   componentDidMount () {
@@ -58,6 +59,15 @@ class ImageScene extends React.Component {
       selected: this.state.selected,
       enabled: this.state.enabled,
     }
+  }
+
+  cleanConfiguration () {
+    this.setState({
+      time: '',
+      files: [],
+      selected: '',
+      vibrate: false,
+    });
   }
 
   render () {

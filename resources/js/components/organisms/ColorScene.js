@@ -17,6 +17,7 @@ class ColorScene extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleNewColor = this.handleNewColor.bind(this);
     this.getConfiguration = this.getConfiguration.bind(this);
+    this.cleanConfiguration = this.cleanConfiguration.bind(this);
     this.handleDeletedColor = this.handleDeletedColor.bind(this);
   }
 
@@ -65,6 +66,14 @@ class ColorScene extends React.Component {
       vibrate: this.state.vibrate,
       enabled: this.state.enabled,
     }
+  }
+
+  cleanConfiguration () {
+    this.setState({
+      bpm: '',
+      colors: [],
+      vibrate: false,
+    })
   }
 
   render () {

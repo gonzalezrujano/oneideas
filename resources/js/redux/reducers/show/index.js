@@ -3,7 +3,8 @@ import {
   SET_CURRENT_SCENE,
   END_CURRENT_SCENE,
   UPDATE_CURRENT_LOOP,
-  END_CURRENT_SCENE_TIME
+  END_CURRENT_SCENE_TIME,
+  ADD_SCENES,
 } from '../../actions/show/types';
 
 const initialState = {
@@ -31,7 +32,8 @@ const initialState = {
     icon: 'image',
     color: '#a55eea',
     current: null,
-  }
+  },
+  scenes: [],
 };
 
 export default function (state = initialState, action) {
@@ -78,7 +80,15 @@ export default function (state = initialState, action) {
           ...state[action.payload.scene],
           current: null,
         },
-      }
+      };
+    case ADD_SCENES:
+      return {
+        ...state,
+        scenes: [
+          ...state.scenes,
+          ...action.payload.scenes,
+        ]
+      };
     default:
       return state;
   }

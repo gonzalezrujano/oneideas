@@ -6,7 +6,10 @@ import AudioScene from './AudioScene';
 import VideoScene from './VideoScene';
 import ImageScene from './ImageScene';
 import DropdownIconSelector from './../molecules/DropdownIconSelector';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { createScene } from './../../redux/actions/show';
+import { connect } from 'react-redux';
+ 
 class Scenes extends React.Component {
   constructor (props) {
     super(props);
@@ -15,6 +18,7 @@ class Scenes extends React.Component {
       name: '',
       icon: 'star',
       color: '#5e72e4',
+      loading: false,
     };
 
     // Refs
@@ -43,6 +47,8 @@ class Scenes extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
 
+    this.setState({ loading: true });
+
     const colorConf = this.colorRef.current.getConfiguration();
     const flashConf = this.flashRef.current.getConfiguration();
     const audioConf = this.audioRef.current.getConfiguration();
@@ -50,17 +56,32 @@ class Scenes extends React.Component {
     const imageConf = this.imageRef.current.getConfiguration();
     const { name, color, icon } = this.state;
 
-    console.log('name', name);
-    console.log('color', color);
-    console.log('icon', icon);
-    console.log('colorConf', colorConf);
-    console.log('flashConf', flashConf);
-    console.log('audioConf', audioConf);
-    console.log('videoConf', videoConf);
-    console.log('imageConf', imageConf);   
+    const scene = { 
+      name, 
+      icon,
+      iconColor: color,
+      color: colorConf,
+      flash: flashConf,
+      audio: audioConf,
+      video: videoConf,
+      image: imageConf,
+    }
+
+    this.props.createScene(scene).then(createdScene => {
+      this.colorRef.current.cleanConfiguration();
+      this.flashRef.current.cleanConfiguration();
+      this.audioRef.current.cleanConfiguration();
+      this.videoRef.current.cleanConfiguration();
+      this.imageRef.current.cleanConfiguration();
+      
+      this.setState({ loading: false });
+    })
+    .catch(e => console.log('error', e));
   }
 
   render () {
+    const buttonIcon = this.state.loading ? 'sync' : 'save';
+
     return (
       <div>
         <div className="row">
@@ -119,8 +140,17 @@ class Scenes extends React.Component {
             containerStyle="bg-dark py-3 px-3"
           />
           <div className="text-right my-3">
-            <button onClick={this.handleSubmit} className="btn btn-primary btn-sm rounded">
-              Guardar Escena
+            <button 
+              onClick={this.handleSubmit}
+              disabled={this.state.loading}
+              className="btn btn-primary btn-sm rounded"
+            >
+              Guardar Escena {` `}
+              <FontAwesomeIcon 
+                color="#fff" 
+                icon={buttonIcon} 
+                spin={this.state.loading}
+              />
             </button>
           </div>
         </div>
@@ -129,4 +159,8 @@ class Scenes extends React.Component {
   }
 }
 
-export default Scenes;
+const mapDispatchToProps = dispatch => ({
+  createScene: (scene) => dispatch(createScene(scene))
+});
+
+export default connect(null, mapDispatchToProps)(Scenes);
