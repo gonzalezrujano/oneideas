@@ -5,6 +5,7 @@ import {
   END_CURRENT_SCENE_TIME,
   UPDATE_CURRENT_LOOP,
   ADD_SCENES,
+  EXECUTE_SCENE
 } from './types';
 import axios from 'axios';
 
@@ -96,6 +97,13 @@ export function updateCurrentLoop (scene, loop) {
     type: UPDATE_CURRENT_LOOP,
     payload: { scene, loop }
   };
+}
+
+export function executeScene (sceneId) {
+  return {
+    type: EXECUTE_SCENE,
+    payload: { sceneId }
+  }
 }
 
 export function addScenes (scenes) {

@@ -55,6 +55,21 @@ class ImageControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { image } = this.props.selectedScene;
+
+      if (image.enabled) {
+        this.setState({
+          loop: image.loop,
+          time: image.time,
+          files: [image.selected],
+          vibrate: image.vibrate,
+        }, () => this.startCommand())
+      }
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
@@ -217,8 +232,12 @@ class ImageControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  image: state.show.image,
+const mapStateToProps = ({ show }) => ({
+  image: show.image,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

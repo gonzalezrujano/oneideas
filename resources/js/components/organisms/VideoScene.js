@@ -54,9 +54,10 @@ class VideoScene extends React.Component {
       failure,
       loop: -1,
       time: intTime,
+      vibrate: false,
       selected: this.state.selected,
       enabled: this.state.enabled,
-    }
+    };
   }
 
   cleanConfiguration () {

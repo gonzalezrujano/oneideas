@@ -40,6 +40,22 @@ class FlashControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { flash } = this.props.selectedScene;
+
+      if (flash.enabled) {
+        this.setState({
+          bpm: flash.bpm,
+          time: flash.time,
+          loop: flash.loop,
+          vibrate: flash.vibrate
+        }, () => this.startCommand())
+      }
+
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
@@ -163,8 +179,12 @@ class FlashControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  flash: state.show.flash,
+const mapStateToProps = ({ show }) => ({
+  flash: show.flash,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

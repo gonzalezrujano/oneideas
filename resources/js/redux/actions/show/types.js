@@ -9,3 +9,5 @@ export const END_CURRENT_SCENE = 'END_CURRENT_SCENE';
 export const UPDATE_CURRENT_LOOP = 'UPDATE_CURRENT_LOOP';
 
 export const ADD_SCENES = 'ADD_SCENES';
+
+export const EXECUTE_SCENE = 'EXECUTE_SCENE';

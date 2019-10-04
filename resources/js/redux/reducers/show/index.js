@@ -5,6 +5,7 @@ import {
   UPDATE_CURRENT_LOOP,
   END_CURRENT_SCENE_TIME,
   ADD_SCENES,
+  EXECUTE_SCENE
 } from '../../actions/show/types';
 
 const initialState = {
@@ -33,7 +34,10 @@ const initialState = {
     color: '#a55eea',
     current: null,
   },
-  scenes: [],
+  scenes: {
+    selected: null,
+    items: [],
+  },
 };
 
 export default function (state = initialState, action) {
@@ -84,11 +88,22 @@ export default function (state = initialState, action) {
     case ADD_SCENES:
       return {
         ...state,
-        scenes: [
+        scenes: {
           ...state.scenes,
-          ...action.payload.scenes,
-        ]
+          items: [
+            ...state.scenes.items,
+            ...action.payload.scenes,
+          ]
+        }
       };
+    case EXECUTE_SCENE:
+      return {
+        ...state,
+        scenes: {
+          ...state.scenes,
+          selected: action.payload.sceneId,
+        }
+      }
     default:
       return state;
   }

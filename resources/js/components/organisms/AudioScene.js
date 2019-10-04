@@ -52,6 +52,7 @@ class AudioScene extends React.Component {
 
     return { 
       failure,
+      loop: -1,
       time: intTime,
       selected: this.state.selected,
       enabled: this.state.enabled,
