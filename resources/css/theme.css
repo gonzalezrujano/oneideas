@@ -1430,9 +1430,9 @@ fieldset[disabled] .btn-faded-blue.focus {
   border-radius: 0;
   padding-top: 3px;
 }
-.btn-sm {
+/* .btn-sm {
   padding-bottom: 7px;
-}
+} */
 .btn-xl {
   padding: 16px 36px;
   font-size: 23px;
@@ -4459,4 +4459,207 @@ button.list-group .list-group-item-'danger'.active:focus {
 a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
     color: black !important;
     text-decoration: none;
+}
+
+.row-fluid{
+  flex-wrap: nowrap;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+.row-fluid > div[class^=col] {
+  display: inline-block;
+}
+
+.console {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #3a4144;
+}
+
+.console .console-header {
+  padding: 5px;
+  text-align: center;
+}
+
+.console.command .console-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.console .console-header h5, .console .console-header h6 {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.console.command .console-header h6 {
+  color: rgba(255, 255, 255, .8);
+}
+
+.console-status.running, .console.command .running,
+.btn-running {
+  background-color: rgba(40, 167, 69, 0.4)!important;
+}
+
+.console-status.waiting, .console.command .waiting,
+.btn-waiting {
+  background-color: rgba(255, 193, 7, 0.4)!important;
+}
+
+.console-status.nothing, .console.command .nothing,
+.btn-nothing {
+  background-color: rgba(108, 117, 125, 0.3)!important;
+}
+
+.console-status p {
+  margin: 0px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.console.command .console-body input[type=number] {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.console.command .console-body input[type=number]::-webkit-inner-spin-button, 
+.console.command .console-body input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.color-list {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  overflow-x: auto;
+}
+
+/* width */
+.color-list::-webkit-scrollbar,
+.row-fluid::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Track */
+.color-list::-webkit-scrollbar-track,
+.row-fluid::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.color-list::-webkit-scrollbar-thumb,
+.row-fluid::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #888; 
+}
+
+/* Gap between handle and actual track */
+.color-list::-webkit-scrollbar-track-piece,
+.row-fluid::-webkit-scrollbar-track-piece {
+  background: #555;
+}
+
+.color-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.color-box-option {
+  background-color: #000;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: opacity 1s;
+  cursor: pointer;
+  transition: opacity .5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-box-option:hover {
+  opacity: .4;
+}
+
+.swal2-container {
+  z-index: 2000 !important;
+}
+
+@keyframes blinker {
+  from { opacity: .8; }
+  to { opacity: .1; }
+}
+
+.blink {
+  animation-name: blinker;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.image-dropdown {
+  background-color: #f9f9f9;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.image-dropdown .image-wrapper {
+  position: relative;
+  border: 0px solid transparent;
+  -webkit-transition: border 2s;
+  transition: border .2s;
+}
+
+.image-dropdown .image-wrapper.selected {
+  border: 2px solid #1CA2CE;
+}
+
+.image-dropdown .image-checker {
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+/* width */
+.image-dropdown::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Track */
+.image-dropdown::-webkit-scrollbar-track {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: #fff; 
+}
+ 
+/* Handle */
+.image-dropdown::-webkit-scrollbar-thumb {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: rgb(201, 200, 200); 
+}
+
+.image-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #888; 
+}
+
+/* Gap between handle and actual track */
+.image-dropdown::-webkit-scrollbar-track-piece {
+  background: #fff;
+}
+
+.fullscreen {
+  background: #3a4144;
 }

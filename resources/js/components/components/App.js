@@ -2,6 +2,9 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./../../redux";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import Alert from './../molecules/Alert';
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
@@ -54,9 +57,14 @@ import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastro
 import EdicionAsiento from "../Pages/configuracion/Invitados/invitados/EdicionAsiento";
 import SocialWall from "../Pages/SocialWall";
 
-function App() {
+library.add(fas);
+
+function App () {
+  const { alert } = store.getState();
+
     return (
         <Provider store={store}>
+          <React.Fragment>
             <BrowserRouter>
                 <Switch>
                     {/**A continuacion se presentan todas las rutas registradas del front end
@@ -244,6 +252,8 @@ function App() {
                     />
                 </Switch>
             </BrowserRouter>
+            <Alert />
+          </React.Fragment>
         </Provider>
     );
 }

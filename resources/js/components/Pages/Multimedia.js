@@ -3,13 +3,20 @@ import Menu from "../components/Menu";
 import Header from "../components/Header";
 import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Live from './../organisms/Live';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
-import Ejecucion from "../components/Multimedia/Ejecucion";
-import Cola from "../components/Multimedia/Cola";
-import Herramientas from "../components/Multimedia/Herramientas";
-import Parametros from "../components/Multimedia/Parametros";
+import TabNavigation from './../organisms/TabNavigation';
 import { connect } from 'react-redux';
-import { getEventos, getJobs, createJob } from './../../redux/actions/multimedia';
+import { 
+  getEventos, 
+  getCompanies, 
+  getJobs, 
+  createJob,
+  setCompany,
+  setEvent,
+  getEventsFromCompany 
+} from './../../redux/actions/multimedia';
 import uuidv4 from 'uuid/v4';
 
 class Multimedia extends Component {
@@ -21,8 +28,8 @@ class Multimedia extends Component {
           password: "",
           eventos: [],
           envios:[],
+          companyId: '',
           sectores: [],
-          evento: "",
           sector: '',
           archivo: '',
           fechainicio: '',
@@ -46,15 +53,16 @@ class Multimedia extends Component {
          * Desclarando las funciones que daran uso al state del constructor de esta clase
          */
         this.handleChange = this.handleChange.bind(this);
+        this.handleCompanyChange = this.handleCompanyChange.bind(this);
+        this.handleEventChange = this.handleEventChange.bind(this);
         this.sendMqttCommand = this.sendMqttCommand.bind(this);
+        this.sendGivenMqttCommand = this.sendGivenMqttCommand.bind(this);
         this.removeMqttJob = this.removeMqttJob.bind(this);
         this.handleStartTime = this.handleStartTime.bind(this);
         this.handleEndTime = this.handleEndTime.bind(this);
         this.openStartTime = this.openStartTime.bind(this);
         this.openEndTime = this.openEndTime.bind(this);
         this.hideTimes = this.hideTimes.bind(this);
-        this.quitarCola = this.quitarCola.bind(this);
-        this.getEnvios = this.getEnvios.bind(this);
 
         this.mqttHost = 'mqtt.oneshow.com.ar';
         this.mqttPort = 11344;
@@ -68,12 +76,15 @@ class Multimedia extends Component {
 
       this.setState({ isLoading: true });
 
-      this.props.getEvents(usuario._id, api_token)
+      this.props.getCompanies()
         .then(() => this.setState({ isLoading: false }));
+
+      // this.props.getEvents(usuario._id, api_token)
+      //   .then(() => this.setState({ isLoading: false }));
 
       // Subscribing to broker
       this.mqttClient.connect({
-        useSSL: true,
+        // useSSL: true,
         onSuccess: () => console.log('Connected!!'),
         onFailure: e => console.log(e)
       })
@@ -83,6 +94,14 @@ class Multimedia extends Component {
       this.mqttClient.disconnect();
     }
 
+    sendGivenMqttCommand (command) {
+      const { companyId, eventId } = this.props;
+
+      console.log('command', command);
+      
+      this.mqttClient.send(`/${companyId}/${eventId}`, command);
+    }
+
     /**
      * Funcion para enviar comandos o acciones a la cola del evento
      * @param {fecha de inicio del comando o accion} fechainicio 
@@ -90,9 +109,10 @@ class Multimedia extends Component {
      */
     sendMqttCommand (moment) {
       const { titleTool } = this.props.tool;
-      const { startTime, endTime, color, evento, empresa, archivo, flash2 } = this.state;
+      const { companyId, eventId } = this.props;
+      const { startTime, endTime, color, archivo, flash2 } = this.state;
 
-      const topic = `/${empresa}/${evento}`;
+      const topic = `/${companyId}/${eventId}`;
       let message = '';
       let payload = '';
 
@@ -127,7 +147,7 @@ class Multimedia extends Component {
       }
 
       const job = {
-        eventId: evento,
+        eventId,
         type: titleTool,
         status: 'ejecucion',
         startTime: startTime.getTime(),
@@ -145,23 +165,6 @@ class Multimedia extends Component {
           console.log(e);
         })
     }
-
-    /**
-     * Obtener todos los elementos o acciones asociadas al evento
-     * @param {*} eventonew 
-     */
-    getEnvios (eventId) {
-      let { evento } = this.state;
-      
-      if (eventId) {
-        evento = eventId;
-      }
-
-      this.props.getEnvios(evento, this.state.api_token)
-        .then(console.log)
-        .catch(console.log)
-    }
-
 
     /**
      * Metodo para quitar un comando de las acciones asociadas a ella
@@ -187,32 +190,49 @@ class Multimedia extends Component {
           jobType = 'VID';
           break;
       }
-      const { empresa, evento } = this.state;
-      const topic = `/${empresa}/${evento}`;
+      const { companyId, eventId } = this.props;
+      const topic = `/${companyId}/${eventId}`;
       const message = `REM,0,${id},${jobType}`;
 
       this.mqttClient.send(topic, message);
    }
+
+    handleCompanyChange (e) {
+      const { value } = e.target;
+
+      if (!value) {
+        this.props.setCompany('');
+        this.props.setEvent('');
+      
+      } else {
+        
+        this.props.setCompany(value);
+        this.props.getEventsFromCompany(value);
+      }
+    }
+
+    handleEventChange (e) {
+      const { value } = e.target;
+
+      if (!value) {
+        return this.props.setEvent('');
+      }
+
+      this.props.setEvent(value);
+      this.props.getEnvios(value);
+    }
 
    /**
     * metodo para cambiar el state de las variables usadas en los inputs
     * @param {evento} e 
     */
     handleChange (e) {
+      console.log('original handle change');
       if (e.target != undefined) {
-        if (e.target.name == "evento") {
-          const event = this.props.eventos.find(evento => evento._id === e.target.value);
-                            
-          this.setState({
-            evento: event._id,
-            empresa: event.Empresa_id,
-          }, () => this.getEnvios(event._id));
+        this.setState({
+          [e.target.name]: e.target.value
+        });
 
-        } else {
-          this.setState({
-            [e.target.name]: e.target.value
-          });
-        }
       } else if (e.hex != undefined) {  
         let colorDiv = document.getElementById("recuadro-color");
         colorDiv.style.backgroundColor=e.hex;
@@ -221,67 +241,6 @@ class Multimedia extends Component {
             color: e.hex
         });
       }
-    }
-
-    /**
-     * Metodo para eliminar de la cola de acciones de eventos
-     * @param {*} newestado 
-     * @param {*} tipo 
-     * @param {*} inicio 
-     * @param {*} fin 
-     * @param {*} id 
-     */
-    quitarCola(newestado,tipo,inicio,fin,id){
-        let {evento} = this.state;
-        evento=evento.split("_")[0];
-        var title=tipo;
-        var parametro='';
-
-        var estado='cola';
-        if(newestado!=undefined&&newestado!=null&&newestado!=""){
-            estado=newestado;
-        }
-        if(inicio==undefined&&inicio==null&&inicio==""){
-            inicio=moment().format("hh:mm:ss");
-        }
-        if(fin==undefined&&fin==null&&fin==""){
-            fin="99:99:99";
-        }
-        if(title=='imagen'||title=='video'||title=='audio'){
-        parametro=this.state.archivo;
-        }
-        if(title=='flash'){
-        parametro=this.state.flash2;
-        }
-        if(title=='colores'){
-        parametro=this.state.color;
-        }
-        this.removeMqttJob(title,parametro,inicio,fin);
-        document.getElementById(id).style.display="none";
-        axios.post('/api/eventos/remove-envios', {evento,title,estado,inicio,fin,parametro,id} ,{
-            headers: {
-                Authorization: this.state.api_token
-            }
-        })
-            .then(res => {
-                if(res){
-
-                    let r = res.data;
-
-                    if(r.code === 200){
-
-                        this.setState({
-                            envios: r.envios,
-                        });
-                        this.getEnvios();
-
-                    }else if(r.code === 500){
-                      console.log(r.msj);
-                    }
-
-                }
-
-            }).catch(function (error) {});
     }
 
     openStartTime () {
@@ -335,128 +294,107 @@ class Multimedia extends Component {
       return null;
   
     return (
-      <Fullscreen
-        enabled={this.state.isFull}
-        onChange={isFull => this.setState({ isFull })}
-      >
+      <React.Fragment>
         <Menu usuario={this.state.user} />
         <Header usuario={this.state.user} history={this.props.history} />
         <div className="content-wrapper">
           <header className="page-header">
-              <div className="container-fluid">
-                  <div className="row">
-                      <div className="col-sm-12 col-md-12">
-                          <div className="d-flex">
-                              <div className="my-2">
-                                  <h1 className="page-header-heading">
-                                      <div>
-                                          <i className="fas fa-compact-disc page-header-heading-icon" />
-                                          Multimedia
-                                          {this.state.evento !== "" && 
-                                            <React.Fragment>
-                                              <i className="fas fa-clock mr-2 ml-4" />
-                                              <Clock
-                                                  format={
-                                                      "HH:mm:ss A"
-                                                  }
-                                                  ticking={true}
-                                                  timezone={
-                                                      this.state
-                                                          .zonaevento
-                                                  }
-                                              />
-                                            </React.Fragment>
-                                          }
-                                      </div>
-                                  </h1>
-                              </div>
-                              <form className="form-inline ml-5">
-                                  <i className="fas fa-calendar-week fa-lg mr-3" />
-                                  <select
-                                      className="form-control form-control-sm form-select-event"
-                                      name="evento"
-                                      value={this.state.evento}
-                                      onChange={this.handleChange}
-                                  >
-                                      <option value="">
-                                          Seleccione evento
-                                      </option>
-                                      {this.props.eventos.map(event => (
-                                          <option key={event._id} value={`${event._id}`}>
-                                            {event.Nombre}
-                                          </option>
-                                      ))}
-                                  </select>
-                              </form>
-
-                              <div className="ml-auto">
-                                  <button
-                                      type="button"
-                                      className="btn btn-sm btn-dark ml-4"
-                                      onClick={this.goFull}
-                                  >
-                                      <i className="fas fa-arrows-alt" />
-                                      &nbsp;Fullscreen
-                                  </button>
-                              </div>
-                          </div>
+            <div className="container-fluid">
+              <div className="row align-items-center">
+                <div className="col-sm-3">
+                  <h4 className="text-center my-0">
+                    <i className="fas fa-compact-disc" /> Multimedia
+                  </h4>
+                </div>
+                <div className="col-sm-9">
+                  <form>
+                    <div className="form-row">
+                      <div className="col">
+                        <select
+                          name="company"
+                          className="form-control form-control-sm"
+                          onChange={this.handleCompanyChange}
+                          value={this.state.company}
+                        >
+                          <option value="">Selecione una Empresa</option>
+                          {this.props.companies.map(company => (
+                            <option key={company.id} value={`${company.id}`}>
+                              {company.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                  </div>
-              </div>
-          </header>
-          <div id="sweet" className="container-fluid">
-            {this.state.evento == '' ?(
-                <EmptyMultimedia/>
-            ):(
-              <div>
-                <Ejecucion
-                  envios={this.props.envios}
-                  evento={this.state.evento}
-                  removeMqttJob={this.removeMqttJob}
-                />
-                <Cola
-                  envios={this.props.envios} 
-                  evento={this.state.evento} 
-                  removeMqttJob={this.removeMqttJob}
-                />
-                <div className="container-fluid container-tools">
-                  <div className="row">
-                    <Herramientas 
-                      eventId={this.state.evento}
-                    />
-                    <Parametros 
-                      hideTimes={this.hideTimes}
-                      handleStartTime={this.handleStartTime} 
-                      handleEndTime={this.handleEndTime} 
-                      isOpenStartTime={this.state.isOpenStartTime} 
-                      isOpenEndTime={this.state.isOpenEndTime} 
-                      startTime={this.state.startTime} 
-                      endTime={this.state.endTime}
-                      istool={this.props.tool.isTool} 
-                      title={this.props.tool.titleTool} 
-                      sectores={this.props.sectores} 
-                      bibliotecas={this.props.tool.bibliotecas} 
-                      sector={this.state.sector} 
-                      fechainicio={this.state.fechainicio} 
-                      fechafin={this.state.fechafin} 
-                      archivo={this.state.archivo} 
-                      change={this.handleChange} 
-                      openStartTime={this.openStartTime}
-                      openEndTime={this.openEndTime}
-                      sendMqttCommand={this.sendMqttCommand} 
-                    />
-                  </div>
+                      <div className="col">
+                        <select 
+                          name="event"
+                          className="form-control form-control-sm" 
+                          onChange={this.handleEventChange}
+                          value={this.props.eventId}
+                        >
+                          <option value="">Seleccione un Evento</option>
+                          {this.props.eventos.map(event => (
+                            <option key={event.id} value={`${event.id}`}>
+                              {event.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
-            )}
-          </div>
+              <div className="row mt-2 justify-content-center">
+                <div className="col-sm-4 text-center">
+                  <i className="fas fa-clock" /> {`  `}
+                  <Clock
+                    format="HH:mm:ss A"
+                    ticking={true}
+                    timezone={this.state.zonaevento}
+                  />
+                </div>
+              </div>
+              <div className="row mt-2 justify-content-center">
+                <div className="col-sm-4 text-center">
+                  <span style={{ cursor: 'pointer' }}>
+                    <FontAwesomeIcon
+                      onClick={() => this.setState(state => ({
+                        isFull: !state.isFull,
+                      }))}
+                      icon="expand-arrows-alt"
+                      color="#fff" 
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </header>
+          <Fullscreen 
+            enabled={this.state.isFull}
+            onChange={isFull => this.setState({ isFull })}
+          >
+            <div id="sweet" className="container-fluid">
+              {this.props.eventId === '' ? (
+                <EmptyMultimedia/>
+              ):(
+                <TabNavigation items={['En Vivo', 'Escenas']}>
+                  <Live 
+                    submitCommand={this.sendGivenMqttCommand}
+                  />
+                  <div />
+                </TabNavigation>
+              )}
+            </div>
+          </Fullscreen>
         </div>
-      </Fullscreen>
+      </React.Fragment>
     );
     }
 }
 
 const mapStateToProps = state => ({
+  companyId: state.multimedia.companyId,
+  eventId: state.multimedia.eventId,
+  companies: state.multimedia.companies,
   eventos: state.multimedia.eventos,
   sectores: state.multimedia.sectores,
   envios: state.multimedia.jobs,
@@ -464,8 +402,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setCompany: (companyId) => dispatch(setCompany(companyId)),
+  setEvent: (eventId) => dispatch(setEvent(eventId)),
+  getCompanies: () => dispatch(getCompanies()),
+  getEnvios: (eventId) => dispatch(getJobs(eventId)),
   getEvents: (userId, apiToken) => dispatch(getEventos(userId, apiToken)),
-  getEnvios: (eventId, apiToken) => dispatch(getJobs(eventId, apiToken)),
+  getEventsFromCompany: (companyId) => dispatch(getEventsFromCompany(companyId)),
   createJob: (eventId, job, apiToken) => dispatch(createJob(eventId, job, apiToken))
 });
 

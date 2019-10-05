@@ -39,6 +39,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'multimedia'], function() {
 Route::group(['middleware'=>'api_token','prefix' => 'empresas'], function() {
     //rutas de empresas
     Route::get('/', 'EmpresaController@getEmpresas');
+    Route::get('/{companyId}/event/{eventId}/files/{type}', 'EmpresaController@getFileTypesFromEvent');
     Route::post('/add','EmpresaController@addEmpresa');
     Route::post('/tabla',"EmpresaController@getEmpresasTabla");
     Route::get('/paises',"EmpresaController@getPaises");
@@ -46,7 +47,6 @@ Route::group(['middleware'=>'api_token','prefix' => 'empresas'], function() {
     Route::post('/update','EmpresaController@updateEmpresa');
     Route::get('/eventos/{empresa}', 'EmpresaController@getEventosPorEmpresa');
     Route::get('/{id}','EmpresaController@getEmpresa');
-    
 });
 
 
