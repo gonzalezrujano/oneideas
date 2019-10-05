@@ -4,6 +4,7 @@ import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 import RedesSociales from "./RedesSociales";
+import SocialWall from "./SocialWall";
 
 import "../../css/configuracion/Biblioteca.css";
 import "./css/Eventos.css";
@@ -337,6 +338,9 @@ export default class Edit extends React.Component {
                         <li className="nav-item">
                             <a className="nav-link" id="pills-redes-sociales-tab" data-toggle="pill" href="#pills-redes-sociales" role="tab" aria-controls="pills-redes-sociales" aria-selected="false">Redes Sociales</a>
                         </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="pills-social-wall-tab" data-toggle="pill" href="#pills-social-wall" role="tab" aria-controls="pills-social-wall" aria-selected="false">Social Wall</a>
+                        </li>
                     </ul>
 
                 <hr className="line-gray"/>
@@ -522,6 +526,11 @@ export default class Edit extends React.Component {
                         {/* Componente de configuracion de Redes Sociales */}
                         <div className="tab-pane fade" id="pills-redes-sociales" role="tabpanel" aria-labelledby="pills-redes-sociales-tab">
                             <RedesSociales />
+                        </div>
+
+                        {/* Componente de configuracion del Social Wall */}
+                        <div className="tab-pane fade" id="pills-social-wall" role="tabpanel" aria-labelledby="pills-social-wall-tab">
+                            <SocialWall />
                         </div>
 
 
