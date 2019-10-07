@@ -23,7 +23,7 @@
             ),
             'theme' => 'sb-modern-light',
             'itemwidth' => 250,
-            'results' => 30,
+            'results' => $_GET['cantidadDeResultados'],
             'cache' => 720,
             'debuglog' => 1,
             'iframe' => 'media',

@@ -10,7 +10,7 @@ export default class RedesSociales extends Component {
 
         this.hashtagsTwitter = [];
         this.hashtagsInstagram = [];
-        this.eventoId = this.props.match.params.id;
+        // this.eventoId = this.props.match.params.id;
 
         this.state = {
             isLoading: false,
@@ -36,7 +36,7 @@ export default class RedesSociales extends Component {
     }
 
     componentDidMount() {
-        this.consultarHashtagsDelEvento();
+        // this.consultarHashtagsDelEvento();
     }
 
     /**
@@ -204,146 +204,60 @@ export default class RedesSociales extends Component {
     }
 
     render() {
-        if (this.state.isLoading) {
-            return (
-                <div>
-                    <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} history={this.props.history} />
-                    <div className="content-wrapper">
-                        <header className="page-header">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-sm-12 col-md-12">
-                                        <h1 className="page-header-heading">
-                                            <i className="fas fa-industry page-header-heading-icon" />
-                                            {this.state.opcion}
-                                        </h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
-                        <div id="sweet" className="container-fluid">
-                            <div className="row">
-                                <div className="offset-6">
-                                    <h3>
-                                        <i className="fas fa-industry fa-spin" />{" "}
-                                        Cargando
-                                    </h3>
-                                </div>
-                            </div>
+        return (
+            <div>
+                <div id="sweet" className="container-fluid">
+
+                    <div className="alert alert-primary mb-4" role="alert">
+                        <i className="fas fa-info-circle"></i>&nbsp;
+                        Ingrese los #Hashtags separados por coma (,)
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">
+                            <i className="fab fa-twitter" style={this.estiloIconoBoton}></i> Twitter
+                        </label>
+                        <div className="col-sm-4">
+                            <input 
+                                type="text"
+                                id="campoHashtagsTwitter"
+                                className="form-control form-control-sm"
+                                placeholder="Ingrese los hashtags para Twitter"
+                            />
                         </div>
                     </div>
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    <Menu usuario={this.state.user} />
-                    <Header usuario={this.state.user} history={this.props.history} />
-                    <div className="content-wrapper">
-                        <header className="page-header">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-sm-12 col-md-12">
-                                        <h1 className="page-header-heading">
-                                            <Link to="/empresas">
-                                                Empresa
-                                            </Link>{" "}
-                                            {" "}
-                                            <Link
-                                                to={`/empresa/eventos/${
-                                                    this.state.idEmpresa
-                                                }`}
-                                            >
-                                                / Eventos
-                                            </Link>{" "}
-                                                / Redes Sociales
-                                        </h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </header>
 
-                        <div id="sweet" className="container-fluid">
-
-                            <div className="alert alert-primary mb-4" role="alert">
-                                <i className="fas fa-info-circle"></i>&nbsp;
-                                Ingrese los #Hashtags separados por coma (,)
-                                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <div className="form-group row">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-dark" 
-                                    style={this.estiloBotonTwitter}
-                                    data-toggle="collapse" 
-                                    data-target="#seccionHashtagTwitter"
-                                    aria-expanded="false" aria-controls="collapseExample"
-                                >
-                                    <i className="fab fa-twitter" style={this.estiloIconoBoton}></i> Twitter
-                                </button>
-                            </div>
-
-                            <div className="collapse form-group row" id="seccionHashtagTwitter">
-                                <label className="col-sm-1 col-form-label col-form-label-sm">#Hashtags</label>
-                                <div className="col-sm-4">
-                                    <input 
-                                        type="text"
-                                        id="campoHashtagsTwitter"
-                                        className="form-control form-control-sm"
-                                        placeholder="Ingrese los hashtags para Twitter"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-dark" 
-                                    data-toggle="collapse" 
-                                    data-target="#seccionHashtagInstagram"
-                                    aria-expanded="false" aria-controls="collapseExample"
-                                >
-                                    <i className="fab fa-instagram" style={this.estiloIconoBoton}></i> Instagram
-                                </button>
-                            </div>
-
-                            <div className="collapse form-group row" id="seccionHashtagInstagram">
-                                <label className="col-sm-1 col-form-label col-form-label-sm">#Hashtags</label>
-                                <div className="col-sm-4">
-                                    <input 
-                                        type="text"
-                                        id="campoHashtagsInstagram"
-                                        className="form-control form-control-sm"
-                                        placeholder="Ingrese los hashtags para Instagram"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <div className="col-sm-4">
-                                    <button 
-                                        type="button"
-                                        className="btn btn-sm btn-dark mr-2"
-                                        onClick={this.handleClick}
-                                    >Guardar</button>
-
-                                    <a href=""><button type="button" className="btn btn-sm btn-dark">Volver</button></a>
-                                </div>
-                            </div>
-
+                    <div className="form-group row">
+                        <label className="col-sm-2 col-form-label col-form-label-sm">
+                            <i className="fab fa-instagram" style={this.estiloIconoBoton}></i> Instagram
+                        </label>
+                        <div className="col-sm-4">
+                            <input 
+                                type="text"
+                                id="campoHashtagsInstagram"
+                                className="form-control form-control-sm"
+                                placeholder="Ingrese los hashtags para Instagram"
+                            />
                         </div>
-
-                        {/**esto de abajo es de php, es el texto que cambia con el menu */}
-                        <footer className="content-wrapper-footer">
-                            <span>{this.state.footer}</span>
-                        </footer>
                     </div>
+
+                    <div className="form-group row">
+                        <div className="col-sm-4">
+                            <button 
+                                type="button"
+                                className="btn btn-sm btn-dark mr-2"
+                                onClick={this.handleClick}
+                            >Guardar</button>
+
+                            <a href=""><button type="button" className="btn btn-sm btn-dark">Volver</button></a>
+                        </div>
+                    </div>
+
                 </div>
-            );
-        }
+            </div>
+        );
     }
 }
