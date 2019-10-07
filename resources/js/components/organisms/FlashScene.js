@@ -1,5 +1,6 @@
 import React from 'react';
 import Toggle from './../atoms/Toggle';
+import classnames from 'classnames';
 
 class FlashScene extends React.Component {
   constructor (props) {
@@ -9,6 +10,7 @@ class FlashScene extends React.Component {
       bpm: '',
       vibrate: false,
       enabled: false,
+      error: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -22,20 +24,22 @@ class FlashScene extends React.Component {
     const value = type === 'checkbox' ? e.target.checked : e.target.value;
     const realName = type === 'checkbox' ? name.split('-')[1] : name;
 
-    console.log('handle name', name);
-
     this.setState({
       [realName]: value,
     });
   }
 
   getConfiguration () {
-    const { bpm } = this.state;
+    const { bpm, enabled } = this.state;
     const intBPM = parseInt(bpm);
     let failure = false;
 
-    if (intBPM <= 0 || isNaN(intBPM)) {
+    if (enabled && (intBPM <= 0 || isNaN(intBPM))) {
+      this.setState({ error: 'BPM debe ser un número mayor a cero.' });
       failure = true;
+    } else {
+      this.setState({ error: '' });
+      failure = false;
     }
 
     return { 
@@ -56,8 +60,21 @@ class FlashScene extends React.Component {
   }
 
   render () {
+    const { containerStyle } = this.props;
+    const containerClasses = classnames({
+      'border': this.state.error !== '',
+      'border-danger': this.state.error !== '',
+      'rounded': this.state.error !== '',
+      'mt-1': this.state.error !== '',
+    });
+
     return (
-      <div className={this.props.containerStyle}>
+      <div className={`${containerStyle} ${containerClasses}`}>
+        {this.state.error !== '' &&
+          <p className="text-center text-danger m-0" style={{ fontSize: '12px' }}>
+            {this.state.error}
+          </p>
+        }
         <Toggle 
           name="flash-enabled" 
           checked={this.state.enabled} 

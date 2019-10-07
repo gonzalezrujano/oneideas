@@ -2,6 +2,7 @@ import React from 'react';
 import Toggle from './../atoms/Toggle';
 import ColorList from './../molecules/ColorList';
 import ColorSelector from './../molecules/ColorSelector';
+import classnames from 'classnames';
 
 class ColorScene extends React.Component {
   constructor (props) {
@@ -12,6 +13,7 @@ class ColorScene extends React.Component {
       colors: [],
       vibrate: false,
       enabled: false,
+      error: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,8 +28,6 @@ class ColorScene extends React.Component {
 
     const value = type === 'checkbox' ? e.target.checked : e.target.value;
     const realName = type === 'checkbox' ? name.split('-')[1] : name;
-
-    console.log('handle name', name);
 
     this.setState({
       [realName]: value,
@@ -47,14 +47,20 @@ class ColorScene extends React.Component {
   }
 
   getConfiguration () {
-    const { bpm, colors } = this.state;
+    const { enabled, bpm, colors } = this.state;
     let failure = false;
     let intBPM = parseInt(bpm);
     
-    if (colors.length === 0) {
+    if (enabled && colors.length === 0) {
+      this.setState({ error: 'Seleccione los colores que se van a utilizar.' });
       failure = true;
-    } else if (intBPM === 0 || intBPM === NaN) {
+
+    } else if (enabled && (intBPM <= 0 || isNaN(intBPM))) {
+      this.setState({ error: 'BPM debe ser un número mayor a cero.' });
       failure = true;
+    } else {
+      this.setState({ error: '' });
+      failure = false;
     }
 
     return { 
@@ -77,8 +83,21 @@ class ColorScene extends React.Component {
   }
 
   render () {
+    const { containerStyle } = this.props;
+    const containerClasses = classnames({
+      'border': this.state.error !== '',
+      'border-danger': this.state.error !== '',
+      'rounded': this.state.error !== '',
+      'mt-1': this.state.error !== '',
+    });
+
     return (
-      <div className={this.props.containerStyle}>
+      <div className={`${containerStyle} ${containerClasses}`}>
+        {this.state.error !== '' &&
+          <p className="text-center text-danger m-0" style={{ fontSize: '12px' }}>
+            {this.state.error}
+          </p>
+        }
         <Toggle 
           name="color-enabled" 
           checked={this.state.enabled} 

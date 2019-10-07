@@ -9,6 +9,7 @@ import DropdownIconSelector from './../molecules/DropdownIconSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createScene } from './../../redux/actions/show';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
  
 class Scenes extends React.Component {
   constructor (props) {
@@ -19,6 +20,7 @@ class Scenes extends React.Component {
       icon: 'star',
       color: '#5e72e4',
       loading: false,
+      error: '',
     };
 
     // Refs
@@ -47,14 +49,34 @@ class Scenes extends React.Component {
   handleSubmit (e) {
     e.preventDefault();
 
-    this.setState({ loading: true });
-
     const colorConf = this.colorRef.current.getConfiguration();
     const flashConf = this.flashRef.current.getConfiguration();
     const audioConf = this.audioRef.current.getConfiguration();
     const videoConf = this.videoRef.current.getConfiguration();
     const imageConf = this.imageRef.current.getConfiguration();
     const { name, color, icon } = this.state;
+
+    if (colorConf.failure || flashConf.failure || audioConf.failure || videoConf.failure || imageConf.failure) {
+      return;
+    }
+
+    if (!colorConf.enabled && !flashConf.enabled && !audioConf.enabled && !videoConf.enabled && !imageConf.enabled) {
+      return this.setState({ error: 'La escena debe contener algún tipo de comando activo' })
+    }
+
+    if (name.length === 0) {
+      return this.setState({ error: 'El nombre es necesario para poder guardar la escena' });
+    }
+    
+    if (icon.length === 0) {
+      return this.setState({ error: 'El nombre es necesario para poder guardar la escena' });
+    }
+    
+    if (color.length === 0) {
+      return this.setState({ error: 'Un color es necesario para poder guardar la escena' });
+    }
+
+    this.setState({ loading: true });
 
     const scene = { 
       name, 
@@ -76,15 +98,30 @@ class Scenes extends React.Component {
       
       this.setState({ loading: false });
     })
-    .catch(e => console.log('error', e));
+    .catch(e => {
+      this.setState({ loading: false });
+      
+      console.log('error', e)
+    });
   }
 
   render () {
     const buttonIcon = this.state.loading ? 'sync' : 'save';
+    const rowStyle = classnames('row', {
+      'mb-1': this.state.error !== '',
+      'border': this.state.error !== '',
+      'border-danger': this.state.error !== '',
+      'rounded': this.state.error !== ''
+    })
 
     return (
       <div>
-        <div className="row">
+        <div className={rowStyle}>
+          {this.state.error !== '' &&
+            <p className="text-center text-danger my-1" style={{ fontSize: '12px', width: '100%' }}>
+              {this.state.error}
+            </p>
+          }
           <div className="col-md-4">
             <h5 className="text-center mb-1 mt-2 oneshow-title">
               Nombre

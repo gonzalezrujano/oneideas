@@ -2,6 +2,7 @@ import React from 'react';
 import Toggle from './../atoms/Toggle';
 import { getFilesFromEvent } from './../../redux/actions/show';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
 class VideoScene extends React.Component {
   constructor (props) {
@@ -12,6 +13,7 @@ class VideoScene extends React.Component {
       files: [],
       selected: '',
       enabled: false,
+      error: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,20 +36,25 @@ class VideoScene extends React.Component {
     const value = type === 'checkbox' ? e.target.checked : e.target.value;
     const realName = type === 'checkbox' ? name.split('-')[1] : name;
 
-    console.log('handle name', name);
-
     this.setState({
       [realName]: value,
     });
   }
 
   getConfiguration () {
-    const { time } = this.state;
+    const { time, selected, enabled } = this.state;
     const intTime = parseInt(time);
     let failure = false;
 
-    if (intTime < 0 || isNaN(intTime)) {
+    if (enabled && (intTime < 0 || isNaN(intTime))) {
+      this.setState({ error: 'El tiempo entre reproducciones no puede ser menor a cero' })
       failure = true;
+    } else if (enabled && selected == '') {
+      this.setState({ error: 'Seleccione el video que desea reproducir' });
+      failure = true;
+    } else {
+      this.setState({ error: '' });
+      failure = false;
     }
 
     return { 
@@ -69,12 +76,26 @@ class VideoScene extends React.Component {
   }
 
   render () {
+    const { containerStyle } = this.props;
+
     const options = this.state.files.map(file => (
       <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
     ));
 
+    const containerClasses = classnames({
+      'border': this.state.error !== '',
+      'border-danger': this.state.error !== '',
+      'rounded': this.state.error !== '',
+      'mt-1': this.state.error !== '',
+    });
+
     return (
-      <div className={this.props.containerStyle}>
+      <div className={`${containerStyle} ${containerClasses}`}>
+        {this.state.error !== '' &&
+          <p className="text-center text-danger m-0" style={{ fontSize: '12px' }}>
+            {this.state.error}
+          </p>
+        }
         <Toggle 
           name="video-enabled" 
           checked={this.state.enabled} 

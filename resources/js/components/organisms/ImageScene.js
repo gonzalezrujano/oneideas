@@ -2,6 +2,8 @@ import React from 'react';
 import Toggle from './../atoms/Toggle';
 import { getFilesFromEvent } from './../../redux/actions/show';
 import { connect } from 'react-redux';
+import DropdownImageSelector from './../molecules/DropdownImageSelector';
+import classnames from 'classnames';
 
 class ImageScene extends React.Component {
   constructor (props) {
@@ -10,13 +12,15 @@ class ImageScene extends React.Component {
     this.state = {
       time: '',
       files: [],
-      selected: '',
       vibrate: false,
+      isSelectorOpen: false,
       enabled: false,
+      error: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.getConfiguration = this.getConfiguration.bind(this);
+    this.handleImageSelect = this.handleImageSelect.bind(this);
     this.cleanConfiguration = this.cleanConfiguration.bind(this);
   }
 
@@ -35,30 +39,49 @@ class ImageScene extends React.Component {
     const value = type === 'checkbox' ? e.target.checked : e.target.value;
     const realName = type === 'checkbox' ? name.split('-')[1] : name;
 
-    console.log('handle name', name);
-
     this.setState({
       [realName]: value,
     });
   }
 
+  handleImageSelect (imageId) {
+    this.setState(state => ({
+      files: state.files.map(file => {
+        if (file._id === imageId)
+          return {...file, selected: !file.selected };
+
+        return file;
+      })
+    }));
+  }
+
   getConfiguration () {
-    const { time } = this.state;
+    const { time, enabled, files } = this.state;
+    const selected = files.filter(f => f.selected);
     const intTime = parseInt(time);
     let failure = false;
 
-    if (intTime < 0 || isNaN(intTime)) {
+    if (enabled && (intTime < 0 || isNaN(intTime))) {
+      this.setState({ error: 'La duración de las imágenes debe ser mayor a 0' });
       failure = true;
+
+    } else if (enabled && selected.length) {
+      this.setState({ error: 'Seleccione las imágenes que desea reproducir' });
+      failure = true;
+
+    } else {
+      this.setState({ error: '' });
+      failure = false;
     }
 
     return { 
       failure,
       loop: -1,
       time: intTime,
+      files: selected,
       vibrate: this.state.vibrate,
-      selected: this.state.selected,
       enabled: this.state.enabled,
-    }
+    };
   }
 
   cleanConfiguration () {
@@ -71,12 +94,28 @@ class ImageScene extends React.Component {
   }
 
   render () {
-    const options = this.state.files.map(file => (
-      <option key={file._id} value={file._id}>{file.NombreCompleto}</option>
-    ));
+    const { containerStyle } = this.props;
+
+    const images = this.state.files.map(file => ({
+      id: file._id,
+      selected: file.selected,
+      url: `storage/${file.Path}`
+    }));
+
+    const containerClasses = classnames({
+      'border': this.state.error !== '',
+      'border-danger': this.state.error !== '',
+      'rounded': this.state.error !== '',
+      'mt-1': this.state.error !== '',
+    });
 
     return (
-      <div className={this.props.containerStyle}>
+      <div className={`${containerStyle} ${containerClasses}`}>
+        {this.state.error !== '' &&
+          <p className="text-center text-danger m-0" style={{ fontSize: '12px' }}>
+            {this.state.error}
+          </p>
+        }
         <Toggle 
           name="image-enabled" 
           checked={this.state.enabled} 
@@ -86,16 +125,26 @@ class ImageScene extends React.Component {
           Image
         </Toggle>
         <div className="row">
-          <div className="col-md-3">
-            <select 
-              onChange={e => this.setState({ selected: e.target.value })}
-              className="form-control"
+          <div className="col-md-2">
+            <button 
+              onClick={e => this.setState(state => ({ isSelectorOpen: !state.isSelectorOpen }))}
+              className="btn btn-sm btn-block btn-light rounded"
             >
-              <option value="">Seleccione</option>
-              {options}
-            </select>
+              {this.state.isSelectorOpen ? (
+                'Close'
+              ) : (
+                'Select'
+              )}
+            </button>
           </div>
-          <div className="col-md-9">
+          <div className="col-md-4">
+            <DropdownImageSelector
+              images={images}
+              open={this.state.isSelectorOpen}
+              handleSelect={this.handleImageSelect}
+            />
+          </div>
+          <div className="col-md-6">
             <div className="form-inline">
               <div className="form-group">
                 <label htmlFor="time" className="sr-only">Intérvalo</label>
