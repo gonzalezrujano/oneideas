@@ -5,6 +5,7 @@ import store from "./../../redux";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import Alert from './../molecules/Alert';
+import Loader from "./../atoms/Loader";
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
@@ -252,7 +253,8 @@ function App () {
                     />
                 </Switch>
             </BrowserRouter>
-            <Alert />
+            <Alert/>
+            <Loader/>
           </React.Fragment>
         </Provider>
     );
