@@ -23,6 +23,7 @@ class AudioScene extends React.Component {
 
   componentDidMount () {
     this.props.getFilesFromEvent('Audio').then(files => {
+      console.log('Audios', files);
       this.setState({ files });
     })
     .catch(e => {
@@ -42,7 +43,7 @@ class AudioScene extends React.Component {
   }
 
   getConfiguration () {
-    const { time, enabled } = this.state;
+    const { time, enabled, selected } = this.state;
     const intTime = parseInt(time);
     let failure = false;
 
@@ -69,7 +70,6 @@ class AudioScene extends React.Component {
   cleanConfiguration () {
     this.setState({
       time: '',
-      files: [],
       selected: '',
     });
   }

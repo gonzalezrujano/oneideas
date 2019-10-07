@@ -70,7 +70,6 @@ class VideoScene extends React.Component {
   cleanConfiguration () {
     this.setState({
       time: '',
-      files: [],
       selected: '',
     })
   }

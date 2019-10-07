@@ -27,6 +27,8 @@ class ImageScene extends React.Component {
   componentDidMount () {
     this.props.getFilesFromEvent('Imagen').then(files => {
       this.setState({ files });
+
+      console.log('Image', files);
     })
     .catch(e => {
       console.log('Error', e);
@@ -65,7 +67,7 @@ class ImageScene extends React.Component {
       this.setState({ error: 'La duración de las imágenes debe ser mayor a 0' });
       failure = true;
 
-    } else if (enabled && selected.length) {
+    } else if (enabled && selected.length === 0) {
       this.setState({ error: 'Seleccione las imágenes que desea reproducir' });
       failure = true;
 
@@ -85,12 +87,11 @@ class ImageScene extends React.Component {
   }
 
   cleanConfiguration () {
-    this.setState({
+    this.setState(state => ({
       time: '',
-      files: [],
-      selected: '',
+      files: state.files.map(file => ({...file, selected: false })),
       vibrate: false,
-    });
+    }));
   }
 
   render () {

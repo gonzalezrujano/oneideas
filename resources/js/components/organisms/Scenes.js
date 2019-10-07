@@ -192,17 +192,23 @@ class Scenes extends React.Component {
             </button>
           </div>
         </div>
-        <div className="pb-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)'}}>
-          <h1 className="display-4">Escenas</h1>
-          <SceneList />
-        </div>
+        {this.props.areScenesCreated && 
+          <div className="pb-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)'}}>
+            <h1 className="display-4">Escenas</h1>
+            <SceneList />
+          </div>
+        }
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  areScenesCreated: state.show.scenes.items.length === 0 ? false : true,
+})
+
 const mapDispatchToProps = dispatch => ({
   createScene: (scene) => dispatch(createScene(scene))
 });
 
-export default connect(null, mapDispatchToProps)(Scenes);
+export default connect(mapStateToProps, mapDispatchToProps)(Scenes);

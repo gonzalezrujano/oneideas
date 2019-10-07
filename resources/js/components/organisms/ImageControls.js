@@ -55,7 +55,7 @@ class ImageControls extends React.Component {
     this.endCurrentShow();
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps, prevState) {
     if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
       const { image } = this.props.selectedScene;
 
@@ -63,7 +63,11 @@ class ImageControls extends React.Component {
         this.setState({
           loop: image.loop,
           time: image.time,
-          files: [image.selected],
+          files: prevState.files.map(file => {
+            let img = image.files.find(f => file._id === f._id);
+
+            return img ? img : file;
+          }),
           vibrate: image.vibrate,
         }, () => this.startCommand())
       }
