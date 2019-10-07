@@ -5,6 +5,7 @@ import store from "./../../redux";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import Alert from './../molecules/Alert';
+import Loader from "./../atoms/Loader";
 /**
  * A continuacion se importan todos los componentes que seran
  * utili ados como paginas y rutas del front end
@@ -23,7 +24,6 @@ import Eventos from "../Pages/configuracion/Eventos/Eventos";
 import EventosAdd from "../Pages/configuracion/Eventos/Add";
 import EventoEdit from "../Pages/configuracion/Eventos/Edit";
 import EventoShow from "../Pages/configuracion/Eventos/Show";
-import RedesSociales from "../Pages/configuracion/Eventos/RedesSociales";
 import Usuarios from "../Pages/configuracion/Usuarios/Usuarios";
 import UsuariosAdd from "../Pages/configuracion/Usuarios/Add";
 import UsuariosEdit from "../Pages/configuracion/Usuarios/Edit";
@@ -132,11 +132,6 @@ function App () {
                         exact
                         path="/eventos/show/:id"
                         component={EventoShow}
-                    />
-                    <Route 
-                        exact 
-                        path="/eventos/redes-sociales/:id"
-                        component={RedesSociales} 
                     />
                     <Route
                         exact
@@ -258,7 +253,8 @@ function App () {
                     />
                 </Switch>
             </BrowserRouter>
-            <Alert />
+            <Alert/>
+            <Loader/>
           </React.Fragment>
         </Provider>
     );

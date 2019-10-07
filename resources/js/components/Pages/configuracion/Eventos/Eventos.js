@@ -255,8 +255,6 @@ export default class Eventos extends Component {
                                                 "/eventos/edit/" + e._id;
                                             let linkShow =
                                                 "/eventos/show/" + e._id;
-                                            let linkConfigurarRedes = 
-                                                "/eventos/redes-sociales/" + e._id;
 
                                             return (
                                                 <tr key={index} id={e._id}>
@@ -397,14 +395,6 @@ export default class Eventos extends Component {
                                                                 ) : (
                                                                     ""
                                                                 )}
-                                                                {<Link className="mr-2" to={linkConfigurarRedes}>
-                                                                    <i
-                                                                        data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Configurar redes"
-                                                                        className="fas fa-share-alt-square icono-ver"
-                                                                    />
-                                                                </Link>}
                                                                 {this.state.permisoUsuario.permisos.evento.includes(
                                                                     "delete"
                                                                 ) ? (
