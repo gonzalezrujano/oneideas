@@ -5,6 +5,7 @@ import {
   UPDATE_CURRENT_LOOP,
   END_CURRENT_SCENE_TIME,
   ADD_SCENES,
+  REMOVE_SCENE,
   EXECUTE_SCENE
 } from '../../actions/show/types';
 
@@ -102,6 +103,14 @@ export default function (state = initialState, action) {
         scenes: {
           ...state.scenes,
           selected: action.payload.sceneId,
+        }
+      }
+    case REMOVE_SCENE:
+      return {
+        ...state,
+        scenes: {
+          selected: state.scenes.selected,
+          items: state.scenes.items.filter(item => item._id !== action.payload.sceneId)
         }
       }
     default:

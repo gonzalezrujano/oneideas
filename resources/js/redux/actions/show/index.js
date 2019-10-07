@@ -5,6 +5,7 @@ import {
   END_CURRENT_SCENE_TIME,
   UPDATE_CURRENT_LOOP,
   ADD_SCENES,
+  REMOVE_SCENE,
   EXECUTE_SCENE
 } from './types';
 import axios from 'axios';
@@ -64,6 +65,19 @@ export function getScenesFromShow () {
   }
 }
 
+export function deleteScene (sceneId) {
+  return (dispatch, getState) => {
+    const { multimedia: { eventId }, auth: { apiToken } } = getState();
+
+    return axios.delete(`api/event/${eventId}/scene/${sceneId}`, {
+      headers: {
+        Authorization: apiToken
+      }
+    })
+    .then(res => dispatch(removeScene(sceneId)))
+  }
+}
+
 export function endRunningShow (scene) {
   return {
     type: END_RUNNING_SHOW,
@@ -110,5 +124,12 @@ export function addScenes (scenes) {
   return {
     type: ADD_SCENES,
     payload: { scenes }
+  }
+}
+
+export function removeScene (sceneId) {
+  return {
+    type: REMOVE_SCENE,
+    payload: { sceneId }
   }
 }

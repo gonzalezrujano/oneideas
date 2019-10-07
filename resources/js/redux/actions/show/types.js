@@ -10,4 +10,6 @@ export const UPDATE_CURRENT_LOOP = 'UPDATE_CURRENT_LOOP';
 
 export const ADD_SCENES = 'ADD_SCENES';
 
+export const REMOVE_SCENE = 'REMOVE_SCENE';
+
 export const EXECUTE_SCENE = 'EXECUTE_SCENE';

@@ -6,6 +6,7 @@ import AudioScene from './AudioScene';
 import VideoScene from './VideoScene';
 import ImageScene from './ImageScene';
 import DropdownIconSelector from './../molecules/DropdownIconSelector';
+import SceneList from './SceneList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createScene } from './../../redux/actions/show';
 import { connect } from 'react-redux';
@@ -190,6 +191,10 @@ class Scenes extends React.Component {
               />
             </button>
           </div>
+        </div>
+        <div className="pb-3" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)'}}>
+          <h1 className="display-4">Escenas</h1>
+          <SceneList />
         </div>
       </div>
     );
