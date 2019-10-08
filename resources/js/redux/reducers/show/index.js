@@ -6,7 +6,8 @@ import {
   END_CURRENT_SCENE_TIME,
   ADD_SCENES,
   REMOVE_SCENE,
-  EXECUTE_SCENE
+  EXECUTE_SCENE,
+  READY_TO_EXECUTE_NEXT_SCENE
 } from '../../actions/show/types';
 
 const initialState = {
@@ -111,6 +112,14 @@ export default function (state = initialState, action) {
         scenes: {
           selected: state.scenes.selected,
           items: state.scenes.items.filter(item => item._id !== action.payload.sceneId)
+        }
+      }
+    case READY_TO_EXECUTE_NEXT_SCENE:
+      return {
+        ...state,
+        scenes: {
+          ...state.scenes,
+          selected: null,
         }
       }
     default:

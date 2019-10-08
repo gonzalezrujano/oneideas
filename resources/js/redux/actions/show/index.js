@@ -6,7 +6,8 @@ import {
   UPDATE_CURRENT_LOOP,
   ADD_SCENES,
   REMOVE_SCENE,
-  EXECUTE_SCENE
+  EXECUTE_SCENE,
+  READY_TO_EXECUTE_NEXT_SCENE,
 } from './types';
 import axios from 'axios';
 
@@ -131,5 +132,12 @@ export function removeScene (sceneId) {
   return {
     type: REMOVE_SCENE,
     payload: { sceneId }
+  }
+}
+
+export function executionDone () {
+  return {
+    type: READY_TO_EXECUTE_NEXT_SCENE,
+    payload: {},
   }
 }
