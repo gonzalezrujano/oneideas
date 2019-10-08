@@ -46,12 +46,24 @@ class AudioControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { audio } = this.props.selectedScene;
+
+      if (audio.enabled) {
+        this.setState({
+          loop: audio.loop,
+          time: audio.time,
+          selected: audio.selected,
+        }, () => this.startCommand())
+      }
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
 
     this.props.endRunningShow('audio');
-
-    this.props.submitCommand(`REM,0,1,AUD`);
   }
 
   startCommand () {
@@ -168,8 +180,12 @@ class AudioControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  audio: state.show.audio,
+const mapStateToProps = ({ show }) => ({
+  audio: show.audio,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

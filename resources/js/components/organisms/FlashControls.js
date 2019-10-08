@@ -40,13 +40,27 @@ class FlashControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { flash } = this.props.selectedScene;
+
+      if (flash.enabled) {
+        this.setState({
+          bpm: flash.bpm,
+          time: flash.time,
+          loop: flash.loop,
+          vibrate: flash.vibrate
+        }, () => this.startCommand())
+      }
+
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
 
     this.props.endRunningShow('flash');
-
-    this.props.submitCommand(`REM,0,${this.step},FLH`);
   }
 
   startCommand () {
@@ -81,11 +95,10 @@ class FlashControls extends React.Component {
 
       let id = this.step;
       let flash = this.step;
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + ((60 / current.bpm) * 1000) + 5000;
 
-      let command = `FLH,${moment},${id},${flash},${now},${end}`;
+      let command = `FLH,${moment},${id},${flash},${vibrate}`;
 
       this.props.submitCommand(command);
 
@@ -164,8 +177,12 @@ class FlashControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  flash: state.show.flash,
+const mapStateToProps = ({ show }) => ({
+  flash: show.flash,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -47,13 +47,27 @@ class ColorControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { color } = this.props.selectedScene;
+
+      if (color.enabled) {
+        this.setState({
+          bpm: color.bpm,
+          loop: color.loop,
+          time: color.time,
+          colors: color.colors,
+          vibrate: color.vibrate,
+        }, () => this.startCommand())
+      }
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
     
     this.props.endRunningShow('color');
-
-    this.props.submitCommand(`REM,0,${this.step},COL`);
   }
 
   startCommand () {
@@ -88,11 +102,10 @@ class ColorControls extends React.Component {
 
       let id = this.step;
       let color = current.colors[this.step];
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + ((60 / current.bpm) * 1000) + 5000;
 
-      let command = `COL,${moment},${id},${color},${now},${end}`;
+      let command = `COL,${moment},${id},${color},${vibrate}`;
 
       this.props.submitCommand(command);
 
@@ -168,7 +181,8 @@ class ColorControls extends React.Component {
             <FontAwesomeIcon icon="stop" color="#fff"/>
           </button>
         }
-        <ColorSelector 
+        <ColorSelector
+          className="mt-3"
           onSubmit={this.handleNewColor}
         />
         <ColorList 
@@ -196,8 +210,12 @@ class ColorControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  color: state.show.color,
+const mapStateToProps = ({ show }) => ({
+  color: show.color,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

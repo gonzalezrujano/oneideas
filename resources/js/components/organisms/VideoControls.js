@@ -48,12 +48,25 @@ class VideoControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { video } = this.props.selectedScene;
+
+      if (video.enabled) {
+        this.setState({
+          loop: video.loop,
+          time: video.time,
+          selected: video.selected,
+          vibrate: video.vibrate,
+        }, () => this.startCommand())
+      }
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
 
     this.props.endRunningShow('video');
-
-    this.props.submitCommand(`REM,0,1,VID`);
   }
 
   startCommand () {
@@ -85,11 +98,10 @@ class VideoControls extends React.Component {
 
       let id = 1;
       let video = current.file.NombreCompleto;
+      let vibrate = current.vibrate ? 1 : 0;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + 5000;
 
-      let command = `VID,${moment},${id},${video},${now},${end}`;
+      let command = `VID,${moment},${id},${video},${vibrate}`;
 
       this.props.submitCommand(command);
       
@@ -176,8 +188,12 @@ class VideoControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  video: state.show.video,
+const mapStateToProps = ({ show }) => ({
+  video: show.video,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

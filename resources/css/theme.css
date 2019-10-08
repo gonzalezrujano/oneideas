@@ -4612,6 +4612,10 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
   overflow-y: auto;
 }
 
+.image-dropdown:hover {
+  cursor: pointer;
+}
+
 .image-dropdown .image-wrapper {
   position: relative;
   border: 0px solid transparent;
@@ -4662,4 +4666,103 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 
 .fullscreen {
   background: #3a4144;
+}
+
+.oneshow-title {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.oneshow-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.icon-dropdown {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.icon-dropdown:hover {
+  cursor: pointer;
+}
+
+.icon-dropdown .icon-dropdown-list {
+  display: flex;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  max-height: 200px;
+  position: absolute;
+  left: 0px;
+  z-index: 10;
+}
+
+.icon-dropdown .icon-dropdown-list .icon-dropdown-item {
+  width: 25%;
+  text-align: center;
+}
+
+.icon-dropdown .icon-dropdown-list .icon-dropdown-item:hover {
+  cursor: pointer;
+  background-color: #d8d8d8;
+}
+
+/* width */
+.icon-dropdown .icon-dropdown-list::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+  border-radius: 10px;
+}
+
+/* Track */
+.icon-dropdown .icon-dropdown-list::-webkit-scrollbar-track {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: #fff; 
+}
+ 
+/* Handle */
+.icon-dropdown .icon-dropdown-list::-webkit-scrollbar-thumb {
+  border-radius: .25rem !important;
+  border-radius: .25rem !important;
+  background: rgb(201, 200, 200); 
+}
+
+.icon-dropdown .icon-dropdown-list::-webkit-scrollbar-thumb:hover {
+  background: #888; 
+}
+
+/* Gap between handle and actual track */
+.icon-dropdown .icon-dropdown-list::-webkit-scrollbar-track-piece {
+  background: #fff;
+}
+
+.oneshow-card {
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: .25rem !important;
+}
+
+.oneshow-card .oneshow-card-body {
+  padding: 1rem;
+}
+
+.rounded-top {
+  border-radius: .25rem .25rem 0 0;
+}
+
+.no-border-top {
+  border-top: none !important;
+}
+
+.no-border-bottom {
+  border-bottom: none !important;
+}
+
+.no-border-left {
+  border-left: none !important;
+}
+
+.no-border-right {
+  border-left: none !important;
 }

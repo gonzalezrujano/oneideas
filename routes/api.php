@@ -100,6 +100,15 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     Route::post('/redes-sociales/actualizar','EventoController@actualizarHashtagsDelEvento');
 });
 
+/**
+ * EVENT related endpoints
+ */
+Route::group(['middleware' => 'api_token', 'prefix' => 'event'], function () {
+  Route::get('/{eventId}/scenes', 'SceneController@get');
+  Route::post('/{eventId}/scene', 'SceneController@create');
+  Route::delete('/{eventId}/scene/{sceneId}', 'SceneController@delete');
+});
+
 Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() {
     Route::post('/get-info', 'InvitacionController@getInfo');
     Route::post('/files', 'InvitacionController@getFiles');
