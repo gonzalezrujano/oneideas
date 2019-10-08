@@ -5,6 +5,7 @@ import Clock from "react-live-clock";
 import Fullscreen from "react-full-screen";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Live from './../organisms/Live';
+import Scenes from './../organisms/Scenes';
 import EmptyMultimedia from "../components/Multimedia/EmptyMultimedia";
 import TabNavigation from './../organisms/TabNavigation';
 import { connect } from 'react-redux';
@@ -303,10 +304,10 @@ class Multimedia extends Component {
               <div className="row align-items-center">
                 <div className="col-sm-3">
                   <h4 className="text-center my-0">
-                    <i className="fas fa-compact-disc" /> Multimedia
+                    <i className="fas fa-compact-disc" /> LUCES-SONIDO
                   </h4>
                 </div>
-                <div className="col-sm-9">
+                <div className="col-sm-5">
                   <form>
                     <div className="form-row">
                       <div className="col">
@@ -342,9 +343,7 @@ class Multimedia extends Component {
                     </div>
                   </form>
                 </div>
-              </div>
-              <div className="row mt-2 justify-content-center">
-                <div className="col-sm-4 text-center">
+                <div className="col-md-3 text-center">
                   <i className="fas fa-clock" /> {`  `}
                   <Clock
                     format="HH:mm:ss A"
@@ -352,9 +351,7 @@ class Multimedia extends Component {
                     timezone={this.state.zonaevento}
                   />
                 </div>
-              </div>
-              <div className="row mt-2 justify-content-center">
-                <div className="col-sm-4 text-center">
+                <div className="col-md-1 text-center">
                   <span style={{ cursor: 'pointer' }}>
                     <FontAwesomeIcon
                       onClick={() => this.setState(state => ({
@@ -380,7 +377,7 @@ class Multimedia extends Component {
                   <Live 
                     submitCommand={this.sendGivenMqttCommand}
                   />
-                  <div />
+                  <Scenes />
                 </TabNavigation>
               )}
             </div>

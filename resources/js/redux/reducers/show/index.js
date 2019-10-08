@@ -3,7 +3,11 @@ import {
   SET_CURRENT_SCENE,
   END_CURRENT_SCENE,
   UPDATE_CURRENT_LOOP,
-  END_CURRENT_SCENE_TIME
+  END_CURRENT_SCENE_TIME,
+  ADD_SCENES,
+  REMOVE_SCENE,
+  EXECUTE_SCENE,
+  READY_TO_EXECUTE_NEXT_SCENE
 } from '../../actions/show/types';
 
 const initialState = {
@@ -31,7 +35,11 @@ const initialState = {
     icon: 'image',
     color: '#a55eea',
     current: null,
-  }
+  },
+  scenes: {
+    selected: null,
+    items: [],
+  },
 };
 
 export default function (state = initialState, action) {
@@ -78,6 +86,41 @@ export default function (state = initialState, action) {
           ...state[action.payload.scene],
           current: null,
         },
+      };
+    case ADD_SCENES:
+      return {
+        ...state,
+        scenes: {
+          ...state.scenes,
+          items: [
+            ...state.scenes.items,
+            ...action.payload.scenes,
+          ]
+        }
+      };
+    case EXECUTE_SCENE:
+      return {
+        ...state,
+        scenes: {
+          ...state.scenes,
+          selected: action.payload.sceneId,
+        }
+      }
+    case REMOVE_SCENE:
+      return {
+        ...state,
+        scenes: {
+          selected: state.scenes.selected,
+          items: state.scenes.items.filter(item => item._id !== action.payload.sceneId)
+        }
+      }
+    case READY_TO_EXECUTE_NEXT_SCENE:
+      return {
+        ...state,
+        scenes: {
+          ...state.scenes,
+          selected: null,
+        }
       }
     default:
       return state;

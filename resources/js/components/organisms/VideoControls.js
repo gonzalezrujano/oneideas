@@ -48,6 +48,21 @@ class VideoControls extends React.Component {
     this.endCurrentShow();
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.selectedSceneId === null && this.props.selectedSceneId !== null) {
+      const { video } = this.props.selectedScene;
+
+      if (video.enabled) {
+        this.setState({
+          loop: video.loop,
+          time: video.time,
+          selected: video.selected,
+          vibrate: video.vibrate,
+        }, () => this.startCommand())
+      }
+    }
+  }
+
   endCurrentShow () {
     clearInterval(this.interval);
 
@@ -175,8 +190,12 @@ class VideoControls extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  video: state.show.video,
+const mapStateToProps = ({ show }) => ({
+  video: show.video,
+  selectedSceneId: show.scenes.selected,
+  selectedScene: show.scenes.items.find(item => {
+    return item._id === show.scenes.selected;
+  }),
 });
 
 const mapDispatchToProps = dispatch => ({

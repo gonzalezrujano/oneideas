@@ -36,6 +36,10 @@ class Evento extends Eloquent
         'ContactoFinanza'
     ];
 
+    public function scenes () {
+      return $this->hasMany('App\Models\MongoDB\Scene', 'eventId', '_id');
+    }
+
     //scope para buscar por borrado
     public function scopeBorrado($query, $flag) {
         return $query->where('Borrado', $flag);

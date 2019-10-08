@@ -139,7 +139,7 @@ export default class Menu extends Component {
                             >
                                 <Link to="/multimedia">
                                     <i className="fas fa-compact-disc sidebar-nav-link-logo" />{" "}
-                                    Multimedia
+                                    LUCES-SONIDO
                                 </Link>
                             </li>
                         ) : (
