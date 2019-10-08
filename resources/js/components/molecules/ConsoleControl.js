@@ -12,14 +12,18 @@ class ConsoleControl extends React.Component {
   }
 
   render () {
-    const { name, icon, color, current } = this.props;
+    const { name, icon, color, current, roundedTop, roundedBottom, className } = this.props;
+    const containerClassNames = classnames('console', {
+      'rounded-top': roundedTop,
+      'rounded-bottom': roundedBottom,
+    });
     const consoleClassNames = classnames('console-status', {
       'running': current,
       'nothing': !current,
     });
 
     return (
-      <div className="console rounded">
+      <div className={`${containerClassNames} ${className}`}>
         <div className="console-header">
           <h5>
             <FontAwesomeIcon icon={icon} color={color}/> {`   `} {name}
@@ -46,5 +50,10 @@ class ConsoleControl extends React.Component {
     )
   }
 }
+
+ConsoleControl.defaultProps = {
+  roundedTop: true,
+  roundedBottom: true,
+};
 
 export default ConsoleControl;

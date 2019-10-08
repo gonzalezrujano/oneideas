@@ -4746,3 +4746,23 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 .oneshow-card .oneshow-card-body {
   padding: 1rem;
 }
+
+.rounded-top {
+  border-radius: .25rem .25rem 0 0;
+}
+
+.no-border-top {
+  border-top: none !important;
+}
+
+.no-border-bottom {
+  border-bottom: none !important;
+}
+
+.no-border-left {
+  border-left: none !important;
+}
+
+.no-border-right {
+  border-left: none !important;
+}

@@ -27,21 +27,23 @@ class SceneControl extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
+      <div className="mb-3">
         <ConsoleControl
           running={false}
+          roundedBottom={false}
           name={this.props.name}
           icon={this.props.icon}
           color={this.props.color}
           current={this.state.current}
+          className="no-border-bottom"
         />
         <button 
           onClick={this.startScene}
-          className="btn btn-sm btn-block btn-running mt-3 py-0 rounded"
+          className="btn btn-sm btn-block btn-running py-0 rounded-bottom"
         >
           <FontAwesomeIcon icon="paper-plane" color="#fff"/>
         </button>
-      </React.Fragment>
+      </div>
     );  
   }
 }

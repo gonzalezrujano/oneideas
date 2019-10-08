@@ -58,24 +58,34 @@ class Live extends React.Component {
     })
 
     const length = Object.keys(show.scenes).length - 1;
-    const scenes = show.scenes.items.map((scene, i) => {
+    const controls = 4;
+    const numOfColumns = Math.ceil(controls / (length + 1));
+    let sceneColumns = [];
+
+    for (let i = 0; i < numOfColumns; i++) {
+      sceneColumns.push(i);
+    }
+
+    const scenes = sceneColumns.map((col, i) => {
       let classNames = classnames('col-xs-6', 'col-sm-4', 'col-md-3', {
         'bg-dark': (i + length) % 2 === 0,
       }, 'py-3');
 
       return (
-        <div key={i + length} className={classNames}>
-          <SceneControl
-            key={scene._id}
-            id={scene._id}
-            name={scene.name}
-            icon={scene.icon}
-            color={scene.iconColor}
-            scene={scene}
-            submitCommand={this.props.submitCommand}
-          />
+        <div key={col} className={classNames}>
+          {show.scenes.items.slice(i * controls, (i * controls) + controls).map(scene => (
+            <SceneControl
+              key={scene._id}
+              id={scene._id}
+              name={scene.name}
+              icon={scene.icon}
+              color={scene.iconColor}
+              scene={scene}
+              submitCommand={this.props.submitCommand}
+            />
+          ))}
         </div>
-      );
+      )
     })
 
     return (
