@@ -14,12 +14,6 @@ import {
   } from './../../redux/actions/multimedia';
 import { mostrarElementoDeCarga, ocultarElementoDeCarga } from "./../../redux/actions/loader";
 
-/*
-- Pasar datos al Iframe (Array)
-- Hacer endpoint para guardar y consultar esas configuraciones
-*/
-
-
 class SocialWall extends Component {
 
     constructor(props) {
@@ -38,6 +32,9 @@ class SocialWall extends Component {
                 width: "inherit",
                 border: "none"
             },
+            estilosDelTituloDeLaPagina: {
+                marginRight: "2rem"
+            },
             urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib"
         };
 
@@ -49,6 +46,8 @@ class SocialWall extends Component {
         this.editarFiltroDeTipoDeContenido = this.editarFiltroDeTipoDeContenido.bind(this);
         this.agregarEventoPantallaCompletaAIframe = this.agregarEventoPantallaCompletaAIframe.bind(this);   
         this.existenHashtagsParaEvento = this.existenHashtagsParaEvento.bind(this);
+        this.obtenerURLConParametros = this.obtenerURLConParametros.bind(this);
+        this.obtenerHashtagsSinSimbolo = this.obtenerHashtagsSinSimbolo.bind(this);
     }
 
     /**
@@ -61,6 +60,12 @@ class SocialWall extends Component {
         this.props.getCompanies().then(() => this.props.ocultarElementoDeCarga());
     }
 
+    /**
+     * Evento al cambiar opcion del selector de compañias
+     * 
+     * @param {object} e 
+     * @return {void}
+     */
     handleCompanyChange (e) {
         const { value } = e.target;
   
@@ -73,6 +78,12 @@ class SocialWall extends Component {
         }
     }
   
+    /**
+     * Evento al cambiar opcion del selector de eventos
+     * 
+     * @param {object} e 
+     * @return {void}
+     */
     handleEventChange (e) {
         const { value } = e.target;
   
@@ -130,11 +141,41 @@ class SocialWall extends Component {
      * @return {void}
      */
     activarIframe() {
-        // Agregar informacion al URL
         if (this.existenHashtagsParaEvento()) {
             this.props.mostrarElementoDeCarga();
-            document.getElementById("iFrameSocialWall").setAttribute("src", this.state.urlParaIframe);
+            document.getElementById("iFrameSocialWall").setAttribute("src", this.obtenerURLConParametros());
         }
+    }
+
+    /**
+     * Obtener URL de la libreria con los datos de configuracion
+     * 
+     * @return {string}
+     */
+    obtenerURLConParametros() {
+        return this.state.urlParaIframe + "?hashtagsTwitter=" + 
+        encodeURIComponent(
+            JSON.stringify(
+                this.obtenerHashtagsSinSimbolo(this.state.hashtagsTwitter)
+            )
+        ) +
+        "&hashtagsInstagram=" + encodeURIComponent(
+            JSON.stringify(
+                this.obtenerHashtagsSinSimbolo(this.state.hashtagsInstagram)
+            )
+        );
+    }
+
+    /**
+     * Obtener hashtags sin caracter #
+     * 
+     * @param {array} hashtags
+     * @return {void}
+     */
+    obtenerHashtagsSinSimbolo(hashtags) {
+        return hashtags.map((hashtag) => 
+            (hashtag[0] === "#") ? hashtag.substring(1) : hashtag
+        );
     }
 
     /**
@@ -178,12 +219,19 @@ class SocialWall extends Component {
      * @return {void}
      */
     agregarEventoPantallaCompletaAIframe() {
+        let eventosFullScreens = [
+            'fullscreenchange',
+            'mozfullscreenchange',
+            'webkitfullscreenchange',
+            'msfullscreenchange'
+        ];
 
+        eventosFullScreens.forEach(evento => (
+            document.getElementById('iFrameSocialWall').addEventListener(evento, () => {
+                this.editarFiltroDeTipoDeContenido();
+            })
+        ));
         this.props.ocultarElementoDeCarga();
-
-        document.getElementById('iFrameSocialWall').addEventListener('webkitfullscreenchange', () => {
-            this.editarFiltroDeTipoDeContenido();
-        });
     }
 
     /**
@@ -206,9 +254,9 @@ class SocialWall extends Component {
                         <div className="container-fluid">
                             
                             <div className="row">
-                                <div className="col-sm-6 col-md-6">
+                                <div className="col-sm-8 col-md-8">
                                     <div className="d-flex">
-                                        <div className="my-2">
+                                        <div className="my-2" style={this.state.estilosDelTituloDeLaPagina}>
                                             <h1 className="page-header-heading">
                                                 <div>
                                                     <i className="fas fa-photo-video page-header-heading-icon" />
