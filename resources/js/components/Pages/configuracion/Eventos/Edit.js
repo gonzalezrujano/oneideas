@@ -4,7 +4,7 @@ import Menu from "../../../components/Menu";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 import RedesSociales from "./RedesSociales";
-import SocialWall from "./SocialWall";
+// import SocialWall from "./SocialWall";
 
 import "../../css/configuracion/Biblioteca.css";
 import "./css/Eventos.css";
@@ -36,6 +36,9 @@ export default class Edit extends React.Component {
             api_token: localStorage.getItem("api_token"),
             isLoading: true
         };
+
+        this.configuracionRedesSociales = React.createRef();
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleLogo = this.handleLogo.bind(this);
@@ -159,12 +162,14 @@ export default class Edit extends React.Component {
 
     handleSubmit(e){
         e.preventDefault();
+
+        // Enviar Configuracion de redes sociales
+        this.configuracionRedesSociales.current.handleClick();
+
         let formData = new FormData();
         let s = this.state
 
         let ubicacion = $('input[name=ubicacion]:checked', '#form-add-evento').val();
-        console.log(s.ubicacion)
-        console.log(ubicacion)
 
         formData.append("id-evento", s.idEvento);
         formData.append("id-emp",s.idEmpresa)
@@ -254,8 +259,7 @@ export default class Edit extends React.Component {
             };
 
             $('#div-edit-emp-img-new').show();
-                $('#div-edit-emp-img-preview').hide();
-        
+            $('#div-edit-emp-img-preview').hide();
     }
 
 
@@ -338,9 +342,9 @@ export default class Edit extends React.Component {
                         <li className="nav-item">
                             <a className="nav-link" id="pills-redes-sociales-tab" data-toggle="pill" href="#pills-redes-sociales" role="tab" aria-controls="pills-redes-sociales" aria-selected="false">Redes Sociales</a>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <a className="nav-link" id="pills-social-wall-tab" data-toggle="pill" href="#pills-social-wall" role="tab" aria-controls="pills-social-wall" aria-selected="false">Social Wall</a>
-                        </li>
+                        </li> */}
                     </ul>
 
                 <hr className="line-gray"/>
@@ -525,13 +529,17 @@ export default class Edit extends React.Component {
 
                         {/* Componente de configuracion de Redes Sociales */}
                         <div className="tab-pane fade" id="pills-redes-sociales" role="tabpanel" aria-labelledby="pills-redes-sociales-tab">
-                            <RedesSociales />
+                            <RedesSociales 
+                                ref={this.configuracionRedesSociales}
+                                eventoId={this.state.idEvento} 
+                            />
                         </div>
 
-                        {/* Componente de configuracion del Social Wall */}
+                        {/* Componente de configuracion del Social Wall 
                         <div className="tab-pane fade" id="pills-social-wall" role="tabpanel" aria-labelledby="pills-social-wall-tab">
                             <SocialWall />
                         </div>
+                        */}
 
 
                     </div>
