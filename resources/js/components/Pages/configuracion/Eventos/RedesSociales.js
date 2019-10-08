@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Menu from "../../../components/Menu";
-import Header from "../../../components/Header";
-import { Link } from "react-router-dom";
 
 export default class RedesSociales extends Component {
     constructor(props) {
@@ -10,7 +7,6 @@ export default class RedesSociales extends Component {
 
         this.hashtagsTwitter = [];
         this.hashtagsInstagram = [];
-        // this.eventoId = this.props.match.params.id;
 
         this.state = {
             isLoading: false,
@@ -36,7 +32,7 @@ export default class RedesSociales extends Component {
     }
 
     componentDidMount() {
-        // this.consultarHashtagsDelEvento();
+        this.consultarHashtagsDelEvento();
     }
 
     /**
@@ -48,7 +44,7 @@ export default class RedesSociales extends Component {
     {
         this.isLoading = true;
 
-        axios.get('api/eventos/redes-sociales/consultar?eventoId=' + this.eventoId, {
+        axios.get('api/eventos/redes-sociales/consultar?eventoId=' + this.props.eventoId, {
             headers: {
                 Authorization: this.state.api_token
             }
@@ -81,7 +77,7 @@ export default class RedesSociales extends Component {
     enviarHashtagsDelEvento() 
     {
         let datosDelFormulario = new FormData();
-        datosDelFormulario.append("eventoId", this.eventoId);
+        datosDelFormulario.append("eventoId", this.props.eventoId);
         datosDelFormulario.append("HashtagsTwitter", JSON.stringify(this.hashtagsTwitter));
         datosDelFormulario.append("HashtagsInstagram", JSON.stringify(this.hashtagsInstagram));
 
@@ -94,12 +90,6 @@ export default class RedesSociales extends Component {
         }).then(respuesta => {
             if (respuesta.status === 200) {
                 this.isLoading = false;
-
-                sweetalert(
-                    "Hashtags agregados correctamente",
-                    "success",
-                    "sweet"
-                );
 
                 setTimeout(() => {
                     window.scrollTo(0, 0);
@@ -226,6 +216,7 @@ export default class RedesSociales extends Component {
                                 id="campoHashtagsTwitter"
                                 className="form-control form-control-sm"
                                 placeholder="Ingrese los hashtags para Twitter"
+                                autocomplete="false"
                             />
                         </div>
                     </div>
@@ -240,19 +231,8 @@ export default class RedesSociales extends Component {
                                 id="campoHashtagsInstagram"
                                 className="form-control form-control-sm"
                                 placeholder="Ingrese los hashtags para Instagram"
+                                autocomplete="false"
                             />
-                        </div>
-                    </div>
-
-                    <div className="form-group row">
-                        <div className="col-sm-4">
-                            <button 
-                                type="button"
-                                className="btn btn-sm btn-dark mr-2"
-                                onClick={this.handleClick}
-                            >Guardar</button>
-
-                            <a href=""><button type="button" className="btn btn-sm btn-dark">Volver</button></a>
                         </div>
                     </div>
 
