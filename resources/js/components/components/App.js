@@ -58,6 +58,7 @@ import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastro
 import EdicionAsiento from "../Pages/configuracion/Invitados/invitados/EdicionAsiento";
 import SocialWall from "../Pages/SocialWall";
 import RecuperarPassword from './RecuperarPassword';
+import NewPassword from './../Pages/NewPassword';
 
 library.add(fas);
 
@@ -77,6 +78,7 @@ function App () {
                     <Route exact path="/social-wall" component={SocialWall} />
                     <Route exact path="/biblioteca" component={Biblioteca} />
                     <Route exact path="/recover-password" component={RecuperarPassword} />
+                    <Route exact path="/user/change/password/:token" component={NewPassword} />
                     <Route
                         exact
                         path="/biblioteca/evento/:id"

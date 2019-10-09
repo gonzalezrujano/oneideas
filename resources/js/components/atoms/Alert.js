@@ -6,7 +6,7 @@ function Alert (props) {
 
   return (
     <div className={alertStyle}>
-      <button className="close" onClick={e => props.handleClose()}>
+      <button type="button" className="close" onClick={e => props.handleClose()}>
         <span aria-hidden="true">&times;</span>
       </button>
       {props.children}

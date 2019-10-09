@@ -49,7 +49,7 @@ class RecoveryPasswordController extends Controller
         //genero el nuevo token
         $reset = new ResetClaveUsuarios;
         $reset->Usuario_id = new ObjectId($user->_id);
-        $reset->Correo = $request->email;
+        $reset->Correo = strtoupper($request->email);
         $reset->Token = Str::random(60);
         $reset->save();
 
@@ -72,6 +72,38 @@ class RecoveryPasswordController extends Controller
     return response()->json([
       'message' => 'El correo especificado no existe'
     ], 404);
+  }
+
+  public function checkTokenValidity (Request $request, $token) {
+    $storedToken = ResetClaveUsuarios::where('Token', $token)->first();
+
+    if ($storedToken) 
+      return response()->json([
+        'message' => 'Token validado correctamente'
+      ], 200);
+    
+    return response()->json([
+      'message' => 'El correo de recuperación de contraseña ya caducó'
+    ], 404);
+  }
+
+  public function changePassword (Request $request, $token) {
+    $data = $request->all();
+    $data['token'] = $token;
+
+    Validator::make($data, [
+      'password' => 'required|string|min:6|confirmed',
+      'token' => 'required|string|exists:ResetClavesUsuarios,Token'
+    ])->validate();
+
+    $storedToken = ResetClaveUsuarios::where('Token', $token)->first();
+    $user = Usuario::where('Correo', strtoupper($storedToken->Correo))->first();
+
+    $user->Password = Hash::make($request->password);
+    $user->save();
+    $storedToken->delete();
+
+    return response('', 200);
   }
 
     //metodo para validar que el token del usuario es valido y no ha expirado

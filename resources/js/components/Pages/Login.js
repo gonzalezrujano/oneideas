@@ -2,6 +2,7 @@ import React from "react";
 import swal from "sweetalert2";
 import logoOneShow from "../../../../public/images/logo-oneshow.png";
 import { authenticate } from './../../redux/actions/auth';
+import Alert from './../atoms/Alert';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import "./css/Login.css";
@@ -20,6 +21,10 @@ class Login extends React.Component {
          */
         this.handleLogin = this.handleLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentDidMount () {
+      console.log('props', this.props);
     }
 
     /**
@@ -92,6 +97,7 @@ class Login extends React.Component {
     render() {
         let correo = this.state.correo;
         let password = this.state.password;
+        const { location } = this.props;
         
         return (
             <div id="login-hidden" className="container login-display">
@@ -108,7 +114,14 @@ class Login extends React.Component {
                                 alt="ONE Show"
                             />
                         </div>
-
+                        {location.state && location.state.message &&
+                          <Alert 
+                            type="info" 
+                            handleClose={() => null}
+                          >
+                            {location.state.message}
+                          </Alert>
+                        }
                         <div className="form-group">
                             <input
                                 type="text"

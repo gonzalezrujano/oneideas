@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Link } from 'react-router-dom';
-import axios from "axios";
-import swal from "sweetalert2";
-import logo from "../../../../public/images/logo-oneshow.png";
 import Alert from './../atoms/Alert';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import logo from "../../../../public/images/logo-oneshow.png";
+import axios from "axios";
 
 export default class RecuperarPassword extends Component {
     constructor(props) {
