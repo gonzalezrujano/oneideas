@@ -23,6 +23,7 @@ Route::group(['middleware'=>'api_token','prefix' => 'usuarios'], function() {
     Route::post('/delete','UsuarioController@deleteUsuario');
     Route::post('/edit','UsuarioController@editUsuario');
     Route::get('/infoEdit/{id}','UsuarioController@getInfoEdit');
+    Route::post('/change/password', 'ChangePasswordController@changePassword');
     
     Route::get('/','UsuarioController@getUsuarios');
     Route::get('/selects','UsuarioController@getSelectUsuario');
