@@ -57,6 +57,7 @@ import PlanoCopiaAdd from "../Pages/configuracion/Planos/PlanosBaseCopiaAdd";
 import MenuGastronomico from "../Pages/configuracion/MenuGastronomico/MenuGastronomico";
 import EdicionAsiento from "../Pages/configuracion/Invitados/invitados/EdicionAsiento";
 import SocialWall from "../Pages/SocialWall";
+import RecuperarPassword from './RecuperarPassword';
 
 library.add(fas);
 
@@ -75,6 +76,7 @@ function App () {
                     <Route exact path="/multimedia" component={Multimedia} />
                     <Route exact path="/social-wall" component={SocialWall} />
                     <Route exact path="/biblioteca" component={Biblioteca} />
+                    <Route exact path="/recover-password" component={RecuperarPassword} />
                     <Route
                         exact
                         path="/biblioteca/evento/:id"

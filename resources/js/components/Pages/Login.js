@@ -1,10 +1,9 @@
 import React from "react";
-import axios from "axios";
 import swal from "sweetalert2";
 import logoOneShow from "../../../../public/images/logo-oneshow.png";
 import { authenticate } from './../../redux/actions/auth';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import "./css/Login.css";
 
 class Login extends React.Component {
@@ -91,13 +90,9 @@ class Login extends React.Component {
     }
 
     render() {
-        console.log("estoy en login");
         let correo = this.state.correo;
         let password = this.state.password;
-        let url = this.state.url;
-
-        let urlRecuperar = url + "/recovery-password";
-
+        
         return (
             <div id="login-hidden" className="container login-display">
                 <div className="absolute-center">
@@ -152,9 +147,9 @@ class Login extends React.Component {
 
                         <ul className="login-bottom-links">
                             <li>
-                                <a href={urlRecuperar}>
+                                <Link to="recover-password">
                                     ¿Olvidaste tu contraseña?
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </form>

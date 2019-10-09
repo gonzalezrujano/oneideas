@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'LoginController@login');
 Route::post('/logout', 'LoginController@logout');
+Route::post('/user/recover/password', 'RecoveryPasswordController@requestPasswordRecover');
+Route::post('/user/refresh/password', 'RecoveryPasswordController@requestPasswordRecover');
 Route::get('/download/{filename}', 'BibliotecaController@downloadTorrent');
 /**
  * Rutas API orientadas al controlador de USUARIOS UsuarioController
