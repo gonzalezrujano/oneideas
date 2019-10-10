@@ -5,7 +5,7 @@ import Header from "../components/Header";
 export default class Welcome extends Component {
     constructor(props) {
         super(props);
-        console.log(props.location.state);
+        console.log('state', props.location.state);
         this.state = {
             url: "",
             correo: "",

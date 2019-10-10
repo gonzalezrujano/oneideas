@@ -1,34 +1,43 @@
 import { 
-  AUTH_EXAMPLE_ACTION,
+  SET_USER_SCOPE,
   USER_LOGGED_IN
 } from './../../actions/auth/types';
 
-const token = localStorage.getItem('apiToken');
+const storedState = JSON.parse(localStorage.getItem('auth'));
 
-const initialState = {
-  isAuthenticated: false,
+const initialState = storedState ? storedState : {
   user: null,
-  apiToken: token ? token : '',
+  scope: null,
+  scopeName: '',
+  isAuthenticated: false, 
+  apiToken: '',
 };
 
 export default function (state = initialState, action) {
+  let nextState = state;
+  
   switch (action.type) {
     case USER_LOGGED_IN: 
-      return {
+      nextState = {
         ...state,
         isAuthenticated: true,
         user: mapUserFromDbToStore(action.payload.user),
         apiToken: action.payload.apiToken, 
-      };  
-    case AUTH_EXAMPLE_ACTION:
-      return {
+      }; break;  
+    case SET_USER_SCOPE:
+      nextState = {
         ...state,
-        name: action.payload.name,
-        lastname: action.payload.lastname,
-      };
+        scope: action.payload.scope,
+        scopeName: action.payload.scopeName
+      }; break;
     default:
-      return state;
+      nextState = state; 
+      break;
   }
+
+  localStorage.setItem('auth', JSON.stringify(nextState));
+
+  return nextState;
 }
 
 function mapUserFromDbToStore (user) {
