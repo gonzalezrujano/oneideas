@@ -28,6 +28,7 @@ class SocialWall extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             hashtagsTwitter: [],
             hashtagsInstagram: [],
+            publicaciones: [],
             estilosIframe: {
                 width: "inherit",
                 border: "none"
@@ -48,6 +49,8 @@ class SocialWall extends Component {
         this.existenHashtagsParaEvento = this.existenHashtagsParaEvento.bind(this);
         this.obtenerURLConParametros = this.obtenerURLConParametros.bind(this);
         this.obtenerHashtagsSinSimbolo = this.obtenerHashtagsSinSimbolo.bind(this);
+        this.guardarContenidoDeLasPublicaciones = this.guardarContenidoDeLasPublicaciones.bind(this);
+        this.obtenerContenidoDeLasPublicaciones = this.obtenerContenidoDeLasPublicaciones.bind(this);
     }
 
     /**
@@ -232,6 +235,42 @@ class SocialWall extends Component {
             })
         ));
         this.props.ocultarElementoDeCarga();
+
+        // AVISAR SOBRE MODERACION DE CONTENIDO
+        this.guardarContenidoDeLasPublicaciones();
+    }
+
+    /**
+     * Almacenar contenido de las publicaciones recibidas
+     * 
+     * @return {void}
+     */
+    guardarContenidoDeLasPublicaciones() {
+        let publicacionesExtraidas = this.obtenerContenidoDeLasPublicaciones();
+        let publicaciones = [];
+
+        for (let publicacion of publicacionesExtraidas) {
+            publicaciones.push({
+                id: publicacion.id,
+                imagen: publicacion.getElementsByClassName("sb-img")[0].src,
+                texto: publicacion.getElementsByClassName("sb-text")[0].innerText
+            });
+        }
+
+        console.log(publicaciones);
+
+        this.setState({publicaciones});
+    }
+
+    /**
+     * Obtener contenido de las publicaciones recibidas
+     * 
+     * @return {void}
+     */
+    obtenerContenidoDeLasPublicaciones() {
+        return document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName("sb-item");
     }
 
     /**
