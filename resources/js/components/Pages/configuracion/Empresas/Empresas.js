@@ -198,7 +198,7 @@ export default class Empresas extends Component {
                                         "add"
                                     ) ? (
                                         <tr>
-                                            <td>
+                                            <td colSpan="3">
                                                 <Link
                                                     to="/empresas/add/"
                                                     className="btn-sm btn-dark button-add p-2"
