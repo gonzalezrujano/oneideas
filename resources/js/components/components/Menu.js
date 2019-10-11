@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from "react-router-dom";
 import { getUserScope } from './../../redux/actions/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from "axios";
 
 class Menu extends Component {
   constructor(props) {

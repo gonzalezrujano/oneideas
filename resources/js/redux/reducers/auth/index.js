@@ -1,6 +1,7 @@
 import { 
   SET_USER_SCOPE,
-  USER_LOGGED_IN
+  USER_LOGGED_IN,
+  USER_LOGGED_OUT,
 } from './../../actions/auth/types';
 
 const storedState = JSON.parse(localStorage.getItem('auth'));
@@ -23,7 +24,15 @@ export default function (state = initialState, action) {
         isAuthenticated: true,
         user: mapUserFromDbToStore(action.payload.user),
         apiToken: action.payload.apiToken, 
-      }; break;  
+      }; break;
+    case USER_LOGGED_OUT:
+      nextState = {
+        user: null,
+        scope: null,
+        scopeName: '',
+        isAuthenticated: false, 
+        apiToken: '',
+      }; break;
     case SET_USER_SCOPE:
       nextState = {
         ...state,

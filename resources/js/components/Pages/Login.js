@@ -23,10 +23,6 @@ class Login extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount () {
-      console.log('props', this.props);
-    }
-
     /**
      * evento que captura todos los cambios en los input y modifica en tiempo real las variables
      * en el state para posteriormente darle uso en otras funciones

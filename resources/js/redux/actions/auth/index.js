@@ -1,6 +1,7 @@
 import { 
   SET_USER_SCOPE,
-  USER_LOGGED_IN
+  USER_LOGGED_IN,
+  USER_LOGGED_OUT
 } from './types';
 import axios from 'axios';
 
@@ -17,6 +18,18 @@ export function authenticate (email, password) {
 
         return data;
       });
+  }
+}
+
+export function logout () {
+  return (dispatch, getState) => {
+    const { auth: { apiToken } } = getState();
+
+    return axios.post('api/logout', {}, {
+      headers: {
+        Authorization: apiToken
+      }
+    })
   }
 }
 
@@ -49,4 +62,10 @@ export function userLoggedIn (apiToken, user) {
     type: USER_LOGGED_IN,
     payload: { apiToken, user }
   };
+}
+
+export function userLoggedOut () {
+  return {
+    type: USER_LOGGED_OUT
+  }
 }
