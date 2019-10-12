@@ -4775,3 +4775,15 @@ a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
 .no-border-right {
   border-left: none !important;
 }
+
+.oneshow__option {
+  color: #000 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+}
+
+.oneshow__option:hover {
+  background-color: #bf0411 !important;
+}
