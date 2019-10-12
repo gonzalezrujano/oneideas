@@ -314,7 +314,7 @@ export default class Empresas extends Component {
                                                                 {this.state.permisoUsuario.permisos.empresa.includes(
                                                                     "delete"
                                                                 ) ? (
-                                                                    <Link className="mr-2">
+                                                                    <span className="mr-2">
                                                                         <i
                                                                             data-toggle="tooltip"
                                                                             data-placement="top"
@@ -327,7 +327,7 @@ export default class Empresas extends Component {
                                                                                 )
                                                                             }
                                                                         />
-                                                                    </Link>
+                                                                    </span>
                                                                 ) : (
                                                                     ""
                                                                 )}
