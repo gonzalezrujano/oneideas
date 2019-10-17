@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 Route::post('/login', 'LoginController@login');
 Route::post('/logout', 'LoginController@logout');
 Route::get('/download/{filename}', 'BibliotecaController@downloadTorrent');
+
 /**
  * Rutas API orientadas al controlador de USUARIOS UsuarioController
  */
@@ -79,6 +80,8 @@ Route::group(['middleware'=>'api_token','prefix' => 'agendas'], function() {
 /**
  * Rutas API orientadas al controlador de EVENTOS eventoController
  */
+Route::get('/RSS/{eventoId}','EventoController@obtenerPublicacionesRSS');
+
 Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     //rutas de eventos
     Route::get('/', 'EventoController@getEventos');
@@ -98,6 +101,8 @@ Route::group(['middleware'=>'api_token','prefix' => 'eventos'], function() {
     
     Route::get('/redes-sociales/consultar','EventoController@consultarHashtagsDelEvento');
     Route::post('/redes-sociales/actualizar','EventoController@actualizarHashtagsDelEvento');
+    
+    Route::post('/RSS','EventoController@registrarPublicacionRSS');
 });
 
 Route::group(['middleware'=>'api_token','prefix' => 'invitaciones'], function() {
