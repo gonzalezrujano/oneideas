@@ -90,6 +90,12 @@ class VideoControls extends React.Component {
       vibrate: this.state.vibrate,
     });
 
+    // First command execution
+    let firstNow = (new Date()).getTime();
+    let firstEnd = firstNow + 5000;
+    const firstCommand = `VID,1,1,${selectedFile.NombreCompleto},${this.state.vibrate ? 1 : 0}`;
+    this.props.submitCommand(firstCommand);
+
     // Executing a command every time a
     // beat is produced
     const interval = selectedFile.Duracion + (this.state.time * 1000);

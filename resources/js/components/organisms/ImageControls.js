@@ -113,6 +113,18 @@ class ImageControls extends React.Component {
       vibrate: this.state.vibrate,
     });
 
+    // First command execution
+    let firstNow = (new Date()).getTime();
+    let firstEnd = firstNow + this.state.time * 1000 + 5000;
+    const firstCommand = `IMG,1,${this.step},${selected[this.step].NombreCompleto},${this.state.vibrate ? 1 : 0}`;
+    this.props.submitCommand(firstCommand);
+
+    if (this.step === selected.length - 1) {
+      this.step = 0;
+    } else {
+      this.step = this.step + 1;
+    }
+
     // Executing a command every time a
     // beat is produced
     this.interval = setInterval(() => {
@@ -124,10 +136,9 @@ class ImageControls extends React.Component {
       let id = this.step;
       let image = current.files[this.step].NombreCompleto;
       let moment = 1;
-      let now = (new Date()).getTime();
-      let end = now + (current.time * 1000) + 5000;
+      let vibrate = current.vibrate ? 1 : 0;
 
-      let command = `IMG,${moment},${id},${image},${now},${end}`;
+      let command = `IMG,${moment},${id},${image},${vibrate}`;
 
       this.props.submitCommand(command);
 

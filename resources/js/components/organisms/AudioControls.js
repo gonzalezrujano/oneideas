@@ -84,6 +84,12 @@ class AudioControls extends React.Component {
       file: selectedFile,
     });
 
+    // First command execution
+    let firstNow = (new Date()).getTime();
+    let firstEnd = firstNow + 5000;
+    const firstCommand = `AUD,1,1,${selectedFile.NombreCompleto},${firstNow},${firstEnd}`;
+    this.props.submitCommand(firstCommand);
+
     // Executing a command every time a
     // beat is produced
     const interval = selectedFile.Duracion + (this.state.time * 1000);

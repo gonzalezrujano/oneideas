@@ -33,7 +33,7 @@ class FlashControls extends React.Component {
     // Class attributes
     this.interval = '';
     this.timeout = '';
-    this.step = 0;
+    this.step = 1;
   }
 
   componentWillUnmount () {
@@ -63,6 +63,8 @@ class FlashControls extends React.Component {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
 
+    this.step = 1;
+
     this.props.endRunningShow('flash');
 
     this.props.submitCommand(`REM,0,1,COL`);
@@ -88,6 +90,16 @@ class FlashControls extends React.Component {
           return this.endCurrentShow();
         
       }, this.state.time * 1000);
+    }
+
+    // First command execution
+    const firstCommand = `FLH,1,${this.step},${this.step},${this.state.vibrate ? 1 : 0}`;
+    this.props.submitCommand(firstCommand);
+
+    if (this.step === 1) {
+      this.step = 0;
+    } else {
+      this.step = this.step + 1;
     }
 
     // Executing a command every time a

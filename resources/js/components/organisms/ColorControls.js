@@ -97,6 +97,16 @@ class ColorControls extends React.Component {
       }, this.state.time * 1000);
     }
 
+    // First command execution
+    const firstCommand = `COL,${1},${this.step},${this.state.colors[this.step]},${this.state.vibrate ? 1 : 0}`;
+    this.props.submitCommand(firstCommand);
+
+    if (this.step === (this.state.colors.length - 1)) {
+      this.step = 0;
+    } else {
+      this.step = this.step + 1;
+    }
+
     // Executing a command every time a
     // beat is produced
     this.interval = setInterval(() => {
