@@ -42,10 +42,6 @@
             ];
         }
 
-        $redes['instagram'] = [
-            'instagram_id_2' => ['paris']
-        ];
-
         $redes['rss'] = [
             'rss_id_1' => ['http://www.oneshow.com/api/RSS/' . $_GET['eventoId']],
             'rss_text' => 0
