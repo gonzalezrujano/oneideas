@@ -37,7 +37,10 @@ class FlashControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+
+    this.props.endRunningShow('flash');
   }
 
   componentDidUpdate (prevProps) {
@@ -61,6 +64,8 @@ class FlashControls extends React.Component {
     clearTimeout(this.timeout);
 
     this.props.endRunningShow('flash');
+
+    this.props.submitCommand(`REM,0,1,COL`);
   }
 
   startCommand () {

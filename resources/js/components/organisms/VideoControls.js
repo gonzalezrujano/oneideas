@@ -45,7 +45,9 @@ class VideoControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+
+    this.props.endRunningShow('video');
   }
 
   componentDidUpdate (prevProps) {
@@ -67,6 +69,8 @@ class VideoControls extends React.Component {
     clearInterval(this.interval);
 
     this.props.endRunningShow('video');
+
+    this.props.submitCommand(`REM,0,1,VID`);
   }
 
   startCommand () {

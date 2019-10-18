@@ -44,7 +44,10 @@ class ColorControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+    
+    this.props.endRunningShow('color');
   }
 
   componentDidUpdate (prevProps) {
@@ -68,6 +71,8 @@ class ColorControls extends React.Component {
     clearTimeout(this.timeout);
     
     this.props.endRunningShow('color');
+
+    this.props.submitCommand(`REM,0,1,COL`);
   }
 
   startCommand () {

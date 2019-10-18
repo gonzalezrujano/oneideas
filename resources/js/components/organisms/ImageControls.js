@@ -52,7 +52,10 @@ class ImageControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+
+    this.props.endRunningShow('flash');
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -79,6 +82,8 @@ class ImageControls extends React.Component {
     clearTimeout(this.timeout);
     
     this.props.endRunningShow('image');
+
+    this.props.submitCommand(`REM,0,1,IMG`);
   }
 
   handleImageSelect (imageId) {

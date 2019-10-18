@@ -43,7 +43,8 @@ class AudioControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+    this.props.endRunningShow('audio');
   }
 
   componentDidUpdate (prevProps) {
@@ -62,8 +63,9 @@ class AudioControls extends React.Component {
 
   endCurrentShow () {
     clearInterval(this.interval);
-
     this.props.endRunningShow('audio');
+
+    this.props.submitCommand(`REM,0,1,AUD`);
   }
 
   startCommand () {
