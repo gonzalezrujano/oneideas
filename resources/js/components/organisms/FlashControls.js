@@ -67,7 +67,7 @@ class FlashControls extends React.Component {
 
     this.props.endRunningShow('flash');
 
-    this.props.submitCommand(`REM,0,1,COL`);
+    this.props.submitCommand(`REM,0,1,FLH`);
   }
 
   startCommand () {
