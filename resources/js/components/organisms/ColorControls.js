@@ -44,7 +44,10 @@ class ColorControls extends React.Component {
   }
 
   componentWillUnmount () {
-    this.endCurrentShow();
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
+    
+    this.props.endRunningShow('color');
   }
 
   componentDidUpdate (prevProps) {
@@ -68,6 +71,8 @@ class ColorControls extends React.Component {
     clearTimeout(this.timeout);
     
     this.props.endRunningShow('color');
+
+    this.props.submitCommand(`REM,0,1,COL`);
   }
 
   startCommand () {
@@ -90,6 +95,16 @@ class ColorControls extends React.Component {
           return this.endCurrentShow();
         
       }, this.state.time * 1000);
+    }
+
+    // First command execution
+    const firstCommand = `COL,${1},${this.step},${this.state.colors[this.step]},${this.state.vibrate ? 1 : 0}`;
+    this.props.submitCommand(firstCommand);
+
+    if (this.step === (this.state.colors.length - 1)) {
+      this.step = 0;
+    } else {
+      this.step = this.step + 1;
     }
 
     // Executing a command every time a
