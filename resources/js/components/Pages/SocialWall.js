@@ -14,12 +14,6 @@ import {
   } from './../../redux/actions/multimedia';
 import { mostrarElementoDeCarga, ocultarElementoDeCarga } from "./../../redux/actions/loader";
 
-/*
-- Pasar datos al Iframe (Array)
-- Hacer endpoint para guardar y consultar esas configuraciones
-*/
-
-
 class SocialWall extends Component {
 
     constructor(props) {
@@ -34,11 +28,19 @@ class SocialWall extends Component {
             usuario: JSON.parse(localStorage.getItem("usuario")),
             hashtagsTwitter: [],
             hashtagsInstagram: [],
+            publicaciones: [],
+            mostrarBotonPantallaCompleta: false,
             estilosIframe: {
                 width: "inherit",
-                border: "none"
+                border: "none",
+                visibility: "hidden"
             },
-            urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib"
+            estilosDelTituloDeLaPagina: {
+                marginRight: "2rem"
+            },
+            urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib",
+            urlModerarTextoOfensivo: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessText/Screen",
+            urlModerarImagenOfensiva: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"
         };
 
         this.handleCompanyChange = this.handleCompanyChange.bind(this);
@@ -49,6 +51,20 @@ class SocialWall extends Component {
         this.editarFiltroDeTipoDeContenido = this.editarFiltroDeTipoDeContenido.bind(this);
         this.agregarEventoPantallaCompletaAIframe = this.agregarEventoPantallaCompletaAIframe.bind(this);   
         this.existenHashtagsParaEvento = this.existenHashtagsParaEvento.bind(this);
+        this.obtenerURLConParametros = this.obtenerURLConParametros.bind(this);
+        this.obtenerHashtagsSinSimbolo = this.obtenerHashtagsSinSimbolo.bind(this);
+        this.guardarContenidoDeLasPublicaciones = this.guardarContenidoDeLasPublicaciones.bind(this);
+        this.obtenerContenidoDeLasPublicaciones = this.obtenerContenidoDeLasPublicaciones.bind(this);
+        this.moderarContenidoDeLasPublicaciones = this.moderarContenidoDeLasPublicaciones.bind(this);
+        this.moderarTextoOfensivo = this.moderarTextoOfensivo.bind(this);
+        this.moderarImagenOfensiva = this.moderarImagenOfensiva.bind(this);
+        this.mostrarBotonPantallaCompleta = this.mostrarBotonPantallaCompleta.bind(this);
+        this.mostrarIframeSocialWall = this.mostrarIframeSocialWall.bind(this);
+        this.retirarPublicacionesOfensivas = this.retirarPublicacionesOfensivas.bind(this);
+        this.configurarFiltroParaPublicacionesSeguras = this.configurarFiltroParaPublicacionesSeguras.bind(this);
+        this.etiquetarPublicacionComoOfensiva = this.etiquetarPublicacionComoOfensiva.bind(this);
+        this.simularClickSobreFiltro = this.simularClickSobreFiltro.bind(this);
+        this.vaciarValoresDeCamposSelectores = this.vaciarValoresDeCamposSelectores.bind(this);
     }
 
     /**
@@ -57,10 +73,29 @@ class SocialWall extends Component {
      * @return {void}
      */
     componentDidMount () {
-        this.props.mostrarElementoDeCarga();
+        this.vaciarValoresDeCamposSelectores();
         this.props.getCompanies().then(() => this.props.ocultarElementoDeCarga());
     }
 
+    /**
+     * Resetear valores de campos selectores
+     * 
+     * @return {void}
+     */
+    vaciarValoresDeCamposSelectores() {
+        this.props.setCompany('');
+        this.props.setEvent('');
+
+        document.getElementsByName('company')[0].value = '';
+        document.getElementsByName('event')[0].value = '';
+    }
+
+    /**
+     * Evento al cambiar opcion del selector de compañias
+     * 
+     * @param {object} e 
+     * @return {void}
+     */
     handleCompanyChange (e) {
         const { value } = e.target;
   
@@ -73,6 +108,12 @@ class SocialWall extends Component {
         }
     }
   
+    /**
+     * Evento al cambiar opcion del selector de eventos
+     * 
+     * @param {object} e 
+     * @return {void}
+     */
     handleEventChange (e) {
         const { value } = e.target;
   
@@ -130,11 +171,42 @@ class SocialWall extends Component {
      * @return {void}
      */
     activarIframe() {
-        // Agregar informacion al URL
         if (this.existenHashtagsParaEvento()) {
             this.props.mostrarElementoDeCarga();
-            document.getElementById("iFrameSocialWall").setAttribute("src", this.state.urlParaIframe);
+            document.getElementById("iFrameSocialWall").setAttribute("src", this.obtenerURLConParametros());
         }
+    }
+
+    /**
+     * Obtener URL de la libreria con los datos de configuracion
+     * 
+     * @return {string}
+     */
+    obtenerURLConParametros() {
+        return this.state.urlParaIframe + "?hashtagsTwitter=" + 
+        encodeURIComponent(
+            JSON.stringify(
+                this.obtenerHashtagsSinSimbolo(this.state.hashtagsTwitter)
+            )
+        ) +
+        "&hashtagsInstagram=" + encodeURIComponent(
+            JSON.stringify(
+                this.obtenerHashtagsSinSimbolo(this.state.hashtagsInstagram)
+            )
+        ) +
+        "&eventoId=" + this.state.eventoId;
+    }
+
+    /**
+     * Obtener hashtags sin caracter #
+     * 
+     * @param {array} hashtags
+     * @return {void}
+     */
+    obtenerHashtagsSinSimbolo(hashtags) {
+        return hashtags.map((hashtag) => 
+            (hashtag[0] === "#") ? hashtag.substring(1) : hashtag
+        );
     }
 
     /**
@@ -178,12 +250,20 @@ class SocialWall extends Component {
      * @return {void}
      */
     agregarEventoPantallaCompletaAIframe() {
+        let eventosFullScreens = [
+            'fullscreenchange',
+            'mozfullscreenchange',
+            'webkitfullscreenchange',
+            'msfullscreenchange'
+        ];
 
-        this.props.ocultarElementoDeCarga();
+        eventosFullScreens.forEach(evento => (
+            document.getElementById('iFrameSocialWall').addEventListener(evento, () => {
+                this.editarFiltroDeTipoDeContenido();
+            })
+        ));
 
-        document.getElementById('iFrameSocialWall').addEventListener('webkitfullscreenchange', () => {
-            this.editarFiltroDeTipoDeContenido();
-        });
+        this.guardarContenidoDeLasPublicaciones();
     }
 
     /**
@@ -193,6 +273,193 @@ class SocialWall extends Component {
      */
     existenHashtagsParaEvento() {
         return (this.state.hashtagsTwitter.length > 0 || this.state.hashtagsInstagram.length > 0) ? true : false;
+    }
+
+    /**
+     * Almacenar contenido de las publicaciones recibidas
+     * 
+     * @return {void}
+     */
+    guardarContenidoDeLasPublicaciones() {
+        let publicacionesExtraidas = this.obtenerContenidoDeLasPublicaciones();
+        let publicaciones = [];
+
+        for (let publicacion of publicacionesExtraidas) {
+            publicaciones.push({
+                id: publicacion.id,
+                tipo: publicacion.classList.item(1),
+                imagen: (publicacion.getElementsByClassName('icbox').length > 0) ? publicacion.getElementsByClassName('icbox')[0].href : null,
+                texto: publicacion.getElementsByClassName("sb-text")[0].innerText
+            });
+        }
+
+        this.setState({publicaciones}, () => this.moderarContenidoDeLasPublicaciones());
+    }
+
+    /**
+     * Obtener contenido de las publicaciones recibidas
+     * 
+     * @return {void}
+     */
+    obtenerContenidoDeLasPublicaciones() {
+        return document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName("sb-item");
+    }
+
+    /**
+     * Moderar contenido de las publicaciones
+     * 
+     * @return {void}
+     */
+    moderarContenidoDeLasPublicaciones() {
+        // Microsoft Content Moderator limita 10 peticiones por segundo
+        let indice = 0;
+        let ultimoIndice = 5;
+
+        let intervaloDePeticiones = setInterval(() => {
+
+            for (indice = ultimoIndice - 5; indice < ultimoIndice; indice++) {
+
+                if (!this.state.publicaciones[indice]) {
+                    clearInterval(intervaloDePeticiones);
+                    this.props.ocultarElementoDeCarga();
+
+                    this.retirarPublicacionesOfensivas();
+
+                    this.mostrarBotonPantallaCompleta();
+                    this.mostrarIframeSocialWall();
+
+                    break;
+                }
+
+                if (this.state.publicaciones[indice].imagen) {
+                    this.moderarImagenOfensiva(this.state.publicaciones[indice]);
+                }
+                
+                this.moderarTextoOfensivo(this.state.publicaciones[indice]);
+            }
+
+            ultimoIndice += 5;
+        }, 1000);
+    }
+
+    /**
+     * Verificar si la publicacion contiene texto ofensivo
+     * 
+     * @param {object} publicacion
+     * @return {void}
+     */
+    moderarTextoOfensivo(publicacion) {
+        axios.post(this.state.urlModerarTextoOfensivo, 
+        {
+            data: publicacion.texto
+        }, 
+        {
+            headers: {
+                'Content-Type': 'text/plain',
+                'Ocp-Apim-Subscription-Key': 'bbdb1062a9ce455a97022f6a330efd8f'
+            }
+        }).then((respuesta) => {
+            if (respuesta.data.Terms)
+                this.etiquetarPublicacionComoOfensiva(publicacion);
+        });
+    }
+
+    /**
+     * Verificar si la publicacion contiene una Imagen ofensiva
+     * 
+     * @param {object} publicacion
+     * @return {void}
+     */
+    moderarImagenOfensiva(publicacion) {
+        axios.post(this.state.urlModerarImagenOfensiva,
+        JSON.stringify({
+            DataRepresentation: "URL",
+            Value: publicacion.imagen
+        }), 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Ocp-Apim-Subscription-Key': 'bbdb1062a9ce455a97022f6a330efd8f'
+            }
+        }).then((respuesta) => {
+            if (respuesta.data.IsImageAdultClassified || respuesta.data.IsImageRacyClassified) {
+                this.etiquetarPublicacionComoOfensiva(publicacion);
+            }
+        }).catch(error => console.log(publicacion));
+    }
+
+    /**
+     * Activar visibilidad del boton de pantalla completa
+     * 
+     * @return {void}
+     */
+    mostrarBotonPantallaCompleta() {
+        this.setState({ mostrarBotonPantallaCompleta: true });
+    }
+
+    /**
+     * Activar visibilidad del Iframe
+     * 
+     * @return {void}
+     */
+    mostrarIframeSocialWall() {
+        this.setState({ 
+            estilosIframe: {
+                width: "inherit",
+                border: "none",
+                visibility: "visible"
+            }
+        });
+    }
+
+    /**
+     * Retirar publicaciones con contenido ofensivo
+     * 
+     * @return {void}
+     */
+    retirarPublicacionesOfensivas() {
+        this.configurarFiltroParaPublicacionesSeguras();
+        this.simularClickSobreFiltro();
+    }
+
+    /**
+     * Configurar filtro de ver todas, para publicaciones seguras
+     * 
+     * @return {void}
+     */
+    configurarFiltroParaPublicacionesSeguras() {
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName("filter-label")[0]
+            .setAttribute('data-filter', '.sb-twitter, .sb-instagram, .sb-rss');
+    }
+
+    /**
+     * Etiquetar publicacion como ofensiva
+     * 
+     * @param {object} publicacion
+     * @return {void}
+     */
+    etiquetarPublicacionComoOfensiva(publicacion) {
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementById(publicacion.id)
+            .classList
+            .remove(publicacion.tipo);
+    }
+
+    /**
+     * Simular Click sobre filtro "Ver todas"
+     * 
+     * @return {void}
+     */
+    simularClickSobreFiltro() {
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName("filter-label")[0]
+            .click();
     }
 
     render() {
@@ -206,9 +473,9 @@ class SocialWall extends Component {
                         <div className="container-fluid">
                             
                             <div className="row">
-                                <div className="col-sm-6 col-md-6">
+                                <div className="col-sm-8 col-md-8">
                                     <div className="d-flex">
-                                        <div className="my-2">
+                                        <div className="my-2" style={this.state.estilosDelTituloDeLaPagina}>
                                             <h1 className="page-header-heading">
                                                 <div>
                                                     <i className="fas fa-photo-video page-header-heading-icon" />
@@ -257,6 +524,7 @@ class SocialWall extends Component {
                                     </div>
                                 </div>
 
+                                { this.state.mostrarBotonPantallaCompleta &&
                                 <div className="ml-auto">
                                     <button
                                         type="button"
@@ -267,6 +535,7 @@ class SocialWall extends Component {
                                         &nbsp;Fullscreen
                                     </button>
                                 </div>
+                                }
 
                             </div>
                         </div>
