@@ -102,6 +102,11 @@ class FlashControls extends React.Component {
       this.step = this.step + 1;
     }
 
+    // If bpm is equal to zero, just execute the command once
+    // and let it be there
+    if (this.state.bpm === 0)
+      return;
+
     // Executing a command every time a
     // beat is produced
     this.interval = setInterval(() => {
@@ -129,19 +134,12 @@ class FlashControls extends React.Component {
         this.step = this.step + 1;
       }
     }, interval);
-
-    this.setState({
-      bpm: 0,
-      loop: 0,
-      time: 0,
-      vibrate: false,
-    });
   }
 
   validateConfiguration () {
-    const { loop, time } = this.state;
+    const { loop, time, bpm } = this.state;
     
-    if (loop === 0 && time === 0) {
+    if (loop === 0 && time === 0 && bpm > 0) {
       this.props.displayAlertMessage('', 'Duración del comando no especificado', 'error');
       return false;
     }
