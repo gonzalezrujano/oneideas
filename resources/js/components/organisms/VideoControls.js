@@ -119,13 +119,6 @@ class VideoControls extends React.Component {
         this.props.updateCurrentLoop('video', current.loop - 1);
       }
     }, interval);
-
-    this.setState({
-      bpm: 0,
-      loop: 0,
-      time: 0,
-      vibrate: false,
-    });
   }
 
   validateConfiguration () {

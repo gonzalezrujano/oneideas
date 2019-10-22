@@ -114,12 +114,6 @@ class AudioControls extends React.Component {
         this.props.updateCurrentLoop('audio', current.loop - 1);
       }
     }, interval);
-
-    this.setState({
-      bpm: 0,
-      loop: 0,
-      time: 0,
-    });
   }
 
   validateConfiguration () {

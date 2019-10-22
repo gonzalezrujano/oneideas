@@ -114,8 +114,6 @@ class ImageControls extends React.Component {
     });
 
     // First command execution
-    let firstNow = (new Date()).getTime();
-    let firstEnd = firstNow + this.state.time * 1000 + 5000;
     const firstCommand = `IMG,1,${this.step},${selected[this.step].NombreCompleto},${this.state.vibrate ? 1 : 0}`;
     this.props.submitCommand(firstCommand);
 
@@ -152,14 +150,6 @@ class ImageControls extends React.Component {
         this.step = this.step + 1;
       }
     }, this.state.time * 1000);
-
-    this.setState(state => ({
-      loop: 0,
-      time: 0,
-      files: state.files.map(file => ({ ...file, selected: false })),
-      isSelectorOpen: false,
-      vibrate: false,
-    }));
   }
 
   validateConfiguration (selected) {

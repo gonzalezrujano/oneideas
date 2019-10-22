@@ -107,6 +107,11 @@ class ColorControls extends React.Component {
       this.step = this.step + 1;
     }
 
+    // If bpm is equal to zero, just execute the command once
+    // and let it be there
+    if (this.state.bpm === 0)
+      return;
+
     // Executing a command every time a
     // beat is produced
     this.interval = setInterval(() => {
@@ -134,14 +139,6 @@ class ColorControls extends React.Component {
         this.step = this.step + 1;
       }
     }, interval);
-
-    this.setState({
-      bpm: 0,
-      loop: 0,
-      time: 0,
-      colors: [],
-      vibrate: false,
-    });
   }
 
   handleNewColor (color) {
@@ -157,14 +154,14 @@ class ColorControls extends React.Component {
   }
 
   validateConfiguration () {
-    const { colors, loop, time } = this.state;
+    const { colors, loop, time, bpm } = this.state;
 
     if (colors.length <= 0) {
       this.props.displayAlertMessage('', 'No seleccionó ningún color para empezar el show', 'error');
       return false;
     }
     
-    if (loop === 0 && time === 0) {
+    if (loop === 0 && time === 0 && bpm > 0) {
       this.props.displayAlertMessage('', 'Duración del comando no especificado', 'error');
       return false;
     }
