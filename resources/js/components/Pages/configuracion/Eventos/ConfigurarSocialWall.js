@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import Checkbox from "../../../molecules/Checkbox";
 
@@ -6,6 +7,15 @@ export default function ConfigurarSocialWall(props) {
     const [cargandoIframe, setCargandoIframe] = useState(true);
     const [urlIframe , setUrlIframe] = useState(window.location.protocol + "//" + window.location.hostname + "/Lib");
     const [moderarContenido , setModerarContenido] = useState(true);
+
+    /**
+     * Colocar url en atributo src de iframe
+     * 
+     * @return {void}
+     */
+    useEffect(() => {
+        document.getElementById('iFrameSocialWall').setAttribute("src", obtenerUrlConParametros());
+    })
 
     /**
      * Obtener URL de la libreria con los datos de configuracion
@@ -24,9 +34,34 @@ export default function ConfigurarSocialWall(props) {
         "&presentacion=" + document.getElementsByName('presentacion')[0].value;
     }
 
+    /**
+     * Consultar configuraciones del Social Wall
+     * 
+     * @return {void}
+     */
     useEffect(() => {
-        document.getElementById('iFrameSocialWall').setAttribute("src", obtenerUrlConParametros());
-    })
+        consultarConfiguraciones();
+    }, [props.eventoId])
+
+    /**
+     * Consultar configuraciones
+     * 
+     * @return {void}
+     */
+    function consultarConfiguraciones() {
+        axios.get('api/eventos/social-wall/configuracion/' + props.eventoId, {
+            headers: {
+                Authorization: localStorage.getItem("api_token")
+            }
+        })
+        .then((respuesta) => {
+            if (respuesta.data.ver) {
+                document.getElementsByName('tema')[0].value = respuesta.data.preferencias.tema;
+                document.getElementsByName('presentacion')[0].value = respuesta.data.preferencias.presentacion;
+                setModerarContenido(respuesta.data.preferencias.moderarContenido);
+            }
+        });
+    }
 
     return (
         <div>
@@ -60,7 +95,8 @@ export default function ConfigurarSocialWall(props) {
                     <div className="form-group row">
                         <label className="col-sm-4 col-form-label col-form-label-sm">Moderar contenido</label>
                         <div className="col-sm-6">
-                            <Checkbox valor={moderarContenido} onChange={() => setModerarContenido(!moderarContenido)}/>
+                            <input type="hidden" name="moderarContenido" value="false" />
+                            <Checkbox valor={moderarContenido} onChange={() => setModerarContenido(!moderarContenido) }/>
                         </div>
                     </div>
 

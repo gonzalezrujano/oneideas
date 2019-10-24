@@ -195,7 +195,7 @@ class SocialWall extends Component {
             )
         ) +
         "&eventoId=" + this.state.eventoId +
-        "&recarga";
+        "&recarga=true";
     }
 
     /**
