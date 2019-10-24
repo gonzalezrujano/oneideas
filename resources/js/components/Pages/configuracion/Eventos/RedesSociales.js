@@ -216,7 +216,7 @@ export default class RedesSociales extends Component {
                                 id="campoHashtagsTwitter"
                                 className="form-control form-control-sm"
                                 placeholder="Ingrese los hashtags para Twitter"
-                                autocomplete="false"
+                                autoComplete="false"
                             />
                         </div>
                     </div>
@@ -231,7 +231,7 @@ export default class RedesSociales extends Component {
                                 id="campoHashtagsInstagram"
                                 className="form-control form-control-sm"
                                 placeholder="Ingrese los hashtags para Instagram"
-                                autocomplete="false"
+                                autoComplete="false"
                             />
                         </div>
                     </div>

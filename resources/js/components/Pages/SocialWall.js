@@ -194,7 +194,8 @@ class SocialWall extends Component {
                 this.obtenerHashtagsSinSimbolo(this.state.hashtagsInstagram)
             )
         ) +
-        "&eventoId=" + this.state.eventoId;
+        "&eventoId=" + this.state.eventoId +
+        "&recarga";
     }
 
     /**
