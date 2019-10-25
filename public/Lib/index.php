@@ -66,10 +66,7 @@
             'breakpoints' => array('4', '4', '3', '3', '2', '1', '1'),
             'filter_search' => false,
             'add_files' => true,
-            'loadmore' => false,
-            'live' => ($_GET['recarga']) ? true : false,
-            'live_interval' => 1,
-            'order' => 'date'
+            'order' => 'random'
         )
     );
 ?>

@@ -38,6 +38,7 @@ class SocialWall extends Component {
             estilosDelTituloDeLaPagina: {
                 marginRight: "2rem"
             },
+            intervaloDeActualizacion: null,
             urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib",
             urlModerarTextoOfensivo: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessText/Screen",
             urlModerarImagenOfensiva: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"
@@ -65,6 +66,9 @@ class SocialWall extends Component {
         this.etiquetarPublicacionComoOfensiva = this.etiquetarPublicacionComoOfensiva.bind(this);
         this.simularClickSobreFiltro = this.simularClickSobreFiltro.bind(this);
         this.vaciarValoresDeCamposSelectores = this.vaciarValoresDeCamposSelectores.bind(this);
+        this.crearIntervaloDeActualizaciones = this.crearIntervaloDeActualizaciones.bind(this);
+        this.consultarNuevasPublicaciones = this.consultarNuevasPublicaciones.bind(this);
+        this.limpiarIntervaloDeActualizacion = this.limpiarIntervaloDeActualizacion.bind(this);
     }
 
     /**
@@ -75,6 +79,15 @@ class SocialWall extends Component {
     componentDidMount () {
         this.vaciarValoresDeCamposSelectores();
         this.props.getCompanies().then(() => this.props.ocultarElementoDeCarga());
+    }
+
+    /**
+     * Ejecutar al desmontar componente
+     * 
+     * @return {void}
+     */
+    componentWillUnmount() {
+        this.limpiarIntervaloDeActualizacion();
     }
 
     /**
@@ -194,8 +207,7 @@ class SocialWall extends Component {
                 this.obtenerHashtagsSinSimbolo(this.state.hashtagsInstagram)
             )
         ) +
-        "&eventoId=" + this.state.eventoId +
-        "&recarga=true";
+        "&eventoId=" + this.state.eventoId;
     }
 
     /**
@@ -264,6 +276,8 @@ class SocialWall extends Component {
             })
         ));
 
+        this.crearIntervaloDeActualizaciones();
+        this.ocultarBotonDeCargarMas();
         this.guardarContenidoDeLasPublicaciones();
     }
 
@@ -334,11 +348,11 @@ class SocialWall extends Component {
                     break;
                 }
 
-                if (this.state.publicaciones[indice].imagen) {
+                /* if (this.state.publicaciones[indice].imagen) {
                     this.moderarImagenOfensiva(this.state.publicaciones[indice]);
                 }
                 
-                this.moderarTextoOfensivo(this.state.publicaciones[indice]);
+                this.moderarTextoOfensivo(this.state.publicaciones[indice]); */
             }
 
             ultimoIndice += 5;
@@ -461,6 +475,55 @@ class SocialWall extends Component {
             .contentDocument
             .getElementsByClassName("filter-label")[0]
             .click();
+    }
+
+    /**
+     * Crear intervalo de actualizacion de publicaciones
+     * 
+     * @return {void}
+     */
+    crearIntervaloDeActualizaciones() {
+        let intervaloDeActualizacion = setInterval(() => {
+            this.consultarNuevasPublicaciones();
+        }, 20000);
+
+        this.setState({ intervaloDeActualizacion });
+    }
+
+    /**
+     * Consultar nuevo lote de publicaciones
+     * 
+     * @return {void}
+     */
+    consultarNuevasPublicaciones() {
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .getElementsByClassName('sb-loadmore')[0]
+            .click();
+    }
+
+    /**
+     * Limpiar intervalo de actualizacion de publicaciones
+     * 
+     * @return {void}
+     */
+    limpiarIntervaloDeActualizacion() {
+        if (this.state.intervaloDeActualizacion)
+            clearInterval(this.state.intervaloDeActualizacion);
+    }
+
+    /**
+     * Ocultar boton de "Ver mas"
+     * 
+     * @return {void}
+     */
+    ocultarBotonDeCargarMas() {
+        let contenedorDePublicaciones = document.getElementById('iFrameSocialWall').contentDocument.getElementById('sb_wall1');
+        let elementoDeEstilo = document.createElement("style");
+        let definicionesDeEstilo = document.createTextNode(".sb-loadmore { visibility: hidden; }");
+
+        elementoDeEstilo.appendChild(definicionesDeEstilo);
+        contenedorDePublicaciones.appendChild(elementoDeEstilo);
     }
 
     render() {
