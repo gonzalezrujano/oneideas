@@ -147,7 +147,6 @@ export default class RedesSociales extends Component {
      */
     guardarHashtags(redSocial) {
         const hashtags = this.obtenerHashtags(redSocial);
-        console.log(hashtags);
 
         const nombreDePropiedad = "hashtags" + redSocial;
 
