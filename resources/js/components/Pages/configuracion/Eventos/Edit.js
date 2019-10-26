@@ -39,6 +39,7 @@ export default class Edit extends React.Component {
         };
 
         this.configuracionRedesSociales = React.createRef();
+        this.configuracionesSocialWall = React.createRef();
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -133,8 +134,10 @@ export default class Edit extends React.Component {
     handleSubmit (e) {
         e.preventDefault();
 
-        // Enviar Configuracion de redes sociales
+        // Enviar Configuraciones de redes sociales y Social Wall
         this.configuracionRedesSociales.current.handleClick();
+        this.configuracionesSocialWall.current.enviarConfiguracion();
+
 
         let formData = new FormData();
         let s = this.state
@@ -192,7 +195,7 @@ export default class Edit extends React.Component {
         }).catch(error => {
             $('#update-evento').find('i.fa').remove();
             sweetalert(error.response.data, 'error', 'sweet');
-        })
+        });
     }
 
     handleLogo(){
@@ -503,7 +506,10 @@ export default class Edit extends React.Component {
 
                         {/* Componente de configuracion del Social Wall */}
                         <div className="tab-pane fade" id="pills-social-wall" role="tabpanel" aria-labelledby="pills-social-wall-tab">
-                            <ConfigurarSocialWall eventoId={this.state.idEvento} />
+                            <ConfigurarSocialWall
+                                ref={this.configuracionesSocialWall}
+                                eventoId={this.state.idEvento}
+                            />
                         </div>
 
 

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import Checkbox from "../../../molecules/Checkbox";
 
-export default function ConfigurarSocialWall(props) {
+const ConfigurarSocialWall = forwardRef((props, ref) => {
 
     const [cargandoIframe, setCargandoIframe] = useState(true);
     const [urlIframe , setUrlIframe] = useState(window.location.protocol + "//" + window.location.hostname + "/Lib");
@@ -62,6 +62,24 @@ export default function ConfigurarSocialWall(props) {
             }
         });
     }
+
+    useImperativeHandle(ref, () => ({
+        enviarConfiguracion: () => {
+            let datosDelFormulario = new FormData();
+            datosDelFormulario.append("eventoId", props.eventoId);
+            datosDelFormulario.append("preferencias",  {
+                tema: document.getElementsByName('tema')[0].value,
+                presentacion: document.getElementsByName('presentacion')[0].value,
+                moderarContenido
+            });
+    
+            axios.post('api/eventos/social-wall/configuracion', datosDelFormulario, {
+                headers: {
+                    Authorization: localStorage.getItem("api_token")
+                }
+            });
+        }
+    }));
 
     return (
         <div>
@@ -132,9 +150,9 @@ export default function ConfigurarSocialWall(props) {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     );
-}
+});
+
+export default ConfigurarSocialWall;
