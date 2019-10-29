@@ -39,6 +39,7 @@ class SocialWall extends Component {
                 marginRight: "2rem"
             },
             intervaloDeActualizacion: null,
+            intervaloDeScroll: null,
             urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib",
             urlModerarTextoOfensivo: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessText/Screen",
             urlModerarImagenOfensiva: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"
@@ -69,6 +70,7 @@ class SocialWall extends Component {
         this.crearIntervaloDeActualizaciones = this.crearIntervaloDeActualizaciones.bind(this);
         this.consultarNuevasPublicaciones = this.consultarNuevasPublicaciones.bind(this);
         this.limpiarIntervaloDeActualizacion = this.limpiarIntervaloDeActualizacion.bind(this);
+        this.crearIntervaloDeTransicionDeContenido = this.crearIntervaloDeTransicionDeContenido.bind(this);
     }
 
     /**
@@ -239,6 +241,8 @@ class SocialWall extends Component {
         } else if (elementoIframe.msRequestFullscreen) { /* IE/Edge */
             elementoIframe.msRequestFullscreen();
         }
+
+        this.crearIntervaloDeTransicionDeContenido();
     }
 
     /**
@@ -510,6 +514,9 @@ class SocialWall extends Component {
     limpiarIntervaloDeActualizacion() {
         if (this.state.intervaloDeActualizacion)
             clearInterval(this.state.intervaloDeActualizacion);
+
+        if (this.state.intervaloDeScroll)
+            clearInterval(this.state.intervaloDeScroll);
     }
 
     /**
@@ -524,6 +531,45 @@ class SocialWall extends Component {
 
         elementoDeEstilo.appendChild(definicionesDeEstilo);
         contenedorDePublicaciones.appendChild(elementoDeEstilo);
+    }
+
+    /**
+     * Crear intervalo de descenso del Scroll
+     * 
+     * @return {void}
+     */
+    crearIntervaloDeTransicionDeContenido() {
+
+        let intervaloDeScroll = setInterval(() => this.descenderScroll(), 10000);
+
+        this.setState({ intervaloDeScroll });
+    }
+
+    /**
+     * Descender Scroll de Iframe
+     * 
+     * @return {void}
+     */
+    descenderScroll() {
+
+        let coordenadaActualY = this.obtenerCoordenadaDelScroll();
+
+        document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .body
+            .scrollTop = coordenadaActualY + 800;
+    }
+
+    /**
+     * Obtener coordenada Y del Scroll del Iframe
+     * 
+     * @return {void}
+     */
+    obtenerCoordenadaDelScroll() {
+        return document.getElementById('iFrameSocialWall')
+            .contentDocument
+            .body
+            .scrollTop;
     }
 
     render() {
