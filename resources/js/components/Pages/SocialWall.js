@@ -71,6 +71,7 @@ class SocialWall extends Component {
         this.consultarNuevasPublicaciones = this.consultarNuevasPublicaciones.bind(this);
         this.limpiarIntervaloDeActualizacion = this.limpiarIntervaloDeActualizacion.bind(this);
         this.crearIntervaloDeTransicionDeContenido = this.crearIntervaloDeTransicionDeContenido.bind(this);
+        this.limpiarIntervaloDeTransicion = this.limpiarIntervaloDeTransicion.bind(this);
     }
 
     /**
@@ -277,6 +278,7 @@ class SocialWall extends Component {
         eventosFullScreens.forEach(evento => (
             document.getElementById('iFrameSocialWall').addEventListener(evento, () => {
                 this.editarFiltroDeTipoDeContenido();
+                this.limpiarIntervaloDeTransicion();
             })
         ));
 
@@ -515,6 +517,10 @@ class SocialWall extends Component {
         if (this.state.intervaloDeActualizacion)
             clearInterval(this.state.intervaloDeActualizacion);
 
+        this.limpiarIntervaloDeTransicion()
+    }
+
+    limpiarIntervaloDeTransicion() {
         if (this.state.intervaloDeScroll)
             clearInterval(this.state.intervaloDeScroll);
     }
