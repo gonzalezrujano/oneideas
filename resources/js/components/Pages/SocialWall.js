@@ -40,6 +40,7 @@ class SocialWall extends Component {
             },
             intervaloDeActualizacion: null,
             intervaloDeScroll: null,
+            avisoSinContenido: false,
             urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib",
             urlModerarTextoOfensivo: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessText/Screen",
             urlModerarImagenOfensiva: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"
@@ -80,6 +81,8 @@ class SocialWall extends Component {
      * @return {void}
      */
     componentDidMount () {
+        alert = function() {};
+
         this.vaciarValoresDeCamposSelectores();
         this.props.getCompanies().then(() => this.props.ocultarElementoDeCarga());
     }
@@ -233,6 +236,9 @@ class SocialWall extends Component {
     colocarPantallaCompleta() {
         let elementoIframe = document.getElementById("iFrameSocialWall");
 
+        if (!elementoIframe)
+            return
+
         if (elementoIframe.requestFullscreen) {
             elementoIframe.requestFullscreen();
         } else if (elementoIframe.mozRequestFullScreen) { /* Firefox */
@@ -278,7 +284,6 @@ class SocialWall extends Component {
         eventosFullScreens.forEach(evento => (
             document.getElementById('iFrameSocialWall').addEventListener(evento, () => {
                 this.editarFiltroDeTipoDeContenido();
-                this.limpiarIntervaloDeTransicion();
             })
         ));
 
@@ -310,7 +315,7 @@ class SocialWall extends Component {
                 id: publicacion.id,
                 tipo: publicacion.classList.item(1),
                 imagen: (publicacion.getElementsByClassName('icbox').length > 0) ? publicacion.getElementsByClassName('icbox')[0].href : null,
-                texto: publicacion.getElementsByClassName("sb-text")[0].innerText
+                texto: (publicacion.getElementsByClassName("sb-text")[0]) ? publicacion.getElementsByClassName("sb-text")[0].innerText : ""
             });
         }
 
@@ -417,6 +422,10 @@ class SocialWall extends Component {
      * @return {void}
      */
     mostrarBotonPantallaCompleta() {
+
+        if (this.state.publicaciones.length === 0) 
+            return
+
         this.setState({ mostrarBotonPantallaCompleta: true });
     }
 
@@ -426,6 +435,12 @@ class SocialWall extends Component {
      * @return {void}
      */
     mostrarIframeSocialWall() {
+
+        if (this.state.publicaciones.length === 0) {
+            this.setState({ avisoSinContenido: true });
+            return
+        }
+
         this.setState({ 
             estilosIframe: {
                 width: "inherit",
@@ -502,10 +517,14 @@ class SocialWall extends Component {
      * @return {void}
      */
     consultarNuevasPublicaciones() {
-        document.getElementById('iFrameSocialWall')
-            .contentDocument
-            .getElementsByClassName('sb-loadmore')[0]
-            .click();
+
+        let botonDeCargarMas = document.getElementById('iFrameSocialWall').contentDocument.getElementsByClassName('sb-loadmore')[0];
+
+        if (botonDeCargarMas)
+            document.getElementById('iFrameSocialWall')
+                .contentDocument
+                .getElementsByClassName('sb-loadmore')[0]
+                .click();
     }
 
     /**
@@ -545,7 +564,7 @@ class SocialWall extends Component {
      * @return {void}
      */
     crearIntervaloDeTransicionDeContenido() {
-
+        
         let intervaloDeScroll = setInterval(() => this.descenderScroll(), 10000);
 
         this.setState({ intervaloDeScroll });
@@ -669,6 +688,12 @@ class SocialWall extends Component {
                                 <Mensaje
                                     icono="fas fa-exclamation-circle"
                                     texto="No existen hashtags registrados en el evento"
+                                />
+                            }
+                            {(this.state.avisoSinContenido) &&
+                                <Mensaje
+                                    icono="fas fa-exclamation-circle"
+                                    texto="No hay publicaciones aun registradas"
                                 />
                             }
                             {(this.state.mostrarIframe && this.existenHashtagsParaEvento()) &&
