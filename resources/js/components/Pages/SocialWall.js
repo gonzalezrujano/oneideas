@@ -41,7 +41,7 @@ class SocialWall extends Component {
             intervaloDeActualizacion: null,
             intervaloDeScroll: null,
             avisoSinContenido: false,
-            urlParaIframe: window.location.protocol + "//" + window.location.hostname + "/Lib",
+            urlParaIframe: window.location.protocol + "//" + window.location.host + "/Lib",
             urlModerarTextoOfensivo: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessText/Screen",
             urlModerarImagenOfensiva: "https://oneshowmoderator.cognitiveservices.azure.com/contentmoderator/moderate/v1.0/ProcessImage/Evaluate"
         };
