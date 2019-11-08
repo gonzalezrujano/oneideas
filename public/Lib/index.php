@@ -43,8 +43,9 @@
         }
 
         $redes['rss'] = [
-            'rss_id_1' => ['http://www.oneshow.com/api/RSS/' . $_GET['eventoId']],
-            'rss_text' => 0
+            'rss_id_1' => ['http://localhost:8001/api/rss/' . $_GET['eventoId']],
+            'rss_text' => 0,
+            'rss_output' => 'title,thumb,text,info,meta,tags'
         ];
 
         return $redes;
@@ -67,7 +68,7 @@
             'filter_search' => false,
             'add_files' => true,
             'live' => true,
-            'live_interval' => 2,
+            'live_interval' => 1,
             'order' => 'random'
         )
     );
