@@ -43,7 +43,7 @@
         }
 
         $redes['rss'] = [
-            'rss_id_1' => ['http://localhost:8001/api/rss/' . $_GET['eventoId']],
+            'rss_id_1' => ['https://app.oneshow.com.ar/api/rss/' . $_GET['eventoId']],
             'rss_text' => 0,
             'rss_output' => 'title,thumb,text,info,meta,tags'
         ];
